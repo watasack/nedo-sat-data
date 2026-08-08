@@ -8,6 +8,12 @@ import numpy as np
 from scipy.ndimage import gaussian_filter, shift as ndshift
 import json, os
 
+# リポジトリ相対パス（execで読み込まれる場合は呼び出し側の__file__基準にフォールバック）
+_POC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(globals().get("__file__", "."))))
+if os.path.basename(_POC_DIR) != "poc":
+    _POC_DIR = os.path.join(os.getcwd(), "poc")
+POC_OUT = os.path.join(_POC_DIR, "out")
+
 rng = np.random.default_rng(42)
 C1, C2 = 1.191042e8, 1.4387752e4
 LAM = np.linspace(3.4, 4.2, 41)
@@ -27,7 +33,7 @@ TA = 288.0
 
 class Scene:
     """1000x1000m のプラントシーン"""
-    def __init__(self, n_tanks=24, n_unit_pairs=8):
+    def __init__(self, n_tanks=24, n_unit_pairs=8, tank_R_m=(12, 30)):
         self.N = 2000
         self.T = np.full((self.N, self.N), TA, np.float32)   # 表面温度
         self.eps = np.full((self.N, self.N), 0.95, np.float32)
@@ -39,7 +45,7 @@ class Scene:
         for i in range(n_tanks):
             r_, c_ = cells[i]
             cy, cx = 150 + r_*300, 150 + c_*300
-            R = rng.uniform(12, 30) / GSD_TRUE
+            R = rng.uniform(*tank_R_m) / GSD_TRUE
             m = (yy-cy)**2 + (xx-cx)**2 < R**2
             self.T[m] = TA + rng.uniform(4, 10)
             self.eps[m] = np.clip(rng.normal(0.25, 0.02), 0.15, 0.4)
@@ -59,9 +65,15 @@ class Scene:
                 pair.append(dict(y0=y0, x0=x0, h=h, w=w))
             self.units.append(pair)
 
-    def add_tank_patch(self, tank, dT, area_m2):
+    def add_tank_patch(self, tank, dT, area_m2, erode_sat_px=None):
+        """erode_sat_px指定時: 検知側の境界侵食後マスク内に収まるよう配置を制約"""
         R_p = np.sqrt(area_m2/np.pi)/GSD_TRUE
-        th = rng.uniform(0, 2*np.pi); rr = tank["R"]*0.5
+        th = rng.uniform(0, 2*np.pi)
+        if erode_sat_px is None:
+            rr = tank["R"]*0.5
+        else:
+            rr_max = max(tank["R"] - erode_sat_px*(GSD_SAT/GSD_TRUE) - R_p, 0.0)
+            rr = rng.uniform(0, rr_max)
         cy, cx = tank["cy"]+rr*np.sin(th), tank["cx"]+rr*np.cos(th)
         yy, xx = self._yy, self._xx
         m = ((yy-cy)**2 + (xx-cx)**2 < R_p**2) & ((yy-tank["cy"])**2 + (xx-tank["cx"])**2 < tank["R"]**2)
@@ -178,8 +190,8 @@ for t in range(N_TRIALS):
 results["step_detection"] = dict(detect_rate=det/(3*N_TRIALS), false_alarm_rate=fa/(5*N_TRIALS),
                                  step_size_K=2.0, epochs=n_ep, note="兄弟差分系列のステップz検定(z>3)")
 
-os.makedirs("/home/claude/poc/out", exist_ok=True)
-with open("/home/claude/poc/out/poc2_results.json", "w") as f:
+os.makedirs(POC_OUT, exist_ok=True)
+with open(os.path.join(POC_OUT, "poc2_results.json"), "w") as f:
     json.dump(results, f, ensure_ascii=False, indent=1)
 print(json.dumps(results, ensure_ascii=False, indent=1))
 
@@ -187,6 +199,6 @@ print(json.dumps(results, ensure_ascii=False, indent=1))
 sc = Scene()
 for i in (0, 4, 8): sc.add_tank_patch(sc.tanks[i], 5.0, 200)
 sc.add_unit_diffuse(0, 0, 2.0)
-np.save("/home/claude/poc/out/demo_scene_tb.npy", observe(sc).astype(np.float32))
-np.save("/home/claude/poc/out/demo_scene_truth.npy", sc.T[::4, ::4].astype(np.float32))
+np.save(os.path.join(POC_OUT, "demo_scene_tb.npy"), observe(sc).astype(np.float32))
+np.save(os.path.join(POC_OUT, "demo_scene_truth.npy"), sc.T[::4, ::4].astype(np.float32))
 print("demo scene saved")
