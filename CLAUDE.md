@@ -27,7 +27,7 @@ NEDO Challenge, Satellite Data「衛星データで革新する未来の都市�
 | 09_JSI照会文案.md | JSI/SatVuへのNEdT実力値・タスキング仕様・価格・ライセンス照会文（和文+英文要旨） |
 | download_poc_data.py | 実データ取得スクリプト（Open-Meteo+Landsat ST_B10切り出し） |
 | poc/src/poc2_tank_v2.py | **タンクパッチ検知器v2**（放射デトレンド+時系列残差スタック）。結果はpoc2_results.jsonのtank_patch_auc_v2 |
-| poc/src/make_figures.py | 応募書類用図版の生成（poc/out/fig/fig0〜fig7）。**図の一覧・主張・配置先・注意点は `poc/out/fig/README.md`** |
+| poc/src/make_figures.py | 応募書類用図版の生成（poc/out/fig/fig0〜fig9）。**図の一覧・主張・配置先・注意点は `poc/out/fig/README.md`** |
 | poc/src/poc1_error_budget.py | 誤差バジェット計算機（完成） |
 | poc/src/poc2_scene_sim.py | 合成シーンMC（タンクパッチ検知器に既知の課題あり、下記） |
 | poc/src/poc2_rerun_tank.py | タンクAUC再計算用 |
@@ -39,7 +39,7 @@ NEDO Challenge, Satellite Data「衛星データで革新する未来の都市�
 
 1. **【完了】実データ取得と差し替え**: サンドボックスの外部API遮断は **GitHub Actions迂回**で解決（`.github/workflows/fetch-poc-data.yml`、`trigger-fetch-data` ブランチへのpushで起動 → `poc-data` ブランチにコミットされる。workflow_dispatch APIはこの環境のGitHub統合では403）。データは `poc/data/` 配置済み。poc3=実気象モードA（晴天判定は**パス時刻雲量**。夜間ウィンドウ最小値は2.4倍過大評価するので使わない）、poc4=実LandsatモードA（複合体レベル概略AOI 6箇所、スワス端8シーンは自動除外→有効6エポック、結果はpoc4_results_real.json）で再実行済み。残: AOI座標の現地検証（±数百mの概略）、HotSat-2サンプルでの設備単位デモ（09の回答待ち）
 2. **【完了】タンクパッチ検知器の改良**: `poc/src/poc2_tank_v2.py` で解決。原因は検知器に加えて物理（低ε屋根の見かけTb 266-280KではPlanck非線形によりNEdT 1K@300Kが約2.5-2.7Kに増幅 → 単発はSNR<1が原理限界）。v2=放射方向デトレンド(4ビン)+ノイズ等価輝度正規化+時系列残差スタック+PSF整合フィルタ(σ1px)、D40〜80m。結果: +5K/100m²で単発0.64→6ep 0.89→12ep 0.96、+3K/100m²で12ep 0.88（poc2_results.json の tank_patch_auc_v2）
-3. **【完了】図版作成**: `poc/src/make_figures.py` → `poc/out/fig/fig0〜fig7`。fig1〜fig5（SNRバジェット、方式別誤差、二重差分AUC、降雨特徴量、パイプライン時系列、タンク時系列スタック）に加え、一次審査で技術的実証性を伝えるための3枚を追加: **fig0**=監視チェーン全体像と根拠・自白の1枚図、**fig7**=分解能ギャップ（30m級では信号1/25）、**fig6**=実Landsatによる実データ実証（振れ幅36.0K→7.7K、誤検知ゼロ）。詳細は `poc/out/fig/README.md`
+3. **【完了】図版作成**: `poc/src/make_figures.py` → `poc/out/fig/fig0〜fig9`。fig1〜fig5（SNRバジェット、方式別誤差、二重差分AUC、降雨特徴量、パイプライン時系列、タンク時系列スタック）に加え、一次審査で技術的実証性を伝えるための3枚を追加: **fig0**=監視チェーン全体像と根拠・自白の1枚図、**fig7**=分解能ギャップ（30m級では信号1/25）、**fig6**=実Landsatによる実データ実証（振れ幅36.0K→7.7K、誤検知ゼロ）。さらに地図で直感的に見せる2枚: **fig8**=設備単位の運用ビュー（地図＋資産ごとの判定リスト。要点検/点検不要/見逃しを色と文言で提示）、**fig9**=同じ型を実Landsatに適用した複合体単位の運用ビュー（6複合体すべて健全＝誤検知ゼロ）。詳細は `poc/out/fig/README.md`
 4. **【ドラフト完了】骨子v0.2の応募書類化**: 08_応募書類ドラフト.md 作成済み（PoC数値は「シミュレーションによる」限定付きで組込済み）。残り: 7節チーム体制の記入（ユーザー）、出典タグの最終付与、事務局照会回答の反映、提出フォーマット（フォーム/PDF）への転記
 5. **チーム体制節の記入**（08の7節、ユーザーに聞く）
 6. **Phase 0の残り**: 09_JSI照会文案.md 作成済み → **ユーザーがJSIへ送付**。HotSat-2サンプルはその回答待ち
@@ -52,7 +52,8 @@ NEDO Challenge, Satellite Data「衛星データで革新する未来の都市�
 ## 技術メモ（ハマりどころ）
 
 - numpy 2.x: `np.trapz` は廃止、`np.trapezoid` を使う
-- 図版の依存: `numpy matplotlib matplotlib-fontja scipy tifffile pyproj`。`tifffile`/`pyproj` 未導入だと図6のみスキップされ、他は生成される（make_figures.py は単体で完結し、PoCの再実行は不要）
+- 図版の依存: `numpy matplotlib matplotlib-fontja scipy tifffile pyproj`。`tifffile`/`pyproj` 未導入だと図6・図9がスキップされ、他は生成される（make_figures.py は単体で完結し、PoCの再実行は不要。全図が同一入力に対しバイト単位で再現。所要約17秒）
+- **poc4のシーンを再現するときは rng を seed 123 に貼り替えること**: `poc4_pipeline.py` は poc2ヘッダを `exec` した後に `rng = np.random.default_rng(123)` でグローバルの rng を上書きしている。Scene/observe は呼び出し時にグローバル rng を引くため、poc2既定の seed 42 のままだと別シーンになる（figure8 で実際に踏んだ罠。`poc4_series.json` との完全一致で検証済み）
 - poc4/poc2_rerun は `poc2_scene_sim.py` の先頭部を `split("results = {}")[0]` で exec して共有している（poc2を直接importすると重いMCが走るため）。poc2をリファクタする場合はこの依存に注意
 - 乱数シード固定済み（poc2: 42, poc3: 7, poc4: 123）。結果の再現可能
 - Landsat ST_B10のDN→K変換: `DN*0.00341802+149.0`、nodata=0

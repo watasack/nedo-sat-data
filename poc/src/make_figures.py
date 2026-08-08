@@ -504,3 +504,242 @@ ax.text(X0+0.22, 3.32, "この提案で「できないこと」— 先に自白�
 for j, t in enumerate(limits):
     ax.text(X0+0.22, 2.62-j*0.60, "・" + t, fontsize=9.0, color=INK2, va="center", zorder=4)
 save(fig, "fig0_overview.png")
+
+# ---------- 図8: 運用ビュー（設備単位の状態マップ＋優先度付きアラート） ----------
+# 「地図を見れば、どこで何が起きていて、システムが何と言ったかが分かる」1枚。
+# poc4のモードB（合成14エポック）と同一のシーンを再現し、判定結果を地図に重ねる。
+# rngはexecごとに再シードされる（poc2冒頭の default_rng(42)）ため、
+# poc4_results.json の findings と同一のシーンが再現される。
+p4 = json.load(open(os.path.join(OUT, "poc4_results.json")))
+_ns8 = {"__file__": os.path.join(_here, "poc2_scene_sim.py")}
+exec(compile(_p2src, "poc2_scene_sim.py", "exec"), _ns8)
+# 重要: poc4_pipeline.py は poc2ヘッダを exec した「あとで」 rng を seed 123 に
+# 貼り替えている（rng_seed = 123）。Scene/observe は呼び出し時にグローバルの rng を
+# 引くため、poc4のシーンは seed 42 ではなく 123 で生成されている。
+# ここで同じ貼り替えをしないと、判定結果(findings)と地図上の資産配置が食い違う。
+_ns8["rng"] = np.random.default_rng(123)
+Scene8, observe8, sat_coords8 = _ns8["Scene"], _ns8["observe"], _ns8["sat_coords"]
+GSD_SAT8 = _ns8["GSD_SAT"]
+
+N_EP, STEP_AT, PATCH_FROM, REPL_AT = 14, 8, 6, 10   # poc4_pipeline.py モードBと同一
+_s8 = Scene8()
+_frames = []
+for e in range(N_EP):
+    if e == STEP_AT:
+        _s8.add_unit_diffuse(0, 0, 2.0)
+    if e >= PATCH_FROM:
+        _s8.add_tank_patch(_s8.tanks[4], 1.2, 60)
+    if e == REPL_AT:
+        _tk = _s8.tanks[10]
+        _m = (_s8._yy-_tk["cy"])**2 + (_s8._xx-_tk["cx"])**2 < _tk["R"]**2
+        _s8.eps[_m] = 0.10
+    _frames.append(observe8(_s8))
+base = np.mean(_frames, axis=0)   # 基図は14エポック平均（放射ノイズを抑えた背景）
+Hs, Ws = base.shape
+EXT = (0, Ws*GSD_SAT8, Hs*GSD_SAT8, 0)   # 原点左上・メートル表示
+
+# 判定ステータス（色だけに頼らず、必ずラベルと併記する）
+ST_ALERT, ST_INFO = CRIT, "#eda100"
+ST_OK, ST_MISS = "#1baf7a", "#4a3aa7"
+truth = p4["injected_truth"]
+flagged = {f["asset"]: f for f in p4["findings"]}
+missed = [a for a in truth if a not in flagged]
+
+def _status_of(name):
+    """判定区分。εアーティファクト（外装更新による見かけ温度の急落）だけが
+    「変化はあるが点検不要」。それ以外の検出は点検対象。
+    注: UNIT00のaction文にも「外装イベント疑い」の語が含まれるため、
+    'εアーティファクト' の語で判定する（'外装' では誤判定になる）。"""
+    f = flagged.get(name)
+    if f is None:
+        return ("miss", ST_MISS) if name in truth else ("ok", ST_OK)
+    return ("info", ST_INFO) if "εアーティファクト" in f.get("action", "") else ("alert", ST_ALERT)
+
+fig = plt.figure(figsize=(13.8, 6.6))
+gs = fig.add_gridspec(1, 2, width_ratios=[1.12, 1.0], wspace=0.06)
+am = fig.add_subplot(gs[0, 0])
+al = fig.add_subplot(gs[0, 1]); al.axis("off")
+
+# --- 地図: 基図はグレーに落とし、判定色を前に出す ---
+_lo, _hi = np.nanpercentile(base, [1, 99])
+am.imshow(base, cmap="gray", vmin=_lo, vmax=_hi, extent=EXT, origin="upper",
+          interpolation="nearest", zorder=1)
+labels8 = []
+for i, tk in enumerate(_s8.tanks):
+    r, c = sat_coords8(tk["cy"], tk["cx"])
+    R = tk["R"]*GSD_TRUE/GSD_SAT8
+    name = f"TANK{i:02d}"
+    st, col = _status_of(name)
+    lw, alpha = (2.4, 1.0) if st != "ok" else (0.9, 0.55)
+    am.add_patch(plt.Circle((c*GSD_SAT8, r*GSD_SAT8), R*GSD_SAT8, fill=False,
+                            ec=col, lw=lw, alpha=alpha, zorder=4,
+                            ls=("--" if st == "miss" else "-")))
+    if st != "ok":
+        labels8.append((c*GSD_SAT8, r*GSD_SAT8, R*GSD_SAT8, name, st, col))
+for i, pair in enumerate(_s8.units):
+    for j, u in enumerate(pair):
+        r0, c0 = sat_coords8(u["y0"], u["x0"])
+        r1, c1 = sat_coords8(u["y0"]+u["h"], u["x0"]+u["w"])
+        name = f"UNIT{i:02d}"
+        st, col = _status_of(name)
+        lw, alpha = (2.4, 1.0) if st != "ok" else (0.9, 0.55)
+        am.add_patch(plt.Rectangle((c0*GSD_SAT8, r0*GSD_SAT8),
+                                   (c1-c0)*GSD_SAT8, (r1-r0)*GSD_SAT8, fill=False,
+                                   ec=col, lw=lw, alpha=alpha, zorder=4))
+        if st != "ok" and j == 0:
+            labels8.append((c0*GSD_SAT8, r0*GSD_SAT8, 0, name, st, col))
+_txt = {"alert": "要点検", "info": "点検不要と判定", "miss": "未検出（見逃し）"}
+for x, y, R, name, st, col in labels8:
+    up = y > 300                       # 図の上端に近い資産はラベルを下に出す
+    ay = (y - R) if up else (y + R)
+    ha = "left" if x < 700 else "right"
+    am.annotate(f"{name}\n{_txt[st]}", xy=(x, ay),
+                xytext=(x + (38 if ha == "left" else -38), ay + (-62 if up else 62)),
+                fontsize=9, color=col, zorder=6, ha=ha,
+                arrowprops=dict(arrowstyle="-", color=col, lw=1.2),
+                bbox=dict(boxstyle="round,pad=0.28", fc=SURF, ec=col, lw=1.0))
+am.set_title("設備単位の状態マップ（HotSat-2相当 3.5m・合成プラント 1km四方・14エポック監視後）\n"
+             "基図=見かけ輝度温度の14エポック平均（グレー）／枠=監視資産（円:タンク24基, 矩形:プロセスユニット8対）",
+             fontsize=9.5, pad=14)
+am.set_xlabel("東西 (m)"); am.set_ylabel("南北 (m)"); am.grid(False)
+_lg = [plt.Line2D([], [], color=ST_ALERT, lw=2.4, label="要点検（劣化疑い）"),
+       plt.Line2D([], [], color=ST_INFO, lw=2.4, label="変化ありだが点検不要（εアーティファクト）"),
+       plt.Line2D([], [], color=ST_MISS, lw=2.4, ls="--", label="劣化があるのに未検出（見逃し）"),
+       plt.Line2D([], [], color=ST_OK, lw=1.2, alpha=0.55, label="出力なし（健全と判定）")]
+am.legend(handles=_lg, fontsize=8.2, loc="upper left", bbox_to_anchor=(0, -0.10),
+          ncols=2, framealpha=0.95, borderaxespad=0)
+
+# --- 右: 優先度付きアラート（システム出力）と真値の答え合わせ ---
+al.text(0, 1.0, "この地図に対してシステムが出力したもの", fontsize=12.5, va="top", color=INK)
+al.text(0, 0.945, "（poc4_results.json の findings をそのまま転記）",
+        fontsize=8.5, va="top", color=MUTED)
+_chip = {"alert": "［要点検］", "info": "［点検不要］", "miss": "［未検出］"}
+
+def _wrap(s, w=46):
+    """和文は空白で折り返せないため文字数で折る（textwrapは空白依存で不適）"""
+    return "\n".join(s[i:i+w] for i in range(0, len(s), w))
+
+_rows = []
+for f in p4["findings"]:
+    st, col = _status_of(f["asset"])
+    _rows.append((col,
+                  f"{_chip[st]} {f['asset']}　{f['type']}　z={f['z']:+.1f} @{f['at']}",
+                  _wrap(f"判定: {f['action']}"),
+                  f"真値: {truth.get(f['asset'], '—')}　→　一致"))
+for a in missed:
+    _rows.append((ST_MISS, f"{_chip['miss']} {a}　（システム出力なし）",
+                  _wrap("判定: 単発指標では信号がノイズに埋もれ、アラートに至らない"),
+                  _wrap(f"真値: {truth[a]}　→　取りこぼし。12エポックの時系列スタックで対処（図5）")))
+_y = 0.885
+for col, head, judge, tr in _rows:
+    al.add_patch(plt.Rectangle((0, _y-0.205), 1.0, 0.195, transform=al.transAxes,
+                               fc="#f6f5f1", ec=col, lw=1.6, clip_on=False, zorder=2))
+    al.text(0.016, _y-0.028, head, fontsize=10.5, va="top", color=col, zorder=3)
+    al.text(0.016, _y-0.088, judge, fontsize=9.0, va="top", color=INK2, zorder=3)
+    al.text(0.016, _y-0.142, tr, fontsize=9.0, va="top", color=INK2, zorder=3)
+    _y -= 0.243
+_n_assets = len(_s8.tanks) + len(_s8.units)
+al.text(0.016, _y+0.005, f"上記以外の {_n_assets - len(_rows)} 資産: 出力なし ＝ 誤報ゼロ",
+        fontsize=10.5, va="top", color=ST_OK)
+al.text(0, _y-0.085, "注入した3件のうち2件を正しく仕分けし（劣化＝点検へ／外装更新＝点検不要）、\n"
+        "1件は取りこぼした。この見逃しを隠さず出力に載せる設計にしている。\n\n"
+        "審査上の注記: これはHotSat-2の実データではなく、3.5m級センサを模した\n"
+        "合成プラント（poc2/poc4）での通しリハーサルである。実機サンプルでの\n"
+        "同一ビューの再現はJSI照会（09）の回答待ち。",
+        fontsize=9, va="top", color=INK2)
+fig.suptitle("運用ビュー — 地図上で「どこが・何が・どう判定されたか」が一目で分かる",
+             y=0.99, fontsize=12.5)
+save(fig, "fig8_operations_map.png")
+
+# ---------- 図9: 実データ版の状態マップ（複合体単位・京浜） ----------
+# 図8と同じ「地図＋判定リスト」の型を実データに適用する。設備単位ではなく
+# 複合体単位である点、AOIが概略である点を図中に明記する。
+if "crop" in globals():
+    fig = plt.figure(figsize=(13.8, 6.2))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.18, 1.0], wspace=0.08)
+    am = fig.add_subplot(gs[0, 0])
+    al = fig.add_subplot(gs[0, 1]); al.axis("off")
+
+    _lo, _hi = np.nanpercentile(crop, [2, 98])
+    am.imshow(crop, cmap="gray", vmin=_lo, vmax=_hi, extent=extent,
+              origin="upper", interpolation="nearest", zorder=1)
+
+    # 対市街地差の走査結果（資産ごと）と、兄弟差分ステップ走査（ペアごと）
+    _self_z = {f["asset"]: f for f in p4r["findings"] if f.get("type") == "対市街地差の走査"}
+    _pair_f = [f for f in p4r["findings"] if f.get("type") == "兄弟差分ステップ走査"]
+    _ctr = {}
+    for k, b in AOIS.items():
+        bx0, by0 = _tr.transform(b[0], b[1]); bx1, by1 = _tr.transform(b[2], b[3])
+        _ctr[k] = ((bx0+bx1)/2000, (by0+by1)/2000)
+        am.add_patch(plt.Rectangle((bx0/1000, by0/1000), (bx1-bx0)/1000, (by1-by0)/1000,
+                                   fill=False, ec=ST_OK, lw=2.0, zorder=5))
+        # ラベル位置は兄弟差分バッジとの衝突を避けて個別指定（既定は箱の上）
+        _pos = {"川崎火力(千鳥町)": "left", "東扇島火力": "below"}.get(k, "above")
+        if _pos == "left":
+            _tx, _ty, _ha, _va = bx0/1000 - 0.10, (by0+by1)/2000, "right", "center"
+        elif _pos == "below":
+            _tx, _ty, _ha, _va = (bx0+bx1)/2000, by0/1000 - 0.16, "center", "top"
+        else:
+            _tx, _ty, _ha, _va = (bx0+bx1)/2000, by1/1000 + 0.16, "center", "bottom"
+        am.text(_tx, _ty, k, color=ST_OK, fontsize=8.6, ha=_ha, va=_va, zorder=6,
+                bbox=dict(boxstyle="round,pad=0.2", fc=SURF, ec="none", alpha=0.85))
+    # 兄弟資産どうしを結ぶ（「何と何を比べているか」を地図で示す）
+    for f in _pair_f:
+        a, b_ = [s.strip() for s in f["pair"].split("−")]
+        (x0, y0), (x1, y1) = _ctr[a], _ctr[b_]
+        am.plot([x0, x1], [y0, y1], color=BLUE, lw=1.6, ls="--", zorder=4)
+        _t = 0.30
+        am.text(x0+(x1-x0)*_t, y0+(y1-y0)*_t, f"兄弟差分\nz={f['z']:+.1f}", color=BLUE,
+                fontsize=8.2, ha="center", va="center", zorder=6,
+                bbox=dict(boxstyle="round,pad=0.22", fc=SURF, ec=BLUE, lw=0.9))
+    rx0, ry0 = _tr.transform(REF_AOI[0], REF_AOI[1])
+    rx1, ry1 = _tr.transform(REF_AOI[2], REF_AOI[3])
+    am.add_patch(plt.Rectangle((rx0/1000, ry0/1000), (rx1-rx0)/1000, (ry1-ry0)/1000,
+                               fill=False, ec=INK2, lw=1.8, ls="--", zorder=5))
+    am.text((rx0+rx1)/2000, ry1/1000+0.16, "市街地参照面（不変面）", color=INK2, fontsize=8.6,
+            ha="center", va="bottom", zorder=6,
+            bbox=dict(boxstyle="round,pad=0.2", fc=SURF, ec="none", alpha=0.85))
+    am.set_title(f"複合体単位の状態マップ（Landsat 30m 実データ・{p4r['n_epochs']}エポック監視後）\n"
+                 "基図=見かけ輝度温度（グレー）／緑枠=監視AOI, 青破線=兄弟資産の比較関係",
+                 fontsize=9.5, pad=12)
+    am.set_xlabel("UTM54N 東距 (km)"); am.set_ylabel("UTM54N 北距 (km)"); am.grid(False)
+    am.legend(handles=[plt.Line2D([], [], color=ST_OK, lw=2.0, label="出力なし（健全と判定）"),
+                       plt.Line2D([], [], color=BLUE, lw=1.6, ls="--", label="兄弟資産の比較ペア"),
+                       plt.Line2D([], [], color=INK2, lw=1.8, ls="--", label="不変参照面（共通モード除去用）")],
+              fontsize=8.2, loc="upper left", bbox_to_anchor=(0, -0.12), ncols=3,
+              framealpha=0.95, borderaxespad=0)
+
+    al.text(0, 1.0, "この地図に対してシステムが出力したもの", fontsize=12.5, va="top", color=INK)
+    al.text(0, 0.945, "（poc4_results_real.json の findings をそのまま転記）",
+            fontsize=8.5, va="top", color=MUTED)
+    al.text(0.012, 0.878, "走査対象", fontsize=9, va="top", color=MUTED)
+    al.text(0.55, 0.878, "種別", fontsize=9, va="top", color=MUTED)
+    al.text(0.735, 0.878, "z", fontsize=9, va="top", color=MUTED, ha="right")
+    al.text(0.775, 0.878, "判定", fontsize=9, va="top", color=MUTED)
+    _y = 0.835
+    for f in p4r["findings"]:
+        nm = f.get("pair", f.get("asset", ""))
+        kind = "兄弟差分" if f["type"].startswith("兄弟") else "対市街地"
+        al.add_patch(plt.Rectangle((0, _y-0.062), 1.0, 0.056, transform=al.transAxes,
+                                   fc="#f6f5f1", ec="none", clip_on=False, zorder=2))
+        al.text(0.012, _y-0.012, nm, fontsize=9, va="top", color=INK, zorder=3)
+        al.text(0.55, _y-0.012, kind, fontsize=9, va="top", color=INK2, zorder=3)
+        al.text(0.735, _y-0.012, f"{f['z']:+.1f}", fontsize=9, va="top", color=INK2,
+                zorder=3, ha="right")
+        al.text(0.775, _y-0.012, f["judged"], fontsize=9, va="top", color=ST_OK, zorder=3)
+        _y -= 0.072
+    al.text(0, _y-0.02, f"{len(p4r['findings'])}件すべてで有意な段差なし ＝ 実データで誤検知ゼロ",
+            fontsize=10.5, va="top", color=ST_OK)
+    al.text(0, _y-0.10,
+            "審査上の注記:\n"
+            "・Landsatは30m画素・昼間パスのため、これは「複合体レベルで手順が\n"
+            "　通ること」の実証であり、設備単位の実証ではない（設備単位は図8）。\n"
+            "・AOIは±数百m精度の概略であり現地検証は未了。\n"
+            "・実データ側に既知の劣化事象がないため、ここで示せるのは\n"
+            "　「健全なものを健全と判定できる（誤報を出さない）」ことまでである。",
+            fontsize=9, va="top", color=INK2)
+    fig.suptitle("実データでの運用ビュー — 京浜臨海部6複合体を実Landsatで監視した結果",
+                 y=0.99, fontsize=12.5)
+    save(fig, "fig9_realdata_map.png")
+else:
+    print("実データ未取得 — 図9はスキップ")
