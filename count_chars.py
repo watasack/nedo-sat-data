@@ -5,7 +5,10 @@
   - 見出し行・引用行(>)・水平線・表の区切り行は数えない
   - 箇条書き/番号付きリストのマーカー、強調 **、表の縦線 |、バッククォートを除去
   - 残りから改行と空白を除いた文字数
-表の中身は「図表1点」として本文とは別に集計する。
+図表（表の中身と、「図N 」「表N 」で始まるキャプション行）は本文とは別に集計する。
+様式4は「500字程度で記載してください。文章を補足する図表を1点のみ入れても構いません」と
+書くだけで、図表とキャプションを字数に含めるかは要項にもFAQにも記載がない。ここでは
+図表は本文とは別枠として数え、それでも合計が500字程度に収まるよう本文側を500字以内に保つ。
 """
 import re
 import sys
@@ -29,7 +32,8 @@ for line in src.split("\n"):
         continue
     if re.match(r"^\s*\|[\s:|-]+\|\s*$", line):
         continue
-    (cur["table"] if line.lstrip().startswith("|") else cur["body"]).append(line)
+    is_fig = line.lstrip().startswith("|") or re.match(r"^[図表]\d+\s", line)
+    (cur["table"] if is_fig else cur["body"]).append(line)
 
 
 def norm(lines):
@@ -46,5 +50,5 @@ for s in sections:
     if b == 0 and tb == 0:
         continue
     total += b
-    print(f"{b:>6}  (表{tb:>5})  {s['title']}")
+    print(f"{b:>6}  (図表{tb:>5})  {s['title']}")
 print(f"{total:>6}  合計（本文のみ・表は除く）")
