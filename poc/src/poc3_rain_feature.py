@@ -11,10 +11,13 @@
 import numpy as np, json, os, glob, csv
 
 rng = np.random.default_rng(7)
-OUT = "/home/claude/poc/out"
+_POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(_POC, "out")
 
 # ---------- モード判定 ----------
-cand = glob.glob("/root/.claude/uploads/**/*.csv", recursive=True) + glob.glob("/home/claude/poc/data/*.csv")
+cand = (glob.glob(os.path.join(_POC, "data", "*.csv")) +
+        glob.glob("/root/.claude/uploads/**/*.csv", recursive=True) +
+        glob.glob("/home/claude/poc/data/*.csv"))
 REAL = None
 for p in cand:
     try:
@@ -119,13 +122,18 @@ if REAL:
             data.append((dt.datetime.fromisoformat(p[0]), float(p[ip] or 0), float(p[ic] or 100)))
         except ValueError: continue
     # 降雨イベント抽出（日単位: 日降水>=1mm の連続区間）
+    # 晴天夜判定: 衛星パスは一晩1回・固定時刻なので「パス時刻の雲量<30%」で判定する
+    # （夜間ウィンドウ内の最小雲量を使うと成立回数を過大評価する）
+    PASS_HOUR = 22  # SSO夜側パス想定時刻（HotSat級のLTAN 22時台を仮定）
     import collections
-    daily_p = collections.defaultdict(float); night_clear = {}
+    daily_p = collections.defaultdict(float); night_clear = {}; night_clear_minwin = {}
     for t, pr, cl in data:
         daily_p[t.date()] += pr
-        if t.hour in (22, 23, 0, 1, 2):   # SSO夜側パス想定時間帯
+        if t.hour == PASS_HOUR:
+            night_clear[t.date()] = cl
+        if t.hour in (22, 23, 0, 1, 2):   # 参考: ウィンドウ最小雲量（楽観上限）
             d = t.date() if t.hour >= 22 else (t - dt.timedelta(days=1)).date()
-            night_clear[d] = min(night_clear.get(d, 100), cl)
+            night_clear_minwin[d] = min(night_clear_minwin.get(d, 100), cl)
     days = sorted(daily_p)
     rain = [d for d in days if daily_p[d] >= 1.0]
     events, cur = [], []
@@ -135,7 +143,8 @@ if REAL:
             if cur: events.append((cur[0], cur[-1]))
             cur = [d]
     if cur: events.append((cur[0], cur[-1]))
-    def mc_real(interval, n_iter=200, tasking_p=0.85):
+    def mc_real(interval, n_iter=200, tasking_p=0.85, clear_map=None):
+        clear_map = night_clear if clear_map is None else clear_map
         singles, slopes = [], []
         day_index = {d: i for i, d in enumerate(days)}
         for it in range(n_iter):
@@ -148,16 +157,31 @@ if REAL:
             s1 = s2 = 0
             for (a, b) in events:
                 ia, ib = day_index[a], day_index[b]
-                base = any((ia-7 <= i < ia) and i in pass_set and night_clear.get(days[i], 100) < 30 for i in range(max(0, ia-7), ia))
-                post = [i for i in range(ib+1, min(len(days), ib+5)) if i in pass_set and night_clear.get(days[i], 100) < 30]
+                base = any((ia-7 <= i < ia) and i in pass_set and clear_map.get(days[i], 100) < 30 for i in range(max(0, ia-7), ia))
+                post = [i for i in range(ib+1, min(len(days), ib+5)) if i in pass_set and clear_map.get(days[i], 100) < 30]
                 if base and len(post) >= 1: s1 += 1
                 if base and len(post) >= 2: s2 += 1
             n_years_data = len(days)/365.25
             singles.append(s1/n_years_data); slopes.append(s2/n_years_data)
-        return dict(single_per_year=float(np.median(singles)), slope_per_year=float(np.median(slopes)))
+        def q(a):
+            return dict(median=float(np.median(a)), p25=float(np.percentile(a, 25)),
+                        p75=float(np.percentile(a, 75)))
+        return dict(single_per_year=q(singles), slope_per_year=q(slopes))
     results["events_per_year"] = len(events)/(len(days)/365.25)
+    results["pass_hour_jst"] = PASS_HOUR
     results["scenarios"] = {lab: mc_real(iv) for lab, iv in
                             [("現行1機(2日)", 2.0), ("現行1機(3日)", 3.0), ("3機化", 0.67), ("9機化", 0.22)]}
+    # 感度: パス時刻を深夜1時に / タスキング成功率0.6 / 楽観上限(夜間ウィンドウ最小雲量)
+    nc_h1 = {}
+    for t, pr, cl in data:
+        if t.hour == 1:
+            nc_h1[(t - dt.timedelta(days=1)).date()] = cl
+    results["sensitivity_1sat_2day"] = {
+        "パス時刻22時(基準)": results["scenarios"]["現行1機(2日)"],
+        "パス時刻1時": mc_real(2.0, clear_map=nc_h1),
+        "タスキング成功率0.6": mc_real(2.0, tasking_p=0.6),
+        "楽観上限(夜間5hのどこかで晴れ)": mc_real(2.0, clear_map=night_clear_minwin),
+    }
 else:
     results["scenarios"] = run_mc()
     results["sensitivity_slope_per_year"] = sensitivity()

@@ -116,10 +116,11 @@ save(fig, "fig2_unit_auc.png")
 
 # ---------- 図3: 降雨後特徴量の成立回数（体制別） ----------
 sc = p3["scenarios"]
-scen = ["現行1機(2日おき夜側パス)", "現行1機(3日おき・競合考慮)", "3機化(0.67日)", "9機化(0.22日)"]
-lab = ["現行1機\n(2日おき)", "現行1機\n(3日おき・競合)", "3機化", "9機化"]
+scen = list(sc.keys())          # モードA(実データ)/B(気候値)でキーが異なる
+lab = [s.replace("(", "\n(", 1) for s in scen]
 single = [sc[s]["single_per_year"] for s in scen]
 slope = [sc[s]["slope_per_year"] for s in scen]
+is_real = str(p3.get("mode", "")).startswith("A")
 x = np.arange(len(scen)); w = 0.36
 fig, ax = plt.subplots(figsize=(7, 3.4))
 b1 = ax.bar(x-w/2, [v["median"] for v in single], w-0.04, color=BLUE, zorder=3,
@@ -137,7 +138,10 @@ for xi, v in zip(x+w/2, slope):
     ax.text(xi, v["p75"]+0.6, f'{v["median"]:.0f}', ha="center", fontsize=9, color=INK2)
 ax.set_xticks(x, lab)
 ax.set_ylabel("成立回数（回/年, 中央値と四分位範囲）")
-ax.set_title("降雨後特徴量は現行体制では「機会的」— 回復速度は年0〜1回しか成立しない")
+if is_real:
+    ax.set_title("降雨後特徴量は現行体制では「機会的」— 回復速度は年数回に留まる\n（川崎の実気象2020-2025・パス時刻雲量で判定）", fontsize=10.5)
+else:
+    ax.set_title("降雨後特徴量は現行体制では「機会的」— 回復速度は年0〜1回しか成立しない")
 ax.legend(fontsize=8.5, loc="upper left")
 ax.grid(axis="x", visible=False)
 save(fig, "fig3_rain_feature.png")

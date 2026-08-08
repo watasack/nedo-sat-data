@@ -1,0 +1,100 @@
+[
+ {
+  "file": "20230108_landsat-9_ST_B10_keihin.tif",
+  "datetime": "2023-01-08 01:16:16.679535+00:00",
+  "cloud": 3.88,
+  "platform": "landsat-9",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20230516_landsat-9_ST_B10_keihin.tif",
+  "datetime": "2023-05-16 01:15:49.989764+00:00",
+  "cloud": 7.04,
+  "platform": "landsat-9",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20230727_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2023-07-27 01:15:37.343271+00:00",
+  "cloud": 2.06,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20231210_landsat-9_ST_B10_keihin.tif",
+  "datetime": "2023-12-10 01:16:28.665156+00:00",
+  "cloud": 0.13,
+  "platform": "landsat-9",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20240331_landsat-9_ST_B10_keihin.tif",
+  "datetime": "2024-03-31 01:16:14.364841+00:00",
+  "cloud": 0.27,
+  "platform": "landsat-9",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20240510_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2024-05-10 01:15:05.799114+00:00",
+  "cloud": 0.38,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20240907_landsat-9_ST_B10_keihin.tif",
+  "datetime": "2024-09-07 01:15:56.427397+00:00",
+  "cloud": 3.26,
+  "platform": "landsat-9",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20241220_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2024-12-20 01:16:15.583166+00:00",
+  "cloud": 4.22,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20250326_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2025-03-26 01:15:53.892051+00:00",
+  "cloud": 0.16,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20250427_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2025-04-27 01:15:14.459529+00:00",
+  "cloud": 1.01,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20250902_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2025-09-02 01:15:56.050626+00:00",
+  "cloud": 2.78,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20251121_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2025-11-21 01:16:08.091954+00:00",
+  "cloud": 2.8,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20260116_landsat-9_ST_B10_keihin.tif",
+  "datetime": "2026-01-16 01:16:33.616989+00:00",
+  "cloud": 0.16,
+  "platform": "landsat-9",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ },
+ {
+  "file": "20260601_landsat-8_ST_B10_keihin.tif",
+  "datetime": "2026-06-01 01:15:18.439405+00:00",
+  "cloud": 6.11,
+  "platform": "landsat-8",
+  "note": "DN\u2192K\u5909\u63db: DN*0.00341802+149.0, nodata=0"
+ }
+]

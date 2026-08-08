@@ -13,10 +13,11 @@
 import numpy as np, json, os, glob, csv
 
 rng_seed = 123
-OUT = "/home/claude/poc/out"; os.makedirs(OUT, exist_ok=True)
+_POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(_POC, "out"); os.makedirs(OUT, exist_ok=True)
 
 # ---------- 共有物理・シーン系（poc2の定義を再利用） ----------
-_src = open("/home/claude/poc/src/poc2_scene_sim.py").read().split("results = {}")[0]
+_src = open(os.path.join(_POC, "src", "poc2_scene_sim.py")).read().split("results = {}")[0]
 exec(_src)  # Scene, observe, planck_lut, tank_score, unit_mean, sat_coords, auc など
 rng = np.random.default_rng(rng_seed)
 
@@ -54,22 +55,121 @@ def trend_slope(series):
     return float(np.polyfit(x, series, 1)[0])
 
 # ---------- 入力モード判定 ----------
-tifs = sorted(glob.glob("/root/.claude/uploads/**/*ST_B10*.TIF", recursive=True) +
+tifs = sorted(glob.glob(os.path.join(_POC, "data", "*ST_B10*[Tt][Ii][Ff]")) +
+              glob.glob("/root/.claude/uploads/**/*ST_B10*.TIF", recursive=True) +
               glob.glob("/root/.claude/uploads/**/*ST_B10*.tif", recursive=True) +
               glob.glob("/home/claude/poc/data/*ST_B10*[Tt][Ii][Ff]"))
 MODE = "A:Landsat実データ" if len(tifs) >= 3 else "B:合成シーン(リハーサル)"
 
 if MODE.startswith("A"):
+    # ==================================================================
+    # モードA: Landsat C2L2 ST_B10（30m画素・昼間パス）による通し実行
+    # 【重要な限界の宣言】Landsatの熱バンドは設備単位（3.5m級）の解析が
+    # 物理的に不可能なため、ここでは京浜の大型プラント「複合体レベル」の
+    # 概略AOI（±数百mの精度、要現地検証）で集約時系列を抽出し、
+    # 共通モード正規化→兄弟差分→ステップ走査が実データで通ることを示す。
+    # 設備単位の監視はHotSat-2でのみ成立する（本デモの結論であり制約）。
+    # ==================================================================
     import tifffile
-    epochs, labels = [], []
-    for p in tifs:
-        a = tifffile.imread(p).astype(np.float32)
+    from pyproj import Transformer
+    _tr = Transformer.from_crs(4326, 32654, always_xy=True)  # WGS84 → UTM54N
+
+    # 京浜臨海部の概略AOI（lon/lat矩形）。複合体レベルの集約用
+    AOIS = {
+        "川崎火力(千鳥町)":   (139.750, 35.512, 139.762, 35.522, "power"),
+        "東扇島火力":         (139.745, 35.495, 139.760, 35.505, "power"),
+        "浮島製油所地区":     (139.765, 35.520, 139.785, 35.535, "refinery"),
+        "水江町製油所地区":   (139.720, 35.515, 139.735, 35.525, "refinery"),
+        "扇島製鉄所地区":     (139.700, 35.470, 139.730, 35.490, "steel"),
+        "大黒町火力地区":     (139.680, 35.462, 139.690, 35.472, "power"),
+    }
+    REF_AOI = (139.695, 35.525, 139.715, 35.540)  # 川崎市街地 = 不変参照面（相対校正用）
+    SIBLING_PAIRS = [("川崎火力(千鳥町)", "東扇島火力"), ("浮島製油所地区", "水江町製油所地区")]
+
+    def read_geo(p):
+        with tifffile.TiffFile(p) as tf:
+            pg = tf.pages[0]
+            a = pg.asarray().astype(np.float32)
+            scale = pg.tags[33550].value       # (sx, sy, sz)
+            tie = pg.tags[33922].value         # (i, j, k, X, Y, Z)
         a[a == 0] = np.nan
-        epochs.append(a*0.00341802 + 149.0)  # DN→地表面温度K
-        labels.append(os.path.basename(p)[:40])
-    print(f"[ingest] Landsat {len(epochs)}エポック読込。資産マスクは要定義（GUI/座標指定は次段階）")
-    # 実データ時の資産マスク定義はユーザーとの対話で座標指定（このリハーサルではここまで）
-    results = {"mode": MODE, "n_epochs": len(epochs), "note": "資産マスク定義待ち"}
+        return a*0.00341802 + 149.0, (tie[3], tie[4], scale[0], scale[1])
+
+    def aoi_slice(geo, lon0, lat0, lon1, lat1, shape):
+        x0, y1 = _tr.transform(lon0, lat0)   # 南西
+        x1, y0 = _tr.transform(lon1, lat1)   # 北東
+        X0, Y0, sx, sy = geo
+        c0, c1 = int((x0-X0)/sx), int((x1-X0)/sx)
+        r0, r1 = int((Y0-y0)/sy), int((Y0-y1)/sy)
+        r0, r1 = max(0, r0), min(shape[0], r1)
+        c0, c1 = max(0, c0), min(shape[1], c1)
+        return np.s_[r0:r1, c0:c1]
+
+    def robust_agg_nan(v):
+        f = np.isfinite(v)
+        if v.size == 0 or f.mean() < 0.5:   # 雲・スワス外で半分以上欠測なら不採用
+            return np.nan
+        v = np.sort(v[f].ravel())
+        return float(v[int(v.size*.1):int(v.size*.9)].mean())
+
+    # 京浜はLandsatの隣接パス境界に位置し、約半数のシーンはスワス端で北西側が
+    # 欠測する（東扇島のみカバー）。市街地参照面が有効なシーンだけを採用する。
+    epochs_meta = []
+    series = {k: [] for k in AOIS}
+    skipped = []
+    for p in tifs:
+        img, geo = read_geo(p)
+        ref_v = robust_agg_nan(img[aoi_slice(geo, *REF_AOI, img.shape)])
+        if not np.isfinite(ref_v):
+            skipped.append(os.path.basename(p)[:8]); continue
+        for k, (a0, b0, a1, b1, _kind) in AOIS.items():
+            v = robust_agg_nan(img[aoi_slice(geo, a0, b0, a1, b1, img.shape)])
+            # 共通モード正規化: 市街地参照面との差（季節・大気・校正の共通成分を除去）
+            series[k].append(v - ref_v if np.isfinite(v) else np.nan)
+        epochs_meta.append(os.path.basename(p)[:8])
+
+    def interp_nan(s):
+        s = np.array(s, float)
+        ok = np.isfinite(s)
+        if ok.sum() < max(4, int(len(s)*0.7)): return None
+        s[~ok] = np.interp(np.flatnonzero(~ok), np.flatnonzero(ok), s[ok])
+        return s
+
+    MIN_PRE = 2 if len(epochs_meta) <= 8 else 4   # 有効エポック数に応じた走査窓
+    series_i = {k: interp_nan(v) for k, v in series.items()}
+    findings = []
+    for a, b in SIBLING_PAIRS:
+        if series_i[a] is None or series_i[b] is None: continue
+        d = series_i[a] - series_i[b]
+        z, k = step_scan(d, min_pre=MIN_PRE)
+        findings.append(dict(pair=f"{a} − {b}", type="兄弟差分ステップ走査",
+                             z=round(z, 1), at=epochs_meta[k] if k else "-",
+                             slope_per_ep=round(trend_slope(d), 3),
+                             judged="ステップ検出" if abs(z) > 4 else "有意な段差なし(健全側)"))
+    for k, s in series_i.items():
+        if s is None: continue
+        z, kk = step_scan(s, min_pre=MIN_PRE)
+        findings.append(dict(asset=k, type="対市街地差の走査", z=round(z, 1),
+                             at=epochs_meta[kk] if kk else "-",
+                             slope_per_ep=round(trend_slope(s), 3),
+                             judged="ステップ検出" if abs(z) > 4 else "有意な段差なし"))
+
+    results = {
+        "mode": MODE, "n_epochs": len(epochs_meta), "epochs_skipped_swath_edge": skipped,
+        "pixel_m": 30,
+        "note": ("複合体レベルの概略AOI集約（AOIは±数百m精度・要現地検証）。"
+                 "Landsat昼間パスのため太陽加熱が支配的であり、市街地参照との差で"
+                 "共通モードを除去した相対指標。設備単位の解析は3.5m級(HotSat-2)が必要"
+                 "——という分解能ギャップ自体が本提案の前提を実データで裏付ける"),
+        "series_vs_urban_ref_K": {k: [round(float(x), 2) if np.isfinite(x) else None for x in v]
+                                  for k, v in series.items()},
+        "epochs": epochs_meta,
+        "findings": findings,
+    }
+    with open(os.path.join(OUT, "poc4_results_real.json"), "w") as f:
+        json.dump(results, f, ensure_ascii=False, indent=1)
+    print(json.dumps(results, ensure_ascii=False, indent=1))
+    raise SystemExit(0)
 else:
     # ---------- モードB: 合成14エポック生成 ----------
     N_EP, STEP_AT, PATCH_FROM, REPL_AT = 14, 8, 6, 10
