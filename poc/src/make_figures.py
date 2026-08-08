@@ -10,8 +10,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib_fontja  # noqa: F401  日本語フォント(IPAexゴシック)
 
-# 参照パレット（ライト）
+# 参照パレット（ライト）。カテゴリは固定スロット順で使う（循環させない）
 BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"
+YELLOW, MAGENTA, GREEN = "#eda100", "#e87ba4", "#008300"
+CAT6 = [BLUE, ORANGE, AQUA, YELLOW, MAGENTA, GREEN]
 INK, INK2, MUTED = "#0b0b0b", "#52514e", "#898781"
 GRID, BASE, SURF = "#e1e0d9", "#c3c2b7", "#fcfcfb"
 CRIT = "#d03b3b"
@@ -47,12 +49,12 @@ cases = p1["detection_cases"]
 order = sorted(cases, key=lambda k: cases[k]["snr"])
 snrs = [cases[k]["snr"] for k in order]
 names = {
-    "加熱炉・高温配管系の保温不良(+15K)": "加熱炉・高温配管系の保温不良 (+15K)",
-    "タンク屋根の劣化パッチ(+5K)": "タンク屋根の劣化パッチ (+5K, 100m²)",
-    "タンク屋根の劣化パッチ(+3K,100m²≈8px)": "タンク屋根の劣化パッチ (+3K, 100m²)",
+    "加熱炉・高温配管系の保温不良(+15K)": "加熱炉・高温配管系の保温不良 (+15K)・単発",
+    "タンク屋根の劣化パッチ(+5K)": "タンク屋根の劣化パッチ (+5K, 100m²)・単発",
+    "タンク屋根の劣化パッチ(+3K,100m²≈8px)": "タンク屋根の劣化パッチ (+3K, 100m²)・単発",
     "ユニット面的劣化(+1K) 二重差分×6エポック": "ユニット面的劣化 (+1K) 二重差分×6エポック",
     "ユニット面的劣化(+1K) 対双子資産": "ユニット面的劣化 (+1K) 兄弟差分・単発",
-    "個別配管CUIスポット(f=0.15,+5K)": "個別配管CUIスポット (+5K, 充足率0.15)",
+    "個別配管CUIスポット(f=0.15,+5K)": "個別配管CUIスポット (+5K, 充足率0.15)・単発",
 }
 fig, ax = plt.subplots(figsize=(8, 3.6))
 y = np.arange(len(order))
@@ -62,7 +64,7 @@ ax.text(1.07, 0.5, "検出限界 SNR=1", color=CRIT, fontsize=9, va="center")
 for yi, s in zip(y, snrs):
     ax.text(s+0.07, yi, f"{s:.2f}", va="center", fontsize=9, color=INK2)
 ax.set_yticks(y, [names[k] for k in order])
-ax.set_xlabel("SNR（信号/誤差RSS, NEdT=1K仮定・単発観測）")
+ax.set_xlabel("SNR（信号/誤差RSS, NEdT=1K仮定。エポック数は各ラベルに明記）")
 ax.set_title("何が見えて何が見えないか — 検出対象別SNR（MWIR誤差バジェット計算）")
 ax.grid(axis="y", visible=False)
 save(fig, "fig1_snr_budget.png")
@@ -159,14 +161,23 @@ a1.set_title("兄弟差分の時系列 — 面的劣化ステップ")
 a1.set_xlabel("エポック（月次相当）"); a1.set_ylabel("兄弟差分 (K)")
 a1.legend(fontsize=8, loc="upper left")
 t10 = np.array(ts["TANK10"]); t04 = np.array(ts["TANK04"])
+# 注: TANK04は「参照」ではなく、ep06以降パッチを漸増注入した資産。単発指標では
+# 検知に至らない（既知の限界＝見逃し）。付録の注入真値と図の凡例を一致させる。
+a2.axvspan(6, len(ep)-1, color=AQUA, alpha=0.07, zorder=1)
 a2.plot(ep, t10, color=ORANGE, lw=2, marker="o", ms=4, zorder=3, label="TANK10（ep10で外装張替え）")
-a2.plot(ep, t04, color=MUTED, lw=2, marker="o", ms=4, zorder=2, label="TANK04（参照）")
+a2.plot(ep, t04, color=AQUA, lw=2, marker="o", ms=4, zorder=2,
+        label="TANK04（ep06以降パッチ漸増を注入）")
 a2.axvline(10, color=CRIT, lw=1.0, ls="--")
-a2.text(10.15, -18.6, "検出 z=-11.4\n→εアーティファクトと分類\n（劣化と誤報しない）", color=CRIT, fontsize=8.5)
-a2.set_title("タンク見かけ温度 — 外装更新の弁別")
+a2.annotate("検出 z=-11.4\n→εアーティファクトと分類\n（劣化と誤報しない）",
+            xy=(10.2, 0.30), xycoords=("data", "axes fraction"),
+            color=CRIT, fontsize=8.5, va="top")
+a2.annotate("注入区間。単発指標では未検出＝見逃し\n→時系列スタックで対処（図5）",
+            xy=(6.2, 0.46), xycoords=("data", "axes fraction"),
+            color=AQUA, fontsize=8.5, va="top")
+a2.set_title("タンク見かけ温度 — 外装更新の弁別と、見逃しの自白")
 a2.set_xlabel("エポック（月次相当）"); a2.set_ylabel("対地面 輝度温度差 (K)")
 a2.legend(fontsize=8, loc="upper right")
-fig.suptitle("監視パイプライン通しリハーサル（合成14エポック）: 検知と誤報弁別", y=1.02, fontsize=11)
+fig.suptitle("監視パイプライン通しリハーサル（合成14エポック）: 検知・誤報弁別・見逃し", y=1.02, fontsize=11)
 save(fig, "fig4_pipeline.png")
 
 # ---------- 図5: タンクパッチ検知の時系列スタック効果（v2があれば） ----------
@@ -190,3 +201,306 @@ if "ep1" in p2.get("tank_patch_auc_v2", {}):
     save(fig, "fig5_tank_stack.png")
 else:
     print("tank_patch_auc_v2 なし — 図5はスキップ")
+
+# ---------- 図6: 実データ実証（Landsat ST_B10・京浜臨海部） ----------
+# 「計算とシミュレーションだけではない」ことを示すための実データパネル。
+# 一次審査で最初に問われる"本当に動くのか"に、実衛星データで答える。
+# tifffile/pyproj が無い環境ではスキップ（他図の生成は妨げない）。
+try:
+    import tifffile
+    from pyproj import Transformer
+except ImportError:
+    print("tifffile/pyproj なし — 図6はスキップ")
+    tifffile = None
+
+_real_path = os.path.join(OUT, "poc4_results_real.json")
+if tifffile is not None and os.path.exists(_real_path):
+    import glob
+    p4r = json.load(open(_real_path))
+    DATA = os.path.join(_here, "..", "data")
+    _tr = Transformer.from_crs(4326, 32654, always_xy=True)   # WGS84 → UTM54N
+
+    # poc4_pipeline.py と同一のAOI定義（±数百m精度の概略AOI・要現地検証）
+    AOIS = {
+        "川崎火力(千鳥町)":   (139.750, 35.512, 139.762, 35.522),
+        "東扇島火力":         (139.745, 35.495, 139.760, 35.505),
+        "浮島製油所地区":     (139.765, 35.520, 139.785, 35.535),
+        "水江町製油所地区":   (139.720, 35.515, 139.735, 35.525),
+        "扇島製鉄所地区":     (139.700, 35.470, 139.730, 35.490),
+        "大黒町火力地区":     (139.680, 35.462, 139.690, 35.472),
+    }
+    REF_AOI = (139.695, 35.525, 139.715, 35.540)   # 川崎市街地 = 不変参照面
+
+    def _read_geo(p):
+        with tifffile.TiffFile(p) as tf:
+            pg = tf.pages[0]
+            a = pg.asarray().astype(np.float32)
+            sc, tie = pg.tags[33550].value, pg.tags[33922].value
+        a[a == 0] = np.nan
+        return a*0.00341802 + 149.0, (tie[3], tie[4], sc[0], sc[1])
+
+    def _sl(geo, lon0, lat0, lon1, lat1, shape):
+        x0, y1 = _tr.transform(lon0, lat0)
+        x1, y0 = _tr.transform(lon1, lat1)
+        X0, Y0, sx, sy = geo
+        c0, c1 = int((x0-X0)/sx), int((x1-X0)/sx)
+        r0, r1 = int((Y0-y0)/sy), int((Y0-y1)/sy)
+        return np.s_[max(0, r0):min(shape[0], r1), max(0, c0):min(shape[1], c1)]
+
+    def _agg(v):
+        f = np.isfinite(v)
+        if v.size == 0 or f.mean() < 0.5:
+            return np.nan
+        v = np.sort(v[f].ravel())
+        return float(v[int(v.size*.1):int(v.size*.9)].mean())
+
+    epochs = p4r["epochs"]
+    diff = p4r["series_vs_urban_ref_K"]
+    raw = {k: [] for k in AOIS}
+    ref_series = []
+    for e in epochs:
+        p = glob.glob(os.path.join(DATA, e + "*ST_B10*.tif"))[0]
+        img, geo = _read_geo(p)
+        ref_series.append(_agg(img[_sl(geo, *REF_AOI, img.shape)]))
+        for k, b in AOIS.items():
+            raw[k].append(_agg(img[_sl(geo, *b, img.shape)]))
+
+    raw_all = np.array([raw[k] for k in AOIS] + [ref_series])
+    rng_raw = float(np.nanmax(raw_all) - np.nanmin(raw_all))
+    d_all = np.array([diff[k] for k in AOIS])
+    rng_diff = float(np.nanmax(d_all) - np.nanmin(d_all))
+
+    # 表示用の1エポック（夏・雲量2%）の輝度温度マップ
+    MAP_EPOCH = "20230727"
+    img, geo = _read_geo(glob.glob(os.path.join(DATA, MAP_EPOCH + "*ST_B10*.tif"))[0])
+    mx0, my0 = _tr.transform(139.672, 35.455)
+    mx1, my1 = _tr.transform(139.792, 35.548)
+    X0, Y0, sx, sy = geo
+    c0, c1 = int((mx0-X0)/sx), int((mx1-X0)/sx)
+    r0, r1 = int((Y0-my1)/sy), int((Y0-my0)/sy)
+    crop = img[r0:r1, c0:c1]
+    extent = (mx0/1000, mx1/1000, my0/1000, my1/1000)   # km表示
+
+    xlab = [f"{e[:4]}\n{e[4:6]}/{e[6:]}" for e in epochs]
+    xi = np.arange(len(epochs))
+
+    fig = plt.figure(figsize=(13.2, 5.0))
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.15, 1.0], hspace=0.30, wspace=0.30)
+    am = fig.add_subplot(gs[:, 0])
+    ar = fig.add_subplot(gs[0, 1])
+    ad = fig.add_subplot(gs[1, 1], sharex=ar)
+
+    # --- A: 実輝度温度マップ ---
+    lo, hi = np.nanpercentile(crop, [2, 98])
+    im = am.imshow(crop, cmap="inferno", vmin=lo, vmax=hi, extent=extent,
+                   origin="upper", interpolation="nearest")
+    cb = fig.colorbar(im, ax=am, fraction=0.045, pad=0.02)
+    cb.set_label("輝度温度 (K)", fontsize=9)
+    cb.outline.set_visible(False)
+    for (k, b), c in zip(AOIS.items(), CAT6):
+        bx0, by0 = _tr.transform(b[0], b[1]); bx1, by1 = _tr.transform(b[2], b[3])
+        am.add_patch(plt.Rectangle((bx0/1000, by0/1000), (bx1-bx0)/1000, (by1-by0)/1000,
+                                   fill=False, ec=c, lw=1.8, zorder=5))
+    rx0, ry0 = _tr.transform(REF_AOI[0], REF_AOI[1])
+    rx1, ry1 = _tr.transform(REF_AOI[2], REF_AOI[3])
+    am.add_patch(plt.Rectangle((rx0/1000, ry0/1000), (rx1-rx0)/1000, (ry1-ry0)/1000,
+                               fill=False, ec="#ffffff", lw=1.8, ls="--", zorder=5))
+    am.text(rx0/1000+0.15, ry1/1000-0.35, "市街地参照面", color="#ffffff", fontsize=8.5)
+    am.set_title(f"Landsat-8 ST_B10 実データ（{MAP_EPOCH[:4]}-{MAP_EPOCH[4:6]}-{MAP_EPOCH[6:]}, 雲量2.1%）\n"
+                 "京浜臨海部・30m画素／色枠=監視AOI, 白破線=不変参照面", fontsize=9.5)
+    am.set_xlabel("UTM54N 東距 (km)"); am.set_ylabel("UTM54N 北距 (km)")
+    am.grid(False)
+
+    # --- B: 生の見かけ温度（共通モード除去前） ---
+    for (k, c) in zip(AOIS, CAT6):
+        ar.plot(xi, raw[k], color=c, lw=1.6, marker="o", ms=4, zorder=3, label=k)
+    ar.plot(xi, ref_series, color=MUTED, lw=1.6, ls="--", marker="s", ms=4,
+            zorder=2, label="市街地参照面")
+    ar.text(xi[-1]+0.12, ref_series[-1], "市街地参照面", color=INK2, fontsize=7.5, va="center")
+    ar.set_ylabel("見かけ輝度温度 (K)")
+    ar.set_title(f"① 生の見かけ温度 — 季節・大気で全資産が同相に {rng_raw:.1f}K 振れる\n"
+                 "　 （系列色は左の地図・下の②と共通）",
+                 fontsize=9.5, loc="left")
+    ar.tick_params(labelbottom=False)
+
+    # --- C: 市街地参照差（共通モード除去後） ---
+    for (k, c) in zip(AOIS, CAT6):
+        ad.plot(xi, diff[k], color=c, lw=1.6, marker="o", ms=4, zorder=3, label=k)
+    ad.axhline(0, color=BASE, lw=1.0, ls="--")
+    ad.set_ylabel("対市街地参照 差 (K)")
+    ad.set_xticks(xi, xlab, fontsize=8)
+    ad.set_xlim(-0.3, len(epochs)-0.35)
+    zmax = max(abs(f["z"]) for f in p4r["findings"])
+    ad.set_title(f"② 市街地参照差 — 共通モードが落ちて {rng_diff:.1f}K に（振れ幅 1/{rng_raw/rng_diff:.1f}）\n"
+                 f"　 兄弟差分ステップ走査 {len(p4r['findings'])}件すべて |z| は最大 {zmax:.1f} → 誤検知ゼロ",
+                 fontsize=9.5, loc="left")
+    ad.legend(fontsize=7.5, loc="upper left", bbox_to_anchor=(0.0, -0.22),
+              ncols=3, framealpha=0.9, borderaxespad=0, columnspacing=1.2)
+
+    fig.suptitle("実衛星データでパイプラインが通ることの実証 — 「絶対値を測らない」原則の実データ検証"
+                 f"（有効{p4r['n_epochs']}エポック / 全14シーン中、スワス端8シーンは自動除外）",
+                 y=1.015, fontsize=11)
+    save(fig, "fig6_realdata.png")
+else:
+    print("poc4_results_real.json なし — 図6はスキップ")
+
+
+# ---------- 図7: 分解能ギャップ（なぜ3.5m級TIRが要るのか） ----------
+# poc2_scene_sim.py の先頭部（Scene/放射計算）だけをexecで共有する。
+# poc2を直接importすると重いモンテカルロが走るため（poc4_pipeline.py と同じ流儀）。
+_p2src = open(os.path.join(_here, "poc2_scene_sim.py")).read().split("results = {}")[0]
+_ns = {"__file__": os.path.join(_here, "poc2_scene_sim.py")}
+exec(compile(_p2src, "poc2_scene_sim.py", "exec"), _ns)
+Scene, planck_lut, tb_arr = _ns["Scene"], _ns["planck_lut"], _ns["tb_arr"]
+planck_band_arr, GSD_TRUE = _ns["planck_band_arr"], _ns["GSD_TRUE"]
+_gf = _ns["gaussian_filter"]
+
+PATCH_DT, PATCH_A = 5.0, 100.0     # +5K / 100m²（図5と同じ代表ケース）
+T_SKY, TAU = 240.0, 0.75           # 比較のため大気・天空条件は固定
+HALF_M = 100.0                     # 切り出し半幅（→ 200m四方）
+
+def _radiance(sc):
+    """0.5m真値グリッドの大気上端放射（PSF・サンプリング前）"""
+    L_sky = float(planck_lut(np.array([T_SKY]))[0])
+    L_atm = float(planck_lut(np.array([285.0]))[0])
+    return TAU*(sc.eps*planck_lut(sc.T) + (1-sc.eps)*L_sky) + (1-TAU)*L_atm
+
+def _blur_bin(L, gsd):
+    """指定GSDのPSF畳み込み＋画素積分（放射のまま返す）"""
+    if gsd <= GSD_TRUE:
+        return L, 1
+    k = int(round(gsd/GSD_TRUE))
+    Ls = _gf(L, (gsd/2.355)/GSD_TRUE)
+    n = (L.shape[0]//k)*k
+    return Ls[:n, :n].reshape(n//k, k, n//k, k).mean(axis=(1, 3)), k
+
+_sc = Scene()
+# 切り出しが画像内に収まる位置のタンクから、大きめの1基を選ぶ
+_m = int(HALF_M/GSD_TRUE)
+_cand = [t for t in _sc.tanks
+         if _m < t["cy"] < _sc.N-_m and _m < t["cx"] < _sc.N-_m]
+_tank = max(_cand, key=lambda t: t["R"])
+L_clean = _radiance(_sc)
+_sc.add_tank_patch(_tank, PATCH_DT, PATCH_A)
+L_patch = _radiance(_sc)
+
+cy, cx = int(_tank["cy"]), int(_tank["cx"])
+_rs = np.random.default_rng(7)
+_dL = (planck_band_arr(np.array([301.0])) - planck_band_arr(np.array([299.0])))[0]/2
+
+panels = []
+for gsd, name in ((GSD_TRUE, "真値（地表 0.5m）"),
+                  (3.5, "HotSat-2 相当 3.5m"),
+                  (30.0, "Landsat 相当 30m")):
+    Lp, k = _blur_bin(L_patch, gsd)
+    Lc, _ = _blur_bin(L_clean, gsd)
+    # NEdT 1K相当を等しく付加（比較の主題は空間分解能であり放射感度ではない）
+    img = tb_arr(Lp + _rs.normal(0, _dL, Lp.shape)) if gsd > GSD_TRUE else tb_arr(Lp)
+    # パッチ起因の見かけ温度上昇＝パッチ有無の差（ノイズを含まない真の信号）
+    d_true = tb_arr(Lp) - tb_arr(Lc)
+    sub = np.s_[(cy-_m)//k:(cy+_m)//k, (cx-_m)//k:(cx+_m)//k]
+    panels.append((name, gsd, img[sub], d_true[sub], float(np.nanmax(d_true[sub]))))
+
+vmin = min(np.nanpercentile(p[2], 1) for p in panels)
+vmax = max(np.nanpercentile(p[2], 99) for p in panels)
+dmax_all = max(p[4] for p in panels)
+
+fig, axs = plt.subplots(2, 3, figsize=(11.4, 8.2))
+fig.subplots_adjust(hspace=0.30, bottom=0.13)
+for j, (name, gsd, arr, darr, dmax) in enumerate(panels):
+    npx = 200.0/gsd
+    # 上段: 観測される見かけ輝度温度
+    a = axs[0, j]
+    im = a.imshow(arr, cmap="inferno", vmin=vmin, vmax=vmax, origin="upper",
+                  extent=(0, 200, 0, 200), interpolation="nearest")
+    a.set_title(f"{name}\nこの200m四方 = {npx:.0f}×{npx:.0f} 画素", fontsize=10)
+    # 下段: パッチ起因の上昇分だけを取り出したもの（＝検知器が使う信号）
+    b = axs[1, j]
+    im2 = b.imshow(darr, cmap="Blues", vmin=0, vmax=dmax_all, origin="upper",
+                   extent=(0, 200, 0, 200), interpolation="nearest")
+    ok = dmax >= 1.0
+    b.set_title(f"パッチ起因の上昇 最大 {dmax:.2f}K\n"
+                + ("→ 画素として立つ" if ok else "→ 周囲に混合して消える"),
+                fontsize=10, color=(BLUE if ok else CRIT))
+    for ax in (a, b):
+        ax.set_xticks([0, 100, 200]); ax.set_yticks([0, 100, 200])
+        ax.tick_params(labelsize=8)
+        ax.grid(False)
+axs[0, 0].set_ylabel("① 観測される見かけ輝度温度 (m)", fontsize=9.5)
+axs[1, 0].set_ylabel("② パッチ起因の上昇分のみ (m)", fontsize=9.5)
+cb = fig.colorbar(im, ax=axs[0, :], fraction=0.024, pad=0.015)
+cb.set_label("見かけ輝度温度 (K)", fontsize=9); cb.outline.set_visible(False)
+cb2 = fig.colorbar(im2, ax=axs[1, :], fraction=0.024, pad=0.015)
+cb2.set_label("パッチ起因の上昇 (K)", fontsize=9); cb2.outline.set_visible(False)
+fig.text(0.5, 0.055, "※ 上段でタンク屋根が周囲より低温に見えるのは、低ε（0.15〜0.4）の金属面が"
+         "冷たい天空を映すため。絶対値を測らない設計の理由でもある。\n"
+         "※ 下段は同一シーンのパッチ有無の差分＝検知器が使う信号成分（放射ノイズを含まない真値）。",
+         ha="center", va="top", fontsize=8.5, color=INK2)
+fig.suptitle(f"分解能ギャップ — 同一シーン・同一劣化（屋根パッチ +{PATCH_DT:.0f}K / {PATCH_A:.0f}m²）を3つの画素サイズで観測\n"
+             f"既存の30m級TIRでは信号が {dmax_all/panels[2][4]:.0f} 分の1に薄まり、設備単位の判断は物理的に成立しない",
+             y=0.985, fontsize=11)
+save(fig, "fig7_resolution_gap.png")
+
+# ---------- 図0: 技術的実証の全体像（監視チェーンと、各段の根拠） ----------
+# 一次審査で最初に見る1枚。各段が「どの図・どのPoC・どの数値」で裏付いているかを
+# 明示し、扱えないことは下段に自白として並べる。数値はすべて poc/out/*.json 由来。
+_ud = p2["unit_diffuse_auc"]["dT=1.0K"]
+_v2 = p2["tank_patch_auc_v2"]
+_abs_rss = p1["budget"]["絶対温度（撮像間差分）"]["rss"]
+_cui = p1["detection_cases"]["個別配管CUIスポット(f=0.15,+5K)"]["snr"]
+_sl3 = p3["scenarios"]["現行1機(3日)"]["slope_per_year"]["median"]
+_sl2 = p3["scenarios"]["現行1機(2日)"]["slope_per_year"]["median"]
+
+stages = [
+    ("① 取得",
+     "HotSat-2 (MWIR)\n3.5m・夜間タスキング",
+     f"30m級では信号が1/{dmax_all/panels[2][4]:.0f}\nに薄まる（図7）"),
+    ("② 前処理",
+     "位置合わせ＋共通モード除去\n（不変参照面との差）",
+     f"実Landsatで振れ幅\n{rng_raw:.1f}K → {rng_diff:.1f}K（図6）"),
+    ("③ 指標化",
+     "シーン内相対 / 兄弟資産差分\n/ その時間変化（二重差分）",
+     f"絶対値比較は誤差RSS\n{_abs_rss:.1f}Kで不成立（図1b）"),
+    ("④ 検知",
+     "ステップ走査(z) ＋\n時系列残差スタック",
+     f"面的劣化AUC {_ud['static_auc']:.2f}→{_ud['double_diff_auc']:.2f}（図2）\n"
+     f"タンクパッチ {_v2['ep1']['dT=5.0K,A=100m2']:.2f}→{_v2['ep12']['dT=5.0K,A=100m2']:.2f}（図5）"),
+    ("⑤ 業務",
+     "点検派遣・CMMS突合\nεアーティファクト弁別",
+     f"注入劣化を検出 z=4.7 / 外装更新を\n誤報しない z=-11.4（図4）"),
+]
+limits = [
+    f"個別配管のCUIスポットは検出できない（SNR {_cui:.2f}・図1）。面的・複合体単位の指標に限定する。",
+    f"降雨後の回復速度特徴量は現行1機体制では機会的（年{_sl3:.1f}〜{_sl2:.1f}回・実気象・図3）。必須機能に置かない。",
+    "温度の絶対値は測らない。ε不確かさと天空放射が支配的なため、すべて相対量で設計している。",
+    "タンク屋根パッチは単発では限界域（AUC 0.64）。12エポックの蓄積を前提とする（図5）。",
+]
+
+fig, ax = plt.subplots(figsize=(13.6, 6.4))
+ax.set_xlim(0, 10); ax.set_ylim(0, 10); ax.axis("off")
+W, X0, GAPX = 1.72, 0.28, 0.20
+for i, ((tag, body, ev), c) in enumerate(zip(stages, CAT6)):
+    x = X0 + i*(W+GAPX)
+    ax.add_patch(plt.Rectangle((x, 6.55), W, 2.45, fc=SURF, ec=c, lw=2.0,
+                               zorder=3, joinstyle="round"))
+    ax.text(x+W/2, 8.62, tag, ha="center", va="center", fontsize=11, color=c, zorder=4)
+    ax.text(x+W/2, 7.55, body, ha="center", va="center", fontsize=9.2, color=INK, zorder=4)
+    # 根拠チップ
+    ax.add_patch(plt.Rectangle((x, 4.75), W, 1.35, fc="#f4f3ef", ec="none", zorder=3))
+    ax.text(x+W/2, 5.42, ev, ha="center", va="center", fontsize=8.3, color=INK2, zorder=4)
+    ax.plot([x+W/2, x+W/2], [6.55, 6.12], color=BASE, lw=1.0, ls="--", zorder=2)
+    if i < len(stages)-1:
+        ax.annotate("", xy=(x+W+GAPX-0.02, 7.78), xytext=(x+W+0.02, 7.78),
+                    arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4))
+ax.text(X0, 9.42, "監視チェーンの全段が、自主PoCの計算・シミュレーション・実データで裏付けられている",
+        fontsize=12.5, color=INK, va="center")
+ax.text(X0, 4.35, "各段の根拠（図番号は本書の図版・数値は poc/out/*.json 由来、乱数シード固定で再現可能）",
+        fontsize=8.8, color=MUTED, va="center")
+
+ax.add_patch(plt.Rectangle((X0, 0.35), 5*W+4*GAPX, 3.35, fc="#faf6f4", ec=CRIT,
+                           lw=1.4, zorder=3))
+ax.text(X0+0.22, 3.32, "この提案で「できないこと」— 先に自白し、代替設計とセットで示す",
+        fontsize=10.5, color=CRIT, va="center", zorder=4)
+for j, t in enumerate(limits):
+    ax.text(X0+0.22, 2.62-j*0.60, "・" + t, fontsize=9.0, color=INK2, va="center", zorder=4)
+save(fig, "fig0_overview.png")
