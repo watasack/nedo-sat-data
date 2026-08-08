@@ -171,7 +171,7 @@ a2.axvline(10, color=CRIT, lw=1.0, ls="--")
 a2.annotate("検出 z=-11.4\n→εアーティファクトと分類\n（劣化と誤報しない）",
             xy=(10.2, 0.30), xycoords=("data", "axes fraction"),
             color=CRIT, fontsize=8.5, va="top")
-a2.annotate("注入区間。単発指標では未検出＝見逃し\n→時系列スタックで対処（図5）",
+a2.annotate("注入区間。単発指標では未検出＝見逃し\n→時系列スタックで対処",
             xy=(6.2, 0.46), xycoords=("data", "axes fraction"),
             color=AQUA, fontsize=8.5, va="top")
 a2.set_title("タンク見かけ温度 — 外装更新の弁別と、見逃しの自白")
@@ -454,26 +454,27 @@ _sl2 = p3["scenarios"]["現行1機(2日)"]["slope_per_year"]["median"]
 stages = [
     ("① 取得",
      "HotSat-2 (MWIR)\n3.5m・夜間タスキング",
-     f"30m級では信号が1/{dmax_all/panels[2][4]:.0f}\nに薄まる（図7）"),
+     f"30m級では信号が1/{dmax_all/panels[2][4]:.0f}\nに薄まる（合成シーン）"),
     ("② 前処理",
      "位置合わせ＋共通モード除去\n（不変参照面との差）",
-     f"実Landsatで振れ幅\n{rng_raw:.1f}K → {rng_diff:.1f}K（図6）"),
+     f"実Landsatで振れ幅\n{rng_raw:.1f}K → {rng_diff:.1f}K（6エポック）"),
     ("③ 指標化",
      "シーン内相対 / 兄弟資産差分\n/ その時間変化（二重差分）",
-     f"絶対値比較は誤差RSS\n{_abs_rss:.1f}Kで不成立（図1b）"),
+     f"絶対値比較は誤差RSS\n{_abs_rss:.1f}Kで不成立（計算）"),
     ("④ 検知",
      "ステップ走査(z) ＋\n時系列残差スタック",
-     f"面的劣化AUC {_ud['static_auc']:.2f}→{_ud['double_diff_auc']:.2f}（図2）\n"
-     f"タンクパッチ {_v2['ep1']['dT=5.0K,A=100m2']:.2f}→{_v2['ep12']['dT=5.0K,A=100m2']:.2f}（図5）"),
+     f"面的劣化AUC {_ud['static_auc']:.2f}→{_ud['double_diff_auc']:.2f}\n"
+     f"タンクパッチ {_v2['ep1']['dT=5.0K,A=100m2']:.2f}→{_v2['ep12']['dT=5.0K,A=100m2']:.2f}\n"
+     f"（単発→12エポック）"),
     ("⑤ 業務",
      "点検派遣・CMMS突合\nεアーティファクト弁別",
-     f"注入劣化を検出 z=4.7 / 外装更新を\n誤報しない z=-11.4（図4）"),
+     f"注入劣化を検出 z=4.7 /\n外装更新は誤報しない z=-11.4"),
 ]
 limits = [
-    f"個別配管のCUIスポットは検出できない（SNR {_cui:.2f}・図1）。面的・複合体単位の指標に限定する。",
-    f"降雨後の回復速度特徴量は現行1機体制では機会的（年{_sl3:.1f}〜{_sl2:.1f}回・実気象・図3）。必須機能に置かない。",
+    f"個別配管のCUIスポットは検出できない（SNR {_cui:.2f}）。面的・複合体単位の指標に限定する。",
+    f"降雨後の回復速度特徴量は現行1機体制では機会的（年{_sl3:.1f}〜{_sl2:.1f}回・実気象）。必須機能に置かない。",
     "温度の絶対値は測らない。ε不確かさと天空放射が支配的なため、すべて相対量で設計している。",
-    "タンク屋根パッチは単発では限界域（AUC 0.64）。12エポックの蓄積を前提とする（図5）。",
+    "タンク屋根パッチは単発では限界域（AUC 0.64）。12エポックの蓄積を前提とする。",
 ]
 
 fig, ax = plt.subplots(figsize=(13.6, 6.4))
@@ -494,7 +495,7 @@ for i, ((tag, body, ev), c) in enumerate(zip(stages, CAT6)):
                     arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4))
 ax.text(X0, 9.42, "監視チェーンの全段が、自主PoCの計算・シミュレーション・実データで裏付けられている",
         fontsize=12.5, color=INK, va="center")
-ax.text(X0, 4.35, "各段の根拠（図番号は本書の図版・数値は poc/out/*.json 由来、乱数シード固定で再現可能）",
+ax.text(X0, 4.35, "各段の根拠（数値はいずれも自主PoCの計算結果。乱数シードを固定しており再現可能）",
         fontsize=8.8, color=MUTED, va="center")
 
 ax.add_patch(plt.Rectangle((X0, 0.35), 5*W+4*GAPX, 3.35, fc="#faf6f4", ec=CRIT,
@@ -611,7 +612,7 @@ am.legend(handles=_lg, fontsize=8.2, loc="upper left", bbox_to_anchor=(0, -0.10)
 
 # --- 右: 優先度付きアラート（システム出力）と真値の答え合わせ ---
 al.text(0, 1.0, "この地図に対してシステムが出力したもの", fontsize=12.5, va="top", color=INK)
-al.text(0, 0.945, "（poc4_results.json の findings をそのまま転記）",
+al.text(0, 0.945, "（監視パイプラインが出力した findings をそのまま転記）",
         fontsize=8.5, va="top", color=MUTED)
 _chip = {"alert": "［要点検］", "info": "［点検不要］", "miss": "［未検出］"}
 
@@ -629,7 +630,7 @@ for f in p4["findings"]:
 for a in missed:
     _rows.append((ST_MISS, f"{_chip['miss']} {a}　（システム出力なし）",
                   _wrap("判定: 単発指標では信号がノイズに埋もれ、アラートに至らない"),
-                  _wrap(f"真値: {truth[a]}　→　取りこぼし。12エポックの時系列スタックで対処（図5）")))
+                  _wrap(f"真値: {truth[a]}　→　取りこぼし。12エポックの時系列スタックで対処")))
 _y = 0.885
 for col, head, judge, tr in _rows:
     al.add_patch(plt.Rectangle((0, _y-0.205), 1.0, 0.195, transform=al.transAxes,
@@ -644,8 +645,8 @@ al.text(0.016, _y+0.005, f"上記以外の {_n_assets - len(_rows)} 資産: 出�
 al.text(0, _y-0.085, "注入した3件のうち2件を正しく仕分けし（劣化＝点検へ／外装更新＝点検不要）、\n"
         "1件は取りこぼした。この見逃しを隠さず出力に載せる設計にしている。\n\n"
         "審査上の注記: これはHotSat-2の実データではなく、3.5m級センサを模した\n"
-        "合成プラント（poc2/poc4）での通しリハーサルである。実機サンプルでの\n"
-        "同一ビューの再現はJSI照会（09）の回答待ち。",
+        "合成プラントでの通しリハーサルである。実機サンプルでの同一ビューの\n"
+        "再現は開発期間の主タスクとする。",
         fontsize=9, va="top", color=INK2)
 fig.suptitle("運用ビュー — 地図上で「どこが・何が・どう判定されたか」が一目で分かる",
              y=0.99, fontsize=12.5)
@@ -710,7 +711,7 @@ if "crop" in globals():
               framealpha=0.95, borderaxespad=0)
 
     al.text(0, 1.0, "この地図に対してシステムが出力したもの", fontsize=12.5, va="top", color=INK)
-    al.text(0, 0.945, "（poc4_results_real.json の findings をそのまま転記）",
+    al.text(0, 0.945, "（監視パイプラインが出力した findings をそのまま転記）",
             fontsize=8.5, va="top", color=MUTED)
     al.text(0.012, 0.878, "走査対象", fontsize=9, va="top", color=MUTED)
     al.text(0.55, 0.878, "種別", fontsize=9, va="top", color=MUTED)
@@ -733,7 +734,7 @@ if "crop" in globals():
     al.text(0, _y-0.10,
             "審査上の注記:\n"
             "・Landsatは30m画素・昼間パスのため、これは「複合体レベルで手順が\n"
-            "　通ること」の実証であり、設備単位の実証ではない（設備単位は図8）。\n"
+            "　通ること」の実証であり、設備単位の実証ではない。\n"
             "・AOIは±数百m精度の概略であり現地検証は未了。\n"
             "・実データ側に既知の劣化事象がないため、ここで示せるのは\n"
             "　「健全なものを健全と判定できる（誤報を出さない）」ことまでである。",
