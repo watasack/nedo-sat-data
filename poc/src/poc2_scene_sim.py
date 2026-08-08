@@ -191,7 +191,13 @@ results["step_detection"] = dict(detect_rate=det/(3*N_TRIALS), false_alarm_rate=
                                  step_size_K=2.0, epochs=n_ep, note="兄弟差分系列のステップz検定(z>3)")
 
 os.makedirs(POC_OUT, exist_ok=True)
-with open(os.path.join(POC_OUT, "poc2_results.json"), "w") as f:
+# 既存JSONへマージ書き込み（単体再実行でtank_patch_auc_v2等の追記結果を消さない）
+_json_path = os.path.join(POC_OUT, "poc2_results.json")
+if os.path.exists(_json_path):
+    _prev = json.load(open(_json_path))
+    _prev.update(results)
+    results = _prev
+with open(_json_path, "w") as f:
     json.dump(results, f, ensure_ascii=False, indent=1)
 print(json.dumps(results, ensure_ascii=False, indent=1))
 

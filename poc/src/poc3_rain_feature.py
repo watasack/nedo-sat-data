@@ -158,6 +158,7 @@ if REAL:
             for (a, b) in events:
                 ia, ib = day_index[a], day_index[b]
                 base = any((ia-7 <= i < ia) and i in pass_set and clear_map.get(days[i], 100) < 30 for i in range(max(0, ia-7), ia))
+                # 日粒度なので2回の撮像は自動的に24h以上間隔（docstringの12h条件を充足）
                 post = [i for i in range(ib+1, min(len(days), ib+5)) if i in pass_set and clear_map.get(days[i], 100) < 30]
                 if base and len(post) >= 1: s1 += 1
                 if base and len(post) >= 2: s2 += 1

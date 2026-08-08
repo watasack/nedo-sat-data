@@ -141,8 +141,9 @@ results["detection_cases"] = cases
 for name, c in cases.items():
     print(f"[SNR] {name}: sig={c['signal']:.2f}K noise={c['noise']:.2f}K SNR={c['snr']:.2f} → {c['verdict']} ({c['estimator']})")
 
-os.makedirs("/home/claude/poc/out", exist_ok=True)
-with open("/home/claude/poc/out/poc1_results.json", "w") as f:
+_OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "out")
+os.makedirs(_OUT, exist_ok=True)
+with open(os.path.join(_OUT, "poc1_results.json"), "w") as f:
     json.dump(results, f, ensure_ascii=False, indent=1, default=float)
 
 # ---- コンソール要約 ----
