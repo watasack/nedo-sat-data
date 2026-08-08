@@ -1,9 +1,13 @@
 name: Fetch PoC data
 # クラウドサンドボックスからは外部データAPIに届かないため、
 # ネットワーク制限のないGitHub Actionsランナーで実データを取得し
-# poc-data ブランチにコミットする（手動トリガ専用）
+# poc-data ブランチにコミットする。
+# トリガ: trigger-fetch-data ブランチへのpush（サンドボックスのGitHub統合は
+# workflow_dispatch APIを叩けないため、push駆動にしている）
 on:
   workflow_dispatch:
+  push:
+    branches: ["trigger-fetch-data"]
 
 permissions:
   contents: write
