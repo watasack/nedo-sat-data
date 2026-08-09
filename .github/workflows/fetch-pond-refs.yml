@@ -6,7 +6,7 @@ name: Fetch pond (tameike) refs
 on:
   workflow_dispatch:
   push:
-    branches: ["trigger-fetch-pond"]
+    branches: ["trigger-fetch-pond2"]
 
 permissions:
   contents: write
@@ -28,7 +28,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -B pond-refs
-          git add -f pond_refs
+          git checkout -B pond-refs2
+          git add -f pond_refs2
           git commit -m "ため池案の一次資料取得結果（Actions経由）"
-          git push -f origin pond-refs
+          git push -f origin pond-refs2

@@ -20,11 +20,42 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-OUT = Path("pond_refs")
+OUT = Path("pond_refs2")
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
 
 URLS = [
+    # 規模分布（自前集計用の県別DB）
+    ("gunma_ため池DB", "https://www.pref.gunma.jp/uploaded/attachment/659012.pdf"),
+    ("chiba_ため池DB", "https://www.pref.chiba.lg.jp/kouchi/nougyou-seibi/documents/tameike-database.pdf"),
+    ("kagawa_ため池DB_高松", "https://www.pref.kagawa.lg.jp/documents/29845/01_datebase_takamatu08.pdf"),
+    ("shiga_ため池中長期整備計画", "https://www.pref.shiga.lg.jp/file/attachment/5387846.pdf"),
+    ("maff_ため池一覧", "https://www.maff.go.jp/j/nousin/bousai/bousai_saigai/b_tameike/ichiran.html"),
+    ("maff_ため池を巡る状況_46", "https://www.maff.go.jp/j/nousin/bousai/bousai_saigai/b_tameike/attach/pdf/hozenhou-46.pdf"),
+    ("maff_ため池データ_旧", "https://www.maff.go.jp/j/nousin/bousai/tameike/pdf/tameike_data.pdf"),
+    ("maff_ため池洪水調節手引き_47", "https://www.maff.go.jp/j/nousin/bousai/bousai_saigai/b_tameike/attach/pdf/index-47.pdf"),
+    ("ishikawa_ため池水位管理手引き", "https://www.pref.ishikawa.lg.jp/nouson/ryuuikitisui/documents/07_tameike_tebiki_1~5.pdf"),
+    ("jiban_ため池堤体豪雨時崩壊機構", "https://www.jiban.or.jp/file/saigai/houkoku/WG3_Tameik2.pdf"),
+    ("gunma_防災重点ため池資料", "https://www.kakasi.or.jp/cms/wp-content/uploads/2023/01/tameike-manyuaru01.pdf"),
+    # 決壊要因の論文（本文/抄録）
+    ("jstage_決壊要因分析_pdf", "https://www.jstage.jst.go.jp/article/jjsidre/88/6/88_491/_pdf/-char/ja"),
+    ("jglobal_福岡佐賀被災ため池調査", "https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202302212074085424"),
+    ("naro_ため池豪雨対策効果評価", "https://www.naro.go.jp/publicity_report/press/laboratory/nire/151932.html"),
+    ("naro_ため池水位管理情報システム2", "https://www.naro.go.jp/project/results/5th_laboratory/nire/2023/23_032.html"),
+    ("naro_ため池水位管理情報システム_pdf", "https://www.naro.affrc.go.jp/org/nkk/jituyo/all/pdf/03-01-03.pdf"),
+    # 四国ため池DB改良（巻号違いを総当り）
+    ("jshwr38_目次", "https://www.jstage.jst.go.jp/browse/jshwr/38/0/_contents/-char/ja"),
+    ("jstage_search_ため池DB改良", "https://www.jstage.jst.go.jp/result/global/-char/ja?globalSearchKey=" + urllib.parse.quote("ため池データベース 改良")),
+    # 海外先行（型③④）
+    ("hess_ogilvie2018", "https://hess.copernicus.org/articles/22/4349/2018/"),
+    ("mdpi_small_surface_water_2025", "https://www.mdpi.com/2072-4292/17/13/2128"),
+    ("crossref_farm_pond_remote_sensing", "https://api.crossref.org/works?query.bibliographic=" + urllib.parse.quote("farm pond tank water spread area remote sensing India") + "&rows=40&select=title,author,container-title,issued,DOI"),
+    ("crossref_dam_failure_risk_remote_sensing", "https://api.crossref.org/works?query.bibliographic=" + urllib.parse.quote("earthen dam embankment failure risk InSAR remote sensing monitoring") + "&rows=40&select=title,author,container-title,issued,DOI"),
+    ("crossref_abandoned_pond_detection", "https://api.crossref.org/works?query.bibliographic=" + urllib.parse.quote("abandoned reservoir pond detection satellite time series water occurrence") + "&rows=30&select=title,author,container-title,issued,DOI"),
+    ("crossref_japan_irrigation_pond_satellite", "https://api.crossref.org/works?query.bibliographic=" + urllib.parse.quote("irrigation pond Japan satellite monitoring tameike") + "&rows=30&select=title,author,container-title,issued,DOI"),
+]
+
+_OLD_URLS = [
     # ========== 型⑤: 決壊の要因（一次調査報告） ==========
     ("naro_H30ため池被災調査_広島01",
      "https://www.naro.go.jp/disaster/nishinihon201807/files/tameike_report_hiroshima01.pdf"),
