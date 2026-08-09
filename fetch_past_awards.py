@@ -32,8 +32,10 @@ SEEDS = [
     "https://www.nedo.go.jp/koubo/SR2_100018.html",
     "https://www.nedo.go.jp/news/press/AA5_101851.html",
     "https://webmagazine.nedo.go.jp/pickupnews/prize07.html",
-    "https://space-data-challenge.nedo.go.jp/agriculture/index.html",
-    "https://space-data-challenge.nedo.go.jp/agriculture/",
+    "https://space-data-challenge.nedo.go.jp/aff/",
+    "https://space-data-challenge.nedo.go.jp/aff/index.html",
+    "https://www.nedo.go.jp/koubo/SR3_100018.html",
+    "https://sorabatake.jp/43566/",
     # 今回（都市インフラ）
     "https://space-data-challenge.nedo.go.jp/infrastructure/",
     "https://space-data-challenge.nedo.go.jp/",
@@ -55,7 +57,7 @@ DOC_EXT = (".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx")
 
 KEYWORDS = [
     "green_earth", "agriculture", "infrastructure", "result", "judging",
-    "award", "winner", "prize", "koubo", "press", "news", "ugoki",
+    "award", "winner", "prize", "koubo", "press", "news", "ugoki", "aff",
     "受賞", "結果", "選考", "審査", "講評", "ファイナリスト", "一覧",
     "最終", "賞", "通過", "コメント", "審査委員",
 ]
