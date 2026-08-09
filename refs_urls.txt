@@ -1,16 +1,10 @@
-# バッチ2
-https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team_catalog.pdf
-https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team3_shiryo02.pdf
-https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team4_shiryo01.pdf
-https://www.mlit.go.jp/common/001024688.pdf
-https://www.mlit.go.jp/river/shishin_guideline/sabo/dsk_kizyun_kensho_r0503.pdf
-https://www.pref.ishikawa.lg.jp/bousai/bousai_g/bousaikaigi/20241028/kensho_houkokusho.html
-https://www.pref.kochi.lg.jp/doc/2022111500215/file_contents/file_20241024415143_3.pdf
-https://thesis.ceri.go.jp/db/files/2030556145d22b1cf5f16d.pdf
-https://www2.ceri.go.jp/snow/gijyutu/base_of_avalanche.pdf
-https://www.sangiin.go.jp/japanese/annai/chousa/rippou_chousa/backnumber/2024pdf/20240920251.pdf
-https://www.chubu.meti.go.jp/d51sekiyu/press_2024/20250121/20250205_1_saigaizinennryoukyoukyuugaiyo.pdf
-https://www.fdma.go.jp/publication/hakusho/r6/report1/67963.html
-https://www.bosai.go.jp/seppyo/disaster/index.html
-https://www.jpgu.org/page-8448/
-https://www.mlit.go.jp/mizukokudo/sabo/kadouheisoku.html
+# バッチ3
+https://adaptation-platform.nies.go.jp/ccca/conference/2024/1217/pdf/c/s03-nilim.pdf
+https://www.satnavi.jaxa.jp/ja/wp-content/uploads/sites/3/2022/10/report_220922.pdf
+https://www.jfa.maff.go.jp/j/gyoko_gyozyo/g_zyoho_bako/gizyutu_kentokai/attach/pdf/kento_siryou_syosai.pdf
+https://www8.cao.go.jp/space/taskforce/rs/dai3/siryou2_1.pdf
+https://www.pwri.go.jp/jpn/results/report/report-project/2015/pdf/pro-5-4.pdf
+https://www.kaiho.mlit.go.jp/info/kouhou/post-1215.html
+https://www.mlit.go.jp/report/press/port07_hh_000207.html
+https://www.bosai.go.jp/introduction/pdf/chuukikeikaku_5.pdf
+https://www.nied-sip3.bosai.go.jp/
