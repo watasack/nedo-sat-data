@@ -85,8 +85,11 @@
   }
  ],
  "per_volcano_mean": {
-  "melt_scenes": 1182,
-  "clipped_GB": 1.36
+  "_span": "1984〜2026の43融雪期の総和であって1年あたりではない",
+  "melt_scenes_all_years": 1182,
+  "clipped_GB_all_years": 1.36,
+  "melt_scenes_per_year": 27.5,
+  "clipped_MB_per_year": 31.7
  },
  "portfolio_21_sites": {
   "total_clipped_GB": 28.6,
@@ -104,11 +107,33 @@
   "additional_site_breakdown": {
    "AOIと渓流区分の設定": 0.15,
    "処理実行と品質確認（雲・陰影の座ごとの癖）": 0.35,
-   "融雪係数の地域較正と不確かさ評価": 0.3,
+   "融雪係数の地域較正と不確かさ評価（机上のみ）": 0.3,
    "成果物化と説明資料": 0.2
   },
   "additional_site_total": 1.0,
-  "marginal_ratio": 0.143
+  "marginal_ratio": 0.143,
+  "_caveat": "additional_site_total には現地検証のコストが入っていない。calibration_cases を必ず併せて読むこと。「1座1人月」を単独で引用してはいけない。",
+  "schedule_rest_breakdown": {
+   "2027年4月 泥流量への変換と下流の判断への影響評価": 1.0,
+   "2027年5月 砂防事務所・県砂防部局・コンサルへの提示とプロトタイプ取りまとめ": 1.0,
+   "2027年6月 2次審査に向けたデモとドキュメント整備": 1.0
+  },
+  "schedule_total_manmonths": 13.0,
+  "schedule_sites": 4
+ },
+ "calibration_cases": {
+  "既存データを無償提供してもらえる": {
+   "manmonths": 0.0,
+   "outsourced_cost_yen": null
+  },
+  "現地測量に同行する（実費は別途）": {
+   "manmonths": 0.5,
+   "outsourced_cost_yen": null
+  },
+  "自前で測量を委託する": {
+   "manmonths": 0.2,
+   "outsourced_cost_yen": "未取得"
+  }
  },
  "sensitivity_gross_profit": [
   {
@@ -196,103 +221,720 @@
    "gross_margin": 0.9
   }
  ],
- "rollout_scenarios": [
+ "market_flow_per_year": [
   {
-   "sites_per_year": 2,
+   "plan_revisions_per_year": 1,
    "unit_price_yen": 3000000.0,
-   "annual_revenue_yen": 6000000,
-   "years_to_cover_21": 10.5
+   "market_flow_yen_per_year": 3000000,
+   "SOM_low_yen_per_year": 600000,
+   "SOM_high_yen_per_year": 1500000
   },
   {
-   "sites_per_year": 2,
+   "plan_revisions_per_year": 1,
    "unit_price_yen": 5000000.0,
-   "annual_revenue_yen": 10000000,
-   "years_to_cover_21": 10.5
+   "market_flow_yen_per_year": 5000000,
+   "SOM_low_yen_per_year": 1000000,
+   "SOM_high_yen_per_year": 2500000
   },
   {
-   "sites_per_year": 2,
+   "plan_revisions_per_year": 1,
    "unit_price_yen": 10000000.0,
-   "annual_revenue_yen": 20000000,
-   "years_to_cover_21": 10.5
+   "market_flow_yen_per_year": 10000000,
+   "SOM_low_yen_per_year": 2000000,
+   "SOM_high_yen_per_year": 5000000
   },
   {
-   "sites_per_year": 2,
+   "plan_revisions_per_year": 1,
    "unit_price_yen": 20000000.0,
-   "annual_revenue_yen": 40000000,
-   "years_to_cover_21": 10.5
+   "market_flow_yen_per_year": 20000000,
+   "SOM_low_yen_per_year": 4000000,
+   "SOM_high_yen_per_year": 10000000
   },
   {
-   "sites_per_year": 4,
+   "plan_revisions_per_year": 3,
    "unit_price_yen": 3000000.0,
-   "annual_revenue_yen": 12000000,
-   "years_to_cover_21": 5.2
+   "market_flow_yen_per_year": 9000000,
+   "SOM_low_yen_per_year": 1800000,
+   "SOM_high_yen_per_year": 4500000
   },
   {
-   "sites_per_year": 4,
+   "plan_revisions_per_year": 3,
    "unit_price_yen": 5000000.0,
-   "annual_revenue_yen": 20000000,
-   "years_to_cover_21": 5.2
+   "market_flow_yen_per_year": 15000000,
+   "SOM_low_yen_per_year": 3000000,
+   "SOM_high_yen_per_year": 7500000
   },
   {
-   "sites_per_year": 4,
+   "plan_revisions_per_year": 3,
    "unit_price_yen": 10000000.0,
-   "annual_revenue_yen": 40000000,
-   "years_to_cover_21": 5.2
+   "market_flow_yen_per_year": 30000000,
+   "SOM_low_yen_per_year": 6000000,
+   "SOM_high_yen_per_year": 15000000
   },
   {
-   "sites_per_year": 4,
+   "plan_revisions_per_year": 3,
    "unit_price_yen": 20000000.0,
-   "annual_revenue_yen": 80000000,
-   "years_to_cover_21": 5.2
-  },
-  {
-   "sites_per_year": 7,
-   "unit_price_yen": 3000000.0,
-   "annual_revenue_yen": 21000000,
-   "years_to_cover_21": 3.0
-  },
-  {
-   "sites_per_year": 7,
-   "unit_price_yen": 5000000.0,
-   "annual_revenue_yen": 35000000,
-   "years_to_cover_21": 3.0
-  },
-  {
-   "sites_per_year": 7,
-   "unit_price_yen": 10000000.0,
-   "annual_revenue_yen": 70000000,
-   "years_to_cover_21": 3.0
-  },
-  {
-   "sites_per_year": 7,
-   "unit_price_yen": 20000000.0,
-   "annual_revenue_yen": 140000000,
-   "years_to_cover_21": 3.0
+   "market_flow_yen_per_year": 60000000,
+   "SOM_low_yen_per_year": 12000000,
+   "SOM_high_yen_per_year": 30000000
   }
  ],
  "SAM_one_cycle": [
   {
    "unit_price_yen": 3000000.0,
-   "SAM_one_cycle_yen": 63000000
+   "SAM_one_cycle_yen": 63000000,
+   "years_to_one_cycle_at_flow": [
+    21.0,
+    7.0
+   ]
   },
   {
    "unit_price_yen": 5000000.0,
-   "SAM_one_cycle_yen": 105000000
+   "SAM_one_cycle_yen": 105000000,
+   "years_to_one_cycle_at_flow": [
+    21.0,
+    7.0
+   ]
   },
   {
    "unit_price_yen": 10000000.0,
-   "SAM_one_cycle_yen": 210000000
+   "SAM_one_cycle_yen": 210000000,
+   "years_to_one_cycle_at_flow": [
+    21.0,
+    7.0
+   ]
   },
   {
    "unit_price_yen": 20000000.0,
-   "SAM_one_cycle_yen": 420000000
+   "SAM_one_cycle_yen": 420000000,
+   "years_to_one_cycle_at_flow": [
+    21.0,
+    7.0
+   ]
+  }
+ ],
+ "payback_sites": [
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites_to_recover_initial": 3.5
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites_to_recover_initial": 1.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites_to_recover_initial": 0.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites_to_recover_initial": 0.4
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "sites_to_recover_initial": 7.0
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "sites_to_recover_initial": 3.0
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "sites_to_recover_initial": 1.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "sites_to_recover_initial": 0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites_to_recover_initial": 14.0
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites_to_recover_initial": 4.7
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites_to_recover_initial": 1.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites_to_recover_initial": 0.8
+  }
+ ],
+ "cumulative_margin": [
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 1,
+   "cumulative_margin": -1.667
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 3,
+   "cumulative_margin": -0.111
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.433
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.556
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 1,
+   "cumulative_margin": -0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.52
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.66
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.733
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 1,
+   "cumulative_margin": 0.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.667
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.76
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.83
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.867
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 1,
+   "cumulative_margin": 0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.833
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.88
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.915
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.933
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 1,
+   "cumulative_margin": -3.0
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 3,
+   "cumulative_margin": -0.667
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 5,
+   "cumulative_margin": -0.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.15
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 1,
+   "cumulative_margin": -1.4
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.0
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.28
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.49
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 1,
+   "cumulative_margin": -0.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.5
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.64
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.745
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 1,
+   "cumulative_margin": 0.4
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.75
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.82
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.873
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.9
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 1,
+   "cumulative_margin": -4.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 3,
+   "cumulative_margin": -1.222
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 5,
+   "cumulative_margin": -0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 10,
+   "cumulative_margin": -0.133
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.111
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 1,
+   "cumulative_margin": -2.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 3,
+   "cumulative_margin": -0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.04
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.32
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.467
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 1,
+   "cumulative_margin": -0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.52
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.66
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.733
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 1,
+   "cumulative_margin": 0.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 3,
+   "cumulative_margin": 0.667
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 5,
+   "cumulative_margin": 0.76
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 10,
+   "cumulative_margin": 0.83
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "sites": 21,
+   "cumulative_margin": 0.867
+  }
+ ],
+ "effective_margin_with_bizdev": [
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 3000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": -0.167
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 5000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.3
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 10000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.65
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 20000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.825
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 3000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 5000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 10000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 20000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.9
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 3000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": -0.75
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 5000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": -0.05
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 10000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.475
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 20000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.738
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 3000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.0
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 5000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.4
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 10000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.7
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 20000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.85
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 3000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": -1.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 5000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": -0.4
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 10000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.3
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.2,
+   "unit_price_yen": 20000000.0,
+   "effective_manmonths_per_win": 3.5,
+   "effective_margin": 0.65
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 3000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": -0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 5000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.2
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 10000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "win_rate": 0.5,
+   "unit_price_yen": 20000000.0,
+   "effective_manmonths_per_win": 2.0,
+   "effective_margin": 0.8
+  }
+ ],
+ "development_self_funding": [
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "total_manmonths": 13.0,
+   "self_funded_cost_yen": 13000000,
+   "vs_prize_1st_20M": 0.65,
+   "vs_prize_2nd_10M": 1.3
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "total_manmonths": 13.0,
+   "self_funded_cost_yen": 19500000,
+   "vs_prize_1st_20M": 0.97,
+   "vs_prize_2nd_10M": 1.95
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "total_manmonths": 13.0,
+   "self_funded_cost_yen": 26000000,
+   "vs_prize_1st_20M": 1.3,
+   "vs_prize_2nd_10M": 2.6
   }
  ],
  "UNRESOLVED": [
   {
    "item": "火山砂防検討業務の契約金額（落札額）",
-   "why": "入札情報サービス(PPI)とGEPSが動的サイトで到達不可。第4バッチ fetch_bid_refs.py で静的公開の契約結果一覧PDFを取得中",
-   "how": "取れなければユーザーがPPI/GEPSで手動確認する。受注単価Pの実額はこれが唯一の根拠になる"
+   "why": "第4バッチ fetch_bid_refs.py を実行済み（結果は origin/bid-refs）。コンサルタント業務の業務名＋契約金額が並ぶ一覧には到達できなかった（拾えたのは工事の契約金額表と、物品役務の随意契約結果のみ）。PPI/GEPSは依然として動的サイトで到達不可",
+   "how": "ユーザーがPPI/GEPSで手動確認する。受注単価Pの実額はこれが唯一の根拠になる。1次審査結果公表（2026年10月下旬）までに取れなければ手動へ切り替える"
   },
   {
    "item": "国土交通省「設計業務等技術者単価」（年度公示）",
