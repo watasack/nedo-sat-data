@@ -1,0 +1,34 @@
+name: Fetch pond (tameike) refs
+# 農業用ため池案の殺し材料（決壊要因・先行研究・規模分布・観測機会）の一次資料取得。
+# サンドボックスからは naro.go.jp / jstage / maff.go.jp が egress 遮断されるため、
+# Actions で取得して pond-refs ブランチにコミットする。
+# トリガ: trigger-fetch-pond ブランチへの push
+on:
+  workflow_dispatch:
+  push:
+    branches: ["trigger-fetch-pond2"]
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install poppler-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: Fetch pond references
+        run: python3 "theme2_ライフライン復旧/fetch_pond_refs.py"
+      - name: Commit to pond-refs branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B pond-refs2
+          git add -f pond_refs2
+          git commit -m "ため池案の一次資料取得結果（Actions経由）"
+          git push -f origin pond-refs2
