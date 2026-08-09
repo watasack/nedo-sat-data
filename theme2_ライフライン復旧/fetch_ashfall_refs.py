@@ -36,6 +36,20 @@ URLS = [
     ("jma_sakurajima_降下火山灰", "https://www.jma.go.jp/jma/kishou/shingikai/ccpve/Report/023/kaiho_023_04.pdf"),
     # --- 千葉県 降灰対策指針（閾値の二次引用として） ---
     ("chiba_降灰対策指針", "https://www.pref.chiba.lg.jp/bousai/saigaitaisaku/kouhai/documents/kouhaishishin-r403.pdf"),
+    # --- 降灰対策に資する施策・研究の方向性（国の研究計画。競合の有無） ---
+    ("bousai_施策研究の方向性", "https://www.bousai.go.jp/kazan/taisakukaigi/pdf/dai9kai/20190423siryo3_2.pdf"),
+    # --- 気象庁 降灰予報の高度化検討会（2025） ---
+    ("jma2025_降灰予報検討会02", "https://www.jma.go.jp/jma/kishou/shingikai/kentoukai/2025kouhai/02/gijiyoushi_02.pdf"),
+    ("jma2025_降灰予報検討会02_資料", "https://www.jma.go.jp/jma/kishou/shingikai/kentoukai/2025kouhai/02/99-1.pdf"),
+    ("jma2025_降灰予報検討会03", "https://www.jma.go.jp/jma/kishou/shingikai/kentoukai/2025kouhai/03/gijiyoushi_03.pdf"),
+    # --- 次世代火山研究推進事業 課題D-2（リアルタイム火山灰ハザード評価） ---
+    ("kazanpj_D2", "https://kazan-pj.bosai.go.jp/research/d/d2"),
+    # --- 御嶽山2014 降灰分布（現地実測。検証用正解データ） ---
+    ("ontake2014_降灰分布", "https://www.data.jma.go.jp/svd/vois/data/tokyo/STOCK/kaisetsu/CCPVE/Report/119/kaiho_119_16.pdf"),
+    # --- 新燃岳2011 降灰の特徴（都城高専） ---
+    ("shinmoe2011_降灰の特徴", "https://www.miyakonojo-nct.ac.jp/library/data/48_13.pdf"),
+    # --- 気象研 新燃岳2011 ---
+    ("mri_shinmoe2011", "https://www.mri-jma.go.jp/Topics/H23/Happyoukai2011/2011Happyou03.pdf"),
 ]
 
 
