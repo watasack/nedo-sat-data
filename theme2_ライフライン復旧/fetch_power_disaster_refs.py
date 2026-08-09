@@ -75,6 +75,20 @@ URLS = [
     ("tepco_停電履歴の見方", "https://teideninfo.tepco.co.jp/mikata-j.html"),
     # --- 第2ラウンド: 深層学習による台風被害検知（先行事例の確認） ---
     ("jstage_深層学習台風被害検知", "https://www.jstage.jst.go.jp/article/jsceiii/4/3/4_867/_pdf"),
+    # --- 第3ラウンド: 電中研の解説（現状と課題）と最新WG ---
+    ("criepi_送配電防災減災の現状と課題", "https://www.jstage.jst.go.jp/article/jaesjb/62/4/62_203/_pdf/-char/ja"),
+    ("criepi_den477_気象外力と電力設備", "https://criepi.denken.or.jp/koho/news/den477.pdf"),
+    ("criepi_RAMPT_N15012", "https://criepi.denken.or.jp/jp/kenkikaku/report/detail/N15012.html"),
+    ("meti_denki_setsubi025", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/025.html"),
+    ("meti_denki_setsubi024", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/024.html"),
+    ("meti_denki_setsubi_idx2", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/index.html"),
+    ("meti_hoanshohi003_retry", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/pdf/003_02_00.pdf"),
+    ("meti_tettou001_retry", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/tettou/pdf/001_03_04.pdf"),
+    ("meti_denki_setsubi020_retry", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/pdf/020_01_01.pdf"),
+    ("meti_denki_setsubi021_能登9月", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/pdf/021_01_01.pdf"),
+    ("chiba_森林被害緊急調査_retry", "https://www.pref.chiba.lg.jp/shinrin/taifu15-chousakeltuka.html"),
+    ("bousai_r1typhoon15_速報21", "https://www.bousai.go.jp/updates/r1typhoon15/pdf/r1typhoon15_21.pdf"),
+    ("bousai_官民衛星統合防災利用実証", "https://www.bousai.go.jp/taisaku/suishinhi/pdf/saitaku07.pdf"),
 ]
 
 
