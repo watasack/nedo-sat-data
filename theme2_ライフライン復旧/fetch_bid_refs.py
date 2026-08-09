@@ -69,6 +69,10 @@ LINK_KEY = re.compile(
     r"弥陀|緊急減災|積雪|発注|見通し|令和[０-９0-9]|事業報告|決算|財務")
 DOC_EXT = (".pdf", ".csv", ".xls", ".xlsx")
 
+# GitHub は1ファイル100MBで push を弾く（第1回はここで落ちた——山形河川国道事務所の
+# 「業務概要」PDFが115MB。ブランチ全体が remote rejected される）。余裕を見て40MBで打ち切る。
+MAX_BYTES = 40 * 1024 * 1024
+
 
 def _read(r):
     d = r.read()
@@ -93,6 +97,11 @@ def fetch(name, url):
     try:
         req = urllib.request.Request(url, headers=H)
         with urllib.request.urlopen(req, timeout=60) as r:
+            declared = int(r.headers.get("Content-Length") or 0)
+            if declared > MAX_BYTES:
+                rec["status"] = r.status
+                rec["skipped"] = f"too_large_declared:{declared}"
+                return rec
             body = _read(r)
             rec["status"] = r.status
             ctype = (r.headers.get("Content-Type") or "").lower()
@@ -101,6 +110,11 @@ def fetch(name, url):
         return rec
     except Exception as e:
         rec["error"] = repr(e)
+        return rec
+
+    # Content-Length を返さないサーバがあるので、実体でももう一度見る
+    if len(body) > MAX_BYTES:
+        rec["skipped"] = f"too_large_actual:{len(body)}"
         return rec
 
     ext = ".pdf" if ("pdf" in ctype or url.lower().endswith(".pdf")) else (
