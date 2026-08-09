@@ -1,0 +1,32 @@
+name: Fetch snow refs (batch 2)
+# 第7ラウンド案の死因潰し用。EPS草津白根2018論文の本文入手と、積雪火山の緊急減災対策砂防計画の収集。
+# トリガ: trigger-fetch-snow2 ブランチへの push
+on:
+  workflow_dispatch:
+  push:
+    branches: ["trigger-fetch-snow2"]
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install poppler-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: Fetch references
+        run: python3 "theme2_ライフライン復旧/fetch_snow2_refs.py"
+      - name: Commit to snow-refs2 branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B snow-refs2
+          git add -f snow_refs2
+          git commit -m "第7ラウンド死因潰し用 一次情報取得（EPS論文＋積雪火山の緊急減災対策砂防計画）"
+          git push -f origin snow-refs2
