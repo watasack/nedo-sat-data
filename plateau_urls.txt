@@ -1,25 +1,23 @@
-# PLATEAU / 3D都市モデル × 衛星 の一次資料（応募例6の探索用）
-# --- PLATEAU 本体 ---
-https://www.mlit.go.jp/plateau/use-case/
-https://www.mlit.go.jp/plateau/open-data/
-https://www.mlit.go.jp/plateau/use-case/uc23-01/
-https://www.mlit.go.jp/plateau/use-case/ec25-07/
-https://www.mlit.go.jp/plateau/use-case/uc25-06/
-https://www.mlit.go.jp/plateau/use-case/uc22-009/
-https://www.mlit.go.jp/plateau/use-case/uc23-02/
-https://www.mlit.go.jp/plateau/use-case/uc24-06/
-# --- 技術資料 ---
-https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0071_ver01.pdf
-https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0073_ver01.pdf
-https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_tech_doc_0136_ver01.pdf
-https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_doc_0005_ver02.pdf
-https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_doc_0000_ver01.pdf
-# --- 属性・仕様 ---
-https://gic-plateau.s3.ap-northeast-1.amazonaws.com/2020/attributedata.pdf
-https://plateau-academy.s3.ap-northeast-1.amazonaws.com/2024/plateauacademy_02_20240901.pdf
-# --- ユースケース一覧（自治体ミラー） ---
+# PLATEAU×衛星 第2ラウンド
+https://www.mlit.go.jp/plateau/use-case/bz25-07/
+https://www.mlit.go.jp/plateau/use-case/uc22-007/
+https://www.mlit.go.jp/plateau/use-case/uc25-03/
+https://www.mlit.go.jp/plateau/use-case/?pg=2
+https://www.mlit.go.jp/plateau/use-case/?pg=3
+https://www.mlit.go.jp/plateau/use-case/?pg=4
+https://www.mlit.go.jp/plateau/use-case/?pg=5
+https://www.mlit.go.jp/plateau/use-case/?pg=6
+https://www.mlit.go.jp/plateau/use-case/?pg=7
+https://www.mlit.go.jp/plateau/use-case/?pg=8
+https://www.mlit.go.jp/plateau/use-case/?pg=9
+https://www.mlit.go.jp/plateau/use-case/?pg=10
+https://www.mlit.go.jp/plateau/use-case/?pg=11
+https://www.mlit.go.jp/plateau/use-case/?pg=12
+https://www.mlit.go.jp/plateau/use-case/?pg=13
+https://prtimes.jp/main/html/rd/p/000000016.000146022.html
+https://news.mynavi.jp/techplus/article/20250930-3502176/
 https://www.toshiseibi.metro.tokyo.lg.jp/documents/d/toshiseibi/pdf_bunyabetsu_machizukuri_pdf_digital07_san04
-# --- PLATEAU AWARD（衛星×3D） ---
-https://www.mlit.go.jp/plateau/file/events/doc/2025_3-4_SS.pdf
-# --- G空間情報センター ---
-https://www.geospatial.jp/ckan/dataset/plateau
+https://www.geospatial.jp/ckan/dataset/plateau-usecase-portal
+https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_doc_0001_ver05.pdf
+https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_doc_0002_ver05.pdf
+https://www.mlit.go.jp/plateau/file/libraries/doc/plateau_doc_0003_ver05.pdf

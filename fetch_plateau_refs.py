@@ -66,7 +66,7 @@ def main():
                 rec["status"] = r.status
                 ctype = r.headers.get("Content-Type", "")
             rec["bytes"] = len(body)
-            is_pdf = body[:5] == b"%PDF" or url.lower().endswith(".pdf")
+            is_pdf = body[:4] == b"%PDF" or url.lower().endswith(".pdf")
             if is_pdf:
                 raw = os.path.join(OUT, name + ".pdf")
                 with open(raw, "wb") as fh:
