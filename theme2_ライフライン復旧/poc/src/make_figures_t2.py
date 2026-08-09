@@ -129,7 +129,7 @@ def fig2():
     # 回帰の範囲内は実線、その外（外挿）は破線。実線を全域に引くと破線が隠れる
     inr, out = x <= 525, x >= 525
     ax.plot(x[inr], (a * x[inr] + b) / 100.0 * RHO, color=BASE, lw=2.2, zorder=3,
-            label="計画の回帰式（6観測所から）")
+            label="計画の回帰式（6観測所の年最大から）")
     ax.plot(x[out], (a * x[out] + b) / 100.0 * RHO, color=BASE, lw=2.0,
             ls=(0, (6, 3)), zorder=3, label="同・火口高度への外挿")
     ax.axvspan(525, 1850, color=BASE, alpha=0.055, zorder=0)
@@ -137,11 +137,11 @@ def fig2():
             ha="center", fontsize=9, color=BASE)
 
     ax.scatter(st[:, 0], st[:, 1] / 100.0 * RHO, s=52, color=BASE, zorder=5,
-               label="回帰に使った気象庁6観測所（38.9〜525m）")
+               label="回帰に使った気象庁6観測所の年最大（38.9〜525m）")
     ax.scatter(uav[:, 0], uav[:, 1], s=95, marker="D", color=ACCENT, zorder=6,
-               label="火口高度の現地測量（標高別）")
+               label="火口高度の現地測量（2023年3月9日・標高別）")
     ax.scatter([1650], [basin_mean], s=150, marker="*", color=ACCENT, zorder=6,
-               edgecolor="white", linewidth=0.8, label="同・流域平均")
+               edgecolor="white", linewidth=0.8, label="同・流域平均（0.271km²）")
     ax.scatter([1750], [plan_at_crater], s=110, marker="s", color=BASE, zorder=6,
                facecolor="white", linewidth=2.0, label="計画が採った火口高度の想定")
 
@@ -159,7 +159,9 @@ def fig2():
     ax.text(1880, 18, "計画側は密度350 kg/m³ で水量に換算（計画・報告書が使う一律値）",
             fontsize=8.4, color=MUTED, ha="right", va="bottom")
 
-    ax.set_xlabel("標高 [m]"); ax.set_ylabel("年最大積雪水量 [mm]")
+    # 軸ラベルに「年最大」は付けない——青系列は年最大積雪深からの換算だが、赤系列は
+    # 2023年3月9日の単日測量であり、1本のラベルで両方を限定できない。限定は凡例側に置く
+    ax.set_xlabel("標高 [m]"); ax.set_ylabel("積雪水量 [mm]")
     ax.set_xlim(-60, 1900); ax.set_ylim(0, 1540)
     ax.grid(alpha=0.25, lw=0.6)
     ax.legend(loc="upper left", fontsize=8.6, framealpha=0.95)
@@ -237,8 +239,10 @@ def fig4():
     ax.text(0.525, 0.585, "同じ事業内容の行に\n「計画の改定」と「リアルタイム\nハザードマップの運用・整備」が並ぶ",
             ha="center", va="top", fontsize=8.8, color=MUTED, linespacing=1.4)
 
+    # 「発注予定」と書くと提出日には陳腐化する（公告は令和8年5月予定）。出典の性格＝
+    # 公表された発注の見通し、に主語を寄せて時制を持たせない
     _box(ax, 0.72, 0.63, 0.25, 0.24,
-         "需要は表に出ている\n\n那須岳で衛星による\n積雪深推定の検討を発注予定",
+         "需要は表に出ている\n\n那須岳で衛星による積雪深推定の\n検討が発注見通しに載る",
          fs=9.0, ec=ACCENT, lw=1.6, fc="#fdf0ee")
     ax.text(0.845, 0.585, "積雪計5基がある事務所が\n面的な推定を求めている",
             ha="center", va="top", fontsize=8.8, color=ACCENT, linespacing=1.4)
