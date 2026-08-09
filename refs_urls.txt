@@ -1,10 +1,33 @@
-# バッチ3
-https://adaptation-platform.nies.go.jp/ccca/conference/2024/1217/pdf/c/s03-nilim.pdf
-https://www.satnavi.jaxa.jp/ja/wp-content/uploads/sites/3/2022/10/report_220922.pdf
-https://www.jfa.maff.go.jp/j/gyoko_gyozyo/g_zyoho_bako/gizyutu_kentokai/attach/pdf/kento_siryou_syosai.pdf
-https://www8.cao.go.jp/space/taskforce/rs/dai3/siryou2_1.pdf
-https://www.pwri.go.jp/jpn/results/report/report-project/2015/pdf/pro-5-4.pdf
-https://www.kaiho.mlit.go.jp/info/kouhou/post-1215.html
-https://www.mlit.go.jp/report/press/port07_hh_000207.html
-https://www.bosai.go.jp/introduction/pdf/chuukikeikaku_5.pdf
-https://www.nied-sip3.bosai.go.jp/
+# バッチ4: テーマ2-C（港湾水深/SDB）検証
+# 国交省 港湾局 能登対応
+https://www.mlit.go.jp/report/press/port07_hh_000205.html
+https://www.mlit.go.jp/report/press/port07_hh_000228.html
+https://www.mlit.go.jp/kowan/kowan_mn7_000018.html
+https://www.mlit.go.jp/policy/shingikai/content/001736478.pdf
+https://www.mlit.go.jp/policy/shingikai/content/001727349.pdf
+# 港空研: 大地震後の係留施設の利用可否判断
+https://www.pari.go.jp/PDF/2025ogb_presentationppt_04_kohama_v2.pdf
+# 土木学会 港湾施設の被害概要（能登）
+https://www.jsce.or.jp/report/42/files/7.pdf
+# 海保 SDB / 浅海域調査
+https://www.jha.or.jp/jp/whatsnew/2023/01/sin-kouenkai.pdf
+https://www.kaiho.mlit.go.jp/info/kouhou/post-1297.html
+https://www.jha.or.jp/jp/whatsnew/jha/2025/0203_project.html
+# IHO: SDBと航行安全 / EOMAP の IHO 向け資料
+https://ihr.iho.int/articles/satellite-derived-bathymetry-sdb-and-safety-of-navigation/
+https://iho.int/uploads/user/Inter-Regional%20Coordination/RHC/SWPHC/SWPHC16/SWPHC16-16.2-EOMAP.pdf
+https://eomap.com/sdb-update-9-bathymetry-accuracy/
+# 濁度がSDBの主要課題（NOAA リポジトリの全文PDF）
+https://repository.library.noaa.gov/view/noaa/49227/noaa_49227_DS1.pdf
+# 汎欧州SDB レビュー（ユーザーニーズ）
+https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2021.740830/full
+# 水産庁 漁港の泊地・航路 判定
+https://www.jfa.maff.go.jp/j/kikaku/wpaper/r05_h/trend/1/t1_5_4.html
+# 港湾施設の利用可否判断に係るガイドライン（初版 令和7年4月 / 第2版 令和8年5月）
+https://www.mlit.go.jp/kowan/content/001882084.pdf
+https://www.mlit.go.jp/kowan/content/002003874.pdf
+# 内閣府 物資調達・輸送の状況（能登）
+https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team4_shiryo01.pdf
+# 海保 海洋情報部 技術報告: SDBの位置づけと精度（日本の公的機関の一次見解）
+https://www1.kaiho.mlit.go.jp/kenkyu/report/rhr53/rhr53-TR02_small.pdf
+https://www1.kaiho.mlit.go.jp/kenkyu/report/rhr54/rhr54-TR01.pdf
