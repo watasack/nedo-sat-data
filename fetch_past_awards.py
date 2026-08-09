@@ -39,6 +39,15 @@ SEEDS = [
     # 今回（都市インフラ）
     "https://space-data-challenge.nedo.go.jp/infrastructure/",
     "https://space-data-challenge.nedo.go.jp/",
+    # 農水回の最終選考結果は画像でしか公開されていない
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_01.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_02.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_03.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_04.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_01.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_02.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_03.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_04.png",
     # 解説記事
     "https://sorabatake.jp/39615/",
     "https://sorabatake.jp/40588/",
@@ -53,7 +62,7 @@ CRAWL_HOSTS = {
     "webmagazine.nedo.go.jp",
     "sorabatake.jp",
 }
-DOC_EXT = (".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx")
+DOC_EXT = (".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx", ".png", ".jpg")
 
 KEYWORDS = [
     "green_earth", "agriculture", "infrastructure", "result", "judging",
