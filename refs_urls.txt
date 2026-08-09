@@ -1,23 +1,16 @@
-# テーマ2 新規切り口探索用の一次資料URL（1行1URL、# はコメント）
-# --- 内閣府防災 ---
-https://www.bousai.go.jp/jishin/noto/taisaku_wg_02/pdf/hokoku.pdf
-https://www.bousai.go.jp/jishin/noto/taisaku_wg_02/pdf/siryo4.pdf
-https://www.bousai.go.jp/jishin/noto/taisaku_wg_02/pdf/siryo2_1_4.pdf
-https://www.bousai.go.jp/kaigirep/hakusho/r07/honbun/t1_2s_01_00.html
-https://www.bousai.go.jp/oyakudachi/isut/pdf/isut_document.pdf
-# --- 国土交通省 ---
-https://www.mlit.go.jp/mizukokudo/sewerage/content/001765621.pdf
-https://www.mlit.go.jp/mizukokudo/sewerage/content/001765618.pdf
-https://www.mlit.go.jp/river/shinngikai_blog/renrakukaigi/dai05kai/pdf/04.pdf
-# --- 自治体の検証報告 ---
-https://www.city.nagano.nagano.jp/documents/635/349786.pdf
-https://www.city.nagoya.jp/_res/projects/default_project/_page_/001/032/488/honsasshi.pdf
-https://www.city.tochigi.lg.jp/uploaded/attachment/34401.pdf
-https://www.pref.fukui.lg.jp/doc/kikitaisaku/kikitaisaku/202406bousaikaigi_d/fil/02.pdf
-# --- SIP / 宇宙政策 / 防災科研 ---
-https://www8.cao.go.jp/space/comittee/dai4/siryou4-1.pdf
-https://www8.cao.go.jp/cstp/gaiyo/sip/keikaku2/9_resilence_1.pdf
-https://www.cas.go.jp/jp/seisaku/resilience/dai52/siryo1-2.pdf
-https://nied-sip2.bosai.go.jp/news/2023/attach/Presentation_02.pdf
-https://www.nied-sip3.bosai.go.jp/research/research-list.html
-https://www.bosai.go.jp/sp/introduction/kyoso/kenkyukai/mha4gl00000018mw-att/houkokukai_senna.pdf
+# バッチ2
+https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team_catalog.pdf
+https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team3_shiryo02.pdf
+https://www.bousai.go.jp/updates/r60101notojishin/pdf/kensho_team4_shiryo01.pdf
+https://www.mlit.go.jp/common/001024688.pdf
+https://www.mlit.go.jp/river/shishin_guideline/sabo/dsk_kizyun_kensho_r0503.pdf
+https://www.pref.ishikawa.lg.jp/bousai/bousai_g/bousaikaigi/20241028/kensho_houkokusho.html
+https://www.pref.kochi.lg.jp/doc/2022111500215/file_contents/file_20241024415143_3.pdf
+https://thesis.ceri.go.jp/db/files/2030556145d22b1cf5f16d.pdf
+https://www2.ceri.go.jp/snow/gijyutu/base_of_avalanche.pdf
+https://www.sangiin.go.jp/japanese/annai/chousa/rippou_chousa/backnumber/2024pdf/20240920251.pdf
+https://www.chubu.meti.go.jp/d51sekiyu/press_2024/20250121/20250205_1_saigaizinennryoukyoukyuugaiyo.pdf
+https://www.fdma.go.jp/publication/hakusho/r6/report1/67963.html
+https://www.bosai.go.jp/seppyo/disaster/index.html
+https://www.jpgu.org/page-8448/
+https://www.mlit.go.jp/mizukokudo/sabo/kadouheisoku.html
