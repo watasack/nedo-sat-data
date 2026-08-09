@@ -32,11 +32,22 @@ SEEDS = [
     "https://www.nedo.go.jp/koubo/SR2_100018.html",
     "https://www.nedo.go.jp/news/press/AA5_101851.html",
     "https://webmagazine.nedo.go.jp/pickupnews/prize07.html",
-    "https://space-data-challenge.nedo.go.jp/agriculture/index.html",
-    "https://space-data-challenge.nedo.go.jp/agriculture/",
+    "https://space-data-challenge.nedo.go.jp/aff/",
+    "https://space-data-challenge.nedo.go.jp/aff/index.html",
+    "https://www.nedo.go.jp/koubo/SR3_100018.html",
+    "https://sorabatake.jp/43566/",
     # 今回（都市インフラ）
     "https://space-data-challenge.nedo.go.jp/infrastructure/",
     "https://space-data-challenge.nedo.go.jp/",
+    # 農水回の最終選考結果は画像でしか公開されていない
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_01.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_02.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_03.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t1_04.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_01.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_02.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_03.png",
+    "https://space-data-challenge.nedo.go.jp/aff/img/t2_04.png",
     # 解説記事
     "https://sorabatake.jp/39615/",
     "https://sorabatake.jp/40588/",
@@ -51,11 +62,11 @@ CRAWL_HOSTS = {
     "webmagazine.nedo.go.jp",
     "sorabatake.jp",
 }
-DOC_EXT = (".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx")
+DOC_EXT = (".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx", ".png", ".jpg")
 
 KEYWORDS = [
     "green_earth", "agriculture", "infrastructure", "result", "judging",
-    "award", "winner", "prize", "koubo", "press", "news", "ugoki",
+    "award", "winner", "prize", "koubo", "press", "news", "ugoki", "aff",
     "受賞", "結果", "選考", "審査", "講評", "ファイナリスト", "一覧",
     "最終", "賞", "通過", "コメント", "審査委員",
 ]
