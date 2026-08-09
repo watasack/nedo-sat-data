@@ -53,6 +53,42 @@ URLS = [
     # --- スマート保安 ---
     ("meti_smart_hoan015_スマート保安技術", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/hoan_seido/pdf/015_03_00.pdf"),
     ("meti_電気保安スマート保安AP", "https://www.meti.go.jp/policy/safety_security/industrial_safety/smart_industrial_safety/action_plan_denki.pdf"),
+    # --- 第2ラウンド: 風倒木と電柱損壊 / 森林被害 ---
+    ("jstage_風倒木と電柱損壊の関係", "https://www.jstage.jst.go.jp/article/jfsc/131/0/131_176/_pdf"),
+    ("chiba_台風15号森林被害緊急調査", "https://www.pref.chiba.lg.jp/shinrin/taifu15-chousakeltuka.html"),
+    ("chiba_サンブスギ", "https://www.pref.chiba.lg.jp/lab-nourin/nourin/shinrinken/sanbusugi.html"),
+    ("rinya_kanto_r1_15gou", "https://www.rinya.maff.go.jp/kanto/koho/saigaijoho/r1_15gou.html"),
+    # --- 第2ラウンド: 塩害 ---
+    ("jsnds_2018台風24号塩害", "https://www.jsnds.org/ssk/ssk_37_4_365.pdf"),
+    ("rikuden_配電線塩分付着停電防止研究", "https://www.rikuden.co.jp/kenkyu/attach/topics08_01.pdf"),
+    ("rtri_高圧がいしESDD", "https://www.rtri.or.jp/publish/rtrirep/2013/is5f1i000000fvif-att/1308_3.pdf"),
+    ("criepi_ポリマーがいし適用動向", "https://www.jstage.jst.go.jp/article/jaesjb/65/8/65_513/_pdf"),
+    # --- 第2ラウンド: 雪害 ---
+    ("engineer_新潟大停電の要因と対策", "https://www.engineer.or.jp/cmty/nikkan/kasahara.pdf"),
+    ("jma_niigata_2010大雪", "https://www.data.jma.go.jp/niigata/menu/saigai_NI/shosai/031_2010_shosai.pdf"),
+    ("tohoku_nw_大雪停電", "https://nw.tohoku-epco.co.jp/information/1230943_2390.html"),
+    # --- 第2ラウンド: 能登 / 電気設備自然災害等対策WG ---
+    ("meti_denki_setsubi_index", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/index.html"),
+    ("rikuden_noto", "https://www.rikuden.co.jp/nw_network/notohantou.html"),
+    # --- 第2ラウンド: 停電実績（正解データ候補） ---
+    ("tepco_停電履歴検索", "https://teideninfo.tepco.co.jp/day/teiden/index-j.html"),
+    ("tepco_停電履歴の見方", "https://teideninfo.tepco.co.jp/mikata-j.html"),
+    # --- 第2ラウンド: 深層学習による台風被害検知（先行事例の確認） ---
+    ("jstage_深層学習台風被害検知", "https://www.jstage.jst.go.jp/article/jsceiii/4/3/4_867/_pdf"),
+    # --- 第3ラウンド: 電中研の解説（現状と課題）と最新WG ---
+    ("criepi_送配電防災減災の現状と課題", "https://www.jstage.jst.go.jp/article/jaesjb/62/4/62_203/_pdf/-char/ja"),
+    ("criepi_den477_気象外力と電力設備", "https://criepi.denken.or.jp/koho/news/den477.pdf"),
+    ("criepi_RAMPT_N15012", "https://criepi.denken.or.jp/jp/kenkikaku/report/detail/N15012.html"),
+    ("meti_denki_setsubi025", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/025.html"),
+    ("meti_denki_setsubi024", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/024.html"),
+    ("meti_denki_setsubi_idx2", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/index.html"),
+    ("meti_hoanshohi003_retry", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/pdf/003_02_00.pdf"),
+    ("meti_tettou001_retry", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/tettou/pdf/001_03_04.pdf"),
+    ("meti_denki_setsubi020_retry", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/pdf/020_01_01.pdf"),
+    ("meti_denki_setsubi021_能登9月", "https://www.meti.go.jp/shingikai/sankoshin/hoan_shohi/denryoku_anzen/denki_setsubi/pdf/021_01_01.pdf"),
+    ("chiba_森林被害緊急調査_retry", "https://www.pref.chiba.lg.jp/shinrin/taifu15-chousakeltuka.html"),
+    ("bousai_r1typhoon15_速報21", "https://www.bousai.go.jp/updates/r1typhoon15/pdf/r1typhoon15_21.pdf"),
+    ("bousai_官民衛星統合防災利用実証", "https://www.bousai.go.jp/taisaku/suishinhi/pdf/saitaku07.pdf"),
 ]
 
 
