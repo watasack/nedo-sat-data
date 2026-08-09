@@ -100,31 +100,48 @@ def fig1():
 # 図2 山麓6観測所からの外挿と、火口高度の実測との食い違い
 # ============================================================
 def fig2():
+    """縦軸は積雪水量[mm]で統一する。
+
+    原典（防災科研×新潟大の共同研究報告書）が標高別に載せているのは**積雪水量**であり、
+    標高別の積雪深は載っていない。水量を密度で割って積雪深に直すこともできるが、
+    実測密度 252/419/401 kg/m³ と標高1,500/1,600/1,700m の対応順が原典で確認できて
+    いないため、その換算はしない（順を取り違えると点が上下に大きく動く）。
+    設問②の本文も「積雪水量」で書いてあるので、本文と図の量をここで一致させる。
+
+    計画側（回帰式・火口の想定値）は積雪深なので、密度350 kg/m³ で水量に換算する。
+    350は蔵王計画と報告書がともに使っている一律値（8.5節）。線形変換なので図の形は
+    変わらず、計画の土俵の上で比較していることになる。
+    """
+    RHO = 350.0    # kg/m³。計画・報告書がともに使う一律値。1m の雪 = 350mm の水
+
     # 蔵王計画 図2-21 の6観測所（標高m, 年最大積雪深cm）。8.5節で numpy.polyfit により
     # 回帰係数 y=0.2139x+8.5516（R²=0.767）を再現済み
     st = np.array([[38.9, 17], [86, 18], [152.5, 50], [245, 92], [265, 34], [525, 121]])
     a, b = 0.2139, 8.5516
 
-    # 防災科研×新潟大の現地測量（2023年3月9日）。標高別の積雪深[m]
-    uav = np.array([[1500, 1.37], [1600, 0.93], [1700, 0.42]])
-    basin_mean = 1.10          # 流域平均積雪深[m]（面積0.271km²）
-    plan_at_crater = 3.81      # 蔵王計画の火口高度の想定積雪深[m]
+    # 防災科研×新潟大の現地測量（2023年3月9日）。標高別の積雪水量[mm]＝原典の実測値そのもの
+    uav = np.array([[1500, 550], [1600, 390], [1700, 106]])
+    basin_mean = 1.10 * RHO        # 流域平均積雪深1.10m（面積0.271km²）→ 385mm
+    plan_at_crater = 3.81 * RHO    # 計画の火口高度の想定積雪深3.81m → 1,334mm
 
     fig, ax = plt.subplots(figsize=(8.2, 5.6))
     x = np.linspace(0, 1850, 200)
-    ax.plot(x, (a * x + b) / 100.0, color=BASE, lw=2.0, zorder=3,
-            label="計画の回帰式（6観測所から）")
-    ax.plot(x[x > 525], (a * x[x > 525] + b) / 100.0, color=BASE, lw=2.0, ls="--", zorder=3)
+    # 回帰の範囲内は実線、その外（外挿）は破線。実線を全域に引くと破線が隠れる
+    inr, out = x <= 525, x >= 525
+    ax.plot(x[inr], (a * x[inr] + b) / 100.0 * RHO, color=BASE, lw=2.2, zorder=3,
+            label="計画の回帰式（6観測所の年最大から）")
+    ax.plot(x[out], (a * x[out] + b) / 100.0 * RHO, color=BASE, lw=2.0,
+            ls=(0, (6, 3)), zorder=3, label="同・火口高度への外挿")
     ax.axvspan(525, 1850, color=BASE, alpha=0.055, zorder=0)
-    ax.text(1190, 0.28, "回帰に使った観測所より上\n（約1,220mの外挿）",
+    ax.text(1190, 95, "回帰に使った観測所より上\n（約1,220mの外挿）",
             ha="center", fontsize=9, color=BASE)
 
-    ax.scatter(st[:, 0], st[:, 1] / 100.0, s=52, color=BASE, zorder=5,
-               label="回帰に使った気象庁6観測所（38.9〜525m）")
+    ax.scatter(st[:, 0], st[:, 1] / 100.0 * RHO, s=52, color=BASE, zorder=5,
+               label="回帰に使った気象庁6観測所の年最大（38.9〜525m）")
     ax.scatter(uav[:, 0], uav[:, 1], s=95, marker="D", color=ACCENT, zorder=6,
-               label="火口高度の現地測量（標高別）")
+               label="火口高度の現地測量（2023年3月9日・標高別）")
     ax.scatter([1650], [basin_mean], s=150, marker="*", color=ACCENT, zorder=6,
-               edgecolor="white", linewidth=0.8, label="同・流域平均")
+               edgecolor="white", linewidth=0.8, label="同・流域平均（0.271km²）")
     ax.scatter([1750], [plan_at_crater], s=110, marker="s", color=BASE, zorder=6,
                facecolor="white", linewidth=2.0, label="計画が採った火口高度の想定")
 
@@ -136,11 +153,16 @@ def fig2():
 
     # 実測の傾きが逆であることを示す補助線
     ax.plot(uav[:, 0], uav[:, 1], color=ACCENT, lw=1.4, ls=":", zorder=5)
-    ax.text(1600, 1.02, "標高が上がるほど減る\n（強風と疎林化）", ha="center", va="top",
+    ax.text(1600, 355, "標高が上がるほど減る\n（強風と疎林化）", ha="center", va="top",
             fontsize=9.2, color=ACCENT)
 
-    ax.set_xlabel("標高 [m]"); ax.set_ylabel("年最大積雪深 [m]")
-    ax.set_xlim(-60, 1900); ax.set_ylim(0, 4.4)
+    ax.text(1880, 18, "計画側は密度350 kg/m³ で水量に換算（計画・報告書が使う一律値）",
+            fontsize=8.4, color=MUTED, ha="right", va="bottom")
+
+    # 軸ラベルに「年最大」は付けない——青系列は年最大積雪深からの換算だが、赤系列は
+    # 2023年3月9日の単日測量であり、1本のラベルで両方を限定できない。限定は凡例側に置く
+    ax.set_xlabel("標高 [m]"); ax.set_ylabel("積雪水量 [mm]")
+    ax.set_xlim(-60, 1900); ax.set_ylim(0, 1540)
     ax.grid(alpha=0.25, lw=0.6)
     ax.legend(loc="upper left", fontsize=8.6, framealpha=0.95)
     ax.set_title("外挿の先に実測があり、直線から外れている", fontsize=12.5, fontweight="bold")
@@ -189,8 +211,10 @@ def fig3():
     ax.grid(axis="x", alpha=0.25, lw=0.6, zorder=0)
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.135), fontsize=8.4,
               ncol=5, framealpha=0.95, columnspacing=1.1, handlelength=1.4)
-    ax.set_title("2年・10年超過確率には足りる。100年確率は外挿になる",
-                 fontsize=12.5, fontweight="bold")
+    # 見出しは中位推定に対する結論であることを明示する。悲観推定では4火山が20年を割るので、
+    # 無条件の断定にすると同じ図の赤マーカーと食い違って見える
+    ax.set_title("中位推定なら2年・10年超過確率に足りる。100年確率は外挿になる",
+                 fontsize=12.0, fontweight="bold")
     fig.tight_layout()
     fig.savefig(os.path.join(_OUT, "t2_fig3_years.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
@@ -215,8 +239,10 @@ def fig4():
     ax.text(0.525, 0.585, "同じ事業内容の行に\n「計画の改定」と「リアルタイム\nハザードマップの運用・整備」が並ぶ",
             ha="center", va="top", fontsize=8.8, color=MUTED, linespacing=1.4)
 
+    # 「発注予定」と書くと提出日には陳腐化する（公告は令和8年5月予定）。出典の性格＝
+    # 公表された発注の見通し、に主語を寄せて時制を持たせない
     _box(ax, 0.72, 0.63, 0.25, 0.24,
-         "需要は表に出ている\n\n那須岳で衛星による\n積雪深推定の検討を発注予定",
+         "需要は表に出ている\n\n那須岳で衛星による積雪深推定の\n検討が発注見通しに載る",
          fs=9.0, ec=ACCENT, lw=1.6, fc="#fdf0ee")
     ax.text(0.845, 0.585, "積雪計5基がある事務所が\n面的な推定を求めている",
             ha="center", va="top", fontsize=8.8, color=ACCENT, linespacing=1.4)
