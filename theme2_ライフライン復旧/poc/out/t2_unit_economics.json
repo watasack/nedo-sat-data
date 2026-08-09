@@ -1,0 +1,308 @@
+{
+ "_note": "金額の係数は1点に固定していない。UNRESOLVED が閉じるまで、この結果から『年商◯円』という単一の数字を引用してはいけない。引用してよいのは物量（シーン数・GB・人月）と、感度表そのものである。",
+ "sources": {
+  "scene_counts": "origin/sdd-analysis:theme2_ライフライン復旧/sdd_out/analysis.json（火口中心・半径3kmのbboxでSTAC全件集計）",
+  "site_counts": "01_検討経緯.md 8.7節（緊急減災対策砂防計画29火山・うち積雪21座、火山災害警戒地域50火山179市町村）"
+ },
+ "aoi": {
+  "side_km": 6.0,
+  "area_km2": 36.0,
+  "pixels_per_band": {
+   "landsat": 40000,
+   "sentinel2": 360000
+  },
+  "MB_per_scene": {
+   "landsat": 0.32,
+   "sentinel2": 2.88
+  },
+  "bands": 4,
+  "melt_window_days": 122
+ },
+ "per_volcano": [
+  {
+   "volcano": "草津白根山",
+   "landsat_first": "1984-06-04",
+   "melt_scenes_sentinel2": 565,
+   "melt_scenes_landsat": 606,
+   "melt_scenes_total": 1171,
+   "clipped_GB": 1.82
+  },
+  {
+   "volcano": "浅間山",
+   "landsat_first": "1984-06-04",
+   "melt_scenes_sentinel2": 566,
+   "melt_scenes_landsat": 464,
+   "melt_scenes_total": 1030,
+   "clipped_GB": 1.78
+  },
+  {
+   "volcano": "十勝岳",
+   "landsat_first": "1984-04-26",
+   "melt_scenes_sentinel2": 554,
+   "melt_scenes_landsat": 493,
+   "melt_scenes_total": 1047,
+   "clipped_GB": 1.75
+  },
+  {
+   "volcano": "樽前山",
+   "landsat_first": "1984-04-17",
+   "melt_scenes_sentinel2": 274,
+   "melt_scenes_landsat": 1275,
+   "melt_scenes_total": 1550,
+   "clipped_GB": 1.2
+  },
+  {
+   "volcano": "富士山",
+   "landsat_first": "1984-06-04",
+   "melt_scenes_sentinel2": 282,
+   "melt_scenes_landsat": 944,
+   "melt_scenes_total": 1227,
+   "clipped_GB": 1.12
+  },
+  {
+   "volcano": "磐梯山",
+   "landsat_first": "1984-04-17",
+   "melt_scenes_sentinel2": 279,
+   "melt_scenes_landsat": 862,
+   "melt_scenes_total": 1141,
+   "clipped_GB": 1.08
+  },
+  {
+   "volcano": "鳥海山",
+   "landsat_first": "1984-04-17",
+   "melt_scenes_sentinel2": 272,
+   "melt_scenes_landsat": 886,
+   "melt_scenes_total": 1158,
+   "clipped_GB": 1.07
+  },
+  {
+   "volcano": "蔵王山",
+   "landsat_first": "1984-04-26",
+   "melt_scenes_sentinel2": 276,
+   "melt_scenes_landsat": 860,
+   "melt_scenes_total": 1136,
+   "clipped_GB": 1.07
+  }
+ ],
+ "per_volcano_mean": {
+  "melt_scenes": 1182,
+  "clipped_GB": 1.36
+ },
+ "portfolio_21_sites": {
+  "total_clipped_GB": 28.6,
+  "total_melt_scenes": 24832
+ },
+ "effort_manmonths": {
+  "first_site_breakdown": {
+   "アーカイブ取得と前処理の自動化": 1.5,
+   "消雪日マップ生成（雲雪判別・地形陰影・欠測補間）": 2.0,
+   "後退積算による積雪水量復元と融雪係数の較正": 1.5,
+   "現地測量との突合と検証": 1.0,
+   "年超過確率分布の算定と成果物化（数表・分布図）": 1.0
+  },
+  "first_site_total": 7.0,
+  "additional_site_breakdown": {
+   "AOIと渓流区分の設定": 0.15,
+   "処理実行と品質確認（雲・陰影の座ごとの癖）": 0.35,
+   "融雪係数の地域較正と不確かさ評価": 0.3,
+   "成果物化と説明資料": 0.2
+  },
+  "additional_site_total": 1.0,
+  "marginal_ratio": 0.143
+ },
+ "sensitivity_gross_profit": [
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 3000000.0,
+   "cost_per_additional_site_yen": 1000000,
+   "gross_profit_yen": 2000000,
+   "gross_margin": 0.667
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 5000000.0,
+   "cost_per_additional_site_yen": 1000000,
+   "gross_profit_yen": 4000000,
+   "gross_margin": 0.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 10000000.0,
+   "cost_per_additional_site_yen": 1000000,
+   "gross_profit_yen": 9000000,
+   "gross_margin": 0.9
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1000000.0,
+   "unit_price_yen": 20000000.0,
+   "cost_per_additional_site_yen": 1000000,
+   "gross_profit_yen": 19000000,
+   "gross_margin": 0.95
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 3000000.0,
+   "cost_per_additional_site_yen": 1500000,
+   "gross_profit_yen": 1500000,
+   "gross_margin": 0.5
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 5000000.0,
+   "cost_per_additional_site_yen": 1500000,
+   "gross_profit_yen": 3500000,
+   "gross_margin": 0.7
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 10000000.0,
+   "cost_per_additional_site_yen": 1500000,
+   "gross_profit_yen": 8500000,
+   "gross_margin": 0.85
+  },
+  {
+   "labor_rate_yen_per_manmonth": 1500000.0,
+   "unit_price_yen": 20000000.0,
+   "cost_per_additional_site_yen": 1500000,
+   "gross_profit_yen": 18500000,
+   "gross_margin": 0.925
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 3000000.0,
+   "cost_per_additional_site_yen": 2000000,
+   "gross_profit_yen": 1000000,
+   "gross_margin": 0.333
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 5000000.0,
+   "cost_per_additional_site_yen": 2000000,
+   "gross_profit_yen": 3000000,
+   "gross_margin": 0.6
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 10000000.0,
+   "cost_per_additional_site_yen": 2000000,
+   "gross_profit_yen": 8000000,
+   "gross_margin": 0.8
+  },
+  {
+   "labor_rate_yen_per_manmonth": 2000000.0,
+   "unit_price_yen": 20000000.0,
+   "cost_per_additional_site_yen": 2000000,
+   "gross_profit_yen": 18000000,
+   "gross_margin": 0.9
+  }
+ ],
+ "rollout_scenarios": [
+  {
+   "sites_per_year": 2,
+   "unit_price_yen": 3000000.0,
+   "annual_revenue_yen": 6000000,
+   "years_to_cover_21": 10.5
+  },
+  {
+   "sites_per_year": 2,
+   "unit_price_yen": 5000000.0,
+   "annual_revenue_yen": 10000000,
+   "years_to_cover_21": 10.5
+  },
+  {
+   "sites_per_year": 2,
+   "unit_price_yen": 10000000.0,
+   "annual_revenue_yen": 20000000,
+   "years_to_cover_21": 10.5
+  },
+  {
+   "sites_per_year": 2,
+   "unit_price_yen": 20000000.0,
+   "annual_revenue_yen": 40000000,
+   "years_to_cover_21": 10.5
+  },
+  {
+   "sites_per_year": 4,
+   "unit_price_yen": 3000000.0,
+   "annual_revenue_yen": 12000000,
+   "years_to_cover_21": 5.2
+  },
+  {
+   "sites_per_year": 4,
+   "unit_price_yen": 5000000.0,
+   "annual_revenue_yen": 20000000,
+   "years_to_cover_21": 5.2
+  },
+  {
+   "sites_per_year": 4,
+   "unit_price_yen": 10000000.0,
+   "annual_revenue_yen": 40000000,
+   "years_to_cover_21": 5.2
+  },
+  {
+   "sites_per_year": 4,
+   "unit_price_yen": 20000000.0,
+   "annual_revenue_yen": 80000000,
+   "years_to_cover_21": 5.2
+  },
+  {
+   "sites_per_year": 7,
+   "unit_price_yen": 3000000.0,
+   "annual_revenue_yen": 21000000,
+   "years_to_cover_21": 3.0
+  },
+  {
+   "sites_per_year": 7,
+   "unit_price_yen": 5000000.0,
+   "annual_revenue_yen": 35000000,
+   "years_to_cover_21": 3.0
+  },
+  {
+   "sites_per_year": 7,
+   "unit_price_yen": 10000000.0,
+   "annual_revenue_yen": 70000000,
+   "years_to_cover_21": 3.0
+  },
+  {
+   "sites_per_year": 7,
+   "unit_price_yen": 20000000.0,
+   "annual_revenue_yen": 140000000,
+   "years_to_cover_21": 3.0
+  }
+ ],
+ "SAM_one_cycle": [
+  {
+   "unit_price_yen": 3000000.0,
+   "SAM_one_cycle_yen": 63000000
+  },
+  {
+   "unit_price_yen": 5000000.0,
+   "SAM_one_cycle_yen": 105000000
+  },
+  {
+   "unit_price_yen": 10000000.0,
+   "SAM_one_cycle_yen": 210000000
+  },
+  {
+   "unit_price_yen": 20000000.0,
+   "SAM_one_cycle_yen": 420000000
+  }
+ ],
+ "UNRESOLVED": [
+  {
+   "item": "火山砂防検討業務の契約金額（落札額）",
+   "why": "入札情報サービス(PPI)とGEPSが動的サイトで到達不可。第4バッチ fetch_bid_refs.py で静的公開の契約結果一覧PDFを取得中",
+   "how": "取れなければユーザーがPPI/GEPSで手動確認する。受注単価Pの実額はこれが唯一の根拠になる"
+  },
+  {
+   "item": "国土交通省「設計業務等技術者単価」（年度公示）",
+   "why": "未取得。人月単価の公的な根拠になる",
+   "how": "国交省の公示PDFを取得する。取れるまでは人月単価はレンジで扱う"
+  },
+  {
+   "item": "クラウド費の実見積",
+   "why": "各社の公表単価はあるが見積は未取得",
+   "how": "物量（GB・CPU時間）まで計算してあるので、見積が出た時点で掛けるだけでよい"
+  }
+ ]
+}
