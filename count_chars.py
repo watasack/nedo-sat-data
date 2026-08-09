@@ -18,13 +18,18 @@ src = open(path, encoding="utf-8").read()
 
 sections = []
 cur = None
+skipping = False
 for line in src.split("\n"):
     m = re.match(r"^(#{2,3})\s+(.*)$", line)
     if m:
-        cur = {"title": m.group(2).strip(), "body": [], "table": []}
+        # 「【提出時に削除】」節は配下の ### 小見出しごと数えない
+        if len(m.group(1)) == 2:
+            skipping = "提出時に削除" in m.group(2)
+        cur = {"title": m.group(2).strip(), "body": [], "table": [],
+               "skip": skipping or "提出時に削除" in m.group(2)}
         sections.append(cur)
         continue
-    if cur is None or "提出時に削除" in cur["title"]:
+    if cur is None or cur["skip"]:
         continue
     if line.strip().startswith(">"):
         continue
