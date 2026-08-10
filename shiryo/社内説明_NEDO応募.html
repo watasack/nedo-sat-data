@@ -481,8 +481,14 @@
           「開発が速いなら3か月で出せる」という話にはなりません。
         </li>
         <li>
-          市場規模の見積もりに使っている施設数には、まだ一次出典がありません
-          <span class="flag f-miss">未取得</span>。公的統計から取り直す作業を今週動かしています。
+          <strong>市場規模の施設数は公的統計で数え直しました</strong> <span class="flag f-ok">確定</span>。
+          資源エネルギー庁の電力調査統計で火力発電所 <span class="num">492</span> 所、
+          環境省の一般廃棄物処理実態調査でごみ焼却施設 <span class="num">1,027</span> 施設
+          （うち発電設備あり <span class="num">409</span>）、
+          日本熱供給事業協会の一覧で地域熱供給 <span class="num">133</span> 供給地域。
+          主な対象は <span class="num">458〜542</span> 事業所で、市場規模は年
+          <span class="num">17〜39</span> 億円 <span class="flag f-warn">仮定</span>
+          （1事業所あたりの単価はまだ根拠がありません <span class="flag f-miss">未取得</span>）。
         </li>
       </ul>
       <p style="font-size:.93rem;color:var(--ink-2)">
@@ -530,10 +536,17 @@
         従来型の見積もりなら数人月に相当する分量です。
       </p>
       <p>
-        テーマ①の国内市場は年 <span class="num">16〜37</span> 億円規模と見ています。
-        対象は主に発電所・清掃工場・地域熱供給で <span class="num">250〜400</span> 事業所
-        <span class="flag f-miss">未取得</span>。
+        テーマ①の国内市場は年 <span class="num">17〜39</span> 億円規模と見ています。
+        対象は発電所（事業用火力 <span class="num">158</span> 所）・大型の清掃工場
+        （<span class="num">167〜251</span> 施設）・地域熱供給（<span class="num">133</span> 供給地域）で、
+        あわせて <span class="num">458〜542</span> 事業所 <span class="flag f-ok">確定</span>。
+        施設数は公的統計を1行ずつ数えた実測で、<strong>1事業所あたりの単価だけがまだ根拠なし</strong>
+        <span class="flag f-miss">未取得</span> です。上下水処理場は数に入れていないので、下限側の値になります。
         小さい市場ですが、同じ衛星データから隣接するサービス（設備の稼働監視、排熱の可視化）へ広げられる想定です。
+      </p>
+      <p>
+        なお <strong>東京二十三区清掃一部事務組合は、発電事業者として19の発電所を登録しています</strong>
+        <span class="flag f-ok">確定</span>（電力調査統計）。協力先の第一候補として照会をお願いしている先です。
       </p>
       <p>
         テーマ②の顧客は国と都道府県の砂防部局で、対象は21火山。
@@ -546,7 +559,7 @@
   <footer>
     NEDO Challenge, Satellite Data ／ 応募締切 2026-08-31 12:00 ／ 提出推奨日 2026-08-28<br>
     この資料の元になっている根拠・計算・出典は社内の作業リポジトリに全て残してあります。<br>
-    未確認箇所 7件（T1〜T7）／ 版: 2026-08-10 第2版（工数の見積もりを Claude Code 前提に改訂）
+    未確認箇所 7件（T1〜T7）／ 版: 2026-08-10 第3版（工数を Claude Code 前提に改訂、施設数を公的統計で確定）
   </footer>
 
 </div>
