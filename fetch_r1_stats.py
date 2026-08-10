@@ -78,3 +78,7 @@ def main():
     (OUT/"manifest.json").write_text(json.dumps(man,ensure_ascii=False,indent=2),encoding="utf-8")
     ok=sum(1 for m in man if m.get("status")==200)
     print(f"\n取得 {ok}/{len(man)} 件")
+
+
+if __name__ == "__main__":
+    main()
