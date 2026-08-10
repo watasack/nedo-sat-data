@@ -1,0 +1,39 @@
+{
+  "assumptions": {
+    "S2_revisit_days": 5,
+    "clear_sky_fraction": 0.35,
+    "S1_revisit_days": 6
+  },
+  "effective_revisit_days": {
+    "S2_optical": 14.3,
+    "S1_sar": 6.0,
+    "combined": 4.2
+  },
+  "detection": {
+    "小規模・当日完了 (1日)": {
+      "exposure_days": 1,
+      "p_optical": 0.068,
+      "p_combined": 0.211
+    },
+    "小規模 (3日)": {
+      "exposure_days": 3,
+      "p_optical": 0.189,
+      "p_combined": 0.508
+    },
+    "中規模 (14日)": {
+      "exposure_days": 14,
+      "p_optical": 0.625,
+      "p_combined": 0.964
+    },
+    "宅地造成・道路工事 (60日)": {
+      "exposure_days": 60,
+      "p_optical": 0.985,
+      "p_combined": 1.0
+    },
+    "大規模造成 (180日)": {
+      "exposure_days": 180,
+      "p_optical": 1.0,
+      "p_combined": 1.0
+    }
+  }
+}
