@@ -13,6 +13,7 @@
 数値の出典は `01_検討経緯.md` 8.4〜8.7節。図2・図3は同節の実測値をそのまま使う。
 出力: theme2_ライフライン復旧/poc/out/fig/
 """
+import json
 import os
 
 import matplotlib
@@ -183,7 +184,11 @@ def fig3():
                     [2, 12, 3, 10], [2, 12, 2, 10], [3, 8, 4, 10], [2, 8, 3, 10]])
     pess = np.array([23, 26, 20, 22, 17, 17, 15, 15])   # 悲観推定の合計
 
-    fig, ax = plt.subplots(figsize=(9.2, 5.2))
+    # 2パネル構成（J-14）。左＝カタログ集計（観測機会があるか）、右＝蔵王山9融雪期の実測
+    # （それを実際に処理できたか）。③本文は後者を主張しているのに図が前者しか映していなかった。
+    # 右パネルの値は poc/out/t2_snowmap_results.json の実測（fetch_snowmap_poc.py の出力）。
+    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(13.4, 5.2),
+                                  gridspec_kw={"width_ratios": [1.75, 1.0]})
     y = np.arange(len(vol))
     left = np.zeros(len(vol))
     shades = ["#cfe0ef", "#9dc0dd", "#5b93c4", "#2c5f8d"]
@@ -215,6 +220,29 @@ def fig3():
     # 無条件の断定にすると同じ図の赤マーカーと食い違って見える
     ax.set_title("中位推定なら2年・10年超過確率に足りる。100年確率は外挿になる",
                  fontsize=12.0, fontweight="bold")
+
+    # --- 右パネル: 蔵王山 火口半径3km の9融雪期を実際に処理した結果 ---
+    res = json.load(open(os.path.join(os.path.dirname(_OUT), "t2_snowmap_results.json"),
+                         encoding="utf-8"))["years"]
+    yrs = sorted(res)
+    gap = [res[k]["gap_median_days"] for k in yrs]
+    frac = [res[k]["resolved_frac"] for k in yrs]
+    xi = np.arange(len(yrs))
+    ax2.bar(xi, gap, width=0.62, color="#5b93c4", edgecolor="white", linewidth=0.8, zorder=3)
+    ax2.axhline(20, color=ACCENT, ls="--", lw=1.4, zorder=4)
+    ax2.text(len(yrs) - 0.4, 21.5, "中央値 20日\n（＝誤差±10日）", fontsize=8.8,
+             ha="right", va="bottom", color=ACCENT, fontweight="bold")
+    for i, (g, f) in enumerate(zip(gap, frac)):
+        ax2.text(i, g + 1.2, f"{f*100:.0f}%", ha="center", fontsize=7.6, color=MUTED)
+    ax2.set_xticks(xi)
+    ax2.set_xticklabels([k[2:] for k in yrs], fontsize=8.6)
+    ax2.set_ylabel("観測ギャップの中央値［日］")
+    ax2.set_xlabel("蔵王山 火口半径3km の融雪期（上の数字＝消雪日が付いた画素の割合）")
+    ax2.set_ylim(0, 58)
+    ax2.grid(axis="y", alpha=0.25, lw=0.6, zorder=0)
+    ax2.set_title("9融雪期すべてで消雪日を特定できた。最悪の年は48日",
+                  fontsize=12.0, fontweight="bold")
+
     fig.tight_layout()
     fig.savefig(os.path.join(_OUT, "t2_fig3_years.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
@@ -265,13 +293,21 @@ def fig4():
     ax.text(0.5, 0.955, "誰に、どの予算で売り、下流の何がどれだけ変わるか", ha="center",
             fontsize=12.5, fontweight="bold")
 
-    # 社会的インパクト。金額の原単位は未取得なので物量で示す（すべて蔵王計画の内部データ＝外挿ゼロ）
+    # 社会的インパクト。物量で示す（すべて蔵王計画の内部データ＝外挿ゼロ）。
+    # **2026年8月10日修正**: 旧版は「同じ噴火規模で積雪の想定だけを変えた2ケース」と書いていたが、
+    # 原典（蔵王計画 表4-5＝水蒸気爆発期／表4-6＝マグマ噴火期、いずれも濁川）を確認すると
+    # 両ケースは噴火規模が違い、流域平均積雪深は3.40m/3.46mでほぼ同じ、動いているのは
+    # 融雪範囲 0.79→2.95km² だった。**2.18倍は積雪ではなく噴火規模に帰属する。**
+    # 正しい示し方は「マグマ噴火期の想定に現地測量の積雪(計画値の29%)を当てると
+    # 泥流総量が 6,022→2,886千m³ となり、計画自身の水蒸気爆発期 2,759千m³ と同水準に落ちる」。
+    # 対策の物量はそのとき計画が水蒸気爆発期に割り当てている側の値になる。
     _box(ax, 0.03, -0.30, 0.94, 0.24,
-         "積雪の想定が2.18倍違うと、下流の緊急対策工がまるごと2倍動く\n\n"
-         "堤防嵩上げ 11.0 → 20.6 km ／ 大型土のう 36,600 → 78,700 個 ／ 総作業日数 256 → 518 日\n"
-         "氾濫範囲 347 → 803 世帯 ／ 対策期間 30 → 50 日",
+         "マグマ噴火期の想定に現地測量の積雪を当てると、泥流総量は計画自身の水蒸気爆発期と同水準に落ちる\n\n"
+         "堤防嵩上げ 20.6 → 11.0 km ／ 大型土のう 78,700 → 36,600 個 ／ 総作業日数 518 → 256 日\n"
+         "氾濫範囲 803 → 347 世帯 ／ 対策期間 50 → 30 日",
          fs=9.6, ec=ACCENT, lw=1.8, fc="#fdf0ee")
-    ax.text(0.5, -0.335, "同じ噴火規模で積雪の想定だけを変えた2ケースの比較（蔵王計画の内部データ）",
+    ax.text(0.5, -0.335, "泥流総量 6,022 千m³ が実測積雪で 2,886 千m³ となり、計画の水蒸気爆発期 2,759 千m³ と並ぶ"
+            "（蔵王計画の内部データ）",
             ha="center", va="top", fontsize=8.6, color=MUTED)
     fig.tight_layout()
     fig.savefig(os.path.join(_OUT, "t2_fig4_business.png"), dpi=200, bbox_inches="tight")
