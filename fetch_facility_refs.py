@@ -39,6 +39,14 @@ from pathlib import Path
 OUT = Path("facility_refs")
 UA = "Mozilla/5.0 (compatible; nedo-applicant-fetch/1.0; +application material retrieval)"
 
+# 第3巡（2026年8月10日）: 寄り道をやめ、統計表の本体（xlsx）を直接取る。MAX_DEPTH=0。
+#   第2巡は e-Stat のナビゲーションを延々とクロールして80件の予算を食い潰した（51/80件）。
+#   ただし環境省の年度ページが取れ、**焼却施設の集計は data/seibi/facility/01.xlsx にある**ことが
+#   判明した（r5/index.html のリンク文字列「焼却施設 (xls 535KB)」の実体）。
+#   電力調査統計の統計表も ep002/xls/2026/*.xlsx と分かった。
+#   **製油所（石油連盟）と認定事業者制度（高圧ガス保安協会）は静的HTMLにリンクが無く、**
+#   **経産省スマート保安は403。この2つは未取得のまま残す**（主対象2セグメントではないので優先度は低い）。
+#
 # 第1巡（2026年8月10日）の結果: 73/80件を取得し、**熱供給だけが静的HTMLで数え切れた**
 #   （日本熱供給事業協会 事業者一覧 = 72事業者・133供給地域）。
 # 残る3つは第1巡のシードでは数に届かなかったので、第2巡でシードを絞り込んである。
@@ -48,31 +56,18 @@ UA = "Mozilla/5.0 (compatible; nedo-applicant-fetch/1.0; +application material r
 #     → 最新年度ページを年度直打ちで並べ、あわせて e-Stat の統計表を狙う
 #   - 製油所: 石油連盟の統計トップからは会員会社ページに届かなかった → 直接指定
 SEEDS = [
-    # --- 火力発電所の数（統計表の本体を狙う） ---
-    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/results.html",
-    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/",
-    "https://www.e-stat.go.jp/stat-search/files?tstat=000001016405",
-    "https://www.e-stat.go.jp/statistics/00601010",
-    # --- 清掃工場（ごみ焼却施設）の数。最新年度を年度直打ちで並べる ---
-    "https://www.env.go.jp/recycle/waste_tech/ippan/stats.html",
-    "https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html",
-    "https://www.env.go.jp/recycle/waste_tech/ippan/r4/index.html",
-    "https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html",
-    "https://www.env.go.jp/recycle/waste_tech/ippan/r2/index.html",
-    "https://www.env.go.jp/recycle/waste_tech/ippan/h30/index.html",
-    "https://www.e-stat.go.jp/stat-search/files?tstat=000001019279",
-    # --- 熱供給事業者・供給地区の数（第1巡で取得済み。再取得して版を固定する） ---
+    # --- 清掃工場（ごみ焼却施設）の数: 環境省 一般廃棄物処理実態調査の施設別集計（本体） ---
+    #     r5/index.html のリンク文字列「焼却施設 (xls 535KB)」の実体。ここに施設が1行ずつ載る
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r5/data/seibi/facility/01.xlsx",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r4/data/seibi/facility/01.xlsx",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r5/data/shori/total/01.xlsx",
+    # --- 火力発電所の数: 資源エネルギー庁 電力調査統計の統計表（本体） ---
+    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/xls/2026/1-1-2026.xlsx",
+    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/xls/2026/1-2-2026.xlsx",
+    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/xls/2026/2-1-2026.xlsx",
+    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/xls/2026/2-2-2026.xlsx",
+    # --- 熱供給（第1巡で数え切れた。版を固定するため再取得する） ---
     "https://www.jdhc.or.jp/company_list/",
-    "https://www.jdhc.or.jp/area_list/",
-    # --- 製油所の数 ---
-    "https://www.paj.gr.jp/paj/member/",
-    "https://www.paj.gr.jp/statis/committee/",
-    "https://www.paj.gr.jp/statis/",
-    # --- 認定事業者制度（連続運転期間の延長）と、その経済価値 ---
-    "https://www.khk.or.jp/activities/instruction_examination/certification.html",
-    "https://www.meti.go.jp/policy/safety_security/industrial_safety/",
-    "https://www.meti.go.jp/policy/safety_security/industrial_safety/sangyo/hipregas/",
-    "https://www.meti.go.jp/policy/safety_security/industrial_safety/sangyo/smart_hoan/",
 ]
 
 ALLOWED_HOSTS = {
@@ -82,7 +77,6 @@ ALLOWED_HOSTS = {
     "www.jdhc.or.jp", "jdhc.or.jp",
     "www.paj.gr.jp", "paj.gr.jp",
     "www.khk.or.jp", "khk.or.jp",
-    "www.e-stat.go.jp", "e-stat.go.jp",
 }
 DOC_EXT = (".pdf", ".xlsx", ".xls", ".docx", ".doc", ".csv", ".zip")
 
@@ -96,9 +90,9 @@ KEYWORDS = [
     "便覧", "年報", "集計", "結果", "公表",
 ]
 
-MAX_FILES = 80
+MAX_FILES = 20
 MAX_TOTAL_BYTES = 40 * 1024 * 1024   # GitHubは1ファイル100MB超でブランチ全体を弾く
-MAX_DEPTH = 2
+MAX_DEPTH = 0   # 第2巡でe-Statのナビゲーションをクロールして予算を食い潰したので、寄り道を止めた
 
 
 class LinkParser(HTMLParser):
