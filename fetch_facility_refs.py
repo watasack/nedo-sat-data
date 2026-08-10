@@ -39,28 +39,40 @@ from pathlib import Path
 OUT = Path("facility_refs")
 UA = "Mozilla/5.0 (compatible; nedo-applicant-fetch/1.0; +application material retrieval)"
 
+# 第1巡（2026年8月10日）の結果: 73/80件を取得し、**熱供給だけが静的HTMLで数え切れた**
+#   （日本熱供給事業協会 事業者一覧 = 72事業者・133供給地域）。
+# 残る3つは第1巡のシードでは数に届かなかったので、第2巡でシードを絞り込んである。
+#   - 火力発電所: 電気事業連合会の「主な発電所検索」はJS駆動で静的HTMLに件数が出ない
+#     → 資源エネルギー庁 電力調査統計の統計表本体（Excel）と e-Stat を狙う
+#   - ごみ焼却施設: 環境省の一覧ページは平成24・25年度しか辿れなかった
+#     → 最新年度ページを年度直打ちで並べ、あわせて e-Stat の統計表を狙う
+#   - 製油所: 石油連盟の統計トップからは会員会社ページに届かなかった → 直接指定
 SEEDS = [
-    # --- 火力発電所の数 ---
+    # --- 火力発電所の数（統計表の本体を狙う） ---
+    "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/results.html",
     "https://www.enecho.meti.go.jp/statistics/electric_power/ep002/",
-    "https://www.enecho.meti.go.jp/statistics/electric_power/",
-    "https://www.fepc.or.jp/library/data/index.html",
-    "https://www.fepc.or.jp/",
-    # --- 清掃工場（ごみ焼却施設）の数 ---
-    "https://www.env.go.jp/recycle/waste_tech/ippan/",
-    "https://www.env.go.jp/recycle/waste_tech/ippan/index.html",
-    "https://www.env.go.jp/press/",
-    # --- 熱供給事業者・供給地区の数 ---
+    "https://www.e-stat.go.jp/stat-search/files?tstat=000001016405",
+    "https://www.e-stat.go.jp/statistics/00601010",
+    # --- 清掃工場（ごみ焼却施設）の数。最新年度を年度直打ちで並べる ---
+    "https://www.env.go.jp/recycle/waste_tech/ippan/stats.html",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r4/index.html",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r3/index.html",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/r2/index.html",
+    "https://www.env.go.jp/recycle/waste_tech/ippan/h30/index.html",
+    "https://www.e-stat.go.jp/stat-search/files?tstat=000001019279",
+    # --- 熱供給事業者・供給地区の数（第1巡で取得済み。再取得して版を固定する） ---
     "https://www.jdhc.or.jp/company_list/",
-    "https://www.jdhc.or.jp/",
-    "https://www.jdhc.or.jp/data/",
+    "https://www.jdhc.or.jp/area_list/",
     # --- 製油所の数 ---
+    "https://www.paj.gr.jp/paj/member/",
+    "https://www.paj.gr.jp/statis/committee/",
     "https://www.paj.gr.jp/statis/",
-    "https://www.paj.gr.jp/",
     # --- 認定事業者制度（連続運転期間の延長）と、その経済価値 ---
     "https://www.khk.or.jp/activities/instruction_examination/certification.html",
-    "https://www.khk.or.jp/",
     "https://www.meti.go.jp/policy/safety_security/industrial_safety/",
     "https://www.meti.go.jp/policy/safety_security/industrial_safety/sangyo/hipregas/",
+    "https://www.meti.go.jp/policy/safety_security/industrial_safety/sangyo/smart_hoan/",
 ]
 
 ALLOWED_HOSTS = {
@@ -70,6 +82,7 @@ ALLOWED_HOSTS = {
     "www.jdhc.or.jp", "jdhc.or.jp",
     "www.paj.gr.jp", "paj.gr.jp",
     "www.khk.or.jp", "khk.or.jp",
+    "www.e-stat.go.jp", "e-stat.go.jp",
 }
 DOC_EXT = (".pdf", ".xlsx", ".xls", ".docx", ".doc", ".csv", ".zip")
 
