@@ -1,0 +1,565 @@
+<title>NEDO Challenge 応募のご相談 — 都市インフラ×衛星データ</title>
+
+<style>
+  /* ---- トークン: 明（既定）。色はすべてここで定義し、コンポーネントはトークン経由で参照する ---- */
+  :root {
+    --paper:      #F7F7F5;   /* わずかに冷たい中性紙 */
+    --surface:    #FFFFFF;
+    --surface-2:  #F1F1EE;
+    --ink:        #1B2028;   /* 深いスレート（青寄り） */
+    --ink-2:      #545C68;
+    --ink-3:      #7E8693;
+    --rule:       #DCDDD8;
+    --rule-2:     #EAEAE6;
+    --accent:     #B4441F;   /* 遠赤の帯を借りた深いエンバー。依頼と期限だけに使う */
+    --accent-ink: #8E3517;
+    --accent-bg:  #F6E9E3;
+    --ok:         #2F6B4F;   /* 確定 */
+    --ok-bg:      #E6EFE9;
+    --warn:       #8A5D16;   /* 仮定 */
+    --warn-bg:    #F5ECD9;
+    --miss:       #6E727A;   /* 未取得 */
+    --miss-bg:    #EBEBE9;
+    --shadow:     0 1px 2px rgba(27,32,40,.05), 0 8px 24px -16px rgba(27,32,40,.18);
+
+    --serif: "Hiragino Mincho ProN", "HiraMinProN-W3", "Yu Mincho", "YuMincho",
+             "Noto Serif JP", "Source Han Serif JP", serif;
+    --sans:  "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "YuGothic",
+             "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+             "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #14161A;
+      --surface:    #1B1E24;
+      --surface-2:  #21252C;
+      --ink:        #E7E8E4;
+      --ink-2:      #A5ABB4;
+      --ink-3:      #838A94;
+      --rule:       #2C3037;
+      --rule-2:     #23272E;
+      --accent:     #E07048;
+      --accent-ink: #EE8A64;
+      --accent-bg:  #33221B;
+      --ok:         #74B694;
+      --ok-bg:      #1B2A22;
+      --warn:       #D4A65C;
+      --warn-bg:    #2C2417;
+      --miss:       #8B9199;
+      --miss-bg:    #22262C;
+      --shadow:     0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #14161A;
+    --surface:    #1B1E24;
+    --surface-2:  #21252C;
+    --ink:        #E7E8E4;
+    --ink-2:      #A5ABB4;
+    --ink-3:      #838A94;
+    --rule:       #2C3037;
+    --rule-2:     #23272E;
+    --accent:     #E07048;
+    --accent-ink: #EE8A64;
+    --accent-bg:  #33221B;
+    --ok:         #74B694;
+    --ok-bg:      #1B2A22;
+    --warn:       #D4A65C;
+    --warn-bg:    #2C2417;
+    --miss:       #8B9199;
+    --miss-bg:    #22262C;
+    --shadow:     0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 1;
+  }
+
+  .wrap {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+  }
+
+  /* ---- 見出し: 明朝で社内文書の格を出す ---- */
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
+  h1 { font-size: 1.9rem; line-height: 1.4; letter-spacing: .01em; }
+  h2 { font-size: 1.3rem; line-height: 1.5; }
+  h3 { font-size: 1.02rem; line-height: 1.6; }
+
+  p { margin: 0; }
+  a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: .69rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  header .lede { color: var(--ink-2); font-size: 1.02rem; margin-top: .85rem; }
+  header .meta {
+    font-family: var(--mono); font-size: .74rem; color: var(--ink-3);
+    margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--rule);
+  }
+
+  section { display: flex; flex-direction: column; gap: 1rem; }
+  section > .body { display: flex; flex-direction: column; gap: .85rem; }
+
+  .hr { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+  /* ---- 依頼カード: 期限順（時間の順序は本当に情報を運ぶ） ---- */
+  .asks { display: flex; flex-direction: column; gap: .6rem; }
+  .ask {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    padding: .95rem 1.1rem;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 6.2rem 1fr;
+    gap: .25rem 1rem;
+    align-items: baseline;
+  }
+  .ask .when {
+    font-family: var(--mono); font-size: .76rem; font-variant-numeric: tabular-nums;
+    color: var(--accent-ink); letter-spacing: .02em;
+  }
+  .ask .what { font-weight: 600; }
+  .ask .detail { grid-column: 2; color: var(--ink-2); font-size: .93rem; }
+  @media (max-width: 30rem) {
+    .ask { grid-template-columns: 1fr; }
+    .ask .detail { grid-column: 1; }
+  }
+
+  /* ---- 事実表 ---- */
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+  th, td {
+    text-align: left; padding: .5rem .7rem;
+    border-bottom: 1px solid var(--rule-2); vertical-align: top;
+  }
+  thead th {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+    border-bottom: 1px solid var(--rule); white-space: nowrap;
+  }
+  tbody th { font-weight: 600; white-space: nowrap; color: var(--ink); width: 11rem; }
+  td.num, .num { font-variant-numeric: tabular-nums; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+
+  /* ---- 2件の提案 ---- */
+  .props { display: grid; gap: .9rem; }
+  .prop {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+    padding: 1.1rem 1.2rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: .55rem;
+  }
+  .prop .tag {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .1em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .prop p { font-size: .95rem; }
+  .prop .proof {
+    font-size: .88rem; color: var(--ink-2);
+    border-top: 1px dashed var(--rule); padding-top: .55rem;
+  }
+
+  /* ---- 確度ラベル: 計測値に品質フラグを付けるのと同じ扱い ---- */
+  .flag {
+    display: inline-block; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .06em; padding: .1rem .4rem; border-radius: 2px;
+    vertical-align: .08em; white-space: nowrap;
+  }
+  .f-ok   { color: var(--ok);   background: var(--ok-bg); }
+  .f-warn { color: var(--warn); background: var(--warn-bg); }
+  .f-miss { color: var(--miss); background: var(--miss-bg); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; font-size: .87rem; color: var(--ink-2); }
+  .legend > span { display: inline-flex; align-items: baseline; gap: .4rem; }
+
+  /* ---- 正直な見通し ---- */
+  .frank {
+    background: var(--surface-2); border: 1px solid var(--rule);
+    border-radius: 3px; padding: 1.15rem 1.3rem;
+    display: flex; flex-direction: column; gap: .7rem;
+  }
+  .frank ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: .45rem; }
+  .frank li { font-size: .95rem; }
+  .frank strong { color: var(--accent-ink); }
+
+  /* ---- 未確認箇所（レビュー用） ---- */
+  .tbd {
+    background: var(--accent-bg); color: var(--accent-ink);
+    font-family: var(--mono); font-size: .82rem;
+    padding: .06rem .34rem; border-radius: 2px;
+    border-bottom: 1px solid var(--accent);
+  }
+  .reviewbox {
+    background: var(--surface); border: 1px dashed var(--accent); border-radius: 3px;
+    padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: .75rem;
+  }
+  .reviewbox ol { margin: 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: .4rem; }
+  .reviewbox li { font-size: .92rem; }
+  .reviewbox code {
+    font-family: var(--mono); font-size: .84rem;
+    background: var(--surface-2); padding: .08rem .3rem; border-radius: 2px;
+  }
+  .reviewbox .how { font-size: .9rem; color: var(--ink-2); }
+
+  details {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 3px; padding: .2rem 1.1rem;
+  }
+  details[open] { padding-bottom: 1rem; }
+  summary {
+    cursor: pointer; padding: .8rem 0; font-family: var(--serif);
+    font-size: 1rem; font-weight: 600;
+  }
+  summary::marker { color: var(--accent); }
+  details .inner { display: flex; flex-direction: column; gap: .8rem; font-size: .93rem; }
+
+  footer {
+    font-family: var(--mono); font-size: .73rem; color: var(--ink-3);
+    border-top: 1px solid var(--rule); padding-top: 1rem; line-height: 1.9;
+  }
+
+  @media print {
+    :root { --paper: #FFF; --surface: #FFF; --surface-2: #FFF; --shadow: none; }
+    body { font-size: 10.5pt; }
+    .wrap { max-width: none; padding: 0; gap: 1.6rem; }
+    .reviewbox { display: none; }
+    .ask, .prop, .frank, details { break-inside: avoid; }
+    details { border: 0; padding: 0; }
+    details > summary { list-style: none; }
+    details:not([open]) .inner { display: flex; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">社内相談メモ</p>
+    <h1>NEDO の懸賞金コンテストに2件応募します。<br>4点、ご相談させてください。</h1>
+    <p class="lede">
+      経済産業省・NEDO が主催する技術開発コンテストに、当社の衛星データ解析で応募します。
+      提案書は書き上がっており、締切は <strong>2026年8月31日 正午</strong>。
+      いま必要なのは社外への照会を出す許可と、通過した場合の工数の目処です。
+    </p>
+    <p class="meta">
+      作成 2026-08-10 ／ <span class="tbd">T1: 応募者名（正式名称）</span> ／
+      全体を通しての資料の版は最終ページに記載
+    </p>
+  </header>
+
+  <div class="reviewbox">
+    <div>
+      <p class="eyebrow" style="color:var(--accent-ink)">この資料を人に見せる前に埋める箇所 — 7件</p>
+      <p class="how">
+        本文中で <span class="tbd">このように</span> 囲んだ7箇所は、私（作成者）が知り得ない事実です。
+        値だけ返していただければ差し替えます。返信は <code>T1=株式会社◯◯ / T3=2名（うち専任1）</code> の形でかまいません。
+        <strong>埋め終わったらこの枠ごと削除します。</strong>
+      </p>
+    </div>
+    <ol>
+      <li><code>T1</code> 応募者名 — 正式名称。<strong>ニックネームは不可</strong>（要項III-3）で、仮称のままでは提出できません</li>
+      <li><code>T2</code> 応募者区分 — 法人／個人／グループ。<strong>区分で応募申請書のファイルが違う</strong>ので最初に決める必要があります</li>
+      <li><code>T3</code> 開発期間（2026年11月〜2027年6月）に当てられる人数と、専任か兼任か</li>
+      <li><code>T4</code> 人月単価 — 下の自己負担額の前提です。いまは仮の幅で置いています</li>
+      <li><code>T5</code> 社外への照会を出す名義 — 会社名か、個人名か</li>
+      <li><code>T6</code> 提案の中身をこの資料にどこまで書いてよいか — <strong>受賞すると情報公開法に基づく公開の対象</strong>になるため、実装の詳細は提案書にも書いていません</li>
+      <li><code>T7</code> Claude Code の契約プランと月あたりの実額 — 開発期間9か月分の費用の前提です。いまは月3〜10万円で仮に置いています</li>
+    </ol>
+  </div>
+
+  <hr class="hr">
+
+  <section>
+    <h2>お願いしたいこと</h2>
+    <p class="body" style="color:var(--ink-2)">期限が近い順に4件です。いずれも金額の支出を今日決めるものではありません。</p>
+    <div class="asks">
+
+      <div class="ask">
+        <span class="when">8月12日</span>
+        <span class="what">社外4者への照会を出す許可</span>
+        <span class="detail">
+          事務局への質問と、協力候補3者への打診です。聞くのは
+          <strong>「1次審査を通過した場合に、検証への協力を検討いただけるか」</strong>の一点だけで、
+          データの提供はこの段階では求めません。先方に拘束力は生じず、断られても提案書は現状のまま出せます。
+          名義は <span class="tbd">T5</span> でお願いします。
+        </span>
+      </div>
+
+      <div class="ask">
+        <span class="when">8月中</span>
+        <span class="what">応募者区分の決定と、会社情報の記入</span>
+        <span class="detail">
+          応募申請書に法人番号13桁・資本金・従業員数・企業種別・日本標準産業分類の業種が必要です。
+          区分（<span class="tbd">T2</span>）で使う様式が変わるため、記入より先に決める必要があります。
+          応募者名（<span class="tbd">T1</span>）も正式名称が要ります。
+        </span>
+      </div>
+
+      <div class="ask">
+        <span class="when">10月下旬</span>
+        <span class="what">通過した場合の工数の目処</span>
+        <span class="detail">
+          1次審査の結果が出るのが10月下旬で、通過すると2026年11月〜2027年6月にプロトタイプ開発が必要です。
+          実装・解析・文書は Claude Code が主導するので、<strong>人が出るのは現地作業と交渉と立会いだけ</strong>で、
+          <span class="num">17〜36</span> 人日（<span class="num">0.85〜1.8</span> 人月）と見ています
+          <span class="flag f-warn">仮定</span>。
+          いま欲しいのは「通ったら出す」という条件付きの合意で、
+          体制（<span class="tbd">T3</span>）の目処だけ伺えれば十分です。
+        </span>
+      </div>
+
+      <div class="ask">
+        <span class="when">同時期</span>
+        <span class="what">費用の構造についての了解</span>
+        <span class="detail">
+          <strong>懸賞金は2027年9月末までの一括後払い</strong>で、開発期間中の費用は全額こちら持ちです。
+          自己負担は <span class="num">222〜1,200</span> 万円 <span class="flag f-warn">仮定</span>
+          （人件費 <span class="num">85〜360</span> ＋ Claude Code の利用料 <span class="num">27〜90</span>
+          ＋ 実費 <span class="num">110〜750</span>）。
+          <strong>最大の費目は人件費ではなく衛星の撮像費と現地観測</strong>で、
+          撮像費は通過後に事務局へ購入を要望できる余地があります。
+          単価の前提は <span class="tbd">T4</span>、Claude Code の実額は <span class="tbd">T7</span> で置き換えます。
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <section>
+    <h2>どんなプログラムか</h2>
+    <div class="body">
+      <p>
+        NEDO の懸賞金型コンテスト「NEDO Challenge, Satellite Data ― 衛星データで革新する未来の都市インフラ」です。
+        <strong>助成金ではありません。</strong>先に自費で開発し、成果が上位に入った場合に賞金が出る形式で、
+        書類審査（1次）を通ると開発期間があり、公開のピッチ（2次）で順位が決まります。
+      </p>
+      <div class="tablewrap">
+        <table>
+          <tbody>
+            <tr><th>主催</th><td>NEDO（経済産業省）<span class="flag f-ok">確定</span></td></tr>
+            <tr><th>募集テーマ</th><td>2件。<strong>①インフラマネジメント及び都市活動</strong>／<strong>②インフラに係る防災・災害対応</strong>。1応募者が各テーマ1件まで出せます <span class="flag f-ok">確定</span></td></tr>
+            <tr><th>賞金</th><td class="num">テーマごとに 1位 2,000万円／2位 1,000万円／3位 500万円＋審査委員特別賞。<strong>該当なしもあり</strong> <span class="flag f-ok">確定</span></td></tr>
+            <tr><th>支払</th><td>受賞者決定後、<span class="num">2027年9月末</span>までに一括精算払い <span class="flag f-ok">確定</span></td></tr>
+            <tr><th>費用負担</th><td>応募・審査・メンタリングの費用はすべて応募者負担 <span class="flag f-ok">確定</span></td></tr>
+            <tr><th>通過者への支援</th><td>専門家によるメンタリング（希望制・毎月）、合同ワークショップ、ネットワーキング2回程度、衛星データ基盤 Tellus の開発環境。<strong>いずれも1次通過者のみ</strong> <span class="flag f-ok">確定</span></td></tr>
+            <tr><th>過去2回の規模</th><td class="num">1回目 67件応募→17件通過→12組受賞／2回目 59件応募→11チーム通過→8組受賞 <span class="flag f-ok">確定</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>当社が出す2件</h2>
+    <div class="props">
+
+      <div class="prop">
+        <p class="tag">テーマ① インフラマネジメント及び都市活動</p>
+        <h3>保温設備の劣化を、宇宙から全数・月次で見る</h3>
+        <p>
+          発電所・清掃工場・地域熱供給・上下水処理場では、高温の配管やタンクを覆う保温材が
+          一事業所で数万〜数十万m²あります。外から見えないまま劣化し、保温材の下で腐食が進んで
+          漏洩や火災につながります。いまの点検は歩く・足場を組む・ドローンを飛ばすいずれも
+          <strong>費用が面積に比例するため、数年周期の抜き取りにとどまります</strong>。
+        </p>
+        <p>
+          2026年6月に商用運用が始まった高分解能の熱赤外衛星（分解能3.5m）で全設備を毎月見て、
+          <strong>「今月どの設備に点検を送るべきか」の優先順位</strong>を出します。
+          点検をなくすのではなく、点検の行き先を決める上流の工程を作る提案です。
+        </p>
+        <p class="proof">
+          応募前に自費で4本の検証を実施済み。衛星の温度の絶対値では誤差が信号を上回って成立しないことを
+          先に確かめ、同じ画像の中での設備どうしの比較に切り替えることで判別性能を
+          <span class="num">0.54 → 0.92</span> に改善（<span class="flag f-ok">自前計算</span>）。
+          実在の衛星画像でも一連の処理を通し、ばらつきを <span class="num">36.0K → 7.7K</span> に抑えて
+          誤検知ゼロを確認しました。<span class="tbd">T6</span>
+        </p>
+      </div>
+
+      <div class="prop">
+        <p class="tag">テーマ② インフラに係る防災・災害対応</p>
+        <h3>火山の火口にどれだけ雪があるかを、40年分さかのぼって出す</h3>
+        <p>
+          積雪期に火山が噴火すると、火口周辺の雪が融けて泥流になり、下流の道路・橋・砂防施設と集落を襲います。
+          国は29の火山に緊急減災対策の砂防計画を作っており、うち21が積雪する火山です。
+          泥流の想定規模は火口にどれだけ雪があるかでほぼ決まるのに、
+          <strong>火口の高さで積雪を観測している機関が国内にありません</strong>。
+          計画は山麓の観測所から標高で外挿した平年値ひとつを使っています。
+        </p>
+        <p>
+          無償の光学衛星の40年分のアーカイブから、各年の雪が消えた日を面的に求め、
+          そこから遡って積雪量を復元します。出すのは<strong>「何年に一度の規模か」の分布</strong>で、
+          砂防事務所が計画やハザードマップを見直すときの設計値になります。
+        </p>
+        <p class="proof">
+          蔵王山の火口周辺で実際に9シーズン分を処理し、全シーズンで雪の消えた日を特定できることを確認済み
+          （<span class="flag f-ok">自前計算</span>）。現地測量の実測値を当てると、
+          計画が想定する対策の物量は堤防の嵩上げ <span class="num">20.6km → 11.0km</span>、
+          氾濫世帯 <span class="num">803 → 347</span> と変わります。
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>これからの流れ</h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>時期</th><th>できごと</th><th>当社がすること</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">8月12日</td><td>—</td><td>事務局へ質問、協力候補3者へ照会（<strong>今回のお願い</strong>）</td></tr>
+          <tr><td class="num">8月24日 正午</td><td>質問の受付期限</td><td>回答を提案書に反映し、内容を確定</td></tr>
+          <tr><td class="num">8月28日</td><td>—</td><td>提出（締切より3日前に出す。不備を指摘してもらえる余地を残すため）</td></tr>
+          <tr><td class="num">8月31日 正午</td><td>応募締切</td><td>期限後の差し替えは不可</td></tr>
+          <tr><td class="num">10月下旬</td><td>1次審査の結果</td><td>通過したらメンタリングと協賛企業の紹介を依頼</td></tr>
+          <tr><td class="num">11月〜2027年6月</td><td>開発期間</td><td>プロトタイプ開発（<span class="num">14.5〜23</span> 人月 <span class="flag f-warn">仮定</span>）</td></tr>
+          <tr><td class="num">2027年7月中旬</td><td>2次審査の結果</td><td>公開のピッチで順位が決まる</td></tr>
+          <tr><td class="num">2027年9月末まで</td><td>賞金の支払</td><td>受賞した場合、ここで一括入金</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <section>
+    <h2>現時点の見通し（正直なところ）</h2>
+    <div class="frank">
+      <ul>
+        <li>
+          <strong>1位（2,000万円）は現状では届かない</strong>と見ています。
+          1テーマあたり25〜35件から通過が6枠、賞金は3枠＋特別賞。
+          テーマ②はファイナリストから3位、テーマ①はファイナリストから特別賞が現実的な射程です。
+        </li>
+        <li>
+          <strong>差がつくのは技術ではなく、協力してくれる現場が1件でもあるかどうかです。</strong>
+          過去2回の受賞作を全部読みましたが、上位は例外なく「もう現場につながっている」ことを前面に出しています
+          （全国441漁協のネットワーク、全国1,600万筆の日次解析、国連機関の実名推薦など）。
+          当社にはそれがまだありません。<strong>だから8月12日の照会をお願いしています。</strong>
+        </li>
+        <li>
+          <strong>費用は当初の見積もりより1桁下がりました。</strong>
+          <span class="num">222〜1,200</span> 万円で、1位の賞金に対して
+          <span class="num">0.11〜0.6</span> 倍 <span class="flag f-warn">仮定</span>。
+          当初は人月で積んで <span class="num">1,560〜5,350</span> 万円（賞金の
+          <span class="num">0.78〜2.67</span> 倍）と見ていましたが、
+          <strong>実装・解析・文書を人が書く前提のままだったので二重計上でした</strong>。
+          いま残っている幅は人件費ではなく<strong>衛星の撮像費</strong>によるもので、
+          実勢価格は販売代理店へ照会中、まだ返っていません <span class="flag f-miss">未取得</span>。
+        </li>
+        <li>
+          <strong>ただし期間は短くなりません。</strong>9か月を決めているのは工数ではなく、
+          秘密保持契約の往復、衛星の撮像機会と雲待ち、冬季にしか取れない実測です。
+          「開発が速いなら3か月で出せる」という話にはなりません。
+        </li>
+        <li>
+          <strong>市場規模の施設数は公的統計で数え直しました</strong> <span class="flag f-ok">確定</span>。
+          資源エネルギー庁の電力調査統計で火力発電所 <span class="num">492</span> 所、
+          環境省の一般廃棄物処理実態調査でごみ焼却施設 <span class="num">1,027</span> 施設
+          （うち発電設備あり <span class="num">409</span>）、
+          日本熱供給事業協会の一覧で地域熱供給 <span class="num">133</span> 供給地域。
+          主な対象は <span class="num">458〜542</span> 事業所で、市場規模は年
+          <span class="num">17〜39</span> 億円 <span class="flag f-warn">仮定</span>
+          （1事業所あたりの単価はまだ根拠がありません <span class="flag f-miss">未取得</span>）。
+        </li>
+      </ul>
+      <p style="font-size:.93rem;color:var(--ink-2)">
+        それでも出す理由は3つあります。① 通過すれば、自力では作れない現場との接点が制度として開きます
+        （メンタリング・協賛企業の紹介・データ購入の要望）。② 提案の技術的な裏付けは、
+        過去の受賞作と並べても上位にあります。③ 落選しても、ここで作った検証結果と資料はそのまま
+        営業と共同研究の材料として残ります。
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>数字の読み方</h2>
+    <p class="legend">
+      <span><span class="flag f-ok">確定</span> 要項の原文または自前の計算で確認済み</span>
+      <span><span class="flag f-warn">仮定</span> 幅で置いている。1点に決め打ちしていない</span>
+      <span><span class="flag f-miss">未取得</span> まだ根拠がない。埋めていないことを明示している</span>
+    </p>
+    <p style="font-size:.93rem;color:var(--ink-2)">
+      社内で「その数字の根拠は」と聞かれたときに答えられるよう、上の3段を全部の数字に付けています。
+      <span class="flag f-miss">未取得</span> のものを断定して書かない方針でやっています。
+    </p>
+  </section>
+
+  <details>
+    <summary>参考: 自己負担の内訳と、市場規模の見方</summary>
+    <div class="inner">
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>項目</th><th>見積もり</th><th>確度</th></tr></thead>
+          <tbody>
+            <tr><th>人の稼働（9か月）</th><td class="num">17〜36 人日</td><td>現地作業・交渉・夜間の立会い・公開ピッチ。<strong>ここは圧縮できません</strong> <span class="flag f-warn">仮定</span></td></tr>
+            <tr><th>人件費</th><td class="num">85〜360 万円</td><td>単価は <span class="tbd">T4</span> 待ち <span class="flag f-warn">仮定</span></td></tr>
+            <tr><th>Claude Code 利用料</th><td class="num">27〜90 万円</td><td>実装・解析・文書。9か月分。実額は <span class="tbd">T7</span> <span class="flag f-miss">未取得</span></td></tr>
+            <tr><th>実費</th><td class="num">110〜750 万円</td><td>衛星の撮像2回、地上での同時観測3回、材料の実測。<strong>最大の費目</strong> <span class="flag f-warn">仮定</span></td></tr>
+            <tr><th>合計</th><td class="num">222〜1,200 万円</td><td>1位賞金の <span class="num">0.11〜0.6</span> 倍</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <strong>人月で積むのをやめた理由。</strong>実装・解析・図版・文書は Claude Code が主導するので、
+        人月で積むと「人が何人必要か」と読まれて現地作業の分と二重に数えてしまいます。
+        見積もりの根拠は当社自身の稼働実績です——<strong>今回の応募準備では、3日（コミットが動いていた実働で約31時間）で
+        提案書2件、検証コード4本、図版15点、約1MBの分析文書</strong>ができています。
+        従来型の見積もりなら数人月に相当する分量です。
+      </p>
+      <p>
+        テーマ①の国内市場は年 <span class="num">17〜39</span> 億円規模と見ています。
+        対象は発電所（事業用火力 <span class="num">158</span> 所）・大型の清掃工場
+        （<span class="num">167〜251</span> 施設）・地域熱供給（<span class="num">133</span> 供給地域）で、
+        あわせて <span class="num">458〜542</span> 事業所 <span class="flag f-ok">確定</span>。
+        施設数は公的統計を1行ずつ数えた実測で、<strong>1事業所あたりの単価だけがまだ根拠なし</strong>
+        <span class="flag f-miss">未取得</span> です。上下水処理場は数に入れていないので、下限側の値になります。
+        小さい市場ですが、同じ衛星データから隣接するサービス（設備の稼働監視、排熱の可視化）へ広げられる想定です。
+      </p>
+      <p>
+        なお <strong>東京二十三区清掃一部事務組合は、発電事業者として19の発電所を登録しています</strong>
+        <span class="flag f-ok">確定</span>（電力調査統計）。協力先の第一候補として照会をお願いしている先です。
+      </p>
+      <p>
+        テーマ②の顧客は国と都道府県の砂防部局で、対象は21火山。
+        計画の改定という年1〜3件の業務が入口になるため、<strong>単独では事業規模が小さく、
+        建設コンサルタントとの共同提案が前提</strong>になります。相手はまだ決まっていません。
+      </p>
+    </div>
+  </details>
+
+  <footer>
+    NEDO Challenge, Satellite Data ／ 応募締切 2026-08-31 12:00 ／ 提出推奨日 2026-08-28<br>
+    この資料の元になっている根拠・計算・出典は社内の作業リポジトリに全て残してあります。<br>
+    未確認箇所 7件（T1〜T7）／ 版: 2026-08-10 第3版（工数を Claude Code 前提に改訂、施設数を公的統計で確定）
+  </footer>
+
+</div>
