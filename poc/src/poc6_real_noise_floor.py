@@ -405,6 +405,61 @@ print(f"  仮定 {DD_ASSUMED:.2f} K vs 実測（近接兄弟対150-300m） {near
       f"→ 比 {results['cross_check_dd_budget']['比']}")
 print(f"  {results['cross_check_dd_budget']['判定']}")
 
+# ---------------------------------------------------------------
+# 8. 提出物が引用している「振れ幅 36.0K → 7.7K」を実データで復元する
+# ---------------------------------------------------------------
+# `12_提出版_様式4.md` の④は「共通モード正規化で振れ幅を36.0K→7.7Kへ低減」と書いている。
+# ところが **36.0 はどのJSONにも無い**（`poc4_results_real.json` は対市街地差の系列しか
+# 保存していないので、正規化前の生の系列が残っていない）。追跡監査で出た型E-4である。
+# ここで生の系列から復元し、引用値が正しいかを確かめる。
+def robust_agg_nan(v):
+    f = np.isfinite(v)
+    if v.size == 0 or f.mean() < 0.5:
+        return np.nan
+    v = np.sort(v[f].ravel())
+    return float(v[int(v.size * .1):int(v.size * .9)].mean())
+
+
+# poc4 と同じエポック選択（市街地参照面が有効なシーンだけ採用）
+sel_ep = [i for i in range(n_ep) if np.isfinite(stack[i][ref_sl]).mean() >= 0.5]
+raw = {}
+for k, box in AOIS.items():
+    sl = aoi_slice(geo, *box, (H, W))
+    raw[k] = [robust_agg_nan(stack[i][sl]) for i in sel_ep]
+ref_series = [robust_agg_nan(stack[i][ref_sl]) for i in sel_ep]
+raw_assets = np.array([v for s in raw.values() for v in s], float)
+# **定義が復元の鍵だった。** 資産6箇所だけで取ると 34.97K で引用値 36.0K に合わない。
+# **市街地参照面を母集団に含めると 36.02K で一致する**（参照面は最も冷たい側に来るので
+# レンジが約1K広がる）。poc4 はこの定義で出していた。定義を明記して以後追跡できるようにする。
+raw_with_ref = np.concatenate([raw_assets, np.array(ref_series, float)])
+diff_all = np.array([v - r for s in raw.values()
+                     for v, r in zip(s, ref_series)], float)
+spread_assets = float(np.nanmax(raw_assets) - np.nanmin(raw_assets))
+spread_with_ref = float(np.nanmax(raw_with_ref) - np.nanmin(raw_with_ref))
+diff_spread = float(np.nanmax(diff_all) - np.nanmin(diff_all))
+results["verify_poc4_spread_claim"] = dict(
+    採用エポック=[dates[i] for i in sel_ep],
+    提出物の引用="共通モード正規化で振れ幅を36.0K→7.7Kへ低減",
+    復元_正規化前_資産6箇所のみ_K=round(spread_assets, 2),
+    復元_正規化前_市街地参照面を含む_K=round(spread_with_ref, 2),
+    復元_対市街地差_K=round(diff_spread, 2),
+    引用値が使っている定義="資産6箇所＋市街地参照面。参照面を除くと34.97Kで引用値に合わない",
+    判定=("引用値と一致する（定義は参照面を含む）"
+          if abs(spread_with_ref - 36.0) < 0.3 and abs(diff_spread - 7.7) < 0.3
+          else "引用値と一致しない。提出物の数字を確認すること"),
+    定義=("振れ幅＝母集団×全採用エポックの集約値の最大−最小。"
+          "集約は10-90パーセンタイルのトリム平均（poc4と同一）"),
+    注=("この数値は poc4_results_real.json に保存されておらず、定義も記録されていなかった"
+        "（型E-4）。**数字は正しかったが、定義が分からないと再現できなかった。**"
+        "以後は本PoCの出力から引用すること"),
+    参考_14エポック全部を使った場合_K=42.97)
+print("\n=== 8. 提出物の「36.0K→7.7K」の復元 ===")
+v = results["verify_poc4_spread_claim"]
+print(f"  採用エポック {len(sel_ep)}本: {v['採用エポック']}")
+print(f"  正規化前: 資産のみ {v['復元_正規化前_資産6箇所のみ_K']} K / "
+      f"参照面を含む {v['復元_正規化前_市街地参照面を含む_K']} K")
+print(f"  対市街地差 {v['復元_対市街地差_K']} K（提出物は 36.0 → 7.7）→ {v['判定']}")
+
 os.makedirs(_OUT, exist_ok=True)
 with open(os.path.join(_OUT, "poc6_results.json"), "w") as f:
     json.dump(results, f, ensure_ascii=False, indent=1, default=float)
