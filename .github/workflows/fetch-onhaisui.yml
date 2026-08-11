@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Fetch S1/S2/S3 references
-        run: python3 fetch_onhaisui.py
+        run: python3 40_scripts/fetch_onhaisui.py
       - name: Commit refs to onhaisui-refs branch
         run: |
           git config user.name "github-actions[bot]"

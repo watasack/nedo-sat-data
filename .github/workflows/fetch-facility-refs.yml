@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Fetch facility and certification references
-        run: python3 fetch_facility_refs.py
+        run: python3 40_scripts/fetch_facility_refs.py
       - name: Commit refs to facility-refs branch
         run: |
           git config user.name "github-actions[bot]"

@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Fetch kyusho references
-        run: python3 fetch_kyusho4c.py
+        run: python3 40_scripts/fetch_kyusho4c.py
       - name: Commit refs to kyusho4c branch
         run: |
           git config user.name "github-actions[bot]"

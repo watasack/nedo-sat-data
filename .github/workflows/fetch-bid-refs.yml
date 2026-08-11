@@ -23,7 +23,7 @@ jobs:
       - name: Install poppler-utils
         run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
       - name: Fetch refs
-        run: python3 "theme2_ライフライン復旧/fetch_bid_refs.py"
+        run: python3 "30_theme2_ライフライン復旧/fetch_bid_refs.py"
       - name: Drop oversized files
         # 取得側でも40MBで打ち切っているが、押さえの網。100MB超が1つでもあると
         # ブランチ全体が pre-receive で弾かれるため、コミット前に落とす。

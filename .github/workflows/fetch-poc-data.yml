@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Run downloader (Open-Meteo + Landsat ST_B10)
-        run: python3 download_poc_data.py
+        run: python3 40_scripts/download_poc_data.py
       - name: Commit data to poc-data branch
         run: |
           git config user.name "github-actions[bot]"

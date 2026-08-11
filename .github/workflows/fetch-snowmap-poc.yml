@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Compute snow disappearance maps
-        run: python3 "theme2_ライフライン復旧/fetch_snowmap_poc.py"
+        run: python3 "30_theme2_ライフライン復旧/fetch_snowmap_poc.py"
       - name: Drop oversized files
         run: find snowmap_poc -type f -size +90M -print -delete || true
       - name: Commit to snowmap-poc branch

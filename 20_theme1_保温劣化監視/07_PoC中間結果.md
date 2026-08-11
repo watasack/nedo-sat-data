@@ -472,4 +472,4 @@ z を抑える方向に働く）。年1件に抑える閾値は **z=2.80** で�
 
 ## 実データ版への差し替え（完了）
 
-GitHub Actionsランナー（`.github/workflows/fetch-poc-data.yml`、trigger-fetch-dataブランチへのpushで起動）で取得し、`poc/data/` に配置済み（poc-dataブランチにも保存）。poc3はモードA（実気象）、poc4はモードA（実Landsat・複合体レベルAOI）で再実行済み。残る実データ課題: (1) AOI座標の現地検証（現状±数百mの概略）、(2) HotSat-2サンプル入手後の設備単位デモ（JSI照会=09の回答待ち）。
+GitHub Actionsランナー（`../.github/workflows/fetch-poc-data.yml`、trigger-fetch-dataブランチへのpushで起動）で取得し、`poc/data/` に配置済み（poc-dataブランチにも保存）。poc3はモードA（実気象）、poc4はモードA（実Landsat・複合体レベルAOI）で再実行済み。残る実データ課題: (1) AOI座標の現地検証（現状±数百mの概略）、(2) HotSat-2サンプル入手後の設備単位デモ（JSI照会=09の回答待ち）。

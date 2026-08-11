@@ -79,8 +79,8 @@
 結論: **マッチング成立**。メールアドレスを交換し、社内検討のうえメールベースで協議を進める。
 
 - 議事録: [Box 2394358228531](https://app.box.com/file/2394358228531)
-- 説明資料: `10_matching/15_web/nedo-matching-meeting-brief.artifact.html`
-- サービス概要: [Box 2393607947965](https://app.box.com/file/2393607947965) / `10_matching/12_reference/honda_サービス概要.pdf`
+- 説明資料: `../10_matching/15_web/nedo-matching-meeting-brief.artifact.html`
+- サービス概要: [Box 2393607947965](https://app.box.com/file/2393607947965) / `../10_matching/12_reference/honda_サービス概要.pdf`
 
 社内での受け止め（Slack #nedo-sat-data）:
 

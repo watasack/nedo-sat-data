@@ -22,7 +22,7 @@ jobs:
       - name: Install poppler for PDF text extraction
         run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
       - name: Fetch award documents
-        run: python3 fetch_past_awards.py
+        run: python3 40_scripts/fetch_past_awards.py
       - name: Extract PDF text
         run: |
           for f in past_awards/*.pdf; do

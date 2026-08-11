@@ -38,7 +38,10 @@ import os
 import re
 import sys
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+# このスクリプトは 40_scripts/ に置かれているため、リポジトリルートは1つ上。
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+T1 = os.path.join(ROOT, "20_theme1_保温劣化監視")
+T2 = os.path.join(ROOT, "30_theme2_ライフライン復旧")
 
 # PoCの数値が出てくる行を拾うキーワード。ここに無い話題の数字は対象外にする
 POC_KEYWORDS = [
@@ -77,8 +80,8 @@ def collect_json_numbers():
     照合は「文書が印字した桁数で丸めたら一致するか」で行う。丸めは照合側で1回だけ。
     """
     vals = []
-    files = sorted(glob.glob(os.path.join(ROOT, "poc", "out", "*.json"))) + \
-        sorted(glob.glob(os.path.join(ROOT, "theme2_*", "poc", "out", "*.json")))
+    files = sorted(glob.glob(os.path.join(T1, "poc", "out", "*.json"))) + \
+        sorted(glob.glob(os.path.join(T2, "poc", "out", "*.json")))
 
     def walk(o, path):
         if isinstance(o, dict):
@@ -176,17 +179,17 @@ def main():
     if args.doc:
         docs = args.doc
     elif args.every_doc:
-        docs = sorted(glob.glob(os.path.join(ROOT, "*.md"))) + \
-            sorted(glob.glob(os.path.join(ROOT, "theme2_*", "*.md")))
+        docs = sorted(glob.glob(os.path.join(T1, "*.md"))) + \
+            sorted(glob.glob(os.path.join(T2, "*.md")))
         docs = [d for d in docs if os.path.basename(d) != "CLAUDE.md"]
     else:
         # 既定は**PoCの結果を引用する文書**だけ。調査メモ（01・05）は外部出典の数値が
         # 大半なので既定から外す（--every-doc で入る）
-        docs = [os.path.join(ROOT, x) for x in (
+        docs = [os.path.join(T1, x) for x in (
             "07_PoC中間結果.md", "12_提出版_様式4.md", "08_応募書類ドラフト.md",
             "02_提案書骨子_v0.2.md", "15_事業計画の裏付け.md", "13_本文の字数予算.md",
             "18_テーマ代替案の検討.md", "21_差し替え検証_独立セッション.md",
-        )] + [os.path.join(ROOT, "theme2_ライフライン復旧", x) for x in (
+        )] + [os.path.join(T2, x) for x in (
             "07_PoC結果.md", "12_提出版_様式4.md", "13_事業計画の裏付け.md",
         )]
         docs = [d for d in docs if os.path.exists(d)]
