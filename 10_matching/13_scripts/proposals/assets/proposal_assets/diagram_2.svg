@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="180" viewBox="0 0 1500 180"><style>text{font-family:"Hiragino Sans","Noto Sans CJK JP",sans-serif;fill:#0B2545} .small{font-size:22px;fill:#1F4D78} .label{font-size:30px;font-weight:700}</style><rect x="22" y="18" width="308" height="142" rx="18" fill="#EAF3F8" stroke="#9AB2C8" stroke-width="3"/><g transform="translate(135 30) scale(3.4)">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#1F4D78"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3.707 6.293l2.586 -2.586a1 1 0 0 1 1.414 0l5.586 5.586a1 1 0 0 1 0 1.414l-2.586 2.586a1 1 0 0 1 -1.414 0l-5.586 -5.586a1 1 0 0 1 0 -1.414" />
+  <path d="M6 10l-3 3l3 3l3 -3" />
+  <path d="M10 6l3 -3l3 3l-3 3" />
+  <path d="M12 12l1.5 1.5" />
+  <path d="M14.5 17a2.5 2.5 0 0 0 2.5 -2.5" />
+  <path d="M15 21a6 6 0 0 0 6 -6" />
+</g><text x="176" y="112" text-anchor="middle" class="label">衛星観測</text><text x="176" y="140" text-anchor="middle" class="small">浸水・堆積を把握</text><path d="M348 89h48l-14-9m14 9-14 9" fill="none" stroke="#1F4D78" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="410" y="18" width="308" height="142" rx="18" fill="#F7F9FB" stroke="#9AB2C8" stroke-width="3"/><g transform="translate(523 30) scale(3.4)">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#1F4D78"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1" />
+  <path d="M4 18l-1 -5h18l-2 4" />
+  <path d="M5 13v-6h8l4 6" />
+  <path d="M7 7v-4h-1" />
+</g><text x="564" y="112" text-anchor="middle" class="label">港湾・道路</text><text x="564" y="140" text-anchor="middle" class="small">岸壁＋背後地</text><path d="M736 89h48l-14-9m14 9-14 9" fill="none" stroke="#1F4D78" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="798" y="18" width="308" height="142" rx="18" fill="#F7F9FB" stroke="#9AB2C8" stroke-width="3"/><g transform="translate(911 30) scale(3.4)">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#1F4D78"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13" />
+  <path d="M9 4v13" />
+  <path d="M15 7v13" />
+</g><text x="952" y="112" text-anchor="middle" class="label">残存機能</text><text x="952" y="140" text-anchor="middle" class="small">港湾の残存能力</text><path d="M1124 89h48l-14-9m14 9-14 9" fill="none" stroke="#1F4D78" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1186" y="18" width="308" height="142" rx="18" fill="#EAF3F8" stroke="#9AB2C8" stroke-width="3"/><g transform="translate(1299 30) scale(3.4)">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#1F4D78"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+  <path d="M19 7a2 2 0 1 0 0 -4a2 2 0 0 0 0 4" />
+  <path d="M11 19h5.5a3.5 3.5 0 0 0 0 -7h-8a3.5 3.5 0 0 1 0 -7h4.5" />
+</g><text x="1340" y="112" text-anchor="middle" class="label">代替輸送</text><text x="1340" y="140" text-anchor="middle" class="small">港・陸路を切替</text></svg>
