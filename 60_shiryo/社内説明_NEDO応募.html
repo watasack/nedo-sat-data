@@ -669,8 +669,8 @@
         </figure>
 
         <figure>
-          <svg viewBox="0 0 860 270" role="img"
-               aria-label="温度の絶対値で見ると大気・時刻・季節の影響が誤差3.5Kとなり信号0.7Kを上回るため判別性能は0.54。同じ画像の中で隣の同型設備と引き算すると共通の影響が消えて誤差0.4Kとなり判別性能は0.92。">
+          <svg viewBox="0 0 860 292" role="img"
+               aria-label="引き算を2回する図。1回目は同じ時期に隣の同型設備と引く。大気や時刻の影響は消えるが外装の個体差2.8Kが残り、信号0.53Kを上回るので判別性能は0.54。2回目はその差を前と後で引く。個体差も消えて実効誤差0.28Kとなり、6エポック分を重ねて判別性能は0.92。">
             <defs>
               <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
@@ -678,52 +678,61 @@
             </defs>
 
             <!-- ① -->
-            <text class="s-hd" x="20" y="24">① 温度そのものを見る</text>
-            <rect x="20" y="36" width="390" height="216" rx="3" fill="none" stroke="var(--rule)"/>
+            <text class="s-hd" x="20" y="24">① 同じ時期に、隣の同型設備と引く</text>
+            <rect x="20" y="36" width="390" height="238" rx="3" fill="none" stroke="var(--rule)"/>
 
-            <rect x="50" y="54" width="330" height="30" rx="3" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
-            <text class="s-sm" x="215" y="74" text-anchor="middle">大気・時刻・季節の影響</text>
-            <line x1="215" y1="86" x2="215" y2="106" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar4)"/>
+            <rect x="50" y="52" width="330" height="28" rx="3" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
+            <text class="s-sm" x="215" y="71" text-anchor="middle">大気・時刻・季節（2基に等しく乗る）</text>
+            <line x1="120" y1="82" x2="120" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar4)"/>
+            <line x1="310" y1="82" x2="310" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar4)"/>
 
-            <rect x="180" y="108" width="70" height="42" rx="2" fill="var(--surface-2)" stroke="currentColor"/>
-            <text class="s-sm" x="215" y="134" text-anchor="middle">設備</text>
+            <rect x="85" y="102" width="70" height="40" rx="2" fill="var(--surface-2)" stroke="currentColor"/>
+            <text class="s-sm" x="120" y="127" text-anchor="middle">設備 A</text>
+            <rect x="275" y="102" width="70" height="40" rx="2" fill="var(--surface-2)" stroke="currentColor"/>
+            <text class="s-sm" x="310" y="127" text-anchor="middle">設備 B</text>
+            <text class="s-hd" x="215" y="130" text-anchor="middle" font-size="24">−</text>
 
-            <text class="s-lbl" x="215" y="178" text-anchor="middle">誤差 <tspan class="s-num" font-weight="600">3.5K</tspan> ＞ 信号 <tspan class="s-num" font-weight="600">0.7K</tspan></text>
+            <text class="s-sm" x="215" y="164" text-anchor="middle">大気・時刻は消える。でも</text>
+            <text class="s-lbl" x="215" y="186" text-anchor="middle" font-weight="600">外装の個体差 <tspan class="s-num">2.8K</tspan> が残る</text>
+            <text class="s-sm" x="215" y="208" text-anchor="middle">＞ 信号 <tspan class="s-num">0.53K</tspan></text>
 
-            <line x1="50" y1="212" x2="380" y2="212" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="76" cy="212" r="6" fill="var(--ink-3)"/>
-            <text class="s-lbl" x="76" y="202" text-anchor="middle" font-weight="600">0.54</text>
-            <text class="s-xs" x="50" y="234">0.5 当てずっぽう</text>
-            <text class="s-xs" x="380" y="234" text-anchor="end">1.0 完全</text>
+            <line x1="50" y1="238" x2="380" y2="238" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="76" cy="238" r="6" fill="var(--ink-3)"/>
+            <text class="s-lbl" x="76" y="228" text-anchor="middle" font-weight="600">0.54</text>
+            <text class="s-xs" x="50" y="260">0.5 当てずっぽう</text>
+            <text class="s-xs" x="380" y="260" text-anchor="end">1.0 完全</text>
 
             <!-- ② -->
-            <text class="s-hd" x="450" y="24">② 隣の同型設備と引き算する</text>
-            <rect x="450" y="36" width="390" height="216" rx="3" fill="none" stroke="var(--accent)"/>
+            <text class="s-hd s-acc" x="450" y="24">② その差を、前と後で引く（差の差）</text>
+            <rect x="450" y="36" width="390" height="238" rx="3" fill="none" stroke="var(--accent)"/>
 
-            <rect x="480" y="54" width="330" height="30" rx="3" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
-            <text class="s-sm" x="645" y="74" text-anchor="middle">大気・時刻・季節の影響（2つに等しく乗る）</text>
-            <line x1="560" y1="86" x2="560" y2="106" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar4)"/>
-            <line x1="730" y1="86" x2="730" y2="106" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar4)"/>
+            <rect x="480" y="52" width="150" height="46" rx="3" fill="var(--surface-2)" stroke="currentColor"/>
+            <text class="s-sm" x="555" y="72" text-anchor="middle">前の時期の</text>
+            <text class="s-sm" x="555" y="90" text-anchor="middle">A − B</text>
+            <rect x="660" y="52" width="150" height="46" rx="3" fill="var(--surface-2)" stroke="currentColor"/>
+            <text class="s-sm" x="735" y="72" text-anchor="middle">後の時期の</text>
+            <text class="s-sm" x="735" y="90" text-anchor="middle">A − B</text>
+            <text class="s-hd s-acc" x="645" y="82" text-anchor="middle" font-size="24">−</text>
 
-            <rect x="525" y="108" width="70" height="42" rx="2" fill="var(--surface-2)" stroke="currentColor"/>
-            <text class="s-sm" x="560" y="134" text-anchor="middle">設備 A</text>
-            <rect x="695" y="108" width="70" height="42" rx="2" fill="var(--surface-2)" stroke="currentColor"/>
-            <text class="s-sm" x="730" y="134" text-anchor="middle">設備 B</text>
-            <text class="s-hd s-acc" x="645" y="136" text-anchor="middle" font-size="24">−</text>
+            <text class="s-sm s-acc" x="645" y="124" text-anchor="middle">個体差は両方に等しく乗るので、これも消える</text>
+            <line x1="645" y1="132" x2="645" y2="150" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar4)"/>
 
-            <text class="s-lbl s-acc" x="480" y="178" font-weight="600">共通の影響が消える → 誤差 <tspan class="s-num">0.4K</tspan></text>
+            <rect x="530" y="152" width="230" height="34" rx="3" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text class="s-lbl s-acc" x="645" y="175" text-anchor="middle" font-weight="600">実効誤差 <tspan class="s-num">0.28K</tspan></text>
+            <text class="s-sm" x="645" y="208" text-anchor="middle">＜ 信号 <tspan class="s-num">0.53K</tspan>（6エポック分を重ねて）</text>
 
-            <line x1="480" y1="212" x2="810" y2="212" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="757" cy="212" r="6" fill="var(--accent)"/>
-            <text class="s-lbl s-acc" x="757" y="202" text-anchor="middle" font-weight="600">0.92</text>
-            <text class="s-xs" x="480" y="234">0.5 当てずっぽう</text>
-            <text class="s-xs" x="810" y="234" text-anchor="end">1.0 完全</text>
+            <line x1="480" y1="238" x2="810" y2="238" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="757" cy="238" r="6" fill="var(--accent)"/>
+            <text class="s-lbl s-acc" x="757" y="228" text-anchor="middle" font-weight="600">0.92</text>
+            <text class="s-xs" x="480" y="260">0.5 当てずっぽう</text>
+            <text class="s-xs" x="810" y="260" text-anchor="end">1.0 完全</text>
           </svg>
           <figcaption>
-            <strong>提案の核はこの引き算です。</strong>衛星の温度の絶対値は誤差が信号を上回って成立しないことを先に確かめ、
-            同じ画像の中の設備どうしの比較に切り替えました（<span class="flag f-ok">自前計算</span>）。
-            目盛りは判別性能で、0.5が当てずっぽう、1.0が完全な判別です。
-            引き算が成り立つ条件は、<strong>同一構内・同じ設計・離れていても数百m以内</strong>の2基であることです。
+            <strong>提案の核は、引き算を2回することです。</strong>温度の絶対値は誤差 <span class="num">9.4K</span> で信号を大きく上回り、
+            隣の同型設備と1回引いても<strong>外装の個体差が残って <span class="num">0.54</span> にとどまります</strong>。
+            その差を前後で引いて初めて <span class="num">0.92</span> になります（<span class="flag f-ok">自前計算</span>）。
+            成り立つ条件は<strong>同一構内・同じ設計・数百m以内</strong>の2基であること。
+            そして<strong>消え残るのが「個体差そのものの経年変化」で、これが下の「技術の急所」で書いた量です</strong>。
           </figcaption>
         </figure>
 
