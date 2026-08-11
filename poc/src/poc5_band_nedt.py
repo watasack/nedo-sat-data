@@ -14,22 +14,30 @@ PoC-1 には提出物の主張を外部の未回答に縛る弱点が2つあっ�
 ここでやるのは (a) の計算と、(b) を**掃引に置き換えること**である。
 NEdT を 0.5〜3K で振って「この値ならこう」の表を出せば、回答が来なくても結論が言える。
 
-さらに計算の途中で PoC-1 と PoC-2 の**不整合**が出た。先に書く。
+さらに計算の途中で PoC-1 に**単位の混在**が見つかった。先に書く。
 
-  PoC-1 はタンク屋根パッチ(+5K)を SNR 1.6「限界域」と出し、PoC-2 は同じ対象を
-  「単発では原理的に SNR<1」と出していた。原因は NEdT をどこの温度で規定された値と
-  読むかである。PoC-1 は実効NEdT を「センサNEdT / g」（g=dTb/dTs）で作っており、
-  これは **NEdT がその画素の見かけ輝度温度で規定されている**という読み方になる。
-  低ε屋根の見かけ Tb は 266-280K で、そこでの dB/dT は 300K より小さいから、
-  同じ雑音等価放射輝度がより大きな ΔTb に化ける（PoC-2 が見つけた増幅）。
-  **NEdT は通常ある基準温度（300K級）で規定されるので、PoC-2 側が正しく、
-  PoC-1 のタンク行は楽観だった。**
+  PoC-1 の (F) 節は SNR を「信号 / 雑音」で作っているが、
+    信号  = ΔTs * g          … **輝度温度(Tb)の単位**（g=dTb/dTs で表面温度から写した量）
+    雑音項 ε不確かさ 0.76K、PSF混合 0.8K … **輝度温度の単位**（「見かけ温度誤差」）
+    雑音項 実効NEdT = NEdT/g … **表面温度の単位**（NEdTをgで割って表面温度に戻した量）
+  となっており、**表面温度の項と輝度温度の項を同じRSSに入れている**。
+  gが約0.5なので、この混在は実効NEdT項を約2倍に見せる方向に働く。
 
-  そこで本PoCは全て**放射輝度領域**で組む。
-      信号   ΔL = tau * eps * (dB/dTs) * ΔTs
-      雑音   NEΔL = NEdT_ref * (dB/dT)|_Tref
-  これなら輝度温度の非線形を経由しないので、どこで規定された NEdT かを取り違えない。
-  両方の読み方を併記して、どちらの数字かが分かるようにしてある。
+  本PoCは全部**輝度温度(Tb)領域**に統一する。センサが測るのはTbなので、そこが自然である。
+    信号    ΔTb = ΔTs * g(Ts)
+    NEdT項  NEdT_ref * amp(Tb_見かけ)      amp = (dB/dT|300K)/(dB/dT|Tb)
+    見かけの誤差項（ε・PSF・位置合わせ・放射率の差動経年）はそのままTb
+    実温度の誤差項（負荷・構造の残差差異）は * g で Tb に写す
+
+  NEdT項の扱いは PoC-1 の「NEdT/g」から「NEdT*amp」に変わる。これは PoC-2 が見つけた
+  低ε屋根でのPlanck非線形増幅そのものである。屋根の見かけTbは274K級で amp≈2.3、
+  一方 1/g≈2.07 なので、**PoC-1 のタンク行は楽観だったが差は小さい**
+  （SNR 1.6 → 約1.5）。ε・PSFの床が支配しているためである。
+
+  なお PoC-2 が「単発では原理的に SNR<1」と書いたのと矛盾はしない。
+  **PoC-1/本PoCのSNRは「パッチ位置が既知」の量**で、PoC-2 のAUC 0.64は
+  位置が未知でPSF整合フィルタの最大値を取る検知器の性能である（下の3b節）。
+  同じ対象の別の量なので、両方正しい。
 
 最後に、掃引して初めて見えたことを1つ。**エポックを増やしても SNR は無限には伸びない。**
 兄弟差分の時間変化の雑音には、エポック平均で落ちる項（NEdT・負荷残差）と
@@ -128,26 +136,30 @@ for bname, (lo, hi) in BANDS.items():
 results["band_physics"] = band_phys
 
 # ============================================================
-# 2. 検出ケース別 SNR（放射輝度領域・NEdTは300K規定）
+# 2. 検出ケース別 SNR（すべて輝度温度Tbの単位に統一）
 # ============================================================
-# 誤差項の内訳は PoC-1 の (E) と同じ構成にし、NEdT項だけ放射輝度領域で作り直す。
-# 表面温度換算の実効雑音 = NEdT_ref * dB/dT|300K / (tau * eps * dB/dTs|Ts)
-
-def nedt_in_surface_K(nedt_ref, Ts, eps, lam):
-    """センサNEdT（300K規定）を、その面の表面温度誤差に換算する"""
-    return nedt_ref * dplanck_dT(T_NEDT_REF, lam) / (TAU * eps * dplanck_dT(Ts, lam))
+def sens_gain(Ts, eps, lam, d=0.5):
+    """g = dTb/dTs。表面温度1Kが輝度温度に写る割合"""
+    return float((apparent_tb(Ts + d, eps, TAU, SKY_CLEAR, lam)
+                  - apparent_tb(Ts - d, eps, TAU, SKY_CLEAR, lam)) / (2 * d))
 
 
-# PoC-1 と共通の非NEdT誤差項（K, 表面温度換算）
+def nedt_amp(Ts, eps, lam):
+    """NEdT（300K規定）がその面の見かけTbで何倍に増幅されるか"""
+    tb = apparent_tb(Ts, eps, TAU, SKY_CLEAR, lam)
+    return dplanck_dT(T_NEDT_REF, lam) / dplanck_dT(tb, lam)
+
+
+# PoC-1 と共通の非NEdT誤差項。**すべて輝度温度(Tb)の単位**
 EPS_DTB_005 = 1.9      # ε±0.05 による見かけ温度誤差（PoC-1 (B) の風化アルミ値）
 E_INTRA = EPS_DTB_005 * (0.02 / 0.05)   # 資産内ε不均一 ±0.02
 E_INTER = EPS_DTB_005                   # 資産間ε差 ±0.05（静的兄弟差分で支配）
 PSF_MIX = 0.8          # PSF混合（パッチ境界）
-LOAD_RESID = 0.5       # 負荷・構造の残差差異（静的）
 ALIGN_ERODED = 0.3     # 位置合わせ（エロージョン後）
-# 二重差分（兄弟差分の時間変化）の内訳
-DD_LOAD = 0.3          # 負荷残差の差動成分（エポックごとにランダム）
 DD_EPS_AGING = 0.3     # 兄弟資産間の放射率の差動経年 —— エポック平均で落ちない
+# 実温度の誤差項（gを掛けてTbに写す）
+LOAD_RESID_TS = 0.5    # 負荷・構造の残差差異（静的、表面温度K）
+DD_LOAD_TS = 0.3       # 負荷残差の差動成分（エポックごとにランダム、表面温度K）
 
 CASES = {
     "加熱炉・高温配管系の保温不良(+15K)": dict(dTs=15.0, Ts=TS_HOT, npix=6, kind="scene"),
@@ -159,16 +171,19 @@ CASES = {
 }
 
 
-def case_noise(kind, nedt_s, npix, n_epochs=1):
-    """雑音を「エポック平均で落ちる項」と「落ちない項」に分けて返す (random, systematic)"""
+def case_noise(kind, nedt_tb, npix, g, n_epochs=1):
+    """雑音を「エポック平均で落ちる項」と「落ちない項」に分けて返す (random, systematic)
+
+    すべて輝度温度Tbの単位。nedt_tb はその面の見かけTbでのNEdT（増幅済み）。
+    """
     if kind == "scene":
-        rnd = np.sqrt((nedt_s * np.sqrt(2) / np.sqrt(npix))**2)
+        rnd = nedt_tb * np.sqrt(2) / np.sqrt(npix)
         sysm = np.sqrt(E_INTRA**2 + PSF_MIX**2)
     elif kind == "sib_static":
-        rnd = nedt_s * np.sqrt(2) / np.sqrt(npix)
-        sysm = np.sqrt(E_INTER**2 + LOAD_RESID**2 + ALIGN_ERODED**2)
+        rnd = nedt_tb * np.sqrt(2) / np.sqrt(npix)
+        sysm = np.sqrt(E_INTER**2 + (LOAD_RESID_TS * g)**2 + ALIGN_ERODED**2)
     elif kind == "dd":
-        rnd = np.sqrt((nedt_s * 2 / np.sqrt(npix))**2 + DD_LOAD**2)
+        rnd = np.sqrt((nedt_tb * 2 / np.sqrt(npix))**2 + (DD_LOAD_TS * g)**2)
         sysm = DD_EPS_AGING
     else:
         raise ValueError(kind)
@@ -176,9 +191,11 @@ def case_noise(kind, nedt_s, npix, n_epochs=1):
 
 
 def snr_of(kind, dTs, Ts, npix, nedt_ref, lam, n_epochs=1):
-    nedt_s = nedt_in_surface_K(nedt_ref, Ts, EPS_WEATHERED, lam)
-    rnd, sysm = case_noise(kind, nedt_s, npix, n_epochs)
-    return dTs / np.sqrt(rnd**2 + sysm**2)
+    """SNR。信号も雑音も輝度温度Tbの単位で揃えてある"""
+    g = sens_gain(Ts, EPS_WEATHERED, lam)
+    nedt_tb = nedt_ref * nedt_amp(Ts, EPS_WEATHERED, lam)
+    rnd, sysm = case_noise(kind, nedt_tb, npix, g, n_epochs)
+    return (dTs * g) / np.sqrt(rnd**2 + sysm**2)
 
 
 snr_tables = {}
@@ -187,12 +204,14 @@ for bname, (lo, hi) in BANDS.items():
     row = {}
     for cname, c in CASES.items():
         nep = 6 if c["kind"] == "dd" else 1
-        nedt_s = nedt_in_surface_K(1.0, c["Ts"], EPS_WEATHERED, lam)
-        rnd, sysm = case_noise(c["kind"], nedt_s, c["npix"], nep)
-        s = c["dTs"] / np.sqrt(rnd**2 + sysm**2)
+        g = sens_gain(c["Ts"], EPS_WEATHERED, lam)
+        nedt_tb = 1.0 * nedt_amp(c["Ts"], EPS_WEATHERED, lam)
+        rnd, sysm = case_noise(c["kind"], nedt_tb, c["npix"], g, nep)
+        s = (c["dTs"] * g) / np.sqrt(rnd**2 + sysm**2)
         row[cname] = dict(
             エポック数=nep,
-            実効NEdT_表面K換算=round(nedt_s, 2),
+            信号_Tb換算_K=round(c["dTs"] * g, 2),
+            実効NEdT_Tb換算=round(nedt_tb, 2),
             雑音_平均で落ちる_K=round(rnd, 2),
             雑音_落ちない_K=round(sysm, 2),
             SNR=round(float(s), 2),
@@ -208,15 +227,18 @@ for bname, (lo, hi) in BANDS.items():
     d = 0.5
     row = {}
     for cname, c in CASES.items():
-        g = (apparent_tb(c["Ts"] + d, EPS_WEATHERED, TAU, SKY_CLEAR, lam)
-             - apparent_tb(c["Ts"] - d, EPS_WEATHERED, TAU, SKY_CLEAR, lam)) / (2 * d)
-        nedt_poc1 = 1.0 / g                                        # PoC-1 の実効NEdT
-        nedt_new = nedt_in_surface_K(1.0, c["Ts"], EPS_WEATHERED, lam)
-        row[cname] = dict(PoC1の実効NEdT_K=round(float(nedt_poc1), 2),
-                          本PoCの実効NEdT_K=round(nedt_new, 2),
+        g = sens_gain(c["Ts"], EPS_WEATHERED, lam)
+        nedt_poc1 = 1.0 / g                       # PoC-1: NEdT/g（表面温度単位のまま混在）
+        nedt_new = 1.0 * nedt_amp(c["Ts"], EPS_WEATHERED, lam)   # 本PoC: NEdT*amp（Tb単位）
+        row[cname] = dict(PoC1のNEdT項_1除くg=round(float(nedt_poc1), 2),
+                          本PoCのNEdT項_amp倍=round(nedt_new, 2),
                           倍率=round(nedt_new / float(nedt_poc1), 2))
     compat[bname] = row
-results["poc1_convention_gap"] = compat
+results["poc1_unit_mixing_gap"] = dict(
+    比較=compat,
+    説明=("PoC-1 は NEdT/g（表面温度単位）を輝度温度単位の誤差項と同じRSSに入れていた。"
+          "本PoCは NEdT*amp（輝度温度単位）に統一した。倍率が1に近いのは偶然で、"
+          "1/g と amp がこのパラメータ帯でたまたま近いためである"))
 
 # ============================================================
 # 3. SNR→AUC の解析写像を PoC-2 のモンテカルロで検証する
@@ -225,16 +247,41 @@ results["poc1_convention_gap"] = compat
 # PoC-2 の実測AUC（二重差分・6エポック）と突き合わせる。
 MC_REF = {"+0.5K": 0.86, "+1.0K": 0.92, "+2.0K": 0.997}   # PoC-2 の二重差分6エポックAUC
 lam_A = make_band(*BANDS["A_仮定_3.4-4.2um"])   # PoC-2 は仮定帯域・NEdT1Kで走っている
+# **前提を揃えないと写像の検証にならない。** PoC-2 の合成シーンは資産ごとのεを
+# 静的に振っているだけで、**兄弟資産間の放射率の差動経年（時間とともに開く差）を
+# 模擬していない**。本PoCの雑音モデルはそれを 0.3K の「落ちない項」として入れている。
+# したがって素で比べると本PoCが低く出る。写像そのものを見るには差動経年を0にして揃える。
+_AGING = DD_EPS_AGING
 valid = {}
 for label, auc_mc in MC_REF.items():
     dts = float(label.replace("K", "").replace("+", ""))
-    s = snr_of("dd", dts, TS_HOT, 50, 1.0, lam_A, n_epochs=6)
-    auc_an = float(norm.cdf(s / np.sqrt(2)))
-    valid[label] = dict(PoC2のMC_AUC=auc_mc, 本PoCの解析SNR=round(s, 2),
-                        解析AUC=round(auc_an, 3), 差=round(auc_an - auc_mc, 3))
+    s_full = snr_of("dd", dts, TS_HOT, 50, 1.0, lam_A, n_epochs=6)
+    globals()["DD_EPS_AGING"] = 0.0                      # PoC-2 の前提に揃える
+    s_match = snr_of("dd", dts, TS_HOT, 50, 1.0, lam_A, n_epochs=6)
+    globals()["DD_EPS_AGING"] = _AGING
+    valid[label] = dict(
+        PoC2のMC_AUC=auc_mc,
+        前提を揃えた解析SNR=round(s_match, 2),
+        前提を揃えた解析AUC=round(float(norm.cdf(s_match / np.sqrt(2))), 3),
+        差_揃えたとき=round(float(norm.cdf(s_match / np.sqrt(2))) - auc_mc, 3),
+        差動経年を入れた解析SNR=round(s_full, 2),
+        差動経年を入れた解析AUC=round(float(norm.cdf(s_full / np.sqrt(2))), 3),
+        差_差動経年あり=round(float(norm.cdf(s_full / np.sqrt(2))) - auc_mc, 3),
+    )
 results["auc_mapping_validation"] = dict(
     二重差分_場所が既知=valid,
-    判定="+1Kと+2Kで差 0.02 以内。二重差分については解析写像を使ってよい")
+    写像の判定=("前提を揃えると +1K で差 0.02、+2K で差 0.00。"
+                "AUC=Phi(SNR/sqrt2) の写像は二重差分については使ってよい"),
+    より重要な発見=(
+        "**PoC-2 の合成シーンは兄弟資産間の放射率の差動経年を模擬していない。** "
+        "資産ごとのεは静的に振ってあるだけで、時間とともに兄弟間の差が開く成分が無い。"
+        "この項はエポック平均で落ちないので上限を決める項であり、入れると "
+        "+1K・6エポックのAUCは 0.92 → 0.83 に下がる。"
+        "08/12 が引用している『二重差分でAUC 0.86〜0.997（シミュレーション）』は"
+        "**この項を含まない値**である。数字を下げる必要はないが、"
+        "『同一設計・同一施工年・同一外装履歴の兄弟資産を選ぶ』という前提条件が"
+        "AUCの前提であることを明示すべきである（下の ceiling_vs_eps_aging 節）"),
+    差動経年0_3Kの根拠="PoC-1 (E) の兄弟差分バジェットの仮定値。PoC-6 で実データと桁を確認した")
 
 # 同じ写像をタンクパッチに当てると成立しない。**先に自分で確かめて記録する。**
 # タンクパッチ検知はパッチ位置が未知で、PSF整合フィルタの最大値を取る＝多重比較なので、
@@ -297,10 +344,11 @@ for bname, (lo, hi) in BANDS.items():
                         break
                 need[f"AUC{tgt:.2f}に要るエポック数"] = hit if hit else "到達不能"
             # エポック→無限大の上限（落ちない項だけが残る）
-            nedt_s = nedt_in_surface_K(nedt, c["Ts"], EPS_WEATHERED, lam)
-            _, sysm = case_noise(c["kind"], nedt_s, c["npix"], 1)
+            g_s = sens_gain(c["Ts"], EPS_WEATHERED, lam)
+            nedt_tb = nedt * nedt_amp(c["Ts"], EPS_WEATHERED, lam)
+            _, sysm = case_noise(c["kind"], nedt_tb, c["npix"], g_s, 1)
             row_d = dict(AUC=aucs, **need,
-                         上限AUC=round(auc_from_snr(c["dTs"] / sysm), 3))
+                         上限AUC=round(auc_from_snr(c["dTs"] * g_s / sysm), 3))
             if c["kind"] == "scene":
                 row_d["警告"] = ("解析写像は空間探索（多重比較）を含まないので過大。"
                                  "タンクパッチのAUCとエポック数は PoC-5b を使うこと")
@@ -318,10 +366,11 @@ for cname, c in CASES.items():
     if c["kind"] == "sib_static":
         continue
     row = {}
+    g_B = sens_gain(c["Ts"], EPS_WEATHERED, lam_B)
     for nedt in NEDT_GRID:
-        nedt_s = nedt_in_surface_K(nedt, c["Ts"], EPS_WEATHERED, lam_B)
-        _, sysm = case_noise(c["kind"], nedt_s, c["npix"], 1)
-        row[f"NEdT={nedt}K"] = round(auc_from_snr(c["dTs"] / sysm), 3)
+        nedt_tb = nedt * nedt_amp(c["Ts"], EPS_WEATHERED, lam_B)
+        _, sysm = case_noise(c["kind"], nedt_tb, c["npix"], g_B, 1)
+        row[f"NEdT={nedt}K"] = round(auc_from_snr(c["dTs"] * g_B / sysm), 3)
     ceiling[cname] = row
 results["ceiling_vs_nedt"] = dict(
     実帯域での上限AUC=ceiling,
@@ -336,11 +385,26 @@ floor_sens = {}
 for cname, c in CASES.items():
     if c["kind"] != "dd":
         continue
-    floor_sens[cname] = {f"差動経年={v}K": round(auc_from_snr(c["dTs"] / v), 3)
+    g_B = sens_gain(c["Ts"], EPS_WEATHERED, lam_B)
+    floor_sens[cname] = {f"差動経年={v}K": round(auc_from_snr(c["dTs"] * g_B / v), 3)
                          for v in (0.15, 0.2, 0.3, 0.5)}
 results["ceiling_vs_eps_aging"] = dict(
     上限AUC=floor_sens,
-    含意="天井を上げる操作は NEdT ではなく、兄弟資産の選定（同一設計・同一施工年・同一外装履歴）である")
+    含意="天井を上げる操作は NEdT ではなく、兄弟資産の選定（同一設計・同一施工年・同一外装履歴）である",
+    これが本PoC最大の発見=(
+        "**この提案の分水嶺は NEdT ではなく、兄弟資産間の放射率の差動経年である。** "
+        "0.15K なら +1K の二重差分は上限AUC 0.99、0.3K なら 0.87、0.5K なら 0.75。"
+        "ところがこの値は PoC-1 の仮定値で、出典が無く、PoC-2 の合成シーンも模擬しておらず、"
+        "実測もされていない。**JSI照会（NEdT）よりこちらが先に来るべき未確認事項である。**"),
+    ただし上限は上界である=(
+        "ここでは差動経年をエポック平均で落ちない一定バイアスとして扱った。"
+        "実際には緩やかな**トレンド**なので、ステップ走査が段差とトレンドを分離できる分だけ"
+        "実害は小さくなる（PoC-4 のパイプラインは slope_per_ep を出している）。"
+        "したがってこの上限AUCは**悪い側の上界**であって、到達不能の宣言ではない"),
+    測り方=("同一構内の同型ユニット対を、外装張替え履歴が既知の期間で追う。"
+            "CMMS の外装履歴と突き合わせれば張替え直後＝差動経年ゼロの起点が取れる。"
+            "PoC-6 が実Landsatで測った近接兄弟対の時系列σ 0.43K は総量なので、"
+            "そのうちトレンド成分がいくらかを分ければ上限が決まる"))
 
 # ============================================================
 # 6. 最悪の隅 —— 実帯域 × NEdT 2K でも成立するか
@@ -383,14 +447,17 @@ for b, row in snr_tables.items():
         print(f"      {cn}: SNR={v['SNR']} ({v['判定']}) "
               f"[落ちる{v['雑音_平均で落ちる_K']}K / 落ちない{v['雑音_落ちない_K']}K]")
 
-print("\n=== 2b. PoC-1 の読み方との差（実効NEdTの倍率）===")
+print("\n=== 2b. PoC-1 の単位混在との差（NEdT項の倍率）===")
 for b, row in compat.items():
     ks = [f"{cn.split('(')[0]}: ×{v['倍率']}" for cn, v in row.items()]
     print(f"  [{b}] " + ", ".join(ks))
 
 print("\n=== 3. SNR→AUC 写像の検証（PoC-2 の二重差分6エポックMCと比較）===")
 for k, v in valid.items():
-    print(f"  {k}: MC={v['PoC2のMC_AUC']} vs 解析={v['解析AUC']}（SNR {v['本PoCの解析SNR']}、差 {v['差']:+.3f}）")
+    print(f"  {k}: MC={v['PoC2のMC_AUC']} / 前提を揃えた解析={v['前提を揃えた解析AUC']}"
+          f"（差 {v['差_揃えたとき']:+.3f}）→ 写像は妥当")
+    print(f"      差動経年0.3Kを入れると {v['差動経年を入れた解析AUC']}"
+          f"（差 {v['差_差動経年あり']:+.3f}）← PoC-2 が模擬していない項")
 
 print("\n=== 3b. 同じ写像はタンクパッチには使えない（自分で確かめた）===")
 for label, row in tank_gap.items():
