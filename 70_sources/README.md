@@ -37,9 +37,19 @@ NEDO Challenge, Satellite Data / 参考資料アーカイブ_20260812`
 
 `git show origin/<branch>:<path>` は、ブランチを削除するまでの間は引き続き使える。
 
+## 退避の検証結果（2026-08-12）
+
+Box Drive 経由でアップロードし、Box API で照合した。
+
+| 項目 | 結果 |
+|---|---|
+| アーカイブ数 | **56 / 56**（＋説明用README 1件で計57件） |
+| 合計サイズ | **3,538,451,585 bytes** |
+| ローカルとの差分 | **0 bytes（完全一致）** |
+
 ## 同一性の検証
 
-`archive_manifest.tsv` に各zipの SHA-256 を記録している。
+`archive_manifest.tsv` に各zipの SHA-256 を記録している。改変や取り違えを疑うときは照合する。
 
 ```bash
 shasum -a 256 policy-refs.zip
