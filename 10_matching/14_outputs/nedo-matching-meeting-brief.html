@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEDOマッチング｜営業・エンジニア 合同会議メモ</title>
+  <style>
+    :root { --ink:#17212b; --muted:#5e6b77; --line:#dce4ea; --navy:#123b5d; --aqua:#0f9d92; --pale:#f4f8fa; --gold:#f4ad3d; --blue:#2d77bd; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#fff; font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif; line-height:1.65; }
+    header { color:white; background:linear-gradient(125deg,var(--navy),#1d6586); padding:56px max(24px,calc((100vw - 1360px)/2)); }
+    header p { margin:0 0 8px; font-weight:700; letter-spacing:.08em; font-size:.82rem; opacity:.8; }
+    h1 { margin:0; font-size:clamp(1.8rem,4vw,2.8rem); line-height:1.3; }
+    main { max-width:1360px; margin:0 auto; padding:36px 24px 64px; }
+    h2 { color:var(--navy); font-size:1.45rem; margin:34px 0 16px; scroll-margin-top:62px; }
+    .toc { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:10px; margin:24px -24px 0; padding:0 24px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+    .toc ol { flex:1; min-width:0; margin:0; padding:0; list-style:none; display:flex; gap:4px; overflow-x:auto; counter-reset:toc; scrollbar-width:thin; }
+    .fold-all { flex:0 0 auto; padding:6px 12px; border:1px solid var(--line); border-radius:99px; background:#fff; color:var(--muted); font:inherit; font-size:.82rem; cursor:pointer; white-space:nowrap; }
+    .fold-all:hover { color:var(--navy); border-color:var(--aqua); }
+    .toc li { counter-increment:toc; flex:0 0 auto; }
+    .toc a { display:block; padding:11px 12px; color:var(--muted); text-decoration:none; font-size:.88rem; white-space:nowrap; border-bottom:2px solid transparent; }
+    .toc a::before { content:counter(toc,decimal-leading-zero); margin-right:6px; color:var(--aqua); font-weight:700; font-size:.76rem; }
+    .toc a:hover { color:var(--navy); }
+    .toc a.active { color:var(--navy); font-weight:700; border-bottom-color:var(--aqua); }
+    .lead { font-size:1.14rem; max-width:850px; color:#364656; }
+    .gist { margin:0 0 12px; font-size:1rem; color:#3f5869; }
+    .gist strong { color:var(--navy); }
+    details.fold { margin:0 0 8px; border:1px dashed var(--line); border-radius:10px; }
+    details.fold > summary { cursor:pointer; padding:9px 14px; color:var(--muted); font-size:.86rem; list-style:none; user-select:none; }
+    details.fold > summary::-webkit-details-marker { display:none; }
+    details.fold > summary::before { content:"▸ "; color:var(--aqua); font-weight:700; }
+    details.fold[open] > summary::before { content:"▾ "; }
+    details.fold > summary:hover { color:var(--navy); }
+    details.fold > summary:focus-visible { outline:2px solid var(--aqua); outline-offset:2px; }
+    details.fold[open] { border-style:solid; }
+    details.fold > .fold-body { padding:0 14px 14px; }
+    .today { margin:20px 0 0; padding:22px 24px; border-radius:14px; background:linear-gradient(135deg,#0f3f5f,#12657c); color:#fff; }
+    .today h2 { margin:0 0 14px; color:#fff; font-size:1.2rem; }
+    .today ol { margin:0; padding-left:1.3em; display:grid; gap:10px; }
+    .today li { font-size:1.02rem; line-height:1.55; }
+    .today li b { color:#8ee0d6; }
+    .today .today-note { margin:16px 0 0; padding-top:14px; border-top:1px solid rgba(255,255,255,.25); font-size:.9rem; color:#cfe4ec; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; margin:4px 0 20px; padding:6px 10px; border-radius:99px; background:#e8f5f4; color:#08766e; font-weight:700; font-size:.83rem; }
+    .decision-strip { display:grid; grid-template-columns:180px repeat(3,1fr); gap:12px; align-items:stretch; margin:24px 0; }
+    .decision-strip > strong { display:grid; place-content:center start; color:var(--navy); font-size:1.05rem; line-height:1.35; }
+    .decision-strip div { padding:12px 14px; border-radius:10px; background:#f1faf9; border:1px solid #c9e4e0; font-size:.9rem; }
+    .decision-strip b { display:block; margin-bottom:2px; color:#08766e; }
+    .goal { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .goal div,.card,.question { border:1px solid var(--line); border-radius:12px; padding:18px; }
+    .goal div,.question { background:#fff; }
+    .goal strong { display:block; color:var(--aqua); margin-bottom:5px; }
+    .cards { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+    .card { border-top:5px solid var(--aqua); box-shadow:0 6px 18px rgba(23,33,43,.04); }
+    .card h3 { margin:0; color:var(--navy); font-size:1.3rem; }
+    .company { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:8px; }
+    .number { min-width:28px; padding:2px 7px; text-align:center; border-radius:99px; color:#08766e; background:#e8f5f4; font-size:.76rem; font-weight:700; letter-spacing:.06em; }
+    .theme { margin:0 0 14px; font-weight:700; font-size:1.02rem; }
+    .benefits { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .benefits section { padding:12px 14px; background:var(--pale); border-radius:8px; }
+    .benefits h4 { margin:0 0 6px; font-size:.92rem; color:var(--navy); }
+    .benefits p { margin:0; font-size:.94rem; }
+    .check { margin:14px 0 0; padding:10px 12px; border-left:3px solid var(--gold); background:#fffaf1; font-size:.92rem; }
+    .questions { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .question strong { color:var(--aqua); }
+    .decision { margin-top:20px; padding:18px 20px; border:1px solid #b9d9d5; border-radius:12px; background:#f1faf9; }
+    .decision strong { color:#08766e; }
+    .closing { margin-top:30px; padding:24px; border-radius:12px; color:#fff; background:var(--navy); font-size:1.08rem; }
+    .flow { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:16px; }
+    .flow div { position:relative; min-height:135px; padding:16px; border-radius:10px; background:var(--pale); }
+    .flow div::after { content:"→"; position:absolute; right:-10px; top:50%; transform:translateY(-50%); z-index:1; color:var(--aqua); font-size:1.45rem; font-weight:700; }
+    .flow div:last-child::after { display:none; }
+    .flow b { display:block; color:var(--aqua); font-size:.82rem; letter-spacing:.06em; }
+    .flow strong { display:block; margin:5px 0; color:var(--navy); }
+    .flow p { margin:0; font-size:.86rem; line-height:1.45; }
+    .flow em { display:block; margin-top:9px; padding-top:8px; border-top:1px solid #dce4ea; color:#08766e; font-size:.78rem; font-style:normal; font-weight:700; line-height:1.35; }
+    .sales-note { margin:14px 0 0; padding:14px 16px; border-left:3px solid var(--blue); background:#f1f7fc; }
+    .program { margin:24px 0; padding:26px; border-radius:16px; background:linear-gradient(135deg,#f1f8fb,#f7fbf8); border:1px solid #d8e7e8; }
+    .program h2 { margin:0 0 16px; }
+    .program + h2 { margin-top:32px; }
+    .themes { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:24px; }
+    .theme-box { padding:17px; border-radius:10px; background:#fff; border:1px solid var(--line); }
+    .theme-box b { display:block; color:var(--aqua); font-size:.78rem; letter-spacing:.08em; }
+    .theme-box strong { display:block; margin:5px 0; color:var(--navy); }
+    .theme-box p { margin:0; font-size:.91rem; }
+    .bridge { position:relative; margin-top:34px; padding:34px 22px 20px; border:2px solid var(--aqua); border-radius:16px; background:#f1faf9; text-align:center; }
+    .bridge .bridge-label { position:absolute; top:-15px; left:50%; transform:translateX(-50%); padding:5px 18px; border-radius:99px; background:var(--aqua); color:#fff; font-weight:700; font-size:.92rem; white-space:nowrap; }
+    .bridge .bridge-inner { display:grid; grid-template-columns:1fr 58px 1fr; align-items:center; }
+    .bridge .node { min-height:112px; display:grid; place-content:center; padding:14px; border-radius:12px; background:#fff; border:1px solid var(--line); }
+    .bridge .node strong { display:block; color:var(--navy); }
+    .bridge .node span { display:block; margin-top:4px; color:var(--muted); font-size:.84rem; line-height:1.35; }
+    .bridge .arrow { color:var(--aqua); font-size:2rem; font-weight:700; }
+    .bridge .bridge-note { margin:14px 0 0; color:#08766e; font-size:.88rem; font-weight:700; }
+    .program-caption { margin:18px 0 0; text-align:center; color:#3f5869; font-weight:700; }
+    .positioning { margin:18px 0 0; padding:15px 17px; border-radius:10px; background:#fff; border-left:4px solid var(--gold); }
+    .positioning strong { color:var(--navy); }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+    .about-copy { padding:20px; border-radius:12px; background:#fff; border:1px solid var(--line); }
+    .about-copy h3 { margin:0 0 10px; color:var(--navy); font-size:1.1rem; }
+    .about-copy p { margin:0; font-size:.94rem; }
+    .why { display:grid; gap:10px; }
+    .why div { padding:12px 14px; border-radius:9px; background:#edf6f7; }
+    .why strong { display:block; color:var(--aqua); font-size:.84rem; }
+    .why span { font-size:.9rem; }
+    .process { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:15px; }
+    .process div { padding:14px; text-align:center; border-radius:9px; background:#fff; border:1px solid var(--line); }
+    .process b { display:block; color:var(--aqua); font-size:.78rem; }
+    .process strong { display:block; margin:4px 0; color:var(--navy); }
+    .process span { display:block; color:var(--muted); font-size:.82rem; line-height:1.35; }
+    .prize-note { margin:10px 0 0; text-align:center; color:var(--muted); font-size:.82rem; }
+    .sat { margin-top:16px; padding:16px 18px; border-radius:10px; background:#fff; border:1px solid var(--line); border-left:4px solid var(--blue); }
+    .sat h4 { margin:0 0 10px; color:var(--navy); font-size:.98rem; }
+    .sat table { width:100%; border-collapse:collapse; font-size:.88rem; }
+    .sat th, .sat td { padding:7px 10px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); }
+    .sat th { color:var(--navy); white-space:nowrap; background:var(--pale); font-weight:700; }
+    .sat tr:last-child th, .sat tr:last-child td { border-bottom:none; }
+    .sat td b { color:#1b5e8c; }
+    .sat p { margin:10px 0 0; font-size:.88rem; color:#3f5869; }
+    .sat-wrap { overflow-x:auto; }
+    .hdds { border:1px solid #c9e4e0; border-radius:14px; background:#f1faf9; padding:22px; margin-top:16px; }
+    .hdds > p:first-child { margin-top:0; }
+    .hdds-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
+    .hdds-grid section { background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+    .hdds-grid h4 { margin:0 0 8px; color:var(--navy); font-size:.95rem; }
+    .hdds-grid section.warn { border-color:#f0d29a; background:#fff6e6; }
+    .hdds-grid section.warn h4 { color:#8a5a00; }
+    .hdds-grid ul { margin:0; padding-left:1.1em; color:#3f5869; font-size:.87rem; line-height:1.6; }
+    .hdds-flag { margin:16px 0 0; padding:14px 16px; border-radius:10px; background:#fff6e6; border:1px solid #f0d29a; font-size:.92rem; }
+    .hdds-flag strong { color:#8a5a00; }
+    .hdds-ask { margin:16px 0 0; padding:14px 16px; border-radius:10px; background:var(--navy); color:#fff; font-size:.92rem; }
+    .hdds-ask strong { display:block; margin-bottom:6px; }
+    .hdds-ask ol { margin:0; padding-left:1.2em; line-height:1.7; }
+    .want { margin:16px 0 0; padding:14px 16px; border-radius:10px; background:#eef5fb; border:1px solid #c4dcf0; font-size:.92rem; }
+    .want strong { color:var(--blue); }
+    .opt-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px; }
+    .opt-flow div { background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px; }
+    .opt-flow b { display:block; color:var(--aqua); font-size:.76rem; margin-bottom:4px; }
+    .opt-flow strong { display:block; color:var(--navy); margin-bottom:4px; font-size:.95rem; }
+    .opt-flow span { display:block; color:var(--muted); font-size:.83rem; line-height:1.45; }
+    .opt-core { margin-top:14px; padding:16px 18px; border-radius:10px; background:#fff; border:1px solid var(--line); }
+    .opt-core h4 { margin:0 0 10px; color:var(--navy); font-size:.98rem; }
+    .opt-core dl { margin:0; display:grid; grid-template-columns:130px 1fr; gap:6px 14px; font-size:.89rem; }
+    .opt-core dt { color:var(--aqua); font-weight:700; }
+    .opt-core dd { margin:0; color:#3f5869; }
+    table.biz { width:100%; border-collapse:collapse; margin-top:14px; font-size:.87rem; background:#fff; }
+    table.biz th, table.biz td { border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top; }
+    table.biz th { background:var(--pale); color:var(--navy); font-weight:700; }
+    table.biz td.grid-row { background:#f1faf9; font-weight:700; color:#08766e; }
+    .table-wrap { overflow-x:auto; }
+    .gono { margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .gono section { border-radius:10px; padding:16px 18px; font-size:.89rem; }
+    .gono h4 { margin:0 0 8px; font-size:.95rem; }
+    .gono ul { margin:0; padding-left:1.1em; line-height:1.6; }
+    .gono .pro { background:#f1faf9; border:1px solid #c9e4e0; }
+    .gono .pro h4 { color:#08766e; }
+    .gono .con { background:#fff6e6; border:1px solid #f0d29a; }
+    .gono .con h4 { color:#8a5a00; }
+    @media (max-width:720px) { .goal,.cards,.questions,.benefits,.flow,.themes,.about-grid,.process,.decision-strip,.hdds-grid,.opt-flow,.gono { grid-template-columns:1fr; } .opt-core dl { grid-template-columns:1fr; gap:2px 0; } .bridge .bridge-inner { grid-template-columns:1fr; gap:8px; } .flow div::after { content:"↓"; right:50%; top:auto; bottom:-16px; transform:translateX(50%); } header { padding:40px 24px; } }
+    @media print { header { padding:30px; } main { padding:20px; } .card { break-inside:avoid; } .toc { display:none; } details.fold { border:none; } details.fold > summary { display:none; } details.fold > .fold-body { padding:0; } }
+  </style>
+</head>
+<body>
+  <header>
+    <p>NEDO マッチングプログラム</p>
+    <h1>営業・エンジニア 合同会議メモ<br>4社への営業アプローチと提案仮説</h1>
+  </header>
+  <main>
+    <div class="eyebrow">会議の目的｜全体の進め方と、本日のHondaとの打ち合わせを相談する</div>
+    <p class="lead">本公募は、GRIDが単独で進めたいと考えています。一方で今回のマッチングは、日本気象協会や大成建設など普段接点のない企業と直接話せる機会でもあり、これを営業接点としてどう生かすかは営業の皆さんと相談したいところです。本日は、全体としての進め方、特に本日のHondaとの打ち合わせをどう進めるかを相談させてください。</p>
+
+    <section class="today">
+      <h2 id="today">今日ここで決めたいこと</h2>
+      <ol>
+        <li><b>本日のHonda打ち合わせをどう進めるか。</b>お会いする部署は初めまして。相手の課題を聞き、GRIDの仮説をぶつけて、成立条件を持ち帰る。</li>
+        <li><b>公募とHondaとの協業を、分けて考えてよいか。</b>応募はGRID単独。協業は公募と切り離し、別途あらためて場を設ける——という案の是非。<em>（阿部個人の案です）</em></li>
+        <li><b>事務局に何を確認するか。</b>Hondaと事務局が同席するのは今日だけ。①HDDSの購入費を事務局が持てるか、②車両データをTellus環境に持ち込めるか、の2点は必ず聞く。</li>
+      </ol>
+      <p class="today-note">以下の各セクションは詳細を畳んであります。時間があるところだけ開いてください。前提として押さえておきたいのは3つ——応募締切は<b>2026年8月31日 正午</b>、1次審査は書類審査なので今の時点で実データは不要、HDDSは<b>可視化まではZENRIN DataComとの連携で手当て済み</b>でGRIDの持ち場はその先。</p>
+    </section>
+
+    <nav class="toc">
+      <ol>
+        <li><a href="#program">公募の位置づけ</a></li>
+        <li><a href="#agenda">相談したいこと</a></li>
+        <li><a href="#flow">面談の会話の流れ</a></li>
+        <li><a href="#hdds">HDDSで分かったこと</a></li>
+        <li><a href="#opt-normal">最適化①平時</a></li>
+        <li><a href="#opt-disaster">最適化②災害時</a></li>
+        <li><a href="#companies">4社別の提案仮説</a></li>
+        <li><a href="#exit">本日の出口（たたき台）</a></li>
+        <li><a href="#secretariat">事務局に確認したいこと</a></li>
+      </ol>
+      <button class="fold-all" type="button" aria-expanded="false">すべて開く</button>
+    </nav>
+
+    <section class="program">
+      <h2 id="program">NEDO Challengeとマッチングプログラムの位置づけ</h2>
+      <p class="gist">応募締切 <strong>2026/8/31 正午</strong>（構想文章で可）→ 1次審査は書類（〜10月下旬）→ 開発・メンタリング（〜2027/5下旬）→ 最終選考会は公開ピッチ（2027/7下旬）。賞金1位2,000万円。テーマは<strong>①平時のインフラマネジメント</strong>と<strong>②防災・災害対応</strong>の2つ。</p>
+      <details class="fold"><summary>公募の内容、2テーマ、スケジュール、Tellus環境の制約を開く</summary><div class="fold-body">
+      <div class="about-grid">
+        <div class="about-copy"><h3>どんな公募か</h3><p>老朽化するインフラ、担い手不足、自然災害の激甚化に対し、衛星・各種センサ・地上データを使って、インフラマネジメントや防災・災害対応を効率化・高度化するシステムを募る、NEDOの懸賞金型コンテストです。</p></div>
+        <div class="why"><div><strong>衛星データの役割</strong><span>地形・地盤・周辺環境の変化を、広域かつ時系列で把握する「宇宙からの視点」を加える。</span></div><div><strong>GRIDの持ち場</strong><span>可視化ではなく、点検・予防保全・応急対応・復旧計画の順序と資源配分を決めるところ。</span></div></div>
+      </div>
+      <div class="themes">
+        <div class="theme-box"><b>THEME 1</b><strong>平時のインフラマネジメント・都市活動</strong><p>衛星データで、劣化・地盤変動・周辺環境・交通などを継続的に把握し、点検・予防保全を高度化する。</p></div>
+        <div class="theme-box"><b>THEME 2</b><strong>防災・災害対応</strong><p>平時のリスク評価や予兆把握から、発災時の広域状況把握、応急対応・復旧計画までを高度化する。</p></div>
+      </div>
+      <div class="process"><div><b>応募｜〜2026/8/31 正午</b><strong>提案書の提出</strong><span>2テーマのいずれかで、衛星データを活用する解決策を提案する。構想文章で可。</span></div><div><b>1次審査｜2026/9上旬〜10下旬</b><strong>書類審査</strong><span>提案内容を書類で審査する。</span></div><div><b>開発・メンタリング｜2026/10下旬〜2027/5下旬</b><strong>システム開発</strong><span>通過後、提供環境も活用しながらシステムを開発する。</span></div><div><b>2次審査｜2027/7下旬</b><strong>最終選考会（ピッチ）</strong><span>一般公開の場でのプレゼンテーション方式で審査される。</span></div></div>
+      <p class="prize-note">賞金：1位 2,000万円／2位 1,000万円／3位 500万円</p>
+      <p class="positioning"><strong>衛星データと開発環境の前提：</strong>1次審査通過者にはTellusの開発環境が提供される（Tellus for Enterprise：仮想4Core・メモリ8GB・SSD 100GB／Satellite Data Master with QGIS：仮想6Core・メモリ8GB・SSD 500GB。クラウドGPUは要望に応じて事務局が検討）。ここで押さえるべき制約が3つある。<strong>①PALSAR-2はTellus環境内でのみ利用可能でダウンロード不可</strong>のため、処理をTellus上で完結させる設計が要る。<strong>②仮想4〜6Core・メモリ8GBはSAR、特にInSAR処理には非力</strong>で、GPUが必要なら早めに事務局へ相談する必要がある。<strong>③ALOS-2の回帰周期は14日</strong>で災害即応には足りない——ここを正直に認めたうえで車両データで補う建て付けが、むしろ提案の説得力になる。なお HISUI（ハイパースペクトル）は2026年3月に観測終了しており選択肢にならない。</p>
+      <div class="bridge">
+        <div class="bridge-label">マッチングプログラム</div>
+        <div class="bridge-inner">
+          <div class="node"><strong>社会インフラの課題</strong><span>現場課題・顧客課題・活用データを持つ企業</span></div>
+          <div class="arrow">＋</div>
+          <div class="node"><strong>技術シーズ</strong><span>衛星データ・AI・数理最適化などを持つ企業</span></div>
+        </div>
+        <p class="bridge-note">本公募に向けた対話の機会。GRIDにとっては提案・営業接点を育てる入口</p>
+      </div>
+      <p class="positioning"><strong>今回の狙い：</strong>本公募で成果を出し、衛星データ×最適化の実績を作る。あわせて宇宙分野だけに閉じず、さまざまな社会インフラの新規事業・顧客提案へ広げる。マッチングでは、課題・ニーズを持つ企業や衛星データ関連の企業との接点を得る。</p>
+</div></details>
+    </section>
+
+    <h2 id="agenda">この会議で相談したいこと</h2>
+    <div class="goal">
+      <div><strong>01｜本日のHondaとの打ち合わせ</strong>今日の場で何を話し、何を聞いて持ち帰るかをそろえる。</div>
+      <div><strong>02｜GRIDの見せ方とテーマの持ち込み方</strong>会社紹介・技術・実績を伝わる順番に整え、最適化の価値をどう示すかを磨く。</div>
+      <div><strong>03｜全体の進め方</strong>残る3社への当たり方と、面談後の営業フォローをどう進めるかを相談する。</div>
+    </div>
+
+    <h2 id="flow">面談の会話の流れ｜本日のHondaも同じ型で</h2>
+    <p class="gist">自己紹介 → 相手の部署の課題を聞く → 仮説を提示 → 成立条件を聞く → 次回につなぐ。<strong>お会いする部署は初めまして</strong>なので、会社紹介は短く、課題を聞くことに時間を寄せる。</p>
+    <details class="fold"><summary>各ステップの中身を開く</summary><div class="fold-body">
+    <p class="sales-note"><strong>本日のHondaにもこの型を使う：</strong>Hondaとは会社としての接点はあるものの、<strong>お会いする部署は初めまして</strong>。会社・HDDSの情報は事前資料で把握済みなので、そこに時間を使わず、<strong>相手の部署の課題を聞くこととGRIDの仮説をぶつけることに時間を寄せる</strong>。この型は後日の日本気象協会・大成建設・JTOWERとの面談でもそのまま使う。</p>
+    <div class="flow">
+      <div><b>STEP 1</b><strong>自己紹介</strong><p>GRIDの事業、最適化技術、社会インフラでの実績を短く伝える。相手の部署・役割も確認する。</p></div>
+      <div><b>STEP 2</b><strong>相手を理解する</strong><p>会社概要は調べてある前提で、その部署の優先課題、意思決定、既存の取り組みに絞って聞く。</p></div>
+      <div><b>STEP 3</b><strong>テーマを提示する</strong><p>相手別の仮説を示し、関心・前提・ズレを確かめる。</p></div>
+      <div><b>STEP 4</b><strong>成立条件を聞く</strong><p>必要なデータ、検証対象、関係者、予算感を確認する。</p></div>
+      <div><b>STEP 5</b><strong>次回につなぐ</strong><p>誰と何を持ち帰るかを合意し、次の営業・エンジニア協議を設定する。</p></div>
+    </div>
+
+    </div></details>
+
+    <h2 id="hdds">本日のHonda｜HDDSで分かっていること</h2>
+    <p class="gist">津島さんが見つけてくれた資料で、提供データはほぼ把握できた。<strong>交通量・旅行時間・急減速・路面損傷値・気象</strong>が、統計化された集計データとして出てくる。要点は<strong>可視化はZENRIN DataComとの連携で手当て済み</strong>ということ。</p>
+    <details class="fold"><summary>提供データ一覧、母数と精度、制約、Hondaへの問いを開く</summary><div class="fold-body">
+    <div class="hdds">
+      <p>Hondaの提供サービスは <strong>HDDS（Honda Drive Data Service）</strong>。2017年12月開始のデータビジネスで、主な顧客は行政・建設コンサルタント・保険会社。すでに東京都・栃木県・埼玉県・熊本市・日本気象協会などが導入している。事前資料により提供データが具体的に分かったため、面談では「何が使えるか」ではなく<strong>「どの粒度・どの形式で出せるか」</strong>から入れる。</p>
+      <div class="hdds-grid">
+        <section><h4>交通状況</h4><ul><li>交通量・旅行時間・速度・急減速・OD（csv／レポートpdf）</li><li>リアルタイム旅行時間（5/10/15分更新）</li><li>通行実績（1時間に1回集計、HTTPS配信）</li></ul></section>
+        <section><h4>周辺環境（路面管理）</h4><ul><li>Gセンサーでポットホール・ひび割れを検出</li><li>提供データ：緯度・経度・損傷値（shp／csv）</li><li>米国州DOT・国内自治体で実証、IRI比較で高評価</li></ul></section>
+        <section><h4>気象・その他</h4><ul><li>外気温・日射量・大気圧・雨滴（csv）</li><li>ワイパー／ヘッドライトの強弱</li><li>来客インデックス（QUICK APIs、週次）</li></ul></section>
+        <section><h4>母数と精度</h4><ul><li>データ収集距離は1日5,000万kmを突破。日本のほか北米・インド等でも取得</li><li>個車IDで同一車両をカウントでき、通行頻度・停車頻度が集計可能</li><li>車載センサーで補正しており、ビル陰やトンネル内も正確</li></ul></section>
+        <section><h4>公共調達で効く実績</h4><ul><li>NETIS登録 KT-230255-A（旅行時間表示サービス）</li><li>栃木県がHDDS活用でインフラDX大賞 国土交通大臣賞を受賞（2025年1月）</li><li>米国Caltrans・オハイオ州DOT・ハワイ州DOTと路面調査を実証、NEXCO西日本と提携</li></ul></section>
+        <section class="warn"><h4>可視化はすでに埋まっている</h4><ul><li>ZENRIN DataComと連携したWebダッシュボードを提供済み</li><li>通行実績の色分け表示、経路分析（起終点・走行軌跡）、CSVダウンロードまで実装済み</li><li><strong>GRIDが入る余地は可視化の先——順序を決める、資源を配る、不確実性の下で判断する——しかない</strong></li></ul></section>
+      </div>
+      <div class="hdds-flag"><strong>前提として押さえる制約：</strong>提供されるのは<strong>個人情報を含まない統計化・集計データ</strong>で、生の車両単位データではない。母集団は<strong>自家用車に特化</strong>（商用車・貨物車両を含まない）。取得項目は世代・車種で異なる。過去データは2010年以降（種類は一部に限る）。<strong>納品までのリードタイムは通常2ヶ月以上</strong>（1次審査は書類審査のため応募時点でデータを持っている必要はないが、開発期間に間に合わせる前提で逆算する）。</div>
+      <div class="hdds-flag"><strong>優先度に効く事実：</strong>HDDSの導入企業一覧に<strong>日本気象協会</strong>が掲載されている。ただし一覧には「開示許可をいただいている一部のみ掲載」と注記があるため、<strong>掲載がない＝取引がない、ではない</strong>。大成建設・JTOWERも取引の可能性は否定できない。なお一覧にはパシフィックコンサルタンツ・日本工営・オリエンタルコンサルタンツ・建設技術研究所と<strong>大手建設コンサルが揃う一方、ゼネコンは入っていない</strong>——大成建設の位置づけを考える材料になる。</div>
+      <div class="hdds-ask"><strong>この場で踏み込みたい問い</strong><ol><li>衛星データで抽出したエリアを渡して、そこだけ抽出・集計してもらうことは可能か。空間粒度はどこまで細かくできるか。</li><li>NEDO公募での利用は、通常の受託（2ヶ月リードタイム・有償）と同じ枠組みか。開発期間は2026年10月下旬〜2027年5月下旬。</li><li>路面損傷値と衛星由来の地盤変動（PALSAR-2のInSAR）を重ねる形は、Honda側から見て筋が良いか。過去に衛星データと突き合わせた経験はあるか。</li></ol></div>
+    </div>
+
+    </div></details>
+
+    <h2 id="opt-normal">Honda×数理最適化 ①平時｜テーマ1：点検・補修計画の最適化</h2>
+    <p class="gist">HDDSの走行データで異常を拾い、衛星のInSARで地盤変動を重ね、道路区間をスコア化して、<strong>どこをいつ点検・補修するか</strong>を最適化する。<strong>Honda側の希望（衛星単独の精度限界を車両データで補いたい）と噛み合う筋</strong>。</p>
+    <details class="fold"><summary>4ステップ、使う衛星データ、収益構造、進む理由と懸念を開く</summary><div class="fold-body">
+    <div class="hdds">
+      <p class="want"><strong>Honda側の希望（参加者情報より）：</strong>道路・交通流データと衛星データを組み合わせ、自治体・インフラ管理者の課題を解決する施策。<strong>衛星データ単独の精度に限界を感じており、車両データとの組合せで精度を上げたい相手</strong>を求めている。関心はテーマ1（インフラマネジメント・都市活動）。※画像データは提供対象外。</p>
+
+      <div class="opt-flow">
+        <div><b>STEP 1｜車両</b><strong>異常の検出</strong><span>路面凹凸、ポットホール、速度低下、通行状態の変化をHDDSの走行データから拾う。</span></div>
+        <div><b>STEP 2｜衛星</b><strong>環境の重ね合わせ</strong><span>地盤変位、斜面・植生、浸水履歴、土地被覆変化を道路区間に重ねる。</span></div>
+        <div><b>STEP 3｜統合</b><strong>区間スコア化</strong><span>異常可能性・劣化進行可能性・交通上の重要度を道路区間ごとに数値化する。</span></div>
+        <div><b>STEP 4｜GRID</b><strong>計画の最適化</strong><span>詳細点検・巡回・補修・更新の優先順位と実施時期を、制約下で最適化する。</span></div>
+      </div>
+
+      <div class="sat">
+        <h4>STEP 2で使う衛星データ（Tellus提供）</h4>
+        <div class="sat-wrap"><table>
+          <tr><th>本命</th><td><b>PALSAR-2（ALOS-2、L band SAR）</b>：干渉解析（InSAR）で年間数mm単位の地盤沈下を捉える。L bandは植生を透過しやすく地表の変位に強い。ALOSアーカイブは2006年以降あり、経年の沈下傾向が見られる。</td></tr>
+          <tr><th>補助</th><td><b>AW3D30 / ASTER GDEM ver.3</b>（水平30m、高さ精度約12m）：勾配と低地の特定。湛水しやすい箇所は路面が傷みやすく、劣化予測の説明変数になる。</td></tr>
+          <tr><th>裏取り</th><td><b>ASNARO-1（0.8m）／ GRUS</b>：光学は判読の裏取り用。0.8mでも舗装のひび割れは見えないため、細かい路面損傷はHondaのGセンサーに任せる分担が現実的。</td></tr>
+        </table></div>
+        <p><strong>組み合わせの意味：</strong>Hondaの路面損傷値は「どこが痛んでいるか」しか分からない。InSARの地盤変動と勾配を重ねると<strong>「なぜそこが痛むのか」</strong>が説明でき、まだ痛んでいない区間の劣化を予測できる。これが最適化の入力になる。</p>
+      </div>
+
+      <div class="opt-core">
+        <h4>GRIDの最適化が実際に解く問題</h4>
+        <dl>
+          <dt>決めること</dt><dd>どの道路区間を、いつ、詳細点検するか／巡回するか／補修するか／更新するか</dd>
+          <dt>最小化する対象</dt><dd>劣化リスクと交通影響から見た期待損失。裏返すと、限られた予算で捕捉できる異常の数を最大化する</dd>
+          <dt>守る制約</dt><dd>年間予算、点検・施工の人員と施工能力、交通規制、法定点検周期</dd>
+          <dt>立ち位置</dt><dd>衛星や車両データで安全性を確定するのではなく、<strong>「どこを先に詳しく調べるか」「どこから補修するか」を決めるスクリーニング・計画支援</strong>。最終判断は道路管理者が行う設計にする。区間の重要度は個車IDによる通行頻度で重み付けできる</dd>
+        </dl>
+      </div>
+
+      <div class="table-wrap">
+        <table class="biz">
+          <thead><tr><th>売上項目</th><th>課金方法</th><th>収益の帰属</th></tr></thead>
+          <tbody>
+            <tr><td>導入・業務モデル構築</td><td>対象自治体・道路網ごとの初期費</td><td>GRID＋Honda＋衛星解析事業者</td></tr>
+            <tr><td>車両データ利用</td><td>地域・期間・データ量に応じた利用料</td><td>Honda</td></tr>
+            <tr><td>衛星解析・更新</td><td>対象面積、撮像回数、解析回数</td><td>衛星解析事業者</td></tr>
+            <tr class="highlight"><td class="grid-row">道路保全計画SaaS</td><td class="grid-row">管理道路延長・対象地域の年間利用料</td><td class="grid-row">GRIDの主な継続粗利</td></tr>
+            <tr><td>最適化API</td><td>計画回数、道路区間数、API量</td><td>GRID</td></tr>
+            <tr><td>年度計画見直し支援</td><td>年1回等の計画更新・コンサルティング</td><td>GRID＋販売パートナー</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prize-note" style="text-align:left">支払者は自治体・都道府県・道路会社。販売協力者は建設コンサルタント・道路保守会社。GRIDはデータの再販売益ではなく、<strong>最適化エンジンの年間ライセンスと計画モデルの初期構築費</strong>で粗利を取る。単発の分析レポートではなく、毎年度の予算策定・月次の点検計画・災害後の計画見直しで繰り返し使われる業務システムにできるかが分かれ目。</p>
+
+      <div class="gono">
+        <section class="pro">
+          <h4>マッチングに進む理由</h4>
+          <ul>
+            <li>Hondaに既存の有償データサービス（HDDS）があり、支払者となる道路管理者も明確。絵に描いた餅になりにくい。</li>
+            <li>HDDSの顧客は行政・建設コンサル。GRIDが広げたい提案先とそのまま重なる。</li>
+            <li>Honda側が「衛星の精度限界を車両データで補いたい」と明言しており、GRIDの立ち位置と噛み合っている。</li>
+            <li>HDDSはZENRIN DataComとの可視化ダッシュボードまで手当て済みで、その先の計画最適化は空白地帯。GRIDの持ち場が明確。</li>
+          </ul>
+        </section>
+        <section class="con">
+          <h4>進む前に潰したい懸念</h4>
+          <ul>
+            <li>車両データ費＋衛星データ費が、顧客の削減効果を上回ると成立しない。<strong>まず課金単位を聞く。</strong></li>
+            <li>自治体ごとの個別仕様が増えると受託開発化し、粗利が落ちる。</li>
+            <li>道路の正解データが不足すると、PoCが精度検証で止まり業務システムに届かない。</li>
+            <li>Hondaが最終的にデータ提供者・販売主体・共同サービス提供者のどこを目指すかで、GRIDの取り分が変わる。</li>
+          </ul>
+        </section>
+      </div>
+      <div class="hdds-ask"><strong>営業の皆さんに判断してほしいこと</strong><ol><li>この収益構造は、GRIDの事業として追う価値があるか。年間ライセンスの価格帯として現実的な水準はどこか。</li><li>支払者（自治体・道路会社）に対して、GRIDから直接当たる道があるか。建設コンサル経由が現実的か。</li><li>以上を踏まえて、<strong>Hondaとのマッチングに進むべきか</strong>。進むなら本日の打ち合わせで上記の懸念をどこまで潰すか。</li></ol></div>
+    </div>
+
+    </div></details>
+
+    <h2 id="opt-disaster">Honda×数理最適化 ②災害時｜テーマ2：道路啓開・物資輸送の最適化</h2>
+    <p class="gist">通行実績で「通れた道」を知り、SARで被災域を絞り、突き合わせて通行可否を推定して、<strong>どの区間から啓開するか・物資をどう配るか</strong>を決める。Hondaの関心はテーマ1なので、平時のSaaSに災害モードを載せる形が現実的。</p>
+    <details class="fold"><summary>4ステップ、使う衛星データ、解く問題、難所を開く</summary><div class="fold-body">
+    <div class="hdds">
+      <p class="want"><strong>この筋を検討する根拠：</strong>HDDSの災害対応実績は厚い。東日本大震災では震災翌朝から通行実績データを公開しGoogleへ提供、2024年1月の能登半島地震でも情報提供。熊本県豪雨では建設コンサル向けに<strong>物資輸送ルートの検証</strong>（被災箇所の確認と迂回ルートの旅行速度）で使われている。防災はHondaが実績を持つ土俵であり、GRIDの最適化を載せる余地がある。</p>
+
+      <div class="opt-flow">
+        <div><b>STEP 1｜車両</b><strong>通れた道を知る</strong><span>通行実績（1時間ごと集計、種類によりリアルタイム）から、実際に通行できた道路を把握する。</span></div>
+        <div><b>STEP 2｜衛星</b><strong>被災域を絞る</strong><span>浸水域、土砂崩れ、地盤変位から、通行不能が疑われる区間を広域で抽出する。</span></div>
+        <div><b>STEP 3｜統合</b><strong>通行可否の推定</strong><span>「通れた」情報と「被災の疑い」を突き合わせ、区間ごとの通行可否を確からしさ付きで推定する。</span></div>
+        <div><b>STEP 4｜GRID</b><strong>啓開と輸送の最適化</strong><span>どの区間から啓開するか、物資をどの経路でどう配るかを、資源制約の下で決める。</span></div>
+      </div>
+
+      <div class="sat">
+        <h4>STEP 2で使う衛星データ（Tellus提供）</h4>
+        <div class="sat-wrap"><table>
+          <tr><th>本命</th><td><b>PALSAR-2（ALOS-2、L band SAR）</b>：変化検出で浸水域・土砂崩れを抽出する。SARが必須なのは<strong>雲と夜を貫通する</strong>ため。豪雨・台風災害はまさに雲に覆われている時に知りたいので、光学は原理的に使えない。水面はレーダーを鏡面反射して戻らないため暗く写り、浸水域の抽出は確立した手法。</td></tr>
+          <tr><th>補助</th><td><b>AW3D30 / ASTER GDEM ver.3</b>：標高と勾配から、浸水しやすい低地と崩壊しやすい斜面を事前に絞る。SARの観測がない時間帯を埋める推定にも効く。</td></tr>
+          <tr><th>裏取り</th><td><b>ASNARO-2（X band SAR）</b>：分解能は高いが観測幅が狭い。ピンポイントの確認用。晴れていれば <b>ASNARO-1 / GRUS</b> の光学も判読に使える。</td></tr>
+        </table></div>
+        <p><strong>組み合わせの意味：</strong>両者は弱点が正反対で補完的。<strong>衛星は「面」を粗い頻度で、車両は「線」を高頻度で</strong>見る。測位の面でも補完的で、衛星測位が苦手なビル陰・トンネル内をHDDSは車載センサー補正で正確に取れる。ALOS-2の回帰周期は14日なので発災直後に都合よく上空を通るとは限らないが、通行実績は1時間ごとに更新される。逆に「通行実績がない」が通行不能なのかサンプル不足なのか判別できない弱点を、SARの被災推定が埋める。この相互補完が、そのまま下記「不確実性の下で啓開順序を決める」最適化の入力になる。</p>
+      </div>
+
+      <div class="opt-core">
+        <h4>GRIDの最適化が実際に解く問題（災害時）</h4>
+        <dl>
+          <dt>決めること</dt><dd>道路啓開の順序と重機・人員の配分、物資輸送のルートと配車、避難所への配分量</dd>
+          <dt>最大化する対象</dt><dd>孤立の解消の早さ。言い換えると、時間あたりに到達可能となる人口・避難所数</dd>
+          <dt>守る制約</dt><dd>重機・人員・資材の量、道路の依存関係（上流を開けないと下流に入れない）、時間、燃料・車両数</dd>
+          <dt>GRIDの勝負どころ</dt><dd><strong>「通行実績がない」は「通行不能」ではない</strong>——単に自家用車が走っていないだけかもしれない。この曖昧さを衛星の被災推定と併せて確からしさに落とし、不確実性の下で啓開順序を決めるのが最適化の腕の見せどころ</dd>
+        </dl>
+      </div>
+
+      <div class="gono">
+        <section class="pro">
+          <h4>平時テーマより優れている点</h4>
+          <ul>
+            <li>衛星データの強み（広域・即時・現地に行けなくても分かる）が最も効くのは発災直後。テーマ2の方が衛星を使う必然性を説明しやすい。</li>
+            <li>Hondaに震災・豪雨・地震での提供実績があり、社会的意義の説明が容易。公募の審査でも訴求しやすい。</li>
+            <li>正解データ不足という平時テーマの弱点に対し、過去災害（東日本、熊本豪雨、能登）の事後データで検証できる。</li>
+          </ul>
+        </section>
+        <section class="con">
+          <h4>災害時ゆえの難所</h4>
+          <ul>
+            <li><strong>自家用車特化</strong>のため、緊急車両・物流トラックの挙動は見えない。物資輸送の議論では母集団のズレが効く。</li>
+            <li>発災直後は交通量そのものが激減し、サンプルが薄くなる。最も知りたい時間帯に最もデータが少ない。</li>
+            <li>通常フローは<strong>納品まで2ヶ月以上</strong>。災害対応に使うには平時から契約・接続しておく仕組みが要る。</li>
+            <li>支払者が防災部局・地方整備局に移り、予算が単発・補正になりやすい。継続収益にしにくい。</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="hdds-flag"><strong>現実的な落としどころ：</strong>Honda側が関心を示しているのは<strong>テーマ1（平時）</strong>。テーマを乗り換えるのではなく、<strong>平時の道路保全計画SaaSに災害モードを載せる</strong>形が有力。平時から車両・衛星データを接続して区間スコアを持っておき、発災時はそのデータ基盤をそのまま啓開・輸送の最適化に切り替える。支払者・契約・リードタイムの問題が同時に解け、公募でもテーマ1・テーマ2の両方に説明が効く。</div>
+
+      <div class="hdds-ask"><strong>本日Hondaに確かめること（災害時）</strong><ol><li>通行実績を災害時に提供する場合、平時と同じ1時間集計か。発災からどれだけ早く出せるか。</li><li>過去災害（東日本大震災・熊本豪雨・能登半島地震）の実績データを、検証用に遡って使えるか。</li><li>自家用車特化という母集団の制約を、熊本豪雨の物資輸送ルート検証ではどう扱ったか。</li><li>平時契約に災害時の優先提供を組み込む枠組みは、既存顧客向けに存在するか。</li></ol></div>
+    </div>
+
+    </div></details>
+
+    <h2 id="companies">4社別：マッチングで持ちかける提案仮説</h2>
+    <p class="gist">Honda＝道路の点検・補修計画と災害時の啓開・輸送。日本気象協会＝蓄電池の立地評価。大成建設＝災害復旧の資源配分。JTOWER＝通信鉄塔の保全。<strong>Honda以外の3社は後日の面談</strong>なので、今日は深追いしない。</p>
+    <details class="fold"><summary>4社それぞれのメリット・面談で確かめたいことを開く</summary><div class="fold-body">
+    <div class="cards">
+      <article class="card">
+        <div class="company"><h3>Honda</h3><span class="number">01</span></div>
+        <p class="theme">道路点検・補修計画の最適化（平時）＋災害時の啓開・輸送計画</p>
+        <div class="benefits"><section><h4>Hondaのメリット</h4><p>ZENRIN DataComとの連携で可視化まではすでに手当て済み。その先の順序決定・資源配分という意思決定支援へ、HDDSの用途を広げられる。</p></section><section><h4>GRIDのメリット</h4><p>衛星・気象・道路・車両情報を統合した最適化の実績を作り、HDDSの既存顧客である自治体・建設コンサル向けの提案へ展開できる。</p></section></div>
+        <p class="check"><strong>面談で確かめたいこと：</strong>データの空間粒度と発災時の提供リードタイム、公募利用時の契約枠組み、HDDS事務局と社内の窓口・意思決定者</p>
+      </article>
+      <article class="card">
+        <div class="company"><h3>日本気象協会</h3><span class="number">02</span></div>
+        <p class="theme">系統用蓄電池の立地・災害レジリエンス評価</p>
+        <div class="benefits"><section><h4>日本気象協会のメリット</h4><p>気象・災害リスク評価を、蓄電池開発の立地・事業判断という新たな用途に広げられる。</p></section><section><h4>GRIDのメリット</h4><p>蓄電池の開発・運営知見を生かし、開発初期のリスク低減サービスを新規案件として作れる。</p></section></div>
+        <p class="check"><strong>面談で確かめたいこと：</strong>既存接点・窓口候補、蓄電池開発者への提案機会、商談化できる案件、HondaのHDDS導入企業として掲載があるため車両データ活用の実績と関心領域</p>
+      </article>
+      <article class="card">
+        <div class="company"><h3>大成建設</h3><span class="number">03</span></div>
+        <p class="theme">災害復旧の人員・重機・資材・工程最適化</p>
+        <div class="benefits"><section><h4>大成建設のメリット</h4><p>広域被害の把握を、復旧工事の資源配分・工程判断へつなげ、復旧の速さと効率を改善できる。</p></section><section><h4>GRIDのメリット</h4><p>建設・復旧の実データと実証フィールドを得て、現場の意思決定に最適化を適用した実績になる。</p></section></div>
+        <p class="check"><strong>面談で確かめたいこと：</strong>既存接点・窓口候補、商談化できる復旧・施工案件、使える現場データ。HDDSの導入企業に大手建設コンサルは並ぶがゼネコンはいないため、車両データ活用の経験の有無も確かめたい</p>
+      </article>
+      <article class="card">
+        <div class="company"><h3>JTOWER</h3><span class="number">04</span></div>
+        <p class="theme">通信鉄塔の保全・災害復旧優先順位最適化</p>
+        <div class="benefits"><section><h4>JTOWERのメリット</h4><p>鉄塔周辺の浸水・土砂・地盤変位を早期に把握し、点検・補修・復旧の優先順位を改善できる。</p></section><section><h4>GRIDのメリット</h4><p>資産保全の最適化を通信インフラへ横展開し、継続的な保全サービスに発展させられる。</p></section></div>
+        <p class="check"><strong>面談で確かめたいこと：</strong>既存接点・窓口候補、商談化できる保全案件、台帳・点検履歴の提供可否</p>
+      </article>
+    </div>
+
+    </div></details>
+
+    <h2 id="exit">本日の出口をどう置くか（たたき台）</h2>
+    <div class="hdds">
+      <p class="want">ここから先は阿部個人の一案でしかありません。<strong>皆さんの見立てを聞いたうえで決めたい</strong>ところなので、違和感があればその場で言ってください。</p>
+      <p>今の資料を書きながら感じているのは、<strong>公募の話と、Hondaとの協業の話は、無理に一つにしなくてもいいのではないか</strong>ということです。HDDSは既に有償で回っている事業で、顧客は自治体と建設コンサル。GRIDが広げたい提案先とそのまま重なります。そこに公募の締切や環境の制約を持ち込むと、かえって話が窮屈になる気がしています。分けてしまえば、公募は単独で進めるという方針とも素直に両立します。</p>
+      <div class="themes">
+        <div class="theme-box"><b>案｜出口 その1</b><strong>公募は単独で進める</strong><p>応募はGRID単独。そのうえで、提案書の中で<strong>HDDSをデータソースとして挙げてよいか</strong>だけ、感触を確かめておきたい。データ提供を受けることと共同応募は別なので、単独の方針とは矛盾しないはず。1次審査は書類審査なので、この時点で実データは要らない。</p></div>
+        <div class="theme-box"><b>案｜出口 その2</b><strong>協業は別途、腰を据えて</strong><p>衛星データを必ずしも前提にしなくても、<strong>HDDSとGRIDの最適化は相性が良さそう</strong>。ここは公募と切り離し、別途あらためて打ち合わせの場を設けさせてもらう、という流れが自然ではないか。</p></div>
+      </div>
+      <div class="hdds-flag"><strong>Honda側が今動く理由をどう作るか：</strong>公募という外圧を外すと、先方が今検討する理由も薄くなります。ここで使えそうなのが、津島さんの資料から分かった<strong>ZENRIN DataComとの連携で可視化はすでに手当て済み</strong>という事実。「可視化はお持ちですよね。その先の、どの順で直すか・どう資源を配るかは空いていませんか」——この入り方なら、公募と無関係に話が成立しそうです。ここも刺さり方の見立てを伺いたいところ。</div>
+      <p class="prize-note" style="text-align:left">なお「衛星データは必ずしも必須ではない」というのは<strong>社内の整理としての話</strong>で、GRIDの応募は衛星データが前提です。公募の文脈で口に出す話ではない点だけ、共有しておきます。</p>
+    </div>
+
+    <h2 id="secretariat">事務局に確認したいこと</h2>
+    <div class="hdds">
+      <p class="want"><strong>本日は事務局も同席します。</strong>Hondaと事務局が同じ場にいる機会は今日しかないので、①②は必ず聞いておきたい。</p>
+      <div class="hdds-grid">
+        <section class="warn"><h4>① 有償データの購入対象</h4><ul><li>公式サイトには有償データについて「ご要望に応じて事務局が購入することも検討」とある</li><li><strong>HDDSのような民間の車両データも対象になりうるか</strong></li><li>通れば、リードタイム2ヶ月・有償という最大の障壁が公募の枠内で解ける。Honda側も「NEDOが買うなら」なら検討しやすいはず</li></ul></section>
+        <section class="warn"><h4>② 外部データの持ち込み可否</h4><ul><li>PALSAR-2はTellus環境内のみ利用可でダウンロード不可。<strong>衛星側が外に出られない以上、車両データを中に入れるしかない</strong></li><li>HDDSのcsv／shpをTellus環境内に持ち込めるか</li><li>逆に、解析した成果物を外に出せるか</li><li>これが通らないと「衛星×車両」の統合が原理的に成立せず、提案の骨格が変わる</li></ul></section>
+        </div>
+      <details class="fold"><summary>③計算リソース ④ALOS-2の観測要求 ⑤環境が使える時期 ⑥地上データの利用可否 を開く</summary><div class="fold-body"><div class="hdds-grid"><section><h4>③ 計算リソースの上限</h4><ul><li>仮想4Core・メモリ8GBはInSAR処理には心もとない</li><li>GPUは「要望に応じて事務局が検討」——申請のタイミングと条件は</li><li>メモリ増設は可能か。開発期間が始まってから足りないと分かると手遅れになる</li></ul></section>
+        <section><h4>④ ALOS-2の観測要求</h4><ul><li>緊急観測を要求できるか、アーカイブのみか</li><li>アーカイブのみなら、災害時の筋は過去災害での事後検証に留め、リアルタイム性は車両データ側に寄せる設計になる</li></ul></section>
+        <section><h4>⑤ 環境が使える時期</h4><ul><li>記載上は1次審査通過者向けで2026年10月下旬から</li><li>応募から1次審査までの約2ヶ月は環境なしで書類を書く前提で問題ないか</li></ul></section>
+        <section><h4>⑥ 地上データの利用可否</h4><ul><li>「一部地上データは提供元へ利用可否の問合わせが必要」とある</li><li>PLATEAU、全国道路施設点検データベースなど、使いたいものが該当するか</li></ul></section>
+      </div></div></details>
+    </div>
+
+    <p class="closing">締めのメッセージ：本公募の共同応募先を決める会ではありません。応募は単独で進めたいと考えています。そのうえで、公募とHondaとの協業は分けて考えてはどうか、というのが今のところの案です。ただ、これは阿部個人の見立てにすぎないので、今日の打ち合わせをどう進めるかも含めて、皆さんと一緒に決めさせてください。</p>
+  </main>
+  <script>
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+      var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+      function update() {
+        var current = 0;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i] && sections[i].getBoundingClientRect().top <= 80) current = i;
+        }
+        links.forEach(function (a, i) { a.classList.toggle('active', i === current); });
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+
+      var folds = Array.prototype.slice.call(document.querySelectorAll('details.fold'));
+      var btn = document.querySelector('.fold-all');
+      function sync() {
+        var allOpen = folds.every(function (d) { return d.open; });
+        btn.textContent = allOpen ? 'すべて閉じる' : 'すべて開く';
+        btn.setAttribute('aria-expanded', String(allOpen));
+      }
+      btn.addEventListener('click', function () {
+        var open = !folds.every(function (d) { return d.open; });
+        folds.forEach(function (d) { d.open = open; });
+        sync();
+      });
+      folds.forEach(function (d) { d.addEventListener('toggle', sync); });
+      sync();
+
+      // 印刷時はすべて開く
+      window.addEventListener('beforeprint', function () { folds.forEach(function (d) { d.open = true; }); });
+    })();
+  </script>
+</body>
+</html>
