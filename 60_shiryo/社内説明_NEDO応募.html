@@ -279,10 +279,17 @@
   }
 
   @media print {
-    :root { --paper: #FFF; --surface: #FFF; --surface-2: #FFF; --shadow: none; }
+    :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+      --paper:#FFF; --surface:#FFF; --surface-2:#FFF;
+      --ink:#1B2028; --ink-2:#545C68; --ink-3:#7E8693;
+      --rule:#DCDDD8; --rule-2:#EAEAE6;
+      --accent:#B4441F; --accent-ink:#8E3517; --accent-bg:#F6E9E3;
+      --ok:#2F6B4F; --ok-bg:#E6EFE9; --warn:#8A5D16; --warn-bg:#F5ECD9;
+      --miss:#6E727A; --miss-bg:#EBEBE9; --shadow:none;
+    }
     body { font-size: 10.5pt; }
     .wrap { max-width: none; padding: 0; gap: 1.6rem; }
-    .reviewbox { display: none; }
+    .reviewbox { break-inside: avoid; page-break-after: always; }
     .ask, .prop, .frank, .fig, details, figure { break-inside: avoid; }
     details { border: 0; padding: 0; }
     details > summary { list-style: none; }
@@ -300,6 +307,10 @@
       提案書は書き上がっており、締切は <strong>2026年8月31日 正午</strong>。
       いま必要なのは社外への照会を出す許可と、通過した場合の工数の目処です。
     </p>
+    <p class="lede" style="font-size:.95rem">
+      お手数ですが<strong>当日までにひととおり目を通していただき、席では「お願いしたいこと」の4件だけ</strong>
+      ご相談させてください。残りは資料でご確認いただければ十分です（本文だけなら15分、図まで見ると25分ほどかかります）。
+    </p>
     <p class="meta">
       作成 2026-08-10 ／ 更新 2026-08-12（第4版） ／ <span class="tbd">T1: 応募者名（正式名称）</span> ／
       全体を通しての資料の版は最終ページに記載
@@ -309,7 +320,7 @@
   <div class="stats">
     <div class="stat hot">
       <span class="k">本日お願いすること</span>
-      <span class="v">社外4者への照会</span>
+      <span class="v">社外5者への照会</span>
       <span class="n">出す許可だけ。支出の判断はありません</span>
     </div>
     <div class="stat">
@@ -319,7 +330,7 @@
     </div>
     <div class="stat">
       <span class="k">賞金（1テーマあたり）</span>
-      <span class="v">最大 2,000 万円</span>
+      <span class="v">最大 2,000 万円 <span class="flag f-ok">確定</span></span>
       <span class="n">1位のみ。該当なしもあり</span>
     </div>
   </div>
@@ -336,10 +347,10 @@
     <ol>
       <li><code>T1</code> 応募者名 — 正式名称。<strong>ニックネームは不可</strong>（要項III-3）で、仮称のままでは提出できません</li>
       <li><code>T2</code> 応募者区分 — 法人／個人／グループ。<strong>区分で応募申請書のファイルが違う</strong>ので最初に決める必要があります</li>
-      <li><code>T3</code> 開発期間（2026年11月〜2027年6月）に当てられる人数と、専任か兼任か</li>
+      <li><code>T3</code> 開発期間（2026年10月〜2027年6月の9か月）に当てられる人数と、専任か兼任か</li>
       <li><code>T4</code> 人月単価 — 下の自己負担額の前提です。いまは仮の幅で置いています</li>
       <li><code>T5</code> 社外への照会を出す名義 — 会社名か、個人名か</li>
-      <li><code>T6</code> 提案の中身をこの資料にどこまで書いてよいか — <strong>受賞すると情報公開法に基づく公開の対象</strong>になるため、実装の詳細は提案書にも書いていません</li>
+      <li><code>T6</code> 提案の中身をこの資料にどこまで書いてよいか — <strong>採択された場合に情報公開法に基づく公開の対象</strong>（要項の文言。1次通過を含むかは未確定）になるため、実装の詳細は提案書にも書いていません</li>
       <li><code>T7</code> Claude Code の契約プランと月あたりの実額 — 開発期間9か月分の費用の前提です。いまは月3〜10万円で仮に置いています</li>
     </ol>
   </div>
@@ -353,12 +364,22 @@
 
       <div class="ask">
         <span class="when">本日中</span>
-        <span class="what">社外4者への照会を出す許可</span>
+        <span class="what">社外5者への照会を出す許可</span>
         <span class="detail">
-          事務局への質問と、協力候補3者への打診です。聞くのは
-          <strong>「1次審査を通過した場合に、検証への協力を検討いただけるか」</strong>の一点だけ。
-          データの提供はこの段階では求めません。先方に拘束力は生じず、断られても提案書は現状のまま出せます。
+          <strong>協力候補4者に聞くのは「1次審査を通過した場合に、検証への協力を検討いただけるか」の一点</strong>で、
+          データの提供はこの段階では求めません。
+          <strong>事務局へは要項の解釈についての質問6件</strong>です。
+          なお<strong>1者にだけ</strong>、冬にしか観測機会がないため
+          「2026/27冬期の現地観測に同行させていただけるか」を併せて伺います。先方に拘束力は生じず、断られても提案書は現状のまま出せます。
           名義は <span class="tbd">T5</span> でお願いします。
+          <br>これとは別に、<strong>8月20日に衛星ベンダ（英SatVu／国内代理店JSI）へ価格・仕様の照会1通</strong>も出します。
+          回答が締切に間に合わなくても提案の成否は動きません。
+          <br><br><strong>照会先</strong>（名義の判断に相手が必要なので明記します）
+          <br>① 事務局（PwCコンサルティング）— 要項の解釈についての質問6件
+          <br>② 東京二十三区清掃一部事務組合 技術開発担当 — テーマ①の検証協力
+          <br>③ 東京都市サービス または 東京臨海熱供給 — テーマ①の検証協力
+          <br>④ 防災科学技術研究所＋新潟大学 — テーマ②の較正データ。<strong>ここにだけ冬期の同行観測も伺います</strong>
+          <br>⑤ （一財）砂防・地すべり技術センター または 県砂防部局 — テーマ②のユーザー業界。<strong>担当課名は未確認</strong> <span class="flag f-miss">未取得</span>
         </span>
       </div>
 
@@ -376,7 +397,7 @@
         <span class="when">10月下旬</span>
         <span class="what">通過した場合の工数の目処</span>
         <span class="detail">
-          通過すると2026年11月〜2027年6月にプロトタイプ開発が必要です。
+          通過すると2026年10月〜2027年6月の9か月でプロトタイプ開発が必要です。
           実装・解析・文書は Claude Code が主導するので、<strong>人が出るのは現地作業と交渉と立会いだけ</strong>で、
           <span class="num">17〜36</span> 人日（<span class="num">0.85〜1.8</span> 人月）と見ています
           <span class="flag f-warn">仮定</span>。
@@ -401,8 +422,8 @@
     <div class="fig">
       <figure>
         <p class="figtitle">依頼①だけ、今日でないと間に合わなくなります</p>
-        <svg viewBox="0 0 860 190" role="img"
-             aria-label="照会を出してから提出までの流れ。8月24日正午が事務局の質問受付期限だが、回答に3営業日かかり、その反映と8月28日の提出を逆算すると8月19日が実質の期限になる。">
+        <svg viewBox="0 0 860 212" role="img"
+             aria-label="照会を出してから提出までの流れ。8月24日正午が事務局の質問受付期限だが、回答に3営業日かかり、8月24日の本文凍結と8月28日の提出を逆算すると8月17日が実質の期限になる。">
           <defs>
             <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
@@ -443,13 +464,17 @@
 
           <path d="M 84 108 L 84 128 L 612 128 L 612 108" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
           <line x1="348" y1="128" x2="348" y2="146" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar1a)"/>
-          <text class="s-lbl s-acc" x="348" y="167" text-anchor="middle" font-weight="600">この往復に最低8日。だから出すのは 8/19 まで</text>
-          <text class="s-xs" x="348" y="184" text-anchor="middle">（事務局の受付そのものは 8/24 正午まで。ただしその回答は提案書に間に合いません）</text>
+          <text class="s-lbl s-acc" x="348" y="167" text-anchor="middle" font-weight="600">出すのは 8/17（月）まで。8/20 に回答が返り、8/24 の凍結に間に合う</text>
+          <text class="s-xs" x="348" y="184" text-anchor="middle">（受付そのものは 8/24 正午まで。ただし 8/18 以降だと反映に使える日が1営業日以下、8/19 以降だとゼロになる）</text>
+          <text class="s-sm s-acc" x="348" y="205" text-anchor="middle" font-weight="600">質問6件のうち1件は「火山災害はテーマ②の対象か」。答えでテーマ②を出すかどうかが決まる</text>
         </svg>
         <figcaption>
           <strong>8/24 正午は「質問を受け付ける期限」であって、回答が返る期限ではありません。</strong>
-          回答を提案書に反映して 8/28 に出すには、逆算して <strong>8/19</strong> が実質の締切になります。
-          他の3件は日程に余裕があります。
+          回答を提案書に反映して 8/28 に出すには、逆算して <strong>8/17（月）</strong> が実質の締切になります。
+          他の3件は日程に余裕があります（日程は要項の原文 <span class="flag f-ok">確定</span>、8/17 は当社の逆算 <span class="flag f-warn">仮定</span>）。
+          <br><strong>8/17 が実質の締切である最大の理由は、質問のうち1件が
+          「火山災害がテーマ②の対象範囲に含まれるか」の確認であることです。</strong>
+          これが否定ならテーマ②は提出しません（未回答のまま締切を迎えた場合は提出します）。
         </figcaption>
       </figure>
     </div>
@@ -470,7 +495,7 @@
       <figure>
         <p class="figtitle">お金は先に出て、あとから来る（かもしれない）</p>
         <svg viewBox="0 0 860 250" role="img"
-             aria-label="時間軸の図。2026年8月から2027年6月まで自己負担の支出が続き、賞金の入金は2027年9月末。支出開始から入金まで11か月あり、受賞しなければ入金はない。">
+             aria-label="時間軸の図。2026年10月から2027年6月までの9か月、自己負担の支出が続く。賞金の入金は2027年9月末で、開発開始から12か月あく。受賞しなければ入金はない。">
           <defs>
             <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
@@ -478,34 +503,35 @@
           </defs>
 
           <!-- 支出 -->
-          <rect x="70" y="112" width="130" height="20" fill="var(--surface-2)" stroke="var(--rule)"/>
-          <text class="s-xs" x="135" y="105" text-anchor="middle">応募準備</text>
+          <rect x="70" y="112" width="86" height="20" fill="var(--surface-2)" stroke="var(--rule)"/>
+          <text class="s-xs" x="113" y="105" text-anchor="middle">応募準備</text>
 
-          <rect x="200" y="86" width="360" height="46" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
-          <text class="s-lbl s-acc" x="380" y="105" text-anchor="middle" font-weight="600">開発期間 — 費用はすべて当社持ち</text>
-          <text class="s-sm s-acc" x="380" y="124" text-anchor="middle">222〜1,200 万円</text>
+          <rect x="156" y="86" width="476" height="46" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text class="s-lbl s-acc" x="394" y="105" text-anchor="middle" font-weight="600">開発期間 9か月 — 費用はすべて当社持ち</text>
+          <text class="s-sm s-acc" x="394" y="124" text-anchor="middle">222〜1,200 万円</text>
 
           <!-- 軸 -->
           <line x1="50" y1="132" x2="830" y2="132" stroke="currentColor" stroke-width="1.5"/>
 
           <g stroke="currentColor" stroke-width="1">
             <line x1="70" y1="132" x2="70" y2="142"/>
-            <line x1="200" y1="132" x2="200" y2="142"/>
-            <line x1="560" y1="132" x2="560" y2="142"/>
-            <line x1="645" y1="132" x2="645" y2="142"/>
+            <line x1="156" y1="132" x2="156" y2="142"/>
+            <line x1="632" y1="132" x2="632" y2="142"/>
+            <line x1="658" y1="132" x2="658" y2="142"/>
             <line x1="790" y1="132" x2="790" y2="142"/>
           </g>
 
           <text class="s-sm s-num" x="70" y="160" text-anchor="middle">2026/8</text>
           <text class="s-xs" x="70" y="176" text-anchor="middle">いま</text>
-          <text class="s-sm s-num" x="200" y="160" text-anchor="middle">2026/11</text>
-          <text class="s-xs" x="200" y="176" text-anchor="middle">開発開始</text>
-          <text class="s-sm s-num" x="560" y="160" text-anchor="middle">2027/6</text>
-          <text class="s-xs" x="560" y="176" text-anchor="middle">開発終了</text>
-          <text class="s-sm s-num" x="645" y="160" text-anchor="middle">2027/7</text>
-          <text class="s-xs" x="645" y="176" text-anchor="middle">順位決定</text>
-          <text class="s-sm s-num" x="790" y="160" text-anchor="middle">2027/9末</text>
-          <text class="s-xs" x="790" y="176" text-anchor="middle">支払</text>
+          <text class="s-sm s-num" x="156" y="160" text-anchor="middle">2026/10</text>
+          <text class="s-xs" x="156" y="176" text-anchor="middle">開発開始</text>
+          <text class="s-sm s-num" x="628" y="160" text-anchor="end">2027/6</text>
+          <text class="s-xs" x="628" y="176" text-anchor="end">開発終了</text>
+          <text class="s-sm s-num" x="662" y="160" text-anchor="start">2027/7</text>
+          <text class="s-xs" x="662" y="176" text-anchor="start">順位決定</text>
+          <text class="s-sm s-num" x="790" y="196" text-anchor="middle">2027/9末</text>
+          <text class="s-xs" x="790" y="212" text-anchor="middle">支払</text>
+          <line x1="790" y1="142" x2="790" y2="182" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
 
           <!-- 入金 -->
           <line x1="790" y1="130" x2="790" y2="62" stroke="var(--accent)" stroke-width="2" marker-end="url(#ar2)"/>
@@ -514,13 +540,15 @@
           <text class="s-xs s-acc" x="750" y="16" text-anchor="middle">受賞した場合のみ・該当なしもあり</text>
 
           <!-- 待ち期間 -->
-          <path d="M 200 204 L 200 214 L 790 214 L 790 204" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
-          <text class="s-lbl" x="495" y="238" text-anchor="middle">支出が始まってから入金まで <tspan class="s-num" font-weight="600">11か月</tspan></text>
+          <path d="M 156 226 L 156 236 L 790 236 L 790 226" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
+          <text class="s-lbl" x="473" y="228" text-anchor="middle">開発が始まってから入金まで <tspan class="s-num" font-weight="600">12か月</tspan></text>
         </svg>
         <figcaption>
-          助成金との一番の違いはここです。<strong>開発期間の9か月は持ち出しのみで、収入は一切ありません。</strong>
+          助成金との一番の違いはここです。<strong>開発期間の9か月（2026年10月〜2027年6月）は持ち出しのみで、収入は一切ありません。</strong>
           賞金は 2027年9月末までの一括精算払いで、受賞しなかった場合はゼロです。
           応募・審査・メンタリングの費用もすべて応募者負担です <span class="flag f-ok">確定</span>。
+          （要項の日程表は「10月下旬〜5月下旬」、FAQは「2026年11月〜2027年6月」と書き方が違うため、
+          <strong>提案書では両端を含む9か月で書いています。実際に手が動くのは1次結果が出る10月下旬から</strong>です。）
         </figcaption>
       </figure>
     </div>
@@ -539,15 +567,15 @@
 
           <rect x="60" y="128" width="112" height="44" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.5"/>
           <text class="s-lbl" x="188" y="148" font-weight="600">1次審査を通過 <tspan class="s-num">6</tspan> 枠</text>
-          <text class="s-xs" x="188" y="165">ここを通ると、メンタリング・協賛企業の紹介・データ購入の要望が使えるようになる</text>
+          <text class="s-xs" x="188" y="165">ここを通るとメンタリング・共同研究先の紹介・データ購入の要望が使えるようになる</text>
 
           <rect x="60" y="198" width="56" height="44" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
           <text class="s-lbl s-acc" x="132" y="218" font-weight="600">賞金 <tspan class="s-num">3</tspan> 枠 ＋ 審査委員特別賞</text>
-          <text class="s-xs" x="132" y="235">当社の見立て: テーマ② はここ（3位まで）／テーマ① は特別賞</text>
+          <text class="s-xs" x="132" y="235">当社の見立て: テーマ② は2次審査進出〜3位／テーマ① は2次審査進出〜特別賞（1次通過＝2次進出ではない）</text>
         </svg>
         <figcaption>
-          過去2回の実績は <strong>1回目 67件→17件通過→12組受賞</strong>、<strong>2回目 59件→11チーム通過→8組受賞</strong>
-          <span class="flag f-ok">確定</span>。1次を通ること自体に、賞金とは別の価値があります（上の中段）。
+          NEDO Challenge の直近2プログラムの実績は <strong>Green Earth 67件→17件通過→12組受賞</strong>、<strong>農林水産業 59件→12チーム通過→7組受賞</strong>
+          <span class="flag f-ok">確定</span>。1次を通ること自体に、賞金とは別の価値があります（上の中段）。なお図の<strong>応募25〜35件と通過6枠は過去回からの推定</strong> <span class="flag f-warn">仮定</span>、<strong>賞金3枠＋特別賞は要項の原文</strong> <span class="flag f-ok">確定</span> です。なお過去回の記録はこの6枠を「ファイナリスト（2次審査に進んだチーム）」として数えていますが、<strong>要項上は1次通過と2次進出は同じではありません</strong>（<strong>プロトタイプ以上の開発ができていないと判断されると、1次を通っても2次に進めません</strong>。要項III-1。だから依頼③の工数がここに直結します）。
         </figcaption>
       </figure>
     </div>
@@ -558,7 +586,7 @@
           <tr><th>主催</th><td>NEDO（経済産業省）<span class="flag f-ok">確定</span></td></tr>
           <tr><th>募集テーマ</th><td>2件。<strong>①インフラマネジメント及び都市活動</strong>／<strong>②インフラに係る防災・災害対応</strong>。1応募者が各テーマ1件まで出せます <span class="flag f-ok">確定</span></td></tr>
           <tr><th>賞金</th><td class="num">テーマごとに 1位 2,000万円／2位 1,000万円／3位 500万円＋審査委員特別賞。<strong>該当なしもあり</strong> <span class="flag f-ok">確定</span></td></tr>
-          <tr><th>通過者への支援</th><td>専門家によるメンタリング（希望制・毎月）、合同ワークショップ、ネットワーキング2回程度、衛星データ基盤 Tellus の開発環境。<strong>いずれも1次通過者のみ</strong> <span class="flag f-ok">確定</span></td></tr>
+          <tr><th>通過者への支援</th><td>専門家によるメンタリング（希望制・毎月）、合同ワークショップ、ネットワーキング2回程度、衛星データ基盤 Tellus の開発環境、共同研究等の相手先の紹介、有償データの購入要望（事務局が購入を検討）。<strong>いずれも1次通過者のみ</strong> <span class="flag f-ok">確定</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -581,7 +609,7 @@
 
         <figure>
           <svg viewBox="0 0 860 350" role="img"
-               aria-label="左は現状。点検は費用が面積に比例するため数年に1回の抜き取りで、見つからないまま進む劣化が残る。右は提案。衛星が毎月すべての設備を見て、優先順位を付け、従来の点検はその行き先に送られる。">
+               aria-label="左は現状。点検は費用が面積に比例するため数年に1回の抜き取りで、劣化3件のどれにも当たらず見つからないまま進む。右は提案。衛星が毎月すべての設備を見て、優先順位を付け、従来の点検はその行き先に送られる。">
             <defs>
               <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
@@ -606,19 +634,18 @@
               <rect x="117" y="158" width="26" height="26"/><rect x="151" y="158" width="26" height="26"/>
               <rect x="185" y="158" width="26" height="26"/><rect x="219" y="158" width="26" height="26"/>
               <rect x="253" y="158" width="26" height="26"/><rect x="287" y="158" width="26" height="26"/>
-              <rect x="117" y="192" width="26" height="26"/><rect x="151" y="192" width="26" height="26"/>
-              <rect x="185" y="192" width="26" height="26"/><rect x="219" y="192" width="26" height="26"/>
-              <rect x="253" y="192" width="26" height="26"/><rect x="287" y="192" width="26" height="26"/>
             </g>
-            <rect x="151" y="90" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"/>
-            <rect x="253" y="158" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"/>
-            <rect x="185" y="192" width="26" height="26" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2"/>
+            <rect x="117" y="124" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"/>
+            <rect x="287" y="90" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"/>
+            <rect x="151" y="90" width="26" height="26" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2"/>
+            <rect x="253" y="124" width="26" height="26" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2"/>
+            <rect x="185" y="158" width="26" height="26" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2"/>
 
             <g class="s-xs">
               <rect x="117" y="240" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"/>
-              <text x="139" y="252">数年に1回、ここだけ見る</text>
+              <text x="139" y="252">数年に1回、ここだけ見る（劣化には当たっていない）</text>
               <rect x="117" y="264" width="14" height="14" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2"/>
-              <text x="139" y="276">見つからないまま進む劣化</text>
+              <text x="139" y="276">見つからないまま進む劣化 3件</text>
               <rect x="117" y="288" width="14" height="14" fill="var(--surface-2)" stroke="var(--rule)"/>
               <text x="139" y="300">設備（1事業所で数万〜数十万m²）</text>
             </g>
@@ -627,15 +654,15 @@
             <text class="s-hd" x="450" y="24">提案</text>
             <rect x="450" y="38" width="390" height="296" rx="3" fill="none" stroke="var(--accent)"/>
 
-            <rect x="612" y="54" width="66" height="20" rx="2" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.5"/>
-            <line x1="600" y1="64" x2="612" y2="64" stroke="var(--accent)" stroke-width="3"/>
-            <line x1="678" y1="64" x2="690" y2="64" stroke="var(--accent)" stroke-width="3"/>
-            <text class="s-xs s-acc" x="645" y="46" text-anchor="middle">熱赤外衛星（分解能 3.5m）</text>
+            <rect x="612" y="62" width="66" height="20" rx="2" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.5"/>
+            <line x1="600" y1="72" x2="612" y2="72" stroke="var(--accent)" stroke-width="3"/>
+            <line x1="678" y1="72" x2="690" y2="72" stroke="var(--accent)" stroke-width="3"/>
+            <text class="s-xs s-acc" x="645" y="54" text-anchor="middle">熱赤外衛星（分解能 3.5m）</text>
 
             <g stroke="var(--accent)" stroke-dasharray="3 3" stroke-width="1.2" marker-end="url(#ar3a)">
-              <line x1="600" y1="80" x2="570" y2="100"/>
-              <line x1="645" y1="80" x2="645" y2="100"/>
-              <line x1="690" y1="80" x2="720" y2="100"/>
+              <line x1="600" y1="88" x2="570" y2="102"/>
+              <line x1="645" y1="88" x2="645" y2="102"/>
+              <line x1="690" y1="88" x2="720" y2="102"/>
             </g>
             <text class="s-sm s-acc" x="645" y="122" text-anchor="middle">毎月・全数を見る</text>
 
@@ -664,13 +691,14 @@
           <figcaption>
             <strong>売るのは点検の置き換えではなく、点検の行き先です。</strong>
             費用が面積に比例する手段（歩く・足場・ドローン）は数年周期の抜き取りにしかなりません。
-            衛星は面積が増えても費用がほぼ変わらないので、全数を毎月見て順位を付ける役に回れます。
+            衛星は面積が増えても費用がほぼ変わらないので、全数を毎月見て順位を付ける役に回れます
+            （分解能3.5mは衛星の公表仕様 <span class="flag f-ok">確定</span>、保温材の面積は業界の桁 <span class="flag f-warn">仮定</span>）。
           </figcaption>
         </figure>
 
         <figure>
           <svg viewBox="0 0 860 292" role="img"
-               aria-label="引き算を2回する図。1回目は同じ時期に隣の同型設備と引く。大気や時刻の影響は消えるが外装の個体差2.8Kが残り、信号0.53Kを上回るので判別性能は0.54。2回目はその差を前と後で引く。個体差も消えて実効誤差0.28Kとなり、6エポック分を重ねて判別性能は0.92。">
+               aria-label="引き算を2回する図。1回目は同じ時期に隣の同型設備と引く。大気や時刻の影響は消えるが外装の個体差2.0Kが残り、信号0.53Kを上回るので判別性能は0.54。2回目はその差を前と後で引く。実効誤差は0.28〜0.38Kまで下がり、前後6回ずつ計12回の撮像を重ねて判別性能は0.79〜0.92。幅は兄弟間の経年差を0.15Kと置くか0.3Kと置くかの差。">
             <defs>
               <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
@@ -693,7 +721,7 @@
             <text class="s-hd" x="215" y="130" text-anchor="middle" font-size="24">−</text>
 
             <text class="s-sm" x="215" y="164" text-anchor="middle">大気・時刻は消える。でも</text>
-            <text class="s-lbl" x="215" y="186" text-anchor="middle" font-weight="600">外装の個体差 <tspan class="s-num">2.8K</tspan> が残る</text>
+            <text class="s-lbl" x="215" y="186" text-anchor="middle" font-weight="600">残る誤差 <tspan class="s-num">2.0K</tspan>（主因は外装の個体差）</text>
             <text class="s-sm" x="215" y="208" text-anchor="middle">＞ 信号 <tspan class="s-num">0.53K</tspan></text>
 
             <line x1="50" y1="238" x2="380" y2="238" stroke="currentColor" stroke-width="1.5"/>
@@ -717,42 +745,50 @@
             <text class="s-sm s-acc" x="645" y="124" text-anchor="middle">個体差は両方に等しく乗るので、これも消える</text>
             <line x1="645" y1="132" x2="645" y2="150" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar4)"/>
 
-            <rect x="530" y="152" width="230" height="34" rx="3" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
-            <text class="s-lbl s-acc" x="645" y="175" text-anchor="middle" font-weight="600">実効誤差 <tspan class="s-num">0.28K</tspan></text>
-            <text class="s-sm" x="645" y="208" text-anchor="middle">＜ 信号 <tspan class="s-num">0.53K</tspan>（6エポック分を重ねて）</text>
+            <rect x="505" y="152" width="280" height="34" rx="3" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text class="s-lbl s-acc" x="645" y="175" text-anchor="middle" font-weight="600">実効誤差 <tspan class="s-num">0.28〜0.38K</tspan>（前後6回ずつ＝計12回）</text>
+            <text class="s-sm" x="645" y="208" text-anchor="middle">＜ 信号 <tspan class="s-num">0.53K</tspan></text>
 
             <line x1="480" y1="238" x2="810" y2="238" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="757" cy="238" r="6" fill="var(--accent)"/>
-            <text class="s-lbl s-acc" x="757" y="228" text-anchor="middle" font-weight="600">0.92</text>
+            <line x1="671" y1="238" x2="757" y2="238" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>
+            <text class="s-lbl s-acc" x="714" y="228" text-anchor="middle" font-weight="600">0.79〜0.92</text>
             <text class="s-xs" x="480" y="260">0.5 当てずっぽう</text>
             <text class="s-xs" x="810" y="260" text-anchor="end">1.0 完全</text>
           </svg>
           <figcaption>
             <strong>提案の核は、引き算を2回することです。</strong>温度の絶対値は誤差 <span class="num">9.4K</span> で信号を大きく上回り、
             隣の同型設備と1回引いても<strong>外装の個体差が残って <span class="num">0.54</span> にとどまります</strong>。
-            その差を前後で引いて初めて <span class="num">0.92</span> になります（<span class="flag f-ok">自前計算</span>）。
+            その差を前後で引いて初めて <span class="num">0.92</span> になります（<span class="flag f-ok">確定</span>）。
             成り立つ条件は<strong>同一構内・同じ設計・数百m以内</strong>の2基であること。
-            そして<strong>消え残るのが「個体差そのものの経年変化」で、これが下の「技術の急所」で書いた量です</strong>。
+            そして<strong>消え残るのが「個体差そのものの経年変化」で、これが下の「技術の急所」で書いた量です</strong>
+            （誤差は8月11日の再計算。左の 2.0K は落ちる 0.4K と落ちない 1.94K の二乗和、
+            右は落ちる 0.24K と<strong>落ちない分＝この経年変化そのもの</strong>の二乗和です。
+            <strong>幅は経年差を 0.15K と置くか 0.3K と置くかの差</strong> <span class="flag f-miss">未取得</span> で、0.15Kなら誤差0.28K・判別0.92、
+            0.3Kなら誤差0.38K・判別0.79です <span class="flag f-ok">確定</span>。
+            <strong>提案書に書いた0.92は0.15Kに相当する水準です。</strong>
+            なお12回は運用時の条件で、開発期間中に積む計画ではありません）。
           </figcaption>
         </figure>
 
         <p class="proof">
           応募前に自費で検証を実施済み。実在の衛星画像でも一連の処理を通し、ばらつきを
-          <span class="num">36.0K → 7.7K</span> に抑えて誤検知ゼロを確認しました。<span class="tbd">T6</span>
-          <br><strong>8月11日に、この数字自体を別のやり方で測り直しました</strong>
-          （提案書に書いた <span class="num">0.92</span> に対し、標本を増やした実測は <span class="num">0.98</span>。
-          <strong>控えめな側に書いていた</strong>ので提案書は直していません）。
-          「誤検知ゼロ」も率に直し、<span class="num">1プラントあたり年0.32件</span>と分かっています
-          <span class="flag f-ok">自前計算</span>。
+          <span class="num">36.0K → 7.7K</span> に抑えて誤検知ゼロを確認しました <span class="flag f-ok">確定</span>。<span class="tbd">T6</span>
+          <br><strong>8月11日に、上の図の判別性能 0.92 のほうを別のやり方で測り直しました</strong>
+          （標本を増やして測り直すと、<strong>兄弟の外装履歴がそろっている理想条件では <span class="num">0.98</span></strong>、
+          <strong>下の「技術の急所」で置いた経年差0.15Kでは <span class="num">0.92</span></strong>、
+          経年差が倍の0.3Kまで開くと <span class="num">0.79</span> でした。
+          <strong>提案書の0.92は0.15Kに相当する水準</strong>なので直していません）。
+          「誤検知ゼロ」も率に直し、<span class="num">1プラントあたり年0.32件以下</span>と分かっています（代用資産で測った上限）
+          <span class="flag f-ok">確定</span>。
         </p>
       </div>
 
       <div class="prop">
         <p class="tag">テーマ② インフラに係る防災・災害対応</p>
-        <h3>火山の火口にどれだけ雪があるかを、40年分さかのぼって出す</h3>
+        <h3>火山の火口にどれだけ雪があったかを、40年分のアーカイブからさかのぼって復元する</h3>
         <p>
           積雪期に火山が噴火すると、火口周辺の雪が融けて泥流になり、下流の道路・橋・砂防施設と集落を襲います。
-          国は29の火山に緊急減災対策の砂防計画を作っており、うち21が積雪する火山です。
+          国は29の火山を緊急減災対策砂防計画の対象とし、うち21が積雪する火山です。
         </p>
 
         <figure>
@@ -785,13 +821,13 @@
             <line x1="292" y1="112" x2="308" y2="135" stroke="var(--accent)" stroke-width="2"/>
             <text class="s-sm s-acc" x="46" y="130" font-weight="600">この高さには</text>
             <text class="s-sm s-acc" x="46" y="148" font-weight="600">観測点が1つもない</text>
-            <line x1="120" y1="158" x2="168" y2="196" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="120" y1="158" x2="172" y2="212" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
 
             <!-- 観測所 -->
-            <polygon points="770,268 760,286 780,286" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <line x1="770" y1="268" x2="770" y2="246" stroke="currentColor" stroke-width="1.5"/>
-            <text class="s-xs" x="845" y="240" text-anchor="end">山麓の観測所</text>
-            <text class="s-xs" x="845" y="256" text-anchor="end">（実測はここだけ）</text>
+            <polygon points="770,250 760,268 780,268" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="770" y1="250" x2="770" y2="230" stroke="currentColor" stroke-width="1.5"/>
+            <text class="s-xs" x="845" y="212" text-anchor="end">山麓の観測所</text>
+            <text class="s-xs" x="845" y="228" text-anchor="end">（実測はここだけ）</text>
 
             <!-- 衛星 -->
             <rect x="676" y="34" width="60" height="20" rx="2" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.5"/>
@@ -816,18 +852,27 @@
             <text class="s-sm" x="180" y="302" text-anchor="middle">いまの計画: 山麓の平年値を標高で外挿</text>
           </svg>
           <figcaption>
-            <strong>泥流の規模を決める量が、日本のどこでも実測されていません。</strong>
+            <strong>泥流の規模を決める量を、常時観測している機関が日本に1つもありません。</strong>
             計画は山麓の観測所から標高で外挿した平年値ひとつを使っています。
-            無償の光学衛星の40年分から各年の雪が消えた日を面的に求め、そこから遡って積雪量を復元します。
-            出すのは「何年に一度の規模か」の分布で、砂防事務所が計画やハザードマップを見直すときの設計値になります。
+            無償の光学衛星の40年分のアーカイブ（同じ精度で使えるのは<strong>中位推定で</strong>火山により <span class="num">23〜38</span> 年分）から、
+            各年の<strong>雪が消えた日と融け始めた日</strong>を面的に求め、
+            その間の<strong>日々の融雪量を気温から計算して逆向きに積み上げます</strong>。
+            <strong>気温と融雪の係数は山麓からの外挿が残るので絶対値には幅が付きますが</strong>、
+            出すのは「2年・10年に一度の規模か」という比なので、その幅は約分されてほぼ消えます
+            <span class="flag f-warn">仮定</span>。
+            <strong>変えるのは外挿をなくすことではなく、標本を山麓の1点から火口周辺の実測分布に替えることです。</strong>
           </figcaption>
         </figure>
 
         <p class="proof">
-          蔵王山の火口周辺で実際に9シーズン分を処理し、全シーズンで雪の消えた日を特定できることを確認済み
-          （<span class="flag f-ok">自前計算</span>）。現地測量の実測値を当てると、
-          計画が想定する対策の物量は堤防の嵩上げ <span class="num">20.6km → 11.0km</span>、
-          氾濫世帯 <span class="num">803 → 347</span> と変わります。
+          蔵王山の火口周辺で実際に9シーズン分を処理し、全シーズン（2017〜2025年）で雪の消えた日を特定できることを確認済み
+          （<span class="flag f-ok">確定</span>）。火口の高さの実測は<strong>蔵王の4冬期分しか存在せず</strong>、それによると流域平均は
+          <strong>計画値の約29%</strong>でした（防災科研・新潟大の<strong>共同研究報告書。査読なしの年次報告です</strong> <span class="flag f-warn">仮定</span>）。<strong>その4冬期のうちドローン（UAV）が飛べたのは2冬期だけで、残る2冬期は強風と視界不良で欠測しています。これが衛星を使う理由そのものです。</strong>
+          <strong>この実測をマグマ噴火期の想定に当てると、泥流の総量は計画自身が水蒸気爆発期に
+          見込んでいる水準まで落ちます。</strong>
+          そのとき計画が使う対策の物量は水蒸気爆発期の側——堤防の嵩上げ <span class="num">20.6km</span> ではなく
+          <span class="num">11.0km</span>、氾濫 <span class="num">803</span> 世帯ではなく
+          <span class="num">347</span> 世帯——になります <span class="flag f-ok">確定</span>（いずれも蔵王の計画書に載っている値です）。
         </p>
       </div>
 
@@ -842,13 +887,13 @@
           <tr><th>時期</th><th>できごと</th><th>当社がすること</th></tr>
         </thead>
         <tbody>
-          <tr><td class="num">8月12日</td><td>—</td><td>事務局へ質問、協力候補3者へ照会（<strong>今回のお願い。まだ出せていません</strong>）</td></tr>
-          <tr><td class="num">8月19日</td><td>—</td><td>照会を出す実質の期限（これを過ぎると回答が提案書に間に合いません）</td></tr>
+          <tr><td class="num">8月12日</td><td>—</td><td>事務局へ質問、協力候補4者へ照会（<strong>今回のお願い。まだ出せていません</strong>）</td></tr>
+          <tr><td class="num">8月17日</td><td>—</td><td>照会を出す実質の期限（これを過ぎると回答が本文の凍結に間に合いません）</td></tr>
           <tr><td class="num">8月24日 正午</td><td>質問の受付期限</td><td>回答を提案書に反映し、内容を確定</td></tr>
           <tr><td class="num">8月28日</td><td>—</td><td>提出（締切より3日前に出す。不備を指摘してもらえる余地を残すため）</td></tr>
           <tr><td class="num">8月31日 正午</td><td>応募締切</td><td>期限後の差し替えは不可</td></tr>
-          <tr><td class="num">10月下旬</td><td>1次審査の結果</td><td>通過したらメンタリングと協賛企業の紹介を依頼</td></tr>
-          <tr><td class="num">11月〜2027年6月</td><td>開発期間</td><td>プロトタイプ開発（人が出るのは <span class="num">17〜36</span> 人日 <span class="flag f-warn">仮定</span>）</td></tr>
+          <tr><td class="num">10月下旬</td><td>1次審査の結果</td><td>通過したらメンタリング・共同研究先の紹介・<strong>有償データ（衛星撮像）の購入要望</strong>を依頼</td></tr>
+          <tr><td class="num">2026年10月〜2027年6月</td><td>開発期間</td><td>プロトタイプ開発（人が出るのは <span class="num">17〜36</span> 人日 <span class="flag f-warn">仮定</span>）</td></tr>
           <tr><td class="num">2027年7月中旬</td><td>2次審査の結果</td><td>公開のピッチで順位が決まる</td></tr>
           <tr><td class="num">2027年9月末まで</td><td>賞金の支払</td><td>受賞した場合、ここで一括入金</td></tr>
         </tbody>
@@ -865,7 +910,7 @@
       <figure>
         <p class="figtitle">勝敗を分けるのは技術ではなく、現場が1件でもあるかどうか</p>
         <svg viewBox="0 0 860 258" role="img"
-             aria-label="過去の受賞上位はいずれも現場のチャネルを持っている。当社は現在ゼロで、マッチングで接触した4社のうち3社が終了し、残る1社も返信待ち。埋める経路は本日お願いしている協力候補3者への直接照会だけ。">
+             aria-label="過去の受賞上位はいずれも現場のチャネルを持っている。当社は現在ゼロで、マッチングで接触した4社のうち3社が終了し、残る1社も返信待ち。埋める経路は本日お願いしている協力候補4者への直接照会だけ。">
           <defs>
             <marker id="ar6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
@@ -894,14 +939,14 @@
           <text class="s-sm s-acc" x="840" y="158" text-anchor="end" font-weight="600">この経路はほぼ閉じた</text>
 
           <rect x="450" y="170" width="390" height="62" rx="3" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="2"/>
-          <text class="s-lbl s-acc" x="645" y="194" text-anchor="middle" font-weight="600">協力候補3者への直接の照会</text>
+          <text class="s-lbl s-acc" x="645" y="194" text-anchor="middle" font-weight="600">協力候補4者への直接の照会</text>
           <text class="s-sm s-acc" x="645" y="216" text-anchor="middle">＝ 本日お願いしている依頼①。残る唯一の経路</text>
 
           <path d="M 386 201 L 444 201" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#ar6)"/>
-          <text class="s-xs s-acc" x="415" y="250" text-anchor="middle">埋めるには</text>
+          <text class="s-xs s-acc" x="415" y="194" text-anchor="middle">埋めるには</text>
         </svg>
         <figcaption>
-          過去2回の受賞作を全部読みましたが、<strong>上位は例外なく「もう現場につながっている」ことを前面に出しています</strong>。
+          過去2回の受賞作を全部読みましたが、<strong>上位は例外なく「もう現場につながっている」ことを前面に出しています</strong>（図の左上の3例はいずれも受賞作の公表資料に載っている実績です <span class="flag f-ok">確定</span>）。
           応募自体は単独で成立しますが、この1点だけは本文の書き換えでは動きません。
         </figcaption>
       </figure>
@@ -912,7 +957,7 @@
         <span class="h">順位の見立て</span>
         <span class="t">
           <strong>1位（2,000万円）は現状では届かない</strong>と見ています。
-          テーマ②はファイナリストから3位、テーマ①はファイナリストから特別賞が現実的な射程です。
+          テーマ②は<strong>2次審査に進むところ（ファイナリスト）</strong>から3位、テーマ①はそこから特別賞が現実的な射程です。1次を通っても2次に進めないことがあります。
         </span>
       </div>
       <div class="row">
@@ -921,22 +966,24 @@
           当初の見積もりより<strong>1桁下がりました</strong>。<span class="num">222〜1,200</span> 万円で、1位の賞金の
           <span class="num">0.11〜0.6</span> 倍 <span class="flag f-warn">仮定</span>。
           当初の <span class="num">1,560〜5,350</span> 万円は、実装・解析・文書を人が書く前提のままで二重計上でした。
-          いま残っている幅は<strong>衛星の撮像費</strong>で、実勢価格は照会中 <span class="flag f-miss">未取得</span>。
+          いま残っている幅は<strong>衛星の撮像費</strong>で、実勢価格は<strong>照会文が作成済みで、8月20日までに送付予定</strong>（まだ出していません） <span class="flag f-miss">未取得</span>。
         </span>
       </div>
       <div class="row">
         <span class="h">期間</span>
         <span class="t">
           <strong>短くはなりません。</strong>9か月を決めているのは工数ではなく、秘密保持契約の往復、
-          衛星の撮像機会と雲待ち、冬季にしか取れない実測です。「開発が速いなら3か月で」という話にはなりません。
+          衛星の撮像機会と雲待ち、冬季にしか取れない実測、そして<strong>月次の時系列を1年ぶん積む必要があること</strong>です。
+          「開発が速いなら3か月で」という話にはなりません。
+          <strong>9か月で買う撮像は2回で、証明するのは誤差の見積もり、横断判別（目標は判別0.7）、業務プロトタイプの動作まで</strong>です <span class="flag f-ok">確定</span>。
+          図の0.92に要る12回の月次実証は、提案書でも本期間の対象外と明記し、設計書の提示にとどめています。
         </span>
       </div>
       <div class="row">
         <span class="h">技術の急所</span>
         <span class="t">
-          <strong>8月11日の検証で移りました。</strong>「衛星センサの感度が実力で足りるか」（＝海外メーカーへの照会待ち）
-          だと考えていましたが、性能の上限を決めていたのは<strong>同じ工場の中の同型設備どうしで保温材の傷み方がどれだけ違うか</strong>でした
-          <span class="flag f-ok">自前計算</span>。これは<strong>相手の返事待ちではなく、協力先の設備台帳があれば当社で測れます</strong>。
+          <strong>8月11日の検証で移りました。</strong>「衛星センサの感度が実力で足りるか」（＝海外メーカーへの照会。8月20日送付予定）
+          だと考えていましたが、性能の上限を決めていたのは<strong>同じ工場の同型設備どうしで、保温材を覆う外装板の傷み具合（＝赤外での見え方）がどれだけ違うか</strong>でした——<strong>この差が0.15Kなら判別0.92、0.3Kなら0.79になります</strong> <span class="flag f-ok">確定</span>。<strong>この差自体はまだ実測しておらず、0.15Kと0.3Kの幅で置いています</strong> <span class="flag f-miss">未取得</span>。これは<strong>相手の返事待ちではなく、協力先の同型設備の対と外装板の張替え履歴があれば当社で測れます</strong>。
           海外メーカーの回答が締切に間に合わなくても提案の成否は動きません。
         </span>
       </div>
@@ -945,8 +992,38 @@
         <span class="t">
           施設数は<strong>公的統計で数え直しました</strong> <span class="flag f-ok">確定</span>（火力発電所 <span class="num">492</span> 所、
           ごみ焼却施設 <span class="num">1,027</span>〈発電あり <span class="num">409</span>〉、地域熱供給 <span class="num">133</span> 供給地域）。
-          主な対象は <span class="num">458〜542</span> 事業所、市場規模は年 <span class="num">17〜39</span> 億円
-          <span class="flag f-warn">仮定</span>。<strong>1事業所あたりの単価だけが根拠なし</strong> <span class="flag f-miss">未取得</span>。
+          主な対象は <span class="num">458〜542</span> 事業所 <span class="flag f-ok">確定</span>、市場規模は年 <span class="num">17〜39</span> 億円
+          <span class="flag f-warn">仮定</span>（提案書には切りのよい「20〜40億円」と書いています。8月10日に施設数で積み直した結果が
+          同じ帯に収まったので本文は変えていません）。<strong>1事業所あたりの単価だけが根拠なし</strong> <span class="flag f-miss">未取得</span>。
+        </span>
+      </div>
+      <div class="row">
+        <span class="h">テーマ②の急所</span>
+        <span class="t">
+          <strong>出せるのは2年・10年に一度の規模までで、100年に一度は外挿になります</strong>
+          <span class="flag f-ok">確定</span>（ただし<strong>既存の計画も過去10〜30年から外挿している</strong>ので、
+          そこは同条件です）。精度を決めるのは撮像の間隔で、蔵王の実測では
+          <strong>中央値20日・最悪の年48日</strong> <span class="flag f-ok">確定</span>。
+          同じ精度で遡れる年数は8火山の全数集計で<strong>中位推定で</strong> <span class="num">23〜38</span> 年（<strong>悲観推定だと蔵王を含む4座が20年を割ります</strong> <span class="flag f-warn">仮定</span>）。
+        </span>
+      </div>
+      <div class="row">
+        <span class="h">テーマ②の前提</span>
+        <span class="t">
+          <strong>テーマ②を出せるかどうかは、まだ確定していません。</strong>
+          火山災害がテーマ②の対象範囲に含まれるかが要項の文言から一意に読めないため、事務局に確認します
+          <span class="flag f-miss">未取得</span>。
+          <strong>否定ならテーマ①の1件のみ</strong>になります（未回答のまま締切を迎えた場合は2件出します）。
+        </span>
+      </div>
+      <div class="row">
+        <span class="h">テーマ②の事業規模</span>
+        <span class="t">
+          顧客は国と都道府県の砂防部局、対象は <span class="num">21</span> 火山
+          <span class="flag f-ok">確定</span>で、計画改定という<strong>年1〜3件</strong>の業務が入口です
+          <span class="flag f-warn">仮定</span>。
+          <strong>単独では規模が小さく、建設コンサルタントとの共同提案が前提</strong>になりますが、
+          相手はまだ決まっていません <span class="flag f-miss">未取得</span>。
         </span>
       </div>
       <div class="row">
@@ -968,7 +1045,7 @@
       <span><span class="flag f-miss">未取得</span> まだ根拠がない。埋めていないことを明示している</span>
     </p>
     <p style="font-size:.93rem;color:var(--ink-2)">
-      社内で「その数字の根拠は」と聞かれたときに答えられるよう、上の3段を全部の数字に付けています。
+      社内で「その数字の根拠は」と聞かれたときに答えられるよう、上の3段を本文の数字に付けています（図の中はラベルを置く余地がないので、図ごとにキャプションで示しています）。
       <span class="flag f-miss">未取得</span> のものを断定して書かない方針でやっています。
     </p>
   </section>
@@ -1014,13 +1091,15 @@
       <p>
         <strong>人月で積むのをやめた理由。</strong>実装・解析・図版・文書は Claude Code が主導するので、
         人月で積むと「人が何人必要か」と読まれて現地作業の分と二重に数えてしまいます。
-        見積もりの根拠は当社自身の稼働実績です——<strong>今回の応募準備では、5日（作業記録が動いていた実働で約68時間）で
-        提案書2件、検証コード13本、図版11点、約800KBの分析文書</strong>ができています
-        <span class="flag f-ok">確定</span>（作業リポジトリの履歴を数えた実測。<span class="num">257</span> 件の記録）。
+        見積もりの根拠は当社自身の稼働実績です——<strong>今回の応募準備では、5日間で提案書2件、検証コード <span class="num">22</span> 本、
+        図版 <span class="num">15</span> 点、約 <span class="num">1.2MB</span> の分析文書</strong>ができています
+        <span class="flag f-ok">確定</span>（作業リポジトリの履歴とファイルを数えた実測。記録は <span class="num">260</span> 件）。
+        実働は <span class="num">50〜65</span> 時間 <span class="flag f-warn">仮定</span>
+        （作業記録の間隔の上限を1時間とみなすと50時間、3時間とみなすと65時間。実際の着席時間は測っていません）。
         従来型の見積もりなら数人月に相当する分量です。
       </p>
       <p>
-        テーマ①の国内市場は年 <span class="num">17〜39</span> 億円規模。
+        テーマ①の国内市場は年 <span class="num">17〜39</span> 億円規模 <span class="flag f-warn">仮定</span>。
         対象は発電所（事業用火力 <span class="num">158</span> 所）・大型の清掃工場
         （<span class="num">167〜251</span> 施設）・地域熱供給（<span class="num">133</span> 供給地域）で、
         あわせて <span class="num">458〜542</span> 事業所 <span class="flag f-ok">確定</span>。
@@ -1032,8 +1111,8 @@
         <span class="flag f-ok">確定</span>（電力調査統計）。協力先の第一候補として照会をお願いしている先です。
       </p>
       <p>
-        テーマ②の顧客は国と都道府県の砂防部局で、対象は21火山。
-        計画の改定という年1〜3件の業務が入口になるため、<strong>単独では事業規模が小さく、
+        テーマ②の顧客は国と都道府県の砂防部局で、対象は21火山 <span class="flag f-ok">確定</span>。
+        計画の改定という年1〜3件 <span class="flag f-warn">仮定</span> の業務が入口になるため、<strong>単独では事業規模が小さく、
         建設コンサルタントとの共同提案が前提</strong>になります。相手はまだ決まっていません。
       </p>
     </div>
@@ -1042,7 +1121,7 @@
   <footer>
     NEDO Challenge, Satellite Data ／ 応募締切 2026-08-31 12:00 ／ 提出推奨日 2026-08-28<br>
     この資料の元になっている根拠・計算・出典は社内の作業リポジトリに全て残してあります。<br>
-    未確認箇所 7件（T1〜T7）／ 版: 2026-08-12 第4版（図解7点を追加、マッチング4社の帰趨を確定、技術の急所の移動と検証数値の再測を反映）<br>
+    未確認箇所 7件（T1〜T7）／ 版: 2026-08-12 第4版（図解8点を追加、マッチング4社の帰趨を確定、技術の急所の移動と検証数値の再測を反映）<br>
     前版: 2026-08-10 第3版（工数を Claude Code 前提に改訂、施設数を公的統計で確定）
   </footer>
 
