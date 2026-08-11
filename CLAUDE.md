@@ -138,6 +138,7 @@ NEDO Challenge, Satellite Data「衛星データで革新する未来の都市�
 - 骨子の主張と数値の整合は 03_レビュー対応要否.md が台帳。骨子を書き換えるときは03との整合を保つこと
 - **外部サイトの取得はローカルで直接実行してよい。GitHub Actions 迂回はもう要らない**（2026-08-11 に到達性を確認。mlit / env / gsi / meti / e-Gov / CiNii すべて到達可能で、`40_scripts/fetch_plateau_refs.py` がローカルで 22/22 取得成功）。取得スクリプトを `40_scripts/` に書き、`python3 40_scripts/fetch_xxx.py` で回す。**`trigger-*` ブランチへの push で起動して結果を専用ブランチに置く方式は取らないこと**——この迂回でワークフローが49本・ブランチが130本に増え、履歴が2.6GBに膨れた（本線は約20MB）。経緯と現状は `40_scripts/README.md` を参照
 - 取得済みの一次資料は既存の `origin/*-refs` 等のブランチにあり、`git show origin/<branch>:<path>` で読める。文書からの引用が残っているため、**これらのブランチは確認せずに削除しないこと**
+- **`.github/workflows/fetch-*.yml` は 2026-08-11 に49本すべて削除した。**各文書に残る「`.github/workflows/fetch-xxx.yml` で取得した」という記述は**取得経緯の記録**であり、そのファイルは現在存在しない。データ自体は各ブランチに残っているので出典としては有効。当時のワークフローを見たい場合は `git log --diff-filter=D -- .github/workflows/` から辿れる
 - **PDFのテキスト化**: `pdftotext -layout`（poppler-utils）。未導入なら `apt-get update -qq && apt-get install -y -qq poppler-utils`（update を省くと404で失敗する）。**`pypdf` と `pdfminer.six` はこの環境では使えない**——`cryptography` の rust バインディングが壊れており import 時に PanicException が出る。DOCX は `zipfile` で `word/document.xml` を読んでタグを落とすだけでよい
 - 事務条項の判断は必ず `50_koubo/` の原文に当たること。`20_theme1_保温劣化監視/10_提出様式メモ.md` はその要約であり、食い違ったら原文が優先
 
