@@ -714,13 +714,6 @@
       <path d="M402 66 C407 72 414 74 420 74 C427 74 431 71 434 67"
             fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity=".22"></path>
 
-      <!-- 噴気（図1では見出しの字面に掛かるので --o-steam で消す） -->
-      <g fill="#FFFFFF" opacity="var(--o-steam,.36)" filter="url(#fBlur2)">
-        <ellipse cx="413" cy="47" rx="11" ry="5"></ellipse>
-        <ellipse cx="407" cy="35" rx="8.5" ry="4.6"></ellipse>
-        <ellipse cx="402" cy="25" rx="6" ry="3.4"></ellipse>
-      </g>
-
       <!-- 前景の裾野（図7では標高0 mの線で切られ、図1でだけ見える） -->
       <path d="M96 300 C170 293 240 305 320 299 C400 293 470 305 552 299 C620 294 680 302 744 297
                L744 356 L96 356 Z" fill="var(--rock-2)" opacity=".34"></path>
@@ -891,7 +884,7 @@
           <g clip-path="url(#clipR)">
             <rect x="442" y="14" width="404" height="212" fill="url(#gSkyDay)"></rect>
             <g transform="translate(442,14) scale(0.66) translate(-100,-6)">
-              <use href="#volcano" style="--o-steam:0"></use>
+              <use href="#volcano"></use>
               <!-- 泥流の経路（火口から流れ下る谷筋。下流ほど広がる） -->
               <path d="M413 82 C404 140 378 202 348 244 C332 266 320 281 314 292
                        L334 293 C342 281 354 268 368 247 C398 205 419 139 417 83 Z"
@@ -1617,67 +1610,73 @@
     <div class="fig" id="fig7">
       <figure>
         <p class="figtitle">図7　現状の何が問題か — 観測所は麓にしかなく、火口の値は外挿で作られている（模式図。標高軸は概略）</p>
-        <svg viewBox="0 0 860 372" role="img" aria-label="火山の断面図。気象庁6観測所は標高38.9から525mの麓にあり、火口の約1220mへ回帰式で外挿している。計画値3.81mに対しUAV実測は1.1m。">
+        <svg viewBox="0 0 860 372" role="img" aria-label="火山の断面図。気象庁6観測所は標高38.9から525mの麓にあり、その回帰式を最上位の観測所より約1220m上、標高約1745mの火口へ外挿している。計画値3.81mに対しUAV実測は1.1m。">
           <clipPath id="clip5"><rect x="96" y="20" width="558" height="276"></rect></clipPath>
           <g clip-path="url(#clip5)">
             <rect x="96" y="20" width="558" height="276" fill="url(#gSkyDay)"></rect>
             <!-- 太陽 -->
             <circle cx="596" cy="60" r="16" fill="#FFD9A0" opacity=".55" filter="url(#fBlur2)"></circle>
-            <use href="#volcano"></use>
-            <!-- 観測所のある高さの帯 -->
-            <rect x="96" y="204" width="230" height="92" fill="url(#pHatch)"></rect>
-            <!-- 観測所（風向風速計つき） -->
+            <!-- 山体は標高軸に合わせて縦だけ伸ばす（標高0 mを固定して火口を1,745 mの高さへ） -->
+            <g transform="translate(0,296) scale(1,1.0476) translate(0,-296)">
+              <use href="#volcano"></use>
+            </g>
+            <!-- 観測所のある高さの帯（標高 0〜525 m） -->
+            <rect x="96" y="223" width="230" height="73" fill="url(#pHatch)"></rect>
+            <!-- 観測所6か所。支柱の足がその観測所の実標高に来る（gStationS は <g> なので
+                 use の width/height は効かず、足は y+21。y = 296 − 標高×0.1386819 − 21） -->
             <g color="var(--unk-ink)">
-              <use href="#gStationS" x="138" y="264" width="24" height="24"></use>
-              <use href="#gStationS" x="168" y="250" width="24" height="24"></use>
-              <use href="#gStationS" x="200" y="234" width="24" height="24"></use>
-              <use href="#gStationS" x="232" y="220" width="24" height="24"></use>
-              <use href="#gStationS" x="264" y="206" width="24" height="24"></use>
-              <use href="#gStationS" x="294" y="194" width="24" height="24"></use>
+              <use href="#gStationS" x="138" y="270"></use><!-- 仙台 38.9 m -->
+              <use href="#gStationS" x="168" y="263"></use><!-- 白石 86 m -->
+              <use href="#gStationS" x="200" y="254"></use><!-- 山形 152.5 m -->
+              <use href="#gStationS" x="232" y="241"></use><!-- 米沢 245 m -->
+              <use href="#gStationS" x="264" y="238"></use><!-- 新川 265 m -->
+              <use href="#gStationS" x="294" y="202"></use><!-- 駒ノ湯 525 m -->
             </g>
             <!-- 回帰と外挿。破線はラベルの手前で切り、文字の向こう側で再開する -->
-            <line x1="150" y1="278" x2="306" y2="206" stroke="var(--unk-ink)" stroke-width="2.4"></line>
-            <line x1="306" y1="206" x2="338" y2="170" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
-            <line x1="368" y1="134" x2="414" y2="82" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
-            <path d="M405 82 L417 71 L418 87 Z" fill="var(--accent)"></path>
+            <line x1="150" y1="291" x2="306" y2="223" stroke="var(--unk-ink)" stroke-width="2.4"></line>
+            <line x1="306" y1="223" x2="341" y2="170" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
+            <line x1="364" y1="134" x2="414" y2="61" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
+            <path d="M404 68 L417 57 L418 73 Z" fill="var(--accent)"></path>
             <!-- 衛星 -->
-            <g transform="translate(592,132)">
+            <g transform="translate(596,96)">
               <rect x="-12" y="-7" width="24" height="14" rx="2" fill="var(--ink-2)"></rect>
               <rect x="-29" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
               <rect x="15" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
             </g>
-            <line x1="578" y1="140" x2="458" y2="102" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
-            <path d="M464 96 L453 102 L464 108 Z" fill="var(--accent)"></path>
+            <line x1="582" y1="102" x2="452" y2="80" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <path d="M458 74 L447 80 L458 86 Z" fill="var(--accent)"></path>
           </g>
 
-          <!-- 標高軸 -->
+          <!-- 標高軸。0 mをy=296、1,745 mをy=54に置いた等間隔目盛（500 mごと） -->
           <line x1="96" y1="40" x2="96" y2="296" stroke="currentColor" stroke-width="1" opacity=".45"></line>
           <g class="s-xs s-num" text-anchor="end">
             <text x="88" y="300">0 m</text>
-            <text x="88" y="244">250</text>
-            <text x="88" y="193">500</text>
-            <text x="88" y="91">1,000</text>
-            <text x="88" y="66">1,250</text>
+            <text x="88" y="231">500</text>
+            <text x="88" y="161">1,000</text>
+            <text x="88" y="92">1,500</text>
           </g>
           <g stroke="currentColor" stroke-width="1" opacity=".13">
-            <line x1="96" y1="240" x2="654" y2="240"></line>
-            <line x1="96" y1="189" x2="654" y2="189"></line>
-            <line x1="96" y1="87" x2="654" y2="87"></line>
+            <line x1="96" y1="227" x2="654" y2="227"></line>
+            <line x1="96" y1="157" x2="654" y2="157"></line>
+            <line x1="96" y1="88" x2="654" y2="88"></line>
           </g>
           <!-- 目盛（標高軸の読み取り用） -->
           <g stroke="currentColor" stroke-width="1" opacity=".4">
             <line x1="91" y1="296" x2="96" y2="296"></line>
-            <line x1="91" y1="240" x2="96" y2="240"></line>
-            <line x1="91" y1="189" x2="96" y2="189"></line>
-            <line x1="91" y1="87" x2="96" y2="87"></line>
-            <line x1="91" y1="62" x2="96" y2="62"></line>
+            <line x1="91" y1="227" x2="96" y2="227"></line>
+            <line x1="91" y1="157" x2="96" y2="157"></line>
+            <line x1="91" y1="88" x2="96" y2="88"></line>
           </g>
 
           <text class="s-sm s-unk" x="104" y="318" font-weight="600">気象庁の地域気象観測所 6か所</text>
           <text class="s-sm s-unk s-num" x="104" y="336">標高 38.9 〜 525 m にすべて集中</text>
           <text class="s-sm s-acc" x="318" y="150" font-weight="600">回帰式で外挿</text>
           <text class="s-sm s-acc" x="318" y="168">この区間に観測点はゼロ</text>
-          <text class="s-sm s-num" x="430" y="62">火口 約 1,220 m</text>
+          <g class="s-sm s-num" text-anchor="end">
+            <text x="346" y="44">火口（標高 約 1,745 m）</text>
+            <text x="346" y="62">観測所 525 m から 約 1,220 m 上</text>
+          </g>
+          <path d="M352 50 L404 54" stroke="currentColor" stroke-width="1" opacity=".45" fill="none"></path>
           <text class="s-sm" x="516" y="118">衛星は火口を直接見る</text>
 
           <!-- 右: 積雪深の食い違い -->
@@ -2185,16 +2184,17 @@
   </section>
 
   <details>
-    <summary>補足: なぜ差分を三段も重ねるのか（テーマ①の設計の背景）</summary>
+    <summary>補足: なぜ差分を重ねるのか（テーマ①の設計の背景）</summary>
     <div class="inner">
       <p>
-        保温材が劣化した面の表面温度上昇は+1 K程度です。これに対し、外装材の放射率が0.05違うだけで見かけの輝度温度は2.7 K動き、
-        晴天夜と曇天夜の違いだけで8.6 K動きます（図3）。<strong>単独の絶対温度で判定する設計は原理的に成立しません。</strong>
+        保温材が劣化した面の表面温度上昇は+1 K程度です。これに対し、外装材の放射率が0.05違うだけで見かけの輝度温度は2.67 K動き、
+        晴天夜と曇天夜の違いだけで8.57 K動きます（図3）。<strong>単独の絶対温度で判定する設計は原理的に成立しません。</strong>
       </p>
       <p>
         そこで、①同一資産の中で相対比較する、②同一構内の同型ユニット（兄弟資産）どうしで差を取る、
-        ③その差の時間変化を見る、と重ねます（図4）。①で資産固有の放射率が落ち、②で天空条件・大気透過が落ち、
-        ③で「もともとあった差」が落ちて、残るのが劣化の進行だけになります。
+        ③その差の時間変化を見る、と重ねます（図4）。<strong>①と②はどちらも同じ撮像の中の比較なので、天空条件・大気透過はどちらでも同時に落ちます。</strong>
+        ①は資産の中の局所的な異常しか見えず、設備全体が面的に劣化すると基準を失うので、面的劣化には②を使います。
+        ②で戻ってくるのが資産どうしの個体差（放射率差 2.67 K）で、これを③の時間変化が落とします。
       </p>
       <p>
         この設計の弱点がそのまま U-1・U-2 です。②は<strong>2つの資産が同じ空を共有していること</strong>に依存し、
