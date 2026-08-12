@@ -362,6 +362,18 @@
       <stop offset="0%"   stop-color="#FFFFFF"></stop>
       <stop offset="100%" stop-color="var(--sky)"></stop>
     </linearGradient>
+    <!-- 谷筋の筆。両端が消えるので「引っかき傷」に見えない（単色のストロークだと端が切れて傷に見える） -->
+    <linearGradient id="gGullyD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#000000" stop-opacity="0"></stop>
+      <stop offset="38%"  stop-color="#000000" stop-opacity=".15"></stop>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"></stop>
+    </linearGradient>
+    <!-- 空気遠近。麓へ向かって空の色を重ねると、切り絵に見えず奥行きが出る -->
+    <linearGradient id="gAerial" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="var(--sky)" stop-opacity="0"></stop>
+      <stop offset="55%"  stop-color="var(--sky)" stop-opacity="0"></stop>
+      <stop offset="100%" stop-color="var(--sky)" stop-opacity=".42"></stop>
+    </linearGradient>
     <!-- 火口の開口。上＝奥の壁（陽が当たる）、下＝手前の壁と影。窪みに見せるための勾配 -->
     <linearGradient id="gCrater" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="var(--rock)"></stop>
@@ -370,8 +382,8 @@
     </linearGradient>
     <!-- 山体の陰影。左（影）から右（陽）へ一続きに振り、岩肌と雪面に同じ勾配をかける -->
     <linearGradient id="gConeShade" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%"   stop-color="#0A0F14" stop-opacity=".34"></stop>
-      <stop offset="30%"  stop-color="#0A0F14" stop-opacity=".14"></stop>
+      <stop offset="0%"   stop-color="#0A0F14" stop-opacity=".27"></stop>
+      <stop offset="30%"  stop-color="#0A0F14" stop-opacity=".11"></stop>
       <stop offset="48%"  stop-color="#0A0F14" stop-opacity="0"></stop>
       <stop offset="58%"  stop-color="#FFFFFF" stop-opacity="0"></stop>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity=".20"></stop>
@@ -652,51 +664,43 @@
             fill="url(#gRock)"></path>
 
       <g clip-path="url(#clipCone)">
-        <!-- 放射谷。谷を暗く、その間の尾根を明るくして山肌の起伏を出す -->
-        <g fill="none" stroke="#000000" stroke-linecap="round" opacity=".13">
-          <path d="M432 100 C452 136 474 166 494 198" stroke-width="3"></path>
-          <path d="M438 106 C464 132 492 160 518 188" stroke-width="2"></path>
-          <path d="M426 96 C436 142 448 186 462 226" stroke-width="2.4"></path>
-          <path d="M370 118 C352 154 332 188 312 222" stroke-width="1.8"></path>
-          <path d="M330 138 C312 168 292 196 272 222" stroke-width="1.6" opacity=".7"></path>
-        </g>
-        <g fill="none" stroke="#FFFFFF" stroke-linecap="round" opacity=".13">
-          <path d="M408 88 C398 134 388 182 378 226" stroke-width="2.6"></path>
-          <path d="M400 84 C382 128 358 172 336 212" stroke-width="1.8"></path>
-          <path d="M348 122 C330 156 310 188 290 216" stroke-width="1.6"></path>
-          <path d="M435 104 C456 134 480 164 504 194" stroke-width="1.6"></path>
+        <!-- 谷筋は暗い側だけ、細く薄く、中腹だけに置く。白い筆を入れると「光線」に見え、
+             太い筆や長い筆は「引っかき傷」に見える。山体は主役ではないので 質感は最小にする -->
+        <g fill="none" stroke="url(#gGullyD)" stroke-linecap="round">
+          <path d="M430 168 C440 196 452 220 462 242" stroke-width="3"></path>
+          <path d="M414 170 C417 198 421 222 425 244" stroke-width="2.6"></path>
+          <path d="M446 180 C462 202 478 220 492 238" stroke-width="2.4"></path>
+          <path d="M372 172 C360 198 346 220 332 240" stroke-width="2.6"></path>
+          <path d="M344 190 C332 210 318 228 304 244" stroke-width="2.2"></path>
         </g>
 
-        <!-- 雪。下端は谷筋で舌状に下がる（融雪期の雪線） -->
-        <path d="M286 162 C302 158 314 162 328 174
-                 C340 182 352 186 366 182 C380 178 392 182 404 186
-                 C416 190 426 186 436 190 C444 198 450 202 458 198
-                 C470 188 478 172 490 160 C498 154 506 150 518 154
-                 L532 24 L272 24 Z" fill="url(#gSnow)"></path>
-        <path d="M286 162 C302 158 314 162 328 174
-                 C340 182 352 186 366 182 C380 178 392 182 404 186
-                 C416 190 426 186 436 190 C444 198 450 202 458 198
-                 C470 188 478 172 490 160 C498 154 506 150 518 154
-                 L532 24 L272 24 Z" fill="url(#pSnowGrain)"></path>
-        <path d="M286 162 C302 158 314 162 328 174
-                 C340 182 352 186 366 182 C380 178 392 182 404 186
-                 C416 190 426 186 436 190 C444 198 450 202 458 198
-                 C470 188 478 172 490 160 C498 154 506 150 518 154"
-              fill="none" stroke="var(--sky-2)" stroke-width="1.1" opacity=".4"></path>
-
-        <!-- 消え残りの雪（融雪期は谷筋だけに残る） -->
-        <g fill="url(#gSnow)" opacity=".6">
-          <ellipse cx="470" cy="214" rx="3" ry="7" transform="rotate(26 470 214)"></ellipse>
-          <ellipse cx="444" cy="228" rx="2.2" ry="5" transform="rotate(14 444 228)"></ellipse>
-          <ellipse cx="496" cy="196" rx="2.6" ry="6" transform="rotate(30 496 196)"></ellipse>
-        </g>
-
+        <!-- 雪。雪線は等高線なので手前へ垂れ、縁は数pxの細かい凹凸で刻む（大きな滑らかな弧にすると水たまりに見える） -->
+        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
+                 C342 143 350 145 358 152 C366 158 374 156 382 160
+                 C390 164 398 163 406 166 C414 169 422 168 430 164
+                 C438 160 444 163 452 158 C460 152 466 146 474 148
+                 C482 150 488 145 496 140 C504 136 512 137 520 142 L536 24 L266 24 Z" fill="url(#gSnow)"></path>
+        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
+                 C342 143 350 145 358 152 C366 158 374 156 382 160
+                 C390 164 398 163 406 166 C414 169 422 168 430 164
+                 C438 160 444 163 452 158 C460 152 466 146 474 148
+                 C482 150 488 145 496 140 C504 136 512 137 520 142 L536 24 L266 24 Z" fill="url(#pSnowGrain)"></path>
+        <!-- 雪の縁を斜面になじませる（幅の広い薄い影を縁にまたがせる） -->
+        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
+                 C342 143 350 145 358 152 C366 158 374 156 382 160
+                 C390 164 398 163 406 166 C414 169 422 168 430 164
+                 C438 160 444 163 452 158 C460 152 466 146 474 148
+                 C482 150 488 145 496 140 C504 136 512 137 520 142" fill="none" stroke="#2A3644" stroke-width="7" opacity=".1"></path>
+        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
+                 C342 143 350 145 358 152 C366 158 374 156 382 160
+                 C390 164 398 163 406 166 C414 169 422 168 430 164
+                 C438 160 444 163 452 158 C460 152 466 146 474 148
+                 C482 150 488 145 496 140 C504 136 512 137 520 142" fill="none" stroke="var(--sky-2)" stroke-width="1.1" opacity=".4"></path>
 
         <!-- 明暗を一続きの勾配でかける（岩肌と雪面に同じ向きの陰影が乗る） -->
         <rect x="100" y="20" width="546" height="278" fill="url(#gConeShade)"></rect>
-        <!-- 手前に降りる主稜線 -->
-        <path d="M414 100 C408 156 404 224 396 296" fill="none"
-              stroke="#FFFFFF" stroke-width="1.4" opacity=".09"></path>
+        <!-- 麓へ向かう空気遠近 -->
+        <rect x="100" y="20" width="650" height="280" fill="url(#gAerial)"></rect>
 
         <!-- 麓の霞（山体を地面に座らせる） -->
         <ellipse cx="380" cy="304" rx="290" ry="22" fill="var(--sky)" opacity=".26" filter="url(#fBlur6)"></ellipse>
@@ -916,7 +920,7 @@
               <!-- 泥流の経路（火口から流れ下る谷筋。下流ほど広がる） -->
               <path d="M413 82 C404 140 378 202 348 244 C332 266 320 281 314 292
                        L334 293 C342 281 354 268 368 247 C398 205 419 139 417 83 Z"
-                    fill="#000000" opacity=".18"></path>
+                    fill="#000000" opacity=".13"></path>
             </g>
             <!-- 衛星 -->
             <use href="#gSatL" transform="translate(790,52) scale(0.8)" style="color:var(--ink-2)"></use>
