@@ -362,6 +362,12 @@
       <stop offset="0%"   stop-color="#FFFFFF"></stop>
       <stop offset="100%" stop-color="var(--sky)"></stop>
     </linearGradient>
+    <!-- 火口の開口。上＝奥の壁（陽が当たる）、下＝手前の壁と影。窪みに見せるための勾配 -->
+    <linearGradient id="gCrater" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="var(--rock)"></stop>
+      <stop offset="42%"  stop-color="var(--rock-2)"></stop>
+      <stop offset="100%" stop-color="#0B0F14"></stop>
+    </linearGradient>
     <!-- 山体の陰影。左（影）から右（陽）へ一続きに振り、岩肌と雪面に同じ勾配をかける -->
     <linearGradient id="gConeShade" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%"   stop-color="#0A0F14" stop-opacity=".34"></stop>
@@ -685,15 +691,12 @@
           <ellipse cx="496" cy="196" rx="2.6" ry="6" transform="rotate(30 496 196)"></ellipse>
         </g>
 
-        <!-- 火口原: 火口のまわりだけ雪が着かず地肌が出る -->
-        <ellipse cx="418" cy="78" rx="27" ry="12" fill="var(--rock)" filter="url(#fBlur2)"></ellipse>
-        <ellipse cx="418" cy="78" rx="27" ry="12" fill="#000000" opacity=".06" filter="url(#fBlur2)"></ellipse>
 
         <!-- 明暗を一続きの勾配でかける（岩肌と雪面に同じ向きの陰影が乗る） -->
         <rect x="100" y="20" width="546" height="278" fill="url(#gConeShade)"></rect>
         <!-- 手前に降りる主稜線 -->
-        <path d="M418 74 C410 148 404 220 396 296" fill="none"
-              stroke="#FFFFFF" stroke-width="1.4" opacity=".12"></path>
+        <path d="M414 100 C408 156 404 224 396 296" fill="none"
+              stroke="#FFFFFF" stroke-width="1.4" opacity=".09"></path>
 
         <!-- 麓の霞（山体を地面に座らせる） -->
         <ellipse cx="380" cy="304" rx="290" ry="22" fill="var(--sky)" opacity=".26" filter="url(#fBlur6)"></ellipse>
@@ -706,13 +709,19 @@
                C570 236 604 272 638 296"
             fill="none" stroke="var(--rock-2)" stroke-width="1.1" opacity=".5"></path>
 
-      <!-- 火口: 奥のリムは山体の輪郭が兼ね、内側の窪みと手前のリムを重ねる -->
-      <ellipse cx="418" cy="65" rx="16" ry="5" fill="var(--rock-2)"></ellipse>
-      <ellipse cx="418" cy="65.5" rx="11" ry="3" fill="#000000" opacity=".2"></ellipse>
-      <path d="M402 63 C407 57 414 55 420 56 C427 57 431 60 434 64"
-            fill="none" stroke="#000000" stroke-width="1.1" opacity=".14"></path>
-      <path d="M402 66 C407 72 414 74 420 74 C427 74 431 71 434 67"
-            fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity=".22"></path>
+      <!-- 火口。まわりは雪の着かない地肌を同心の段で置く（ぼかした影を下に置くと浮いて見える）。
+           開口は上（奥の壁＝陽が当たる）から下（手前＝影）へ暗くし、奥のリムにだけ光を入れる。
+           山体の内側の地形なので稜線でクリップする -->
+      <g clip-path="url(#clipCone)">
+        <ellipse cx="418" cy="66" rx="23" ry="8.6" fill="var(--rock)" opacity=".38"></ellipse>
+        <ellipse cx="418" cy="65.6" rx="19" ry="6.8" fill="var(--rock)" opacity=".7"></ellipse>
+        <path d="M404 62.4 C409 58.6 428 58.6 432 62.2" fill="none"
+              stroke="#FFFFFF" stroke-width="1.1" opacity=".3"></path>
+        <ellipse cx="418" cy="65" rx="16" ry="5.2" fill="url(#gCrater)"></ellipse>
+        <ellipse cx="418" cy="65" rx="16" ry="5.2" fill="none"
+                 stroke="var(--rock-2)" stroke-width=".9" opacity=".6"></ellipse>
+        <ellipse cx="418" cy="67.3" rx="10.5" ry="2.1" fill="#000000" opacity=".26"></ellipse>
+      </g>
 
       <!-- 前景の裾野（図7では標高0 mの線で切られ、図1でだけ見える） -->
       <path d="M96 300 C170 293 240 305 320 299 C400 293 470 305 552 299 C620 294 680 302 744 297
@@ -772,6 +781,29 @@
       <g fill="currentColor" stroke="none">
         <circle cx="19" cy="21" r="1.1"></circle><circle cx="22" cy="21" r="1.1"></circle>
       </g>
+    </g>
+    <!-- 大きく置く衛星（図1・図7）。本体は currentColor、パネルは --c-panel で受ける -->
+    <g id="gSatL">
+      <g fill="var(--c-panel,#3E6D96)">
+        <rect x="-40" y="-7" width="22" height="14" rx="1"></rect>
+        <rect x="18" y="-7" width="22" height="14" rx="1"></rect>
+      </g>
+      <g stroke="#0B1620" stroke-width=".9" opacity=".45">
+        <line x1="-33" y1="-7" x2="-33" y2="7"></line><line x1="-26" y1="-7" x2="-26" y2="7"></line>
+        <line x1="25" y1="-7" x2="25" y2="7"></line><line x1="32" y1="-7" x2="32" y2="7"></line>
+        <line x1="-40" y1="0" x2="-18" y2="0"></line><line x1="18" y1="0" x2="40" y2="0"></line>
+      </g>
+      <g stroke="currentColor" stroke-width="1.8">
+        <line x1="-18" y1="0" x2="-11" y2="0"></line><line x1="11" y1="0" x2="18" y2="0"></line>
+      </g>
+      <rect x="-11" y="-9" width="22" height="18" rx="2.5" fill="currentColor"></rect>
+      <rect x="-11" y="-9" width="22" height="5" rx="2" fill="#FFFFFF" opacity=".2"></rect>
+      <!-- 下向きのセンサ開口（どちらを見ているかが分かるように） -->
+      <path d="M-5 9 L5 9 L3.4 14 L-3.4 14 Z" fill="currentColor"></path>
+      <ellipse cx="0" cy="14.2" rx="4.2" ry="1.6" fill="currentColor"></ellipse>
+      <!-- 通信アンテナ -->
+      <line x1="0" y1="-9" x2="0" y2="-14" stroke="currentColor" stroke-width="1.4"></line>
+      <ellipse cx="0" cy="-16" rx="5" ry="2.2" fill="none" stroke="currentColor" stroke-width="1.4"></ellipse>
     </g>
     <g id="gSat">
       <rect x="9" y="8" width="10" height="7" rx="1" fill="currentColor"></rect>
@@ -869,11 +901,7 @@
                         --o-light:1; --o-hot:0; --o-cloud:0; --o-star:.5;"></use>
             <!-- 衛星と視線 -->
             <path d="M368 40 L306 200 L406 200 Z" fill="#8FB6D8" opacity=".07"></path>
-            <g transform="translate(368,40)">
-              <rect x="-12" y="-7" width="24" height="14" rx="2" fill="#93A6B6"></rect>
-              <rect x="-30" y="-4.5" width="15" height="9" fill="#3E6D96"></rect>
-              <rect x="15" y="-4.5" width="15" height="9" fill="#3E6D96"></rect>
-            </g>
+            <use href="#gSatL" transform="translate(368,40) scale(0.8)" style="color:#93A6B6"></use>
           </g>
           <rect x="14" y="14" width="404" height="212" rx="4" fill="none" stroke="var(--rule)"></rect>
           <text class="s-onDark" x="30" y="40" font-weight="600" font-size="15">テーマ①　プラントの保温劣化</text>
@@ -891,12 +919,8 @@
                     fill="#000000" opacity=".18"></path>
             </g>
             <!-- 衛星 -->
-            <g transform="translate(792,50)">
-              <rect x="-12" y="-7" width="24" height="14" rx="2" fill="var(--ink-2)"></rect>
-              <rect x="-30" y="-4.5" width="15" height="9" fill="var(--sky-2)"></rect>
-              <rect x="15" y="-4.5" width="15" height="9" fill="var(--sky-2)"></rect>
-            </g>
-            <line x1="778" y1="62" x2="694" y2="98" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <use href="#gSatL" transform="translate(790,52) scale(0.8)" style="color:var(--ink-2)"></use>
+            <line x1="768" y1="66" x2="694" y2="98" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
             <path d="M700 92 L690 100 L702 103 Z" fill="var(--accent)"></path>
           </g>
           <rect x="442" y="14" width="404" height="212" rx="4" fill="none" stroke="var(--rule)"></rect>
@@ -1615,7 +1639,7 @@
           <g clip-path="url(#clip5)">
             <rect x="96" y="20" width="558" height="276" fill="url(#gSkyDay)"></rect>
             <!-- 太陽 -->
-            <circle cx="596" cy="60" r="16" fill="#FFD9A0" opacity=".55" filter="url(#fBlur2)"></circle>
+            <circle cx="628" cy="48" r="16" fill="#FFD9A0" opacity=".55" filter="url(#fBlur2)"></circle>
             <!-- 山体は標高軸に合わせて縦だけ伸ばす（標高0 mを固定して火口を1,745 mの高さへ） -->
             <g transform="translate(0,296) scale(1,1.0476) translate(0,-296)">
               <use href="#volcano"></use>
@@ -1637,14 +1661,10 @@
             <line x1="306" y1="223" x2="341" y2="170" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
             <line x1="364" y1="134" x2="414" y2="61" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
             <path d="M404 68 L417 57 L418 73 Z" fill="var(--accent)"></path>
-            <!-- 衛星 -->
-            <g transform="translate(596,96)">
-              <rect x="-12" y="-7" width="24" height="14" rx="2" fill="var(--ink-2)"></rect>
-              <rect x="-29" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
-              <rect x="15" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
-            </g>
-            <line x1="582" y1="102" x2="452" y2="80" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
-            <path d="M458 74 L447 80 L458 86 Z" fill="var(--accent)"></path>
+            <!-- 衛星（下向きのセンサが火口を向いている） -->
+            <use href="#gSatL" transform="translate(600,112)" style="color:var(--ink-2)"></use>
+            <line x1="556" y1="108" x2="448" y2="76" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <path d="M454 70 L443 76 L454 82 Z" fill="var(--accent)"></path>
           </g>
 
           <!-- 標高軸。0 mをy=296、1,745 mをy=54に置いた等間隔目盛（500 mごと） -->
@@ -1677,7 +1697,7 @@
             <text x="346" y="62">観測所 525 m から 約 1,220 m 上</text>
           </g>
           <path d="M352 50 L404 54" stroke="currentColor" stroke-width="1" opacity=".45" fill="none"></path>
-          <text class="s-sm" x="516" y="118">衛星は火口を直接見る</text>
+          <text class="s-sm" x="640" y="144" text-anchor="end">衛星は火口を直接見る</text>
 
           <!-- 右: 積雪深の食い違い -->
           <line x1="690" y1="296" x2="846" y2="296" stroke="currentColor" stroke-width="1" opacity=".4"></line>
