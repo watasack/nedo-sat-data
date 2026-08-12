@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""説明資料（60_shiryo/日本気象協会_ご説明.html）に貼る「実データ図」2点を生成する。
+"""説明資料（60_shiryo/日本気象協会_ご説明.html）に貼る「実データ図」3点を生成する。
 
 出力（scratchpad に SVG 断片を書き出し、HTML へ貼る）:
   fig_t1_landsat.svg  テーマ①: 実Landsat 14シーンの資産輝度温度 → 市街地参照との差
                       出所 20_theme1_保温劣化監視/poc/out/poc4_results_real.json（既定＝v2・全14シーン）
-  fig_t2_snowmap.svg  テーマ②: 蔵王・火口半径3km の実消雪日マップ（2023/2019/2025）と9年分の中央値
+  fig_t1_image.svg    テーマ①: 実Landsat熱赤外画像そのもの（冬・夏の同一地域＋東扇島の等倍拡大）
+                      出所 20_theme1_保温劣化監視/poc/data/*_ST_B10_keihin.tif
+                           AOIは 20_theme1_保温劣化監視/poc/src/poc4_pipeline.py の AOIS と同一
+  fig_t2_snowmap.svg  テーマ②: 蔵王・火口周辺の実消雪日マップ（2023/2019/2025）と9年分の中央値
                       出所 30_theme2_ライフライン復旧/poc/data/snowmap/snow_doy_*.npy
                            30_theme2_ライフライン復旧/poc/out/t2_snowmap_results.json
 
-依存なし（numpy/matplotlib を使わない）。.npy は手で読み、PNG はパレット方式で手で書く。
-この環境には numpy が入っていないため、あえてこの実装にしてある。
+依存なし（numpy/matplotlib/tifffile/pyproj を使わない）。.npy と GeoTIFF は手で読み、
+PNG はパレット方式で手で書き、UTM への投影も手で実装してある。
+この環境にはそれらのパッケージが入っていないため、あえてこの実装にしてある。
 """
-import ast, array, base64, json, os, struct, zlib
+import ast, array, base64, json, math, os, struct, zlib
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -67,6 +71,66 @@ def ramp_rgb(t):
 
 
 PALETTE = [MISSING] + [ramp_rgb(i / (NCOL - 1)) for i in range(NCOL)]
+
+
+# ---------------------------------------------------------------- GeoTIFF / UTM
+
+def read_geotiff(path):
+    """Landsat ST_B10 の tiled・deflate・uint16 の GeoTIFF だけを読む最小実装。"""
+    d = open(path, "rb").read()
+    bo = "<" if d[:2] == b"II" else ">"
+    off, = struct.unpack(bo + "I", d[4:8])
+    n, = struct.unpack(bo + "H", d[off:off + 2])
+    tags = {}
+    for i in range(n):
+        e = off + 2 + i * 12
+        tag, typ, cnt = struct.unpack(bo + "HHI", d[e:e + 8])
+        sz = {1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 11: 4, 12: 8}.get(typ, 1)
+        tot = sz * cnt
+        raw = (d[e + 8:e + 8 + tot] if tot <= 4
+               else d[struct.unpack(bo + "I", d[e + 8:e + 12])[0]:][:tot])
+        if typ in (3, 4, 12):
+            tags[tag] = struct.unpack(bo + {3: "H", 4: "I", 12: "d"}[typ] * cnt, raw)
+    W, H = tags[256][0], tags[257][0]
+    assert tags[259][0] == 8 and tags[258][0] == 16, "deflate/uint16 のみ対応"
+    tw, th = tags[322][0], tags[323][0]
+    ntx = (W + tw - 1) // tw
+    img = [[0] * W for _ in range(H)]
+    for k, (o, c) in enumerate(zip(tags[324], tags[325])):
+        vals = struct.unpack(bo + "H" * (tw * th), zlib.decompress(d[o:o + c]))
+        tx, ty = (k % ntx) * tw, (k // ntx) * th
+        for r in range(th):
+            gy = ty + r
+            if gy >= H:
+                break
+            row, base = img[gy], r * tw
+            for cc in range(min(tw, W - tx)):
+                row[tx + cc] = vals[base + cc]
+    tie = tags[33922]
+    geo = dict(x0=tie[3], y0=tie[4], sx=tags[33550][0], sy=tags[33550][1], W=W, H=H)
+    return img, geo
+
+
+def wgs84_to_utm54n(lon, lat):
+    """UTM zone 54N（中央子午線141°E）への順投影。pyproj が無いので実装した。"""
+    a, f = 6378137.0, 1 / 298.257223563
+    e2 = f * (2 - f)
+    ep2 = e2 / (1 - e2)
+    k0, lon0 = 0.9996, math.radians(141.0)
+    p, l = math.radians(lat), math.radians(lon)
+    N = a / math.sqrt(1 - e2 * math.sin(p) ** 2)
+    T = math.tan(p) ** 2
+    C = ep2 * math.cos(p) ** 2
+    A = (l - lon0) * math.cos(p)
+    M = a * ((1 - e2 / 4 - 3 * e2**2 / 64 - 5 * e2**3 / 256) * p
+             - (3 * e2 / 8 + 3 * e2**2 / 32 + 45 * e2**3 / 1024) * math.sin(2 * p)
+             + (15 * e2**2 / 256 + 45 * e2**3 / 1024) * math.sin(4 * p)
+             - (35 * e2**3 / 3072) * math.sin(6 * p))
+    x = k0 * N * (A + (1 - T + C) * A**3 / 6
+                  + (5 - 18 * T + T**2 + 72 * C - 58 * ep2) * A**5 / 120) + 500000.0
+    y = k0 * (M + N * math.tan(p) * (A**2 / 2 + (5 - T + 9 * C + 4 * C**2) * A**4 / 24
+              + (61 - 58 * T + T**2 + 600 * C - 330 * ep2) * A**6 / 720))
+    return x, y
 
 
 def doy_label(doy):
@@ -128,7 +192,7 @@ def fig_t1():
 
     o = []
     A = o.append
-    A('<svg viewBox="0 0 860 288" role="img" aria-label="実Landsat 14シーンの資産輝度温度。'
+    A('<svg viewBox="0 0 860 288" role="img" aria-label="実Landsat 14シーンの資産地表温度。'
       'そのままでは42.97Kばらつくが、市街地参照との差にすると12.53Kに落ちる。">')
 
     for panel, kmin, kmax, ticks, unit in (
@@ -190,7 +254,7 @@ def fig_t1():
     Y0 = R["y"] + R["h"] * (1 - (0 - RKMIN) / (RKMAX - RKMIN))
     A(f'<line x1="{R["x"]}" y1="{Y0:.1f}" x2="{R["x"]+R["w"]}" y2="{Y0:.1f}" '
       'stroke="currentColor" stroke-width="1" opacity=".45"></line>')
-    A(f'<text class="s-hd" x="{L["x"]}" y="18">そのまま並べる（資産AOIの輝度温度）</text>')
+    A(f'<text class="s-hd" x="{L["x"]}" y="18">そのまま並べる（資産AOIの地表温度）</text>')
     A(f'<text class="s-hd" x="{R["x"]}" y="18">市街地参照との差にする</text>')
     mx = (L["x"] + L["w"] + R["x"]) / 2
     A(f'<text class="s-xs" x="{mx:.0f}" y="150" text-anchor="middle" fill="var(--ink-3)">同じ空の'
@@ -211,6 +275,205 @@ def fig_t1():
       '<text class="s-xs" x="410" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text>'
       '</g>')
     A("</svg>")
+    return "\n".join(o)
+
+
+# ---------------------------------------------------------------- 図①b（実画像）
+
+# 資料の gThermalScale と同じ配色（熱赤外の見た目を図2と揃える）
+THERMAL = [(0.00, (11, 6, 22)), (0.22, (59, 16, 85)), (0.45, (140, 31, 92)),
+           (0.66, (214, 75, 44)), (0.85, (245, 155, 42)), (1.00, (255, 233, 168))]
+NODATA_RGB = (110, 114, 120)
+# 物差しはシーンごとに取り直す。冬（282〜290K）と夏（300〜330K）を同じ固定幅に載せると
+# 冬が真っ黒に潰れて何も読めなくなるため。**代わりに各パネルの下に実際の範囲を数字で出す。**
+
+# poc4_pipeline.py の AOIS と同一（±数百mの概略AOI）
+AOIS = {
+    "川崎火力": (139.750, 35.512, 139.762, 35.522),
+    "東扇島火力": (139.745, 35.495, 139.760, 35.505),
+    "浮島製油所": (139.765, 35.520, 139.785, 35.535),
+    "水江町製油所": (139.720, 35.515, 139.735, 35.525),
+    "扇島製鉄所": (139.700, 35.470, 139.730, 35.490),
+    "大黒町火力": (139.680, 35.462, 139.690, 35.472),
+}
+REF_AOI_V2 = (139.6615, 35.4952, 139.6815, 35.5098)
+SCENES = [("20230108_landsat-9", "2023年1月8日（冬）"),
+          ("20250902_landsat-8", "2025年9月2日（夏）")]
+TIF = "20_theme1_保温劣化監視/poc/data/{}_ST_B10_keihin.tif"
+
+
+def thermal_rgb(t):
+    t = min(max(t, 0.0), 1.0)
+    for i in range(len(THERMAL) - 1):
+        a, ca = THERMAL[i]
+        b, cb = THERMAL[i + 1]
+        if a <= t <= b:
+            u = 0.0 if b == a else (t - a) / (b - a)
+            return tuple(round(ca[k] + (cb[k] - ca[k]) * u) for k in range(3))
+    return THERMAL[-1][1]
+
+
+TPAL = [NODATA_RGB] + [thermal_rgb(i / (NCOL - 1)) for i in range(NCOL)]
+
+
+def tb_stretch(img):
+    """有効画素の 2〜98 パーセンタイルを返す（表示の物差し）。"""
+    vals = sorted(v * 0.00341802 + 149.0 for row in img for v in row if v)
+    return vals[int(0.02 * len(vals))], vals[int(0.98 * len(vals))]
+
+
+def tb_range(img):
+    """有効画素の実際の最小・最大[K]。表示レンジ（2〜98%）と混同しないため別に出す。"""
+    vals = [v * 0.00341802 + 149.0 for row in img for v in row if v]
+    return min(vals), max(vals)
+
+
+def tb_png(img, lo, hi, box=None, bin_=1):
+    """DN → 輝度温度[K] → パレットPNG。box=(c0,r0,c1,r1) で切り出す。
+
+    bin_=2 は 2×2 平均に間引く（全景パネルは 246 px 幅で表示するので 735 px は要らない。
+    等倍が意味を持つ拡大パネルは bin_=1 のまま使うこと）。
+    """
+    r0, r1 = (0, len(img)) if box is None else (box[1], box[3])
+    c0, c1 = (0, len(img[0])) if box is None else (box[0], box[2])
+    w, h = (c1 - c0) // bin_, (r1 - r0) // bin_
+    idx = bytearray(w * h)
+    for r in range(h):
+        base = r * w
+        for c in range(w):
+            s = n = 0
+            for dr in range(bin_):
+                row = img[r0 + r * bin_ + dr]
+                for dc in range(bin_):
+                    dn = row[c0 + c * bin_ + dc]
+                    if dn:
+                        s += dn
+                        n += 1
+            if not n:                       # nodata
+                continue
+            t = ((s / n * 0.00341802 + 149.0) - lo) / (hi - lo)
+            idx[base + c] = 1 + min(max(int(round(t * (NCOL - 1))), 0), NCOL - 1)
+    return ("data:image/png;base64,"
+            + base64.b64encode(png_palette(idx, w, h, TPAL)).decode()), w, h
+
+
+def fig_t1_image():
+    o = []
+    A = o.append
+    A('<svg viewBox="0 0 860 410" role="img" aria-label="京浜臨海部の実Landsat熱赤外画像。'
+      '冬と夏の同一地域と、東扇島火力の等倍拡大。">')
+
+    W = 246
+    scenes = []
+    for key, _lab in SCENES:
+        img, geo = read_geotiff(os.path.join(ROOT, TIF.format(key)))
+        scenes.append((img, geo))
+
+    def to_px(geo, lon, lat):
+        x, y = wgs84_to_utm54n(lon, lat)
+        return (x - geo["x0"]) / geo["sx"], (geo["y0"] - y) / geo["sy"]
+
+    # 拡大窓（東扇島火力のAOIに余白を付けた 70×60 画素 ＝ 2.1×1.8 km）
+    ZOOM = (430, 345, 500, 405)
+
+    total = 0
+    stretches = [tb_stretch(img) for img, _ in scenes]
+    ranges = [tb_range(img) for img, _ in scenes]
+    for k, ((img, geo), (key, lab)) in enumerate(zip(scenes, SCENES)):
+        lo, hi = stretches[k]
+        uri, w, h = tb_png(img, lo, hi, bin_=2)
+        total += len(uri)
+        x = 22 + k * (W + 24)
+        hh = W * h / w
+        sc = W / (w * 2)      # w は間引き後の画素数。枠は元画素の座標で描く
+        A(f'<text class="s-hd s-num" x="{x}" y="16">{lab}</text>')
+        A(f'<rect x="{x}" y="24" width="{W}" height="{hh:.1f}" fill="var(--surface-2)"></rect>')
+        A(f'<image x="{x}" y="24" width="{W}" height="{hh:.1f}" href="{uri}"></image>')
+        for nm, (a0, b0, a1, b1) in AOIS.items():
+            px0, py0 = to_px(geo, a0, b1)
+            px1, py1 = to_px(geo, a1, b0)
+            for st, wd in (("#12161C", 2.6), ("#FFF", 1.0)):
+                A(f'<rect x="{x+px0*sc:.1f}" y="{24+py0*sc:.1f}" width="{(px1-px0)*sc:.1f}" '
+                  f'height="{(py1-py0)*sc:.1f}" fill="none" stroke="{st}" stroke-width="{wd}" '
+                  'opacity=".85"></rect>')
+        rx0, ry0 = to_px(geo, REF_AOI_V2[0], REF_AOI_V2[3])
+        rx1, ry1 = to_px(geo, REF_AOI_V2[2], REF_AOI_V2[1])
+        A(f'<rect x="{x+rx0*sc:.1f}" y="{24+ry0*sc:.1f}" width="{(rx1-rx0)*sc:.1f}" '
+          f'height="{(ry1-ry0)*sc:.1f}" fill="none" stroke="#7FD1E8" stroke-width="1.2" '
+          'stroke-dasharray="4 3"></rect>')
+        if k == 0:
+            A(f'<rect x="{x+ZOOM[0]*sc:.1f}" y="{24+ZOOM[1]*sc:.1f}" '
+              f'width="{(ZOOM[2]-ZOOM[0])*sc:.1f}" height="{(ZOOM[3]-ZOOM[1])*sc:.1f}" '
+              'fill="none" stroke="#FFE9A8" stroke-width="1.4"></rect>')
+            sb = 5000 / 30 * sc      # 5 km
+            A(f'<g transform="translate({x+10:.1f},{24+hh-12:.1f})">'
+              f'<rect x="-6" y="-16" width="{sb+12:.1f}" height="24" fill="#000" opacity=".35" rx="2"></rect>'
+              f'<line x1="0" y1="0" x2="{sb:.1f}" y2="0" stroke="#FFF" stroke-width="2"></line>'
+              f'<text class="s-xs" x="{sb/2:.1f}" y="-4" text-anchor="middle" fill="#FFF">5 km</text></g>')
+        A(f'<rect x="{x}" y="24" width="{W}" height="{hh:.1f}" fill="none" '
+          'stroke="var(--rule)"></rect>')
+        rng = ranges[k]
+        A(f'<text class="s-xs s-num" x="{x}" y="{24+hh+16:.1f}" fill="var(--ink-2)">'
+          f'表示レンジ(2–98%) <tspan font-weight="600" fill="var(--accent-ink)">'
+          f'{lo:.1f} – {hi:.1f} K</tspan>'
+          f'<tspan class="s-xs" x="{x}" dy="14" fill="var(--ink-3)">'
+          f'実際は {rng[0]:.1f} – {rng[1]:.1f} K</tspan></text>')
+
+    # 3枚目: 冬シーンの等倍拡大（物差しは冬パネルと同じ）
+    img, geo = scenes[0]
+    uri, zw, zh = tb_png(img, stretches[0][0], stretches[0][1], ZOOM)
+    total += len(uri)
+    x = 22 + 2 * (W + 24)
+    hh = W * zh / zw
+    scz = W / zw
+    A(f'<text class="s-hd" x="{x}" y="16">東扇島火力を拡大（左の冬・間引きなし）</text>')
+    A(f'<image x="{x}" y="24" width="{W}" height="{hh:.1f}" href="{uri}" '
+      'style="image-rendering:pixelated"></image>')
+    px0, py0 = to_px(geo, AOIS["東扇島火力"][0], AOIS["東扇島火力"][3])
+    px1, py1 = to_px(geo, AOIS["東扇島火力"][2], AOIS["東扇島火力"][1])
+    A(f'<rect x="{x+(px0-ZOOM[0])*scz:.1f}" y="{24+(py0-ZOOM[1])*scz:.1f}" '
+      f'width="{(px1-px0)*scz:.1f}" height="{(py1-py0)*scz:.1f}" fill="none" '
+      'stroke="#FFE9A8" stroke-width="1.6"></rect>')
+    # 30m画素1つと、そこに入る設備の大きさ
+    for st, wd in (("#12161C", 3.2), ("#FFF", 1.6)):
+        A(f'<rect x="{x+34*scz:.1f}" y="{24+34*scz:.1f}" width="{scz:.1f}" height="{scz:.1f}" '
+          f'fill="none" stroke="{st}" stroke-width="{wd}"></rect>')
+    A(f'<rect x="{x+(34+5/30)*scz:.1f}" y="{24+(34+5/30)*scz:.1f}" '
+      f'width="{scz*20/30:.1f}" height="{scz*20/30:.1f}" fill="none" stroke="#7FD1E8" '
+      'stroke-width="1.4"></rect>')
+    A(f'<rect x="{x}" y="24" width="{W}" height="{hh:.1f}" fill="none" stroke="var(--rule)"></rect>')
+    A(f'<g transform="translate({x},{24+hh+8:.1f})">'
+      '<rect x="0" y="2" width="11" height="11" fill="none" stroke="var(--ink-2)" stroke-width="1.4"></rect>'
+      '<text class="s-xs" x="17" y="11">30 m画素1つ</text>'
+      '<rect x="102" y="4" width="7.3" height="7.3" fill="none" stroke="#3E93AE" stroke-width="1.4"></rect>'
+      '<text class="s-xs" x="115" y="11">20 m角の設備 ＝ 0.44画素</text></g>')
+
+    # 凡例とカラーバー
+    ytop = 24 + W * 749 / 735 + 66
+    A('<defs><linearGradient id="gTb" x1="0" y1="0" x2="1" y2="0">')
+    for i in range(0, 21):
+        r, g, b = thermal_rgb(i / 20)
+        A(f'<stop offset="{i*5}%" stop-color="rgb({r},{g},{b})"></stop>')
+    A("</linearGradient></defs>")
+    cbx, cbw = 22, 300
+    A(f'<rect x="{cbx}" y="{ytop}" width="{cbw}" height="13" fill="url(#gTb)" '
+      'stroke="var(--rule)"></rect>')
+    A(f'<text class="s-xs" x="{cbx}" y="{ytop+28}">その日の下端</text>')
+    A(f'<text class="s-xs" x="{cbx+cbw}" y="{ytop+28}" text-anchor="end">その日の上端</text>')
+    A(f'<text class="s-xs" x="{cbx}" y="{ytop-6}">地表温度（<tspan font-weight="600">'
+      '物差しはシーンごとに取り直し、上位2%は白飛びさせている</tspan>）</text>')
+    A(f'<g transform="translate({cbx+cbw+40},{ytop})">'
+      '<rect x="0" y="1" width="16" height="11" fill="none" stroke="#8A8F98" stroke-width="1.2"></rect>'
+      '<text class="s-xs" x="22" y="11">白枠＝資産AOI 6地区（図5の6本の線）</text>'
+      '<g transform="translate(0,20)">'
+      '<rect x="0" y="1" width="16" height="11" fill="none" stroke="#3E93AE" stroke-width="1.2" '
+      'stroke-dasharray="4 3"></rect>'
+      '<text class="s-xs" x="22" y="11">青破線＝市街地参照面（鶴見区）</text></g>'
+      '<g transform="translate(0,40)">'
+      '<rect x="0" y="1" width="16" height="11" fill="none" stroke="#C79A3A" stroke-width="1.4"></rect>'
+      '<text class="s-xs" x="22" y="11">黄枠＝右の拡大範囲（2.1 × 1.8 km）</text></g></g>')
+    A("</svg>")
+    print(f"  実画像3枚の base64 合計: {total/1024:.0f} KB")
     return "\n".join(o)
 
 
@@ -322,7 +585,8 @@ def fig_t2():
 
 
 if __name__ == "__main__":
-    for name, fn in (("fig_t1_landsat.svg", fig_t1), ("fig_t2_snowmap.svg", fig_t2)):
+    for name, fn in (("fig_t1_landsat.svg", fig_t1), ("fig_t1_image.svg", fig_t1_image),
+                     ("fig_t2_snowmap.svg", fig_t2)):
         s = fn()
         p = os.path.join(OUT, name)
         open(p, "w").write(s)
