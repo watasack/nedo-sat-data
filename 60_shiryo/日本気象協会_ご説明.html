@@ -350,11 +350,6 @@
       <stop offset="45%"  stop-color="#4A1D63"></stop>
       <stop offset="100%" stop-color="#2A1550"></stop>
     </linearGradient>
-    <linearGradient id="gHot" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%"   stop-color="#B5342F"></stop>
-      <stop offset="60%"  stop-color="#F0801F"></stop>
-      <stop offset="100%" stop-color="#FFE6A0"></stop>
-    </linearGradient>
     <linearGradient id="gSkyDay" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="var(--sky-2)"></stop>
       <stop offset="100%" stop-color="var(--sky)" stop-opacity=".35"></stop>
@@ -366,6 +361,14 @@
     <linearGradient id="gSnow" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="#FFFFFF"></stop>
       <stop offset="100%" stop-color="var(--sky)"></stop>
+    </linearGradient>
+    <!-- 山体の陰影。左（影）から右（陽）へ一続きに振り、岩肌と雪面に同じ勾配をかける -->
+    <linearGradient id="gConeShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#0A0F14" stop-opacity=".34"></stop>
+      <stop offset="30%"  stop-color="#0A0F14" stop-opacity=".14"></stop>
+      <stop offset="48%"  stop-color="#0A0F14" stop-opacity="0"></stop>
+      <stop offset="58%"  stop-color="#FFFFFF" stop-opacity="0"></stop>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity=".20"></stop>
     </linearGradient>
     <linearGradient id="gBarNoise" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="var(--unk)" stop-opacity=".95"></stop>
@@ -420,8 +423,20 @@
         <ellipse cx="58" cy="34" rx="26" ry="11" fill="#54677A"></ellipse>
       </g>
 
+      <!-- 遠景の設備（奥行き用。手前の構造物より暗く小さく） -->
+      <g fill="var(--c-frame,#22303C)" opacity=".5">
+        <rect x="160" y="126" width="8" height="90"></rect>
+        <rect x="157" y="122" width="14" height="5"></rect>
+        <rect x="163" y="112" width="2.4" height="10"></rect>
+        <rect x="8" y="142" width="7" height="74"></rect>
+        <rect x="5" y="138" width="13" height="5"></rect>
+        <rect x="310" y="168" width="13" height="48" rx="1.5"></rect>
+        <rect x="307" y="164" width="19" height="5"></rect>
+      </g>
+
       <!-- 地面 -->
       <rect x="0" y="216" width="404" height="24" fill="var(--c-ground,#0C161F)"></rect>
+      <rect x="0" y="216" width="404" height="2.5" fill="var(--c-frame,#22303C)" opacity=".7"></rect>
 
       <!-- ============ ユニットA ============ -->
       <g transform="translate(24,0)">
@@ -443,11 +458,24 @@
         <rect x="16" y="48" width="26" height="168" fill="var(--c-steel,#2C3D4B)"></rect>
         <rect x="16" y="48" width="7" height="168" fill="var(--c-steel-2,#1B2733)" opacity=".55"></rect>
         <ellipse cx="29" cy="48" rx="13" ry="6" fill="var(--c-steel,#2C3D4B)"></ellipse>
+        <!-- 頂部のベント。熱赤外で最高温色（--c-stack）にすると劣化部と紛れるので冷たい側で塗る -->
+        <rect x="27" y="36" width="4" height="12" fill="var(--c-steel-2,#1B2733)"></rect>
+        <!-- 保温外装の継ぎ目（周方向のバンドと縦の合わせ目） -->
         <g fill="var(--c-steel-2,#1B2733)" opacity=".75">
           <rect x="16" y="70" width="26" height="2"></rect><rect x="16" y="92" width="26" height="2"></rect>
           <rect x="16" y="114" width="26" height="2"></rect><rect x="16" y="136" width="26" height="2"></rect>
           <rect x="16" y="158" width="26" height="2"></rect><rect x="16" y="180" width="26" height="2"></rect>
         </g>
+        <rect x="32" y="48" width="1.4" height="168" fill="var(--c-steel-2,#1B2733)" opacity=".5"></rect>
+        <rect x="24" y="48" width="3.4" height="168" fill="#FFFFFF" opacity=".07"></rect>
+        <!-- 側面のノズル -->
+        <g fill="var(--c-steel-2,#1B2733)">
+          <rect x="42" y="102" width="6" height="4"></rect>
+          <rect x="42" y="168" width="6" height="4"></rect>
+          <rect x="10" y="124" width="6" height="4"></rect>
+        </g>
+        <!-- 基礎のスカート -->
+        <rect x="13" y="206" width="32" height="10" fill="var(--c-steel-2,#1B2733)" opacity=".5"></rect>
         <rect x="10" y="88" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
         <rect x="10" y="132" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
         <!-- ラダー -->
@@ -459,13 +487,23 @@
           <line x1="45" y1="160" x2="50" y2="160"></line><line x1="45" y1="176" x2="50" y2="176"></line>
           <line x1="45" y1="192" x2="50" y2="192"></line>
         </g>
-        <!-- 加熱炉と煙道 -->
+        <!-- 加熱炉と煙道。ユニットBと図形は完全に同一（同型・同建設年の兄弟なので差を作らない） -->
         <rect x="70" y="150" width="52" height="66" rx="2" fill="var(--c-hotpart,#26343F)"></rect>
         <rect x="70" y="150" width="52" height="8" fill="var(--c-steel-2,#1B2733)" opacity=".4"></rect>
+        <rect x="78" y="188" width="36" height="20" rx="1.5" fill="var(--c-steel-2,#1B2733)" opacity=".38"></rect>
+        <g fill="var(--c-steel-2,#1B2733)" opacity=".55">
+          <rect x="84" y="212" width="6" height="4"></rect><rect x="94" y="212" width="6" height="4"></rect>
+          <rect x="104" y="212" width="6" height="4"></rect>
+        </g>
+        <rect x="100" y="146" width="24" height="6" rx="1" fill="var(--c-stack,#2C3D4B)" opacity=".85"></rect>
         <rect x="110" y="104" width="9" height="48" fill="var(--c-stack,#2C3D4B)"></rect>
+        <rect x="110" y="104" width="2.6" height="48" fill="#FFFFFF" opacity=".08"></rect>
         <!-- 横置きドラム -->
         <rect x="70" y="112" width="46" height="22" rx="11" fill="var(--c-steel,#2C3D4B)"></rect>
+        <rect x="70" y="115" width="46" height="4" fill="#FFFFFF" opacity=".07"></rect>
+        <rect x="93" y="112" width="1.4" height="22" fill="var(--c-steel-2,#1B2733)" opacity=".45"></rect>
         <ellipse cx="70" cy="123" rx="4.5" ry="11" fill="var(--c-steel-2,#1B2733)" opacity=".6"></ellipse>
+        <ellipse cx="116" cy="123" rx="4" ry="11" fill="var(--c-steel-2,#1B2733)" opacity=".3"></ellipse>
         <g fill="var(--c-frame,#22303C)">
           <path d="M78 134 L86 134 L84 142 L80 142 Z"></path>
           <path d="M102 134 L110 134 L108 142 L104 142 Z"></path>
@@ -490,11 +528,24 @@
         <rect x="16" y="48" width="26" height="168" fill="var(--c-steel,#2C3D4B)"></rect>
         <rect x="16" y="48" width="7" height="168" fill="var(--c-steel-2,#1B2733)" opacity=".55"></rect>
         <ellipse cx="29" cy="48" rx="13" ry="6" fill="var(--c-steel,#2C3D4B)"></ellipse>
+        <!-- 頂部のベント。熱赤外で最高温色（--c-stack）にすると劣化部と紛れるので冷たい側で塗る -->
+        <rect x="27" y="36" width="4" height="12" fill="var(--c-steel-2,#1B2733)"></rect>
+        <!-- 保温外装の継ぎ目（周方向のバンドと縦の合わせ目） -->
         <g fill="var(--c-steel-2,#1B2733)" opacity=".75">
           <rect x="16" y="70" width="26" height="2"></rect><rect x="16" y="92" width="26" height="2"></rect>
           <rect x="16" y="114" width="26" height="2"></rect><rect x="16" y="136" width="26" height="2"></rect>
           <rect x="16" y="158" width="26" height="2"></rect><rect x="16" y="180" width="26" height="2"></rect>
         </g>
+        <rect x="32" y="48" width="1.4" height="168" fill="var(--c-steel-2,#1B2733)" opacity=".5"></rect>
+        <rect x="24" y="48" width="3.4" height="168" fill="#FFFFFF" opacity=".07"></rect>
+        <!-- 側面のノズル -->
+        <g fill="var(--c-steel-2,#1B2733)">
+          <rect x="42" y="102" width="6" height="4"></rect>
+          <rect x="42" y="168" width="6" height="4"></rect>
+          <rect x="10" y="124" width="6" height="4"></rect>
+        </g>
+        <!-- 基礎のスカート -->
+        <rect x="13" y="206" width="32" height="10" fill="var(--c-steel-2,#1B2733)" opacity=".5"></rect>
         <rect x="10" y="88" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
         <rect x="10" y="132" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
         <g stroke="var(--c-frame,#22303C)" stroke-width="1.1">
@@ -507,9 +558,20 @@
         </g>
         <rect x="70" y="150" width="52" height="66" rx="2" fill="var(--c-hotpart,#26343F)"></rect>
         <rect x="70" y="150" width="52" height="8" fill="var(--c-steel-2,#1B2733)" opacity=".4"></rect>
+        <!-- 炉体の焚口と煙道 -->
+        <rect x="78" y="188" width="36" height="20" rx="1.5" fill="var(--c-steel-2,#1B2733)" opacity=".38"></rect>
+        <g fill="var(--c-steel-2,#1B2733)" opacity=".55">
+          <rect x="84" y="212" width="6" height="4"></rect><rect x="94" y="212" width="6" height="4"></rect>
+          <rect x="104" y="212" width="6" height="4"></rect>
+        </g>
+        <rect x="100" y="146" width="24" height="6" rx="1" fill="var(--c-stack,#2C3D4B)" opacity=".85"></rect>
         <rect x="110" y="104" width="9" height="48" fill="var(--c-stack,#2C3D4B)"></rect>
+        <rect x="110" y="104" width="2.6" height="48" fill="#FFFFFF" opacity=".08"></rect>
         <rect x="70" y="112" width="46" height="22" rx="11" fill="var(--c-steel,#2C3D4B)"></rect>
+        <rect x="70" y="115" width="46" height="4" fill="#FFFFFF" opacity=".07"></rect>
+        <rect x="93" y="112" width="1.4" height="22" fill="var(--c-steel-2,#1B2733)" opacity=".45"></rect>
         <ellipse cx="70" cy="123" rx="4.5" ry="11" fill="var(--c-steel-2,#1B2733)" opacity=".6"></ellipse>
+        <ellipse cx="116" cy="123" rx="4" ry="11" fill="var(--c-steel-2,#1B2733)" opacity=".3"></ellipse>
         <g fill="var(--c-frame,#22303C)">
           <path d="M78 134 L86 134 L84 142 L80 142 Z"></path>
           <path d="M102 134 L110 134 L108 142 L104 142 Z"></path>
@@ -526,9 +588,18 @@
 
       <!-- 浮屋根タンク -->
       <rect x="326" y="150" width="70" height="66" fill="var(--c-tank,#22303C)"></rect>
+      <rect x="334" y="150" width="6" height="66" fill="#FFFFFF" opacity=".06"></rect>
       <ellipse cx="361" cy="150" rx="35" ry="8" fill="var(--c-tank,#22303C)"></ellipse>
       <ellipse cx="361" cy="150" rx="26" ry="5.5" fill="var(--c-steel-2,#1B2733)" opacity=".5"></ellipse>
+      <!-- 側板の継ぎ目とウインドガーダー -->
       <rect x="326" y="176" width="70" height="2" fill="var(--c-steel-2,#1B2733)" opacity=".6"></rect>
+      <rect x="326" y="162" width="70" height="1.6" fill="var(--c-steel-2,#1B2733)" opacity=".35"></rect>
+      <rect x="326" y="196" width="70" height="1.6" fill="var(--c-steel-2,#1B2733)" opacity=".35"></rect>
+      <g fill="var(--c-steel-2,#1B2733)" opacity=".3">
+        <rect x="349" y="150" width="1.4" height="66"></rect>
+        <rect x="373" y="150" width="1.4" height="66"></rect>
+      </g>
+      <rect x="322" y="212" width="78" height="4" fill="var(--c-steel-2,#1B2733)" opacity=".5"></rect>
       <path d="M326 210 L361 158" fill="none" stroke="var(--c-frame,#22303C)" stroke-width="1.4"></path>
 
       <!-- 保安灯（可視のみ） -->
@@ -547,24 +618,114 @@
     </g>
 
     <!-- ==== 図1・図7で共有する火山（座標は図7の標高軸に合わせてある） ==== -->
+    <!-- 主峰の輪郭。山体内に描くものはすべてこれでクリップするので稜線から溢れない -->
+    <clipPath id="clipCone">
+      <path d="M106 296 C140 286 168 276 196 262 C226 246 254 220 276 190
+               C300 156 322 118 350 88 C368 70 386 58 398 55
+               C404 49 412 47 420 51 C428 55 434 61 440 69
+               C454 81 468 95 480 112 C502 142 524 173 546 204
+               C570 236 604 272 638 296 Z"></path>
+    </clipPath>
     <g id="volcano">
-      <path d="M96 232 L182 190 L246 214 L318 176 L396 210 L470 182 L560 216 L654 190 L654 296 L96 296 Z"
-            fill="var(--rock)" opacity=".3"></path>
-      <path d="M120 296 L338 74 L378 96 L420 62 L634 296 Z" fill="url(#gRock)"></path>
-      <path d="M420 62 L634 296 L512 296 Z" fill="var(--rock-2)" opacity=".5"></path>
-      <g stroke="var(--rock-2)" stroke-width="2" fill="none" opacity=".45">
-        <path d="M352 108 q-24 60 -58 96 q-26 34 -38 82"></path>
-        <path d="M404 106 q16 66 44 104 q22 30 30 76"></path>
-        <path d="M376 118 q-4 70 -6 108"></path>
+      <!-- 遠景の稜線: 大気遠近で2枚に分け、麓側は薄くして観測所の記号と干渉させない -->
+      <path d="M96 258 C150 246 196 254 240 244 C286 234 330 244 380 232
+               C432 220 470 226 512 214 C556 202 600 210 654 200
+               C690 194 716 200 744 196 L744 296 L96 296 Z"
+            fill="var(--rock)" opacity=".13"></path>
+      <path d="M96 276 C142 266 188 272 236 264 C300 254 348 264 402 252
+               C462 240 508 248 556 238 C600 229 626 234 654 228
+               C688 222 714 228 744 224 L744 296 L96 296 Z"
+            fill="var(--rock-2)" opacity=".14"></path>
+
+      <!-- 山体 -->
+      <path d="M106 296 C140 286 168 276 196 262 C226 246 254 220 276 190
+               C300 156 322 118 350 88 C368 70 386 58 398 55
+               C404 49 412 47 420 51 C428 55 434 61 440 69
+               C454 81 468 95 480 112 C502 142 524 173 546 204
+               C570 236 604 272 638 296 Z"
+            fill="url(#gRock)"></path>
+
+      <g clip-path="url(#clipCone)">
+        <!-- 放射谷。谷を暗く、その間の尾根を明るくして山肌の起伏を出す -->
+        <g fill="none" stroke="#000000" stroke-linecap="round" opacity=".13">
+          <path d="M432 100 C452 136 474 166 494 198" stroke-width="3"></path>
+          <path d="M438 106 C464 132 492 160 518 188" stroke-width="2"></path>
+          <path d="M426 96 C436 142 448 186 462 226" stroke-width="2.4"></path>
+          <path d="M370 118 C352 154 332 188 312 222" stroke-width="1.8"></path>
+          <path d="M330 138 C312 168 292 196 272 222" stroke-width="1.6" opacity=".7"></path>
+        </g>
+        <g fill="none" stroke="#FFFFFF" stroke-linecap="round" opacity=".13">
+          <path d="M408 88 C398 134 388 182 378 226" stroke-width="2.6"></path>
+          <path d="M400 84 C382 128 358 172 336 212" stroke-width="1.8"></path>
+          <path d="M348 122 C330 156 310 188 290 216" stroke-width="1.6"></path>
+          <path d="M435 104 C456 134 480 164 504 194" stroke-width="1.6"></path>
+        </g>
+
+        <!-- 雪。下端は谷筋で舌状に下がる（融雪期の雪線） -->
+        <path d="M286 162 C302 158 314 162 328 174
+                 C340 182 352 186 366 182 C380 178 392 182 404 186
+                 C416 190 426 186 436 190 C444 198 450 202 458 198
+                 C470 188 478 172 490 160 C498 154 506 150 518 154
+                 L532 24 L272 24 Z" fill="url(#gSnow)"></path>
+        <path d="M286 162 C302 158 314 162 328 174
+                 C340 182 352 186 366 182 C380 178 392 182 404 186
+                 C416 190 426 186 436 190 C444 198 450 202 458 198
+                 C470 188 478 172 490 160 C498 154 506 150 518 154
+                 L532 24 L272 24 Z" fill="url(#pSnowGrain)"></path>
+        <path d="M286 162 C302 158 314 162 328 174
+                 C340 182 352 186 366 182 C380 178 392 182 404 186
+                 C416 190 426 186 436 190 C444 198 450 202 458 198
+                 C470 188 478 172 490 160 C498 154 506 150 518 154"
+              fill="none" stroke="var(--sky-2)" stroke-width="1.1" opacity=".4"></path>
+
+        <!-- 消え残りの雪（融雪期は谷筋だけに残る） -->
+        <g fill="url(#gSnow)" opacity=".6">
+          <ellipse cx="470" cy="214" rx="3" ry="7" transform="rotate(26 470 214)"></ellipse>
+          <ellipse cx="444" cy="228" rx="2.2" ry="5" transform="rotate(14 444 228)"></ellipse>
+          <ellipse cx="496" cy="196" rx="2.6" ry="6" transform="rotate(30 496 196)"></ellipse>
+        </g>
+
+        <!-- 火口原: 火口のまわりだけ雪が着かず地肌が出る -->
+        <ellipse cx="418" cy="78" rx="27" ry="12" fill="var(--rock)" filter="url(#fBlur2)"></ellipse>
+        <ellipse cx="418" cy="78" rx="27" ry="12" fill="#000000" opacity=".06" filter="url(#fBlur2)"></ellipse>
+
+        <!-- 明暗を一続きの勾配でかける（岩肌と雪面に同じ向きの陰影が乗る） -->
+        <rect x="100" y="20" width="546" height="278" fill="url(#gConeShade)"></rect>
+        <!-- 手前に降りる主稜線 -->
+        <path d="M418 74 C410 148 404 220 396 296" fill="none"
+              stroke="#FFFFFF" stroke-width="1.4" opacity=".12"></path>
+
+        <!-- 麓の霞（山体を地面に座らせる） -->
+        <ellipse cx="380" cy="304" rx="290" ry="22" fill="var(--sky)" opacity=".26" filter="url(#fBlur6)"></ellipse>
       </g>
-      <path d="M300 118 L338 74 L378 96 L420 62 L468 128 q-30 12 -58 2 q-34 -12 -62 6 q-28 14 -48 -20 Z"
-            fill="url(#gSnow)"></path>
-      <path d="M300 118 L338 74 L378 96 L420 62 L468 128 q-30 12 -58 2 q-34 -12 -62 6 q-28 14 -48 -20 Z"
-            fill="url(#pSnowGrain)"></path>
-      <g fill="#FFFFFF" opacity=".45" filter="url(#fBlur2)">
-        <ellipse cx="404" cy="52" rx="15" ry="7"></ellipse>
-        <ellipse cx="418" cy="36" rx="11" ry="6"></ellipse>
+      <!-- 稜線を1本の線で締める -->
+      <path d="M106 296 C140 286 168 276 196 262 C226 246 254 220 276 190
+               C300 156 322 118 350 88 C368 70 386 58 398 55
+               C404 49 412 47 420 51 C428 55 434 61 440 69
+               C454 81 468 95 480 112 C502 142 524 173 546 204
+               C570 236 604 272 638 296"
+            fill="none" stroke="var(--rock-2)" stroke-width="1.1" opacity=".5"></path>
+
+      <!-- 火口: 奥のリムは山体の輪郭が兼ね、内側の窪みと手前のリムを重ねる -->
+      <ellipse cx="418" cy="65" rx="16" ry="5" fill="var(--rock-2)"></ellipse>
+      <ellipse cx="418" cy="65.5" rx="11" ry="3" fill="#000000" opacity=".2"></ellipse>
+      <path d="M402 63 C407 57 414 55 420 56 C427 57 431 60 434 64"
+            fill="none" stroke="#000000" stroke-width="1.1" opacity=".14"></path>
+      <path d="M402 66 C407 72 414 74 420 74 C427 74 431 71 434 67"
+            fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity=".22"></path>
+
+      <!-- 噴気（図1では見出しの字面に掛かるので --o-steam で消す） -->
+      <g fill="#FFFFFF" opacity="var(--o-steam,.36)" filter="url(#fBlur2)">
+        <ellipse cx="413" cy="47" rx="11" ry="5"></ellipse>
+        <ellipse cx="407" cy="35" rx="8.5" ry="4.6"></ellipse>
+        <ellipse cx="402" cy="25" rx="6" ry="3.4"></ellipse>
       </g>
+
+      <!-- 前景の裾野（図7では標高0 mの線で切られ、図1でだけ見える） -->
+      <path d="M96 300 C170 293 240 305 320 299 C400 293 470 305 552 299 C620 294 680 302 744 297
+               L744 356 L96 356 Z" fill="var(--rock-2)" opacity=".34"></path>
+      <path d="M96 320 C160 312 214 324 286 318 C368 311 430 324 512 318 C600 311 670 320 744 315
+               L744 356 L96 356 Z" fill="var(--rock-2)" opacity=".26"></path>
     </g>
 
     <!-- ==== 図をまたいで使う記号（24×24。線はcurrentColor） ==== -->
@@ -595,7 +756,8 @@
         <line x1="9" y1="18" x2="9" y2="21.5"></line><line x1="15" y1="18" x2="15" y2="21.5"></line>
       </g>
     </g>
-    <g id="gHot">
+    <!-- id は gHot（グラデーション）と衝突させない。衝突すると use が何も描かない -->
+    <g id="gHotIcon">
       <ellipse cx="12" cy="12" rx="10" ry="7" fill="#F0801F" opacity=".3"></ellipse>
       <ellipse cx="12" cy="12" rx="6" ry="4.2" fill="#F59B2A" opacity=".7"></ellipse>
       <ellipse cx="12" cy="12" rx="2.6" ry="1.9" fill="#FFE9A8"></ellipse>
@@ -670,7 +832,7 @@
       <strong>お願いは3件です</strong>——(1) 気象側の知見について技術的なご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
     </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第12版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第13版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
     <div class="theme" style="margin-top:1.4rem">
@@ -728,10 +890,12 @@
           <clipPath id="clipR"><rect x="442" y="14" width="404" height="212" rx="4"></rect></clipPath>
           <g clip-path="url(#clipR)">
             <rect x="442" y="14" width="404" height="212" fill="url(#gSkyDay)"></rect>
-            <g transform="translate(442,14) scale(0.66) translate(-100,-30)">
-              <use href="#volcano"></use>
-              <!-- 泥流の経路 -->
-              <path d="M404 132 q-22 62 -56 94 q-30 28 -42 64" stroke="var(--rock-2)" stroke-width="6" fill="none" opacity=".5"></path>
+            <g transform="translate(442,14) scale(0.66) translate(-100,-6)">
+              <use href="#volcano" style="--o-steam:0"></use>
+              <!-- 泥流の経路（火口から流れ下る谷筋。下流ほど広がる） -->
+              <path d="M413 82 C404 140 378 202 348 244 C332 266 320 281 314 292
+                       L334 293 C342 281 354 268 368 247 C398 205 419 139 417 83 Z"
+                    fill="#000000" opacity=".18"></path>
             </g>
             <!-- 衛星 -->
             <g transform="translate(792,50)">
@@ -739,8 +903,8 @@
               <rect x="-30" y="-4.5" width="15" height="9" fill="var(--sky-2)"></rect>
               <rect x="15" y="-4.5" width="15" height="9" fill="var(--sky-2)"></rect>
             </g>
-            <line x1="778" y1="62" x2="700" y2="96" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
-            <path d="M706 90 L696 98 L708 101 Z" fill="var(--accent)"></path>
+            <line x1="778" y1="62" x2="694" y2="98" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <path d="M700 92 L690 100 L702 103 Z" fill="var(--accent)"></path>
           </g>
           <rect x="442" y="14" width="404" height="212" rx="4" fill="none" stroke="var(--rule)"></rect>
           <text class="s-hd" x="458" y="40">テーマ②　火山周辺の積雪</text>
@@ -925,7 +1089,7 @@
             <use href="#gPixShift"  x="426" y="252" width="24" height="24"></use>
             <use href="#gChip"      x="566" y="252" width="24" height="24"></use>
           </g>
-          <g transform="translate(734,250) scale(1.2)"><use href="#gHot"></use></g>
+          <g transform="translate(734,250) scale(1.2)"><use href="#gHotIcon"></use></g>
         </svg>
         <figcaption>
           <strong>最大の邪魔者は気象（晴天か曇天か）で、探している信号の16倍あります。</strong>
@@ -1471,18 +1635,19 @@
               <use href="#gStationS" x="264" y="206" width="24" height="24"></use>
               <use href="#gStationS" x="294" y="194" width="24" height="24"></use>
             </g>
-            <!-- 回帰と外挿 -->
+            <!-- 回帰と外挿。破線はラベルの手前で切り、文字の向こう側で再開する -->
             <line x1="150" y1="278" x2="306" y2="206" stroke="var(--unk-ink)" stroke-width="2.4"></line>
-            <line x1="306" y1="206" x2="414" y2="88" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
-            <path d="M406 96 L417 84 L419 100 Z" fill="var(--accent)"></path>
+            <line x1="306" y1="206" x2="338" y2="170" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
+            <line x1="368" y1="134" x2="414" y2="82" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
+            <path d="M405 82 L417 71 L418 87 Z" fill="var(--accent)"></path>
             <!-- 衛星 -->
             <g transform="translate(592,132)">
               <rect x="-12" y="-7" width="24" height="14" rx="2" fill="var(--ink-2)"></rect>
               <rect x="-29" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
               <rect x="15" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
             </g>
-            <line x1="578" y1="142" x2="470" y2="122" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
-            <path d="M478 116 L466 121 L477 127 Z" fill="var(--accent)"></path>
+            <line x1="578" y1="140" x2="458" y2="102" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <path d="M464 96 L453 102 L464 108 Z" fill="var(--accent)"></path>
           </g>
 
           <!-- 標高軸 -->
@@ -1498,6 +1663,14 @@
             <line x1="96" y1="240" x2="654" y2="240"></line>
             <line x1="96" y1="189" x2="654" y2="189"></line>
             <line x1="96" y1="87" x2="654" y2="87"></line>
+          </g>
+          <!-- 目盛（標高軸の読み取り用） -->
+          <g stroke="currentColor" stroke-width="1" opacity=".4">
+            <line x1="91" y1="296" x2="96" y2="296"></line>
+            <line x1="91" y1="240" x2="96" y2="240"></line>
+            <line x1="91" y1="189" x2="96" y2="189"></line>
+            <line x1="91" y1="87" x2="96" y2="87"></line>
+            <line x1="91" y1="62" x2="96" y2="62"></line>
           </g>
 
           <text class="s-sm s-unk" x="104" y="318" font-weight="600">気象庁の地域気象観測所 6か所</text>
@@ -2035,7 +2208,7 @@
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月13日 第12版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月13日 第13版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
