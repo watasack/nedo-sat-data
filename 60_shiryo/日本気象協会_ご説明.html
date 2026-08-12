@@ -665,13 +665,13 @@
     <h1>検討中の2テーマと、いま残っている不確定項</h1>
     <p class="lede">
       株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストへ2件の応募を準備しています。いずれも衛星から見た熱・雪の計算で、
-      物理と統計の骨格は自前の計算で確認済みです。実際の衛星データでも、<strong>テーマ①は代用データ（実Landsat 30 m・昼間）14シーンで「気象の共通モードが引き算で落ちる」ところまで（図5・図6）、テーマ②は実Landsat／Sentinel-2で成果物そのものを9年分（図9）</strong>出していますが、
+      物理と統計の骨格は自前の計算で確認済みです。実際の衛星データでも、<strong>テーマ①は代用データ（実Landsat 30 m・昼間）14シーンで「気象の共通モードが引き算で落ちる」ところまで（図5・図6）、テーマ②は実Landsat／Sentinel-2で成果物の骨格（画素ごとの消雪日マップ）を9年分（図9）</strong>出していますが、
       <strong>残っている不確定項の多くが「気象」に属しています</strong>。
-      本日は、何を見ようとしているか・どこが未確定か・そのうちどこを貴協会の知見でお願いしたいかを、
-      この順でご説明します。
+      本日は、何を見ようとしているか・どこが未確定か・そのうちどこを貴協会の知見でお願いしたいかを、この順でご説明します。
+      <strong>お願いは3件です</strong>——(1) 気象側の知見について技術的なご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。詳細は最後の「ご相談したいこと」にまとめてあります。
     </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月12日 第10版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月12日 第11版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
     <div class="toolbar" style="margin-top:1rem">
@@ -838,7 +838,7 @@
             <rect x="609" y="452" width="164" height="10" rx="2" fill="url(#gThermalScale)"></rect>
             <text class="s-xs" x="609" y="470">低温</text>
             <text class="s-xs" x="773" y="470" text-anchor="end">高温</text>
-            <text class="s-xs" x="86" y="470">1画素 3.5 m ／ 熱赤外像は模式です（実際の画像ではありません）</text>
+            <text class="s-xs" x="86" y="470">1画素 3.5 m ／ この図は可視・熱赤外とも模式です（実際の画像ではありません）</text>
           </svg>
           <label class="wipectl">
             <span>可視</span>
@@ -849,10 +849,10 @@
         </div>
 
         <div class="unklegend">
-          <span><b>U1</b> 2基の劣化速度は本当に同じか</span>
-          <span><b>U2</b> 晴天夜と曇天夜で見かけの温度が 8.6〜10.2 K 違う</span>
-          <span><b>U3</b> 雲があると撮れない ＝ 年に何回撮れるか</span>
-          <span><b>U5</b> 検証させてくれる現場（設備台帳・保全履歴・外装の張替え記録）</span>
+          <span><b>U-1</b> 2基の外装の傷み方（放射率の経年）は同じか</span>
+          <span><b>U-2</b> 晴天夜と曇天夜で見かけの温度が 8.6〜10.2 K 違う</span>
+          <span><b>U-3</b> 雲があると撮れない ＝ 年に何回撮れるか</span>
+          <span><b>U-5</b> 検証させてくれる現場（設備台帳・保全履歴・外装の張替え記録）</span>
         </div>
 
         <figcaption>
@@ -917,15 +917,15 @@
         <figcaption>
           <strong>最大の邪魔者は気象（晴天か曇天か）で、探している信号の16倍あります。</strong>
           絶対温度をそのまま見る設計が成立しないのはこのためで、次の図の差分設計に進みます。
-          <span class="src">poc1_results.json（budget, signals）</span>
+          <span class="src">poc1_results.json（budget, signals）。帯域3.4–4.2µm仮定での値で、実帯域3.7–4.95µmでは振れはさらに大きい（10.2 K）</span>
         </figcaption>
       </figure>
     </div>
 
     <div class="fig">
       <figure>
-        <p class="figtitle">図4　差分を三段重ねると、雑音だけが落ちて信号が顔を出す</p>
-        <svg viewBox="0 0 860 276" role="img" aria-label="対数軸の横棒グラフ。そのまま比べると9.39K、同じ設備の中で2.99K、隣の同型設備と2.76K、その差の変化を6回追うと0.28K。信号0.53Kの破線を下回るのは最後だけ。">
+        <p class="figtitle">図4　同じ撮像の中で比べ、その差の変化を追うと、雑音だけが落ちて信号が顔を出す</p>
+        <svg viewBox="0 0 860 276" role="img" aria-label="対数軸の横棒グラフ。そのまま比べると9.39K、同じ設備の中で2.99K、隣の同型設備と2.76K、隣との差の変化を6回追うと0.28K。信号0.53Kの破線を下回るのは最後だけ。">
           <line x1="230" y1="212" x2="800" y2="212" stroke="currentColor" stroke-width="1" opacity=".35"></line>
           <g class="s-xs s-num" text-anchor="middle">
             <text x="230" y="230">0.1</text>
@@ -972,12 +972,13 @@
           </g>
 
           <line x1="230" y1="248" x2="800" y2="248" stroke="var(--rule)"></line>
-          <text class="s-sm" x="230" y="268" fill="var(--ink-2)">①で設備固有の性質が消え、<tspan font-weight="600" fill="var(--accent-ink)">②で気象（空の状態・大気）が消え</tspan>、③でもともとあった個体差が消える</text>
+          <text class="s-sm" x="230" y="268" fill="var(--ink-2)"><tspan font-weight="600" fill="var(--accent-ink)">①②はどちらも同じ撮像の中の比較なので、ここで気象が消える</tspan>。②に残る個体差を、③の時間変化が消す</text>
         </svg>
         <figcaption>
-          横軸は対数です。<strong>②の一段が、この提案が気象に依存している理由そのものです</strong>——
-          隣り合う2基が同じ空の下にあるからこそ、8.57 Kの振れが両方に等しく乗って引き算で消えます。
-          <strong>この前提が崩れる距離を、我々は説明できていません（U-2）。</strong>
+          横軸は対数です。<strong>①と②はどちらも同じ撮像の中での比較で、気象（8.57 K）はこの時点で消えます</strong>——落差が最も大きいのがそこです。
+          ①は設備の中の局所的な異常しか見えず、<strong>設備全体が面的に劣化すると基準を失って見えません</strong>。だから②で隣の同型設備を基準にします。
+          ②で戻ってくるのが資産どうしの個体差（放射率差 2.67 K）で、これを③の時間変化が消します。
+          <strong>②は基準が数百m離れるので「同じ空の下」とみなせる距離が前提になり、そこを我々は説明できていません（U-2）。</strong>
           実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。
           <span class="src">poc1_results.json（budget）／poc6_results.json（sibling_noise_vs_distance）</span>
         </figcaption>
@@ -1178,13 +1179,14 @@
         <line x1="490" y1="75.2" x2="780" y2="75.2" stroke="currentColor" stroke-width="1" opacity=".45"></line>
         <text class="s-hd" x="58" y="18">そのまま並べる（資産AOIの地表温度）</text>
         <text class="s-hd" x="490" y="18">市街地参照との差にする</text>
-        <text class="s-xs" x="433" y="150" text-anchor="middle" fill="var(--ink-3)">同じ空の<tspan x="433" dy="15">下にある</tspan><tspan x="433" dy="15">参照面を</tspan><tspan x="433" dy="15">引き算</tspan></text>
+        <text class="s-xs" x="433" y="150" text-anchor="middle" fill="var(--ink-3)">広域の<tspan x="433" dy="15">共通モード</tspan><tspan x="433" dy="15">（季節・天気）</tspan><tspan x="433" dy="15">を引き算</tspan></text>
         <path d="M407 214 L453 214" stroke="var(--accent)" stroke-width="1.4" opacity=".7"></path><path d="M447 209 L457 214 L447 219 Z" fill="var(--accent)" opacity=".7"></path>
         <g transform="translate(58,258)"><line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line><text class="s-xs" x="28" y="0">東扇島火力</text><line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45"></line><text class="s-xs" x="148" y="0">他5地区</text><line x1="230" y1="-4" x2="252" y2="-4" stroke="var(--unk)" stroke-width="1.8" stroke-dasharray="5 3"></line><text class="s-xs" x="258" y="0">市街地参照（鶴見区）</text><text class="s-xs" x="410" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text></g>
         </svg>
         <figcaption>
           左は6つの臨海地区の地表温度そのものです（Landsat ST_B10 ＝ 放射率補正済み）。<strong>6地区を通して 42.97 K の幅に散らばりますが、これは季節と天気であって設備の状態ではありません</strong>（1地区あたりでも30〜39 K動きます）。
           右は同じ日の市街地（鶴見区）を引いた差で、<strong>振れ幅は 12.53 K に落ちます</strong>——図4の②が実データでも起きることの確認です。
+          <strong>参照面までの距離は4〜10 kmで、図4②が要求する離隔（数百 m）とは別の段階の引き算です</strong>——ここで落ちるのは広域の共通モードだけです。
           ただし<strong>まだ 12.53 K 残っています</strong>。残り方は地区ごとに形が違い、
           <strong>赤＝東扇島火力は暖候期（3〜9月）に −5〜−9 K、冬季はほぼ0 K</strong>です。しかも同じ9月でも2025年は −6.2 K、2024年は −0.7 Kと揃いません。
           <strong>この「地区ごとの季節感受度が何によるのか」が説明できていません（U-2）。</strong>
@@ -1196,8 +1198,7 @@
           設備単位の信号（0.53 K）はこの図の目盛より小さく、ここに写ってはいません。
           この図が示すのは「気象の共通モードは引き算で本当に落ちる」「落ちきらない分は気象に属する」の2点だけです。
           <span class="src">poc4_results_real.json（spread_K, series_vs_urban_ref_K, ref_series_K）／poc6_results.json（noise_decomposition）。
-          参照面は全14シーンで有効な鶴見区（既定）。提出物が引用している 36.02 K → 7.65 K は旧参照面・有効6シーンの値で、
-          さらに引用側は市街地参照面自身を母集団に含めています（同じ定義なら14シーンで 44.05 K）。母数と定義の両方が違います</span>
+          参照面は全14シーンで有効な鶴見区（既定）。提出物には旧参照面・6シーンでの値（36.0 → 7.7 K）を記載しています</span>
         </figcaption>
       </figure>
     </div>
@@ -1384,7 +1385,7 @@
         <span class="id">U-5</span>
         <span class="what">検証フィールド（設備台帳・保全履歴・外装張替え履歴）</span>
         <span class="why">U-1を実測するには、同一構内の同型ユニット対と、その外装をいつ張り替えたかの記録が要ります。<strong>これが無いと経年の起点が決まりません。</strong>現時点で協力先は確保できていません。</span>
-        <span class="who"><b>ご相談したい先</b>: 一般財団法人日本気象協会の気象コンサルティング顧客（発電所・ダム・熱供給事業者等）の保全部門へのお取り次ぎ。</span>
+        <span class="who"><b>ご相談したい先</b>: 一般財団法人日本気象協会の気象コンサルティング顧客（発電所・ダム等）の保全部門へのお取り次ぎ。もし熱供給や石油・化学のプラントに接点がおありなら、そちらが本命です。</span>
       </div>
     </div>
 
@@ -1396,14 +1397,14 @@
             <thead><tr><th>計算している量</th><th>値</th><th>確度</th></tr></thead>
             <tbody>
               <tr><th>天空条件スイング（晴天夜⇔曇天夜。表面温度は不変）</th><td class="num">8.57 K（帯域3.4-4.2µm仮定）／10.17 K（実帯域3.7-4.95µm）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>誤差バジェット（輝度温度領域・RSS）</th><td class="num">撮像間差分 9.39 K → 兄弟差分 2.76 K → 二重差分6エポック 0.28 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>信号（ユニット面的劣化 +1 K が輝度温度に写る量）</th><td class="num">0.53 K（単発の信号対雑音比 0.19、二重差分6エポックで 1.89）</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>誤差バジェット（輝度温度領域・RSS。NEdT 1 K・ε±0.05 は仮定）</th><td class="num">撮像間差分 9.39 K → 兄弟差分 2.76 K → 二重差分6エポック 0.28 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>信号（ユニット面的劣化 +1 K が輝度温度に写る量）</th><td class="num">0.53 K（+1 K・風化アルミ ε=0.25 を置いた場合。単発の信号対雑音比 0.19、二重差分6エポックで 1.9 倍）</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>実Landsat14シーンでの共通モード除去（京浜臨海部・6地区・図5）</th><td class="num">資産の地表温度の振れ幅 42.97 K → 市街地参照との差 12.53 K</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>実Landsat 2シーンの実画像（図6）</th><td class="num">冬 表示283.3–288.5 K（実範囲 264.9–299.8）／夏 表示300.9–323.5 K（実範囲 299.9–329.9）。資産−市街地参照は冬 +0.2〜+1.2 K</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>兄弟差分σの離隔距離依存（実Landsat・代用資産11,422個）</th><td class="num">150–300 m: 0.43 K／1.2–2.4 km: 1.79 K／5–10 km: 3.89 K</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>雑音床の分解（実Landsat）</th><td class="num">生 8.44 K → シーン共通モード除去 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>検知性能（モンテカルロ160対160・二重差分・+1 K）</th><td class="num">AUC 0.980（差動経年0 K）／0.921（0.15 K）／0.788（0.3 K）</td><td><span class="flag f-warn">仮定</span></td></tr>
-              <tr><th>誤報率（実データ分布から）</th><td class="num">z=3 で 0.32 件／プラント・年</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>検知性能（モンテカルロ160対160・二重差分・+1 K）</th><td class="num">AUC 0.980（差動経年0 K）／0.921（0.15 K）／0.788（0.3 K）。差動経年は未取得の仮定値で、0.15 Kは目安</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>誤報率（実データ分布から）</th><td class="num">z=3 で 0.32 件／プラント・年（実Landsat 30 m・代用資産。本物の変化が混ざり得るので上限）</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>降雨後の回復速度が使える頻度（川崎・実気象2020–2025）</th><td class="num">降雨イベント 62 回/年 → 単点 21 回/年、回復速度 4.3 回/年</td><td><span class="flag f-ok">確定</span></td></tr>
             </tbody>
           </table>
@@ -1428,7 +1429,9 @@
         （蔵王の計画の公表8値を <span class="num">泥流総量 = 0.4×融雪水量/(0.4−C<sub>d</sub>)</span> で誤差0.44%以内に再現して確認しました）。
       </p>
       <p>
-        ところが<strong>日本には積雪水量を面的に観測する政府機関が存在しません。</strong>
+        ところが<strong>火口の高さには、その積雪を測っているものが何もありません。</strong>
+        面的なプロダクト（気象庁の解析積雪深 5 kmメッシュ等）はありますが、<strong>融雪範囲（渓流別0.2〜3 km²）を解像しません</strong>。
+        点の観測も、気象庁で積雪深を観測している336地点の最高標高は1,292 m（奥日光）です。
         砂防計画は低標高の観測所からの外挿による単一の平年値を使っています。
         本提案は、光学衛星のアーカイブから画素ごとの「雪が消えた日」を求め、そこから
         <strong>「何年に一度、どれだけ積もるか」の分布</strong>を作るものです。
@@ -1511,6 +1514,7 @@
         <figcaption>
           <strong>この246%には信頼区間が付いていません</strong>——点推定なので、外れているかどうかを検証する手立てがそもそも無い、というのが現状です。
           本提案が勝っているのは精度そのものではなく、<strong>不確かさを数字で出せること</strong>です。
+          <strong>ただしこの外挿を「mm」で置き換えるには融雪係数が要り、そこは我々だけでは埋まりません（V-3）。</strong>
           <span class="src">01_検討経緯.md 8.4〜8.7節（一次資料）／t2_return_period.json（vs_current_practice）</span>
         </figcaption>
       </figure>
@@ -1601,7 +1605,7 @@
         <figcaption>
           実測すると、<strong>流域平均の消雪日の誤差は「観測間隔 × 0.217」</strong>でした（9年分の間引き実験）。
           つまり<strong>この提案の精度は、冬から春にかけて何回晴れるかでほぼ決まります</strong>。
-          年によっては画素の98.5%が1つの間隔に入ってしまい、空間平均をとっても誤差が落ちません（2017年の実測）。
+          年によっては画素の98.5%が1つの間隔に入ってしまい、空間平均をとっても誤差が落ちません（2017年の実測）。<strong>この観測間隔の出方が、依頼1でお伺いしたい点です（V-4）。</strong>
           <span class="src">t2_meltout_accuracy.json（check_EG_over_4, single_interval_risk）</span>
         </figcaption>
       </figure>
@@ -1781,7 +1785,7 @@
         <figcaption>
           棒は流域平均の消雪日の観測誤差、赤の破線は<strong>積雪の真の年々変動（7.1日）</strong>です。
           <strong>Sentinel-2が入った現在の観測密度でようやく信号対雑音比1.30、それ以前は0.81以下</strong>で、
-          古い年ほど「年ごとの違い」ではなく「観測の粗さ」を見ていることになります。
+          古い年ほど「年ごとの違い」ではなく「観測の粗さ」を見ていることになります。<strong>この判定は融雪開始日の精度でも動きます（V-2）。</strong>
           棒の観測間隔は <strong>E[G]＝Σg²/Σg（長い間隔ほど重く数える期待値）</strong>で、現代は25日です。図9の「間隔の中央値20日」は中央値なので値が違います。
           <span class="src">t2_return_period.json（snr_in_days, revised_EG_criterion）</span>
         </figcaption>
@@ -1795,25 +1799,25 @@
       </div>
       <div class="steps" role="group" aria-label="観測間隔">
         <button type="button" data-gap="16">16日</button>
-        <button type="button" data-gap="20" aria-pressed="true">20日</button>
-        <button type="button" data-gap="25">25日</button>
+        <button type="button" data-gap="20">20日</button>
+        <button type="button" data-gap="25" aria-pressed="true">25日</button>
         <button type="button" data-gap="40">40日</button>
         <button type="button" data-gap="48">48日</button>
         <button type="button" data-gap="80">80日</button>
       </div>
       <div class="readout">
-        <span class="big" id="gapErr">4.3 日</span>
-        <span class="sub" id="gapSnr">信号対雑音比 1.63</span>
-        <span class="sub" id="gapOcc">観測誤差が全体のばらつきの 27%</span>
+        <span class="big" id="gapErr">5.4 日</span>
+        <span class="sub" id="gapSnr">信号対雑音比 1.3</span>
+        <span class="sub" id="gapOcc">観測誤差が全体のばらつきの 37%</span>
         <span class="sub" id="gapVerdict">判定: 限界域</span>
       </div>
       <div class="gauge" aria-hidden="true">
-        <div class="fill" id="gapFill" style="width:24.1%"></div>
+        <div class="fill" id="gapFill" style="width:30.1%"></div>
         <div class="mark" style="left:39.4%" title="信号 7.1日"></div>
       </div>
       <div class="gscale"><span>誤差 0 日</span><span>信号 7.1 日</span><span>18 日</span></div>
       <p class="caveat">誤差は<strong>実測した係数 0.217 × 観測間隔</strong>で計算しています（9年分の間引き実験）。
-        20日は現代（Landsat＋Sentinel-2）の実測中央値、48日は最悪年、80日はLandsat単独時代です。
+        <strong>25日は図10と同じ基準</strong>（E[G]＝長い間隔ほど重く数える期待値）での現代の値です。20日は観測間隔の実測中央値、48日は最悪年、80日はLandsat単独時代。
         16日は「観測誤差を全体の20%以下に抑える」ために必要な水準です。</p>
     </div>
 
@@ -1883,7 +1887,7 @@
     <div class="fig">
       <figure>
         <p class="figtitle">図11　不確定項は10件。うち8件は我々だけでは閉じられません</p>
-        <svg viewBox="0 0 860 240" role="img" aria-label="不確定項10件の内訳。気象側の知見で閉じるもの5件、現地観測2件、お取り次ぎ1件、自前で閉じるもの2件。">
+        <svg viewBox="0 0 860 240" role="img" aria-label="不確定項10件の内訳。気象側の知見で閉じるもの5件、現地観測2件、お取り次ぎ1件、貴協会にお願いしない2件。">
           <g filter="url(#fSoft)">
             <rect x="20" y="44" width="400" height="48" rx="2" fill="var(--accent)" opacity=".8"></rect>
             <rect x="424" y="44" width="160" height="48" rx="2" fill="var(--accent)" opacity=".55"></rect>
@@ -1911,7 +1915,7 @@
             <text x="220" y="146" font-weight="600">気象側の知見をいただく</text>
             <text x="504" y="146" font-weight="600">現地観測</text>
             <text x="628" y="146" font-weight="600">お取り次ぎ</text>
-            <text x="752" y="146" font-weight="600">自前で閉じる</text>
+            <text x="752" y="146" font-weight="600">貴協会にお願いしない</text>
           </g>
           <g class="s-sm" text-anchor="middle">
             <text x="220" y="168">U-2 同じ空とみなせる距離　U-3 晴天夜の頻度</text>
@@ -1934,7 +1938,7 @@
         </svg>
         <figcaption>
           いずれも「まず一度お話を伺いたい」という段階のご相談で、この場でお約束いただくことは想定していません。
-          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています（テーマ①は代用データで共通モードの除去まで＝図5、テーマ②は成果物そのものを9年分＝図9）。
+          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています（テーマ①は代用データで共通モードの除去まで＝図5・図6、テーマ②は消雪日マップを9年分＝図9。ただし出すべき量は「mm」で、そこにはV-1とV-3が要ります）。
           残っているのは<strong>そこに写った値が「なぜそうなるか」と、地上で答え合わせをする部分</strong>です。
         </figcaption>
       </figure>
@@ -2010,7 +2014,7 @@
       </p>
       <p>
         この設計の弱点がそのまま U-1・U-2 です。②は<strong>2つの資産が同じ空を共有していること</strong>に依存し、
-        ③は<strong>2つの資産の劣化速度が同じであること</strong>に依存します。どちらも気象と材料の話であって、
+        ③は<strong>2つの資産の外装が同じ速さで風化していること（放射率の差が経年で開かないこと）</strong>に依存します。どちらも気象と材料の話であって、
         画像処理では解決できません。
       </p>
     </div>
@@ -2020,7 +2024,7 @@
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月12日 第10版（消雪日マップを火口半径3kmの円で集計）／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月12日 第11版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
@@ -2118,7 +2122,7 @@
     var gap = +k, err = COEF * gap, snr = SIGNAL / err;
     var occ = err * err / (err * err + SIGNAL * SIGNAL) * 100;
     document.getElementById("gapErr").textContent = err.toFixed(1) + " 日";
-    document.getElementById("gapSnr").textContent = "信号対雑音比 " + snr.toFixed(2);
+    document.getElementById("gapSnr").textContent = "信号対雑音比 " + snr.toFixed(1);
     document.getElementById("gapOcc").textContent = "観測誤差が全体のばらつきの " + occ.toFixed(0) + "%";
     document.getElementById("gapVerdict").textContent =
       "判定: " + (occ <= 20 ? "年超過確率分布に使える" : (snr >= 1 ? "限界域" : "年ごとの違いが見えない"));
