@@ -74,8 +74,29 @@ snap = json.load(open(os.path.join(_POC, "out", "t2_snowmap_results.json")))
 YEARS = sorted(int(y) for y in snap["years"])
 
 
+# 【2026年8月12日】.npy は火口中心 ±3km の**矩形**（203×202画素＝41,006、四隅は火口から
+# 4.3km）である。融雪型火山泥流は火口起源なので、標高の低い四隅を混ぜると系統的に早い側へ
+# 引っ張られる（2022年の画素中央値は矩形 117.0 → 円 144.5 日目で、9年で2番目に早い年が
+# 2番目に遅い年に入れ替わる）。以後は**半径3kmの円（31,392画素）だけ**を集計する。
+#   **注意: out/*.json はこのマスクを入れる前の出力である。**この環境には numpy が入らない
+#   （pip がプロキシで403）ため回し直せていない。回し直したときに何がどれだけ動くかは
+#   `t2_snowmap_circle.py`（素のPythonで書いてある）の出力 downstream_effect を見ること——
+#   面積平均σ 8.93→8.80、信号 7.1→6.9日、SNR 1.31→1.29 で結論は動かない。
+MASK_TO_CIRCLE = True
+CIRCLE_R_M = 3000.0
+PIXEL_M = 30.0
+
+
 def load_year(y):
-    return np.load(os.path.join(_DATA, f"snow_doy_{y}.npy")).astype(float)
+    a = np.load(os.path.join(_DATA, f"snow_doy_{y}.npy")).astype(float)
+    if MASK_TO_CIRCLE:
+        rows, cols = a.shape
+        yy, xx = np.ogrid[:rows, :cols]
+        out = ((yy - (rows - 1) / 2.0) ** 2 + (xx - (cols - 1) / 2.0) ** 2
+               > (CIRCLE_R_M / PIXEL_M) ** 2)
+        a = a.copy()
+        a[out] = np.nan
+    return a
 
 
 def year_dates(y):

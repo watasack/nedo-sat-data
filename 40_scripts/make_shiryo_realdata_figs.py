@@ -55,8 +55,10 @@ def png_palette(idx, w, h, palette):
 RAMP = [(0.00, (150, 58, 22)), (0.27, (216, 148, 78)), (0.50, (226, 205, 168)),
         (0.73, (118, 160, 186)), (1.00, (30, 60, 84))]
 MISSING = (152, 155, 160)   # 欠測。ランプのどの色とも十分に離す
+OUTSIDE = (243, 243, 241)   # 火口半径3kmの外＝集計に入れない画素
 DOY_MIN, DOY_MAX = 90.0, 210.0
-NCOL = 200  # index 0 は欠測に予約
+NCOL = 200  # index 0 は欠測、index 1 は範囲外に予約
+CIRCLE_R_M, PIXEL_M = 3000.0, 30.0
 
 
 def ramp_rgb(t):
@@ -70,7 +72,7 @@ def ramp_rgb(t):
     return RAMP[-1][1]
 
 
-PALETTE = [MISSING] + [ramp_rgb(i / (NCOL - 1)) for i in range(NCOL)]
+PALETTE = [MISSING, OUTSIDE] + [ramp_rgb(i / (NCOL - 1)) for i in range(NCOL)]
 
 
 # ---------------------------------------------------------------- GeoTIFF / UTM
@@ -140,15 +142,19 @@ def doy_label(doy):
 
 
 def snow_png_datauri(year):
+    """.npy は火口±3kmの矩形なので、円の外は「範囲外」で塗って集計から外す。"""
     a, rows, cols = load_npy(os.path.join(
         ROOT, "30_theme2_ライフライン復旧/poc/data/snowmap", f"snow_doy_{year}.npy"))
+    cy, cx, r = (rows - 1) / 2.0, (cols - 1) / 2.0, CIRCLE_R_M / PIXEL_M
     idx = bytearray(rows * cols)
     for i, v in enumerate(a):
-        if v != v:                      # NaN = 欠測
+        if ((i // cols) - cy) ** 2 + ((i % cols) - cx) ** 2 > r * r:
+            idx[i] = 1                  # 火口から3kmの外
+        elif v != v:                    # NaN = 欠測
             idx[i] = 0
         else:
             t = (v - DOY_MIN) / (DOY_MAX - DOY_MIN)
-            idx[i] = 1 + min(max(int(round(t * (NCOL - 1))), 0), NCOL - 1)
+            idx[i] = 2 + min(max(int(round(t * (NCOL - 1))), 0), NCOL - 1)
     png = png_palette(idx, cols, rows, PALETTE)
     return "data:image/png;base64," + base64.b64encode(png).decode(), rows, cols, len(png)
 
@@ -482,6 +488,10 @@ def fig_t1_image():
 def fig_t2():
     res = json.load(open(os.path.join(
         ROOT, "30_theme2_ライフライン復旧/poc/out/t2_snowmap_results.json")))
+    # 中央値・決定率は「火口半径3kmの円」で取り直したものを使う（矩形は円の外接矩形で、
+    # 四隅が火口から4.3km ある。2022年は 117.0 → 144.5 日目と入れ替わる）
+    circ = json.load(open(os.path.join(
+        ROOT, "30_theme2_ライフライン復旧/poc/out/t2_snowmap_circle_r3km.json")))["円_半径3km"]["年別"]
     years = res["years"]
     show = ["2023", "2019", "2025"]
     W = 246                       # 1枚の描画幅[px]
@@ -511,10 +521,8 @@ def fig_t2():
           'stroke-width="2.4" opacity=".85"></circle>')
         A(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="7" fill="none" stroke="#1B2028" '
           'stroke-width="1.1"></circle>')
-        # 集計しているのは画いっぱいの矩形（6.09×6.06 km）。半径3 kmの円はその内接円で、
-        # 四隅は火口から 4.3 km ある——という関係を1枚目に描いておく。
-        A(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{W/2:.1f}" fill="none" stroke="#FFF" '
-          'stroke-width="1.6" opacity=".55" stroke-dasharray="5 4"></circle>')
+        # 円の境界は「範囲外」の白塗りが示すので、破線は描かない（描くと半径がずれて見える。
+        # 白塗りの境界は 121.8 px、W/2 は 123.0 px）。
         if k == 0:
             A(f'<text class="s-xs" x="{cx+12:.1f}" y="{cy+4:.1f}" fill="#FFF" '
               'style="paint-order:stroke" stroke="#1B2028" stroke-width="2.5">火口</text>')
@@ -522,8 +530,8 @@ def fig_t2():
           'stroke="var(--rule)"></rect>')
         A(f'<text class="s-sm s-num" x="{x}" y="{24+h+18:.1f}" fill="var(--ink-2)">'
           f'画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">'
-          f'{years[y]["snow_doy_median"]:.0f} 日目</tspan>'
-          f'（{doy_label(int(years[y]["snow_doy_median"]))}ごろ）</text>')
+          f'{circ[y]["画素中央値"]:g} 日目</tspan>'
+          f'（{doy_label(int(circ[y]["画素中央値"]))}ごろ）</text>')
         if k == 0:   # スケールバー 1km。AOI は 202画素 × 30m = 6.06km 幅
             sb = W / 6.06
             A(f'<g transform="translate({x+10:.1f},{24+h-12:.1f})">'
@@ -551,10 +559,10 @@ def fig_t2():
     A(f'<rect x="{cbx+cbw+26}" y="{ytop}" width="16" height="13" '
       f'fill="rgb({MISSING[0]},{MISSING[1]},{MISSING[2]})" stroke="var(--rule)"></rect>')
     A(f'<text class="s-xs" x="{cbx+cbw+48}" y="{ytop+11}">灰＝その年は雲などで決められなかった画素</text>')
-    A(f'<g transform="translate({cbx+cbw+26},{ytop+26})">'
-      '<line x1="0" y1="7" x2="16" y2="7" stroke="currentColor" stroke-width="1.6" '
-      'opacity=".55" stroke-dasharray="5 4"></line>'
-      '<text class="s-xs" x="22" y="11">破線＝火口から半径3 km（集計は画いっぱいの矩形）</text></g>')
+    A(f'<rect x="{cbx+cbw+26}" y="{ytop+26}" width="16" height="13" '
+      f'fill="rgb({OUTSIDE[0]},{OUTSIDE[1]},{OUTSIDE[2]})" stroke="var(--rule)"></rect>')
+    A(f'<text class="s-xs" x="{cbx+cbw+48}" y="{ytop+37}">'
+      '白＝火口から3 kmの外（集計に入れていない）</text>')
 
     # 9年分の中央値
     sy = ytop + 78
@@ -566,7 +574,7 @@ def fig_t2():
     ks = sorted(years)
     for i, y in enumerate(ks):
         X = gx0 + (gx1 - gx0) * i / (len(ks) - 1)
-        v = years[y]["snow_doy_median"]
+        v = circ[y]["画素中央値"]
         Y = sy + 56 - 48 * (v - dmin) / (dmax - dmin)
         acc = y in show
         A(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{4.5 if acc else 3.2}" '
@@ -575,7 +583,7 @@ def fig_t2():
         A(f'<text class="s-xs s-num" x="{X:.1f}" y="{Y-9:.1f}" text-anchor="middle" '
           f'fill="{"var(--accent-ink)" if acc else "var(--ink-3)"}">{v:g}</text>')
         A(f'<text class="s-xs s-num" x="{X:.1f}" y="{sy+80}" text-anchor="middle">{y}</text>')
-    vals = [years[y]["snow_doy_median"] for y in ks]
+    vals = [circ[y]["画素中央値"] for y in ks]
     A(f'<text class="s-sm s-acc s-num" x="{gx1}" y="{sy-14}" text-anchor="end" font-weight="600">'
       f'最も早い年と遅い年で {max(vals)-min(vals):g} 日ちがう'
       '<tspan class="s-xs" fill="var(--ink-3)" font-weight="400">（画素中央値）</tspan></text>')
