@@ -19,6 +19,8 @@
     --unk-bg:     #E5EDF1;
     --sky:        #BFD3E0;
     --sky-2:      #8FAEC2;
+    --terrain:    #E3E6E4;   /* 断面図の地形の面。地色から一段 */
+    --snowzone:   #DDEAF3;   /* 同・雪の領域 */
     --rock:       #6E7480;
     --rock-2:     #4B505A;
     --ok:         #2F6B4F;
@@ -44,6 +46,7 @@
       --accent:#E07048; --accent-ink:#EE8A64; --accent-bg:#33221B;
       --unk:#7FAFC6; --unk-ink:#9CC6DA; --unk-bg:#1A262E;
       --sky:#2B3B47; --sky-2:#3F5A6B;
+      --terrain:#2F343C; --snowzone:#31485B;
       --rock:#3A3F49; --rock-2:#2A2E36;
       --ok:#74B694; --ok-bg:#1B2A22;
       --warn:#D4A65C; --warn-bg:#2C2417;
@@ -58,6 +61,7 @@
     --accent:#E07048; --accent-ink:#EE8A64; --accent-bg:#33221B;
     --unk:#7FAFC6; --unk-ink:#9CC6DA; --unk-bg:#1A262E;
     --sky:#2B3B47; --sky-2:#3F5A6B;
+    --terrain:#2F343C; --snowzone:#31485B;
     --rock:#3A3F49; --rock-2:#2A2E36;
     --ok:#74B694; --ok-bg:#1B2A22;
     --warn:#D4A65C; --warn-bg:#2C2417;
@@ -306,6 +310,7 @@
       --accent:#B4441F; --accent-ink:#8E3517; --accent-bg:#F6E9E3;
       --unk:#35576B; --unk-ink:#26414F; --unk-bg:#E5EDF1;
       --sky:#BFD3E0; --sky-2:#8FAEC2; --rock:#6E7480; --rock-2:#4B505A;
+      --terrain:#E3E6E4; --snowzone:#DDEAF3;
       --ok:#2F6B4F; --ok-bg:#E6EFE9; --warn:#8A5D16; --warn-bg:#F5ECD9;
       --miss:#6E727A; --miss-bg:#EBEBE9; --shadow:none;
     }
@@ -354,39 +359,9 @@
       <stop offset="0%"   stop-color="var(--sky-2)"></stop>
       <stop offset="100%" stop-color="var(--sky)" stop-opacity=".35"></stop>
     </linearGradient>
-    <linearGradient id="gRock" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%"   stop-color="var(--rock)"></stop>
-      <stop offset="100%" stop-color="var(--rock-2)"></stop>
-    </linearGradient>
     <linearGradient id="gSnow" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="#FFFFFF"></stop>
       <stop offset="100%" stop-color="var(--sky)"></stop>
-    </linearGradient>
-    <!-- 谷筋の筆。両端が消えるので「引っかき傷」に見えない（単色のストロークだと端が切れて傷に見える） -->
-    <linearGradient id="gGullyD" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#000000" stop-opacity="0"></stop>
-      <stop offset="38%"  stop-color="#000000" stop-opacity=".15"></stop>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0"></stop>
-    </linearGradient>
-    <!-- 空気遠近。麓へ向かって空の色を重ねると、切り絵に見えず奥行きが出る -->
-    <linearGradient id="gAerial" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="var(--sky)" stop-opacity="0"></stop>
-      <stop offset="55%"  stop-color="var(--sky)" stop-opacity="0"></stop>
-      <stop offset="100%" stop-color="var(--sky)" stop-opacity=".42"></stop>
-    </linearGradient>
-    <!-- 火口の開口。上＝奥の壁（陽が当たる）、下＝手前の壁と影。窪みに見せるための勾配 -->
-    <linearGradient id="gCrater" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="var(--rock)"></stop>
-      <stop offset="42%"  stop-color="var(--rock-2)"></stop>
-      <stop offset="100%" stop-color="#0B0F14"></stop>
-    </linearGradient>
-    <!-- 山体の陰影。左（影）から右（陽）へ一続きに振り、岩肌と雪面に同じ勾配をかける -->
-    <linearGradient id="gConeShade" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%"   stop-color="#0A0F14" stop-opacity=".27"></stop>
-      <stop offset="30%"  stop-color="#0A0F14" stop-opacity=".11"></stop>
-      <stop offset="48%"  stop-color="#0A0F14" stop-opacity="0"></stop>
-      <stop offset="58%"  stop-color="#FFFFFF" stop-opacity="0"></stop>
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity=".20"></stop>
     </linearGradient>
     <linearGradient id="gBarNoise" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="var(--unk)" stop-opacity=".95"></stop>
@@ -413,9 +388,6 @@
     <filter id="fSoft" x="-20%" y="-20%" width="150%" height="150%">
       <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity=".22"></feDropShadow>
     </filter>
-    <pattern id="pHatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-      <line x1="0" y1="0" x2="0" y2="7" stroke="var(--unk)" stroke-width="2.4" opacity=".28"></line>
-    </pattern>
     <pattern id="pSnowGrain" width="6" height="6" patternUnits="userSpaceOnUse">
       <circle cx="1.5" cy="1.5" r=".7" fill="var(--sky-2)" opacity=".55"></circle>
       <circle cx="4.5" cy="4" r=".55" fill="var(--sky-2)" opacity=".4"></circle>
@@ -636,102 +608,25 @@
     </g>
 
     <!-- ==== 図1・図7で共有する火山（座標は図7の標高軸に合わせてある） ==== -->
-    <!-- 主峰の輪郭。山体内に描くものはすべてこれでクリップするので稜線から溢れない -->
-    <clipPath id="clipCone">
-      <path d="M106 296 C140 286 168 276 196 262 C226 246 254 220 276 190
-               C300 156 322 118 350 88 C368 70 386 58 398 55
-               C404 49 412 47 420 51 C428 55 434 61 440 69
-               C454 81 468 95 480 112 C502 142 524 173 546 204
-               C570 236 604 272 638 296 Z"></path>
-    </clipPath>
+    <clipPath id="clipCone"><path d="M108 296 C200 278 280 236 320 196 C356 150 376 100 398 54 L436 54 C462 104 492 150 520 196 C560 240 606 278 642 296 Z"></path></clipPath>
+    <!-- ==== 図1・図7で共有する火山の断面（模式図） ====
+         断面図なので等高線は水平になる。雪は「ある標高より上」を矩形で置き、輪郭でクリップする。
+         質感（谷筋・陰影・霞）は入れない——入れると必ず別のもの（傷・光線・水たまり）に見える -->
     <g id="volcano">
-      <!-- 遠景の稜線: 大気遠近で2枚に分け、麓側は薄くして観測所の記号と干渉させない -->
-      <path d="M96 258 C150 246 196 254 240 244 C286 234 330 244 380 232
-               C432 220 470 226 512 214 C556 202 600 210 654 200
-               C690 194 716 200 744 196 L744 296 L96 296 Z"
-            fill="var(--rock)" opacity=".13"></path>
-      <path d="M96 276 C142 266 188 272 236 264 C300 254 348 264 402 252
-               C462 240 508 248 556 238 C600 229 626 234 654 228
-               C688 222 714 228 744 224 L744 296 L96 296 Z"
-            fill="var(--rock-2)" opacity=".14"></path>
-
-      <!-- 山体 -->
-      <path d="M106 296 C140 286 168 276 196 262 C226 246 254 220 276 190
-               C300 156 322 118 350 88 C368 70 386 58 398 55
-               C404 49 412 47 420 51 C428 55 434 61 440 69
-               C454 81 468 95 480 112 C502 142 524 173 546 204
-               C570 236 604 272 638 296 Z"
-            fill="url(#gRock)"></path>
-
+      <path d="M108 296 C200 278 280 236 320 196 C356 150 376 100 398 54 L436 54 C462 104 492 150 520 196 C560 240 606 278 642 296 Z"
+            fill="var(--v-terrain,var(--terrain))"></path>
       <g clip-path="url(#clipCone)">
-        <!-- 谷筋は暗い側だけ、細く薄く、中腹だけに置く。白い筆を入れると「光線」に見え、
-             太い筆や長い筆は「引っかき傷」に見える。山体は主役ではないので 質感は最小にする -->
-        <g fill="none" stroke="url(#gGullyD)" stroke-linecap="round">
-          <path d="M430 168 C440 196 452 220 462 242" stroke-width="3"></path>
-          <path d="M414 170 C417 198 421 222 425 244" stroke-width="2.6"></path>
-          <path d="M446 180 C462 202 478 220 492 238" stroke-width="2.4"></path>
-          <path d="M372 172 C360 198 346 220 332 240" stroke-width="2.6"></path>
-          <path d="M344 190 C332 210 318 228 304 244" stroke-width="2.2"></path>
-        </g>
-
-        <!-- 雪。雪線は等高線なので手前へ垂れ、縁は数pxの細かい凹凸で刻む（大きな滑らかな弧にすると水たまりに見える） -->
-        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
-                 C342 143 350 145 358 152 C366 158 374 156 382 160
-                 C390 164 398 163 406 166 C414 169 422 168 430 164
-                 C438 160 444 163 452 158 C460 152 466 146 474 148
-                 C482 150 488 145 496 140 C504 136 512 137 520 142 L536 24 L266 24 Z" fill="url(#gSnow)"></path>
-        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
-                 C342 143 350 145 358 152 C366 158 374 156 382 160
-                 C390 164 398 163 406 166 C414 169 422 168 430 164
-                 C438 160 444 163 452 158 C460 152 466 146 474 148
-                 C482 150 488 145 496 140 C504 136 512 137 520 142 L536 24 L266 24 Z" fill="url(#pSnowGrain)"></path>
-        <!-- 雪の縁を斜面になじませる（幅の広い薄い影を縁にまたがせる） -->
-        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
-                 C342 143 350 145 358 152 C366 158 374 156 382 160
-                 C390 164 398 163 406 166 C414 169 422 168 430 164
-                 C438 160 444 163 452 158 C460 152 466 146 474 148
-                 C482 150 488 145 496 140 C504 136 512 137 520 142" fill="none" stroke="#2A3644" stroke-width="7" opacity=".1"></path>
-        <path d="M282 142 C292 137 302 134 312 137 C320 142 326 148 334 146
-                 C342 143 350 145 358 152 C366 158 374 156 382 160
-                 C390 164 398 163 406 166 C414 169 422 168 430 164
-                 C438 160 444 163 452 158 C460 152 466 146 474 148
-                 C482 150 488 145 496 140 C504 136 512 137 520 142" fill="none" stroke="var(--sky-2)" stroke-width="1.1" opacity=".4"></path>
-
-        <!-- 明暗を一続きの勾配でかける（岩肌と雪面に同じ向きの陰影が乗る） -->
-        <rect x="100" y="20" width="546" height="278" fill="url(#gConeShade)"></rect>
-        <!-- 麓へ向かう空気遠近 -->
-        <rect x="100" y="20" width="650" height="280" fill="url(#gAerial)"></rect>
-
-        <!-- 麓の霞（山体を地面に座らせる） -->
-        <ellipse cx="380" cy="304" rx="290" ry="22" fill="var(--sky)" opacity=".26" filter="url(#fBlur6)"></ellipse>
+        <rect x="90" y="36" width="570" height="116" fill="var(--v-snowzone,var(--snowzone))"></rect>
+        <rect x="90" y="36" width="570" height="116" fill="url(#pSnowGrain)"></rect>
+        <line x1="90" y1="152" x2="660" y2="152" stroke="currentColor" stroke-width="1.2" opacity=".3"></line>
       </g>
-      <!-- 稜線を1本の線で締める -->
-      <path d="M106 296 C140 286 168 276 196 262 C226 246 254 220 276 190
-               C300 156 322 118 350 88 C368 70 386 58 398 55
-               C404 49 412 47 420 51 C428 55 434 61 440 69
-               C454 81 468 95 480 112 C502 142 524 173 546 204
-               C570 236 604 272 638 296"
-            fill="none" stroke="var(--rock-2)" stroke-width="1.1" opacity=".5"></path>
-
-      <!-- 火口。まわりは雪の着かない地肌を同心の段で置く（ぼかした影を下に置くと浮いて見える）。
-           開口は上（奥の壁＝陽が当たる）から下（手前＝影）へ暗くし、奥のリムにだけ光を入れる。
-           山体の内側の地形なので稜線でクリップする -->
-      <g clip-path="url(#clipCone)">
-        <ellipse cx="418" cy="66" rx="23" ry="8.6" fill="var(--rock)" opacity=".38"></ellipse>
-        <ellipse cx="418" cy="65.6" rx="19" ry="6.8" fill="var(--rock)" opacity=".7"></ellipse>
-        <path d="M404 62.4 C409 58.6 428 58.6 432 62.2" fill="none"
-              stroke="#FFFFFF" stroke-width="1.1" opacity=".3"></path>
-        <ellipse cx="418" cy="65" rx="16" ry="5.2" fill="url(#gCrater)"></ellipse>
-        <ellipse cx="418" cy="65" rx="16" ry="5.2" fill="none"
-                 stroke="var(--rock-2)" stroke-width=".9" opacity=".6"></ellipse>
-        <ellipse cx="418" cy="67.3" rx="10.5" ry="2.1" fill="#000000" opacity=".26"></ellipse>
-      </g>
-
-      <!-- 前景の裾野（図7では標高0 mの線で切られ、図1でだけ見える） -->
-      <path d="M96 300 C170 293 240 305 320 299 C400 293 470 305 552 299 C620 294 680 302 744 297
-               L744 356 L96 356 Z" fill="var(--rock-2)" opacity=".34"></path>
-      <path d="M96 320 C160 312 214 324 286 318 C368 311 430 324 512 318 C600 311 670 320 744 315
-               L744 356 L96 356 Z" fill="var(--rock-2)" opacity=".26"></path>
+      <path d="M108 296 C200 278 280 236 320 196 C356 150 376 100 398 54 L436 54 C462 104 492 150 520 196 C560 240 606 278 642 296" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".5"
+            stroke-linejoin="round"></path>
+      <!-- 火口（山頂の平坦面に開いた窪み） -->
+      <ellipse cx="417" cy="54" rx="16" ry="4.4" fill="var(--rock-2)" opacity=".85"></ellipse>
+      <ellipse cx="417" cy="55" rx="10" ry="2.4" fill="#000000" opacity=".22"></ellipse>
+      <!-- 地面（図7では標高0 mの線で切られ、図1でだけ見える） -->
+      <rect x="96" y="296" width="660" height="60" fill="var(--v-terrain,var(--terrain))" opacity=".55"></rect>
     </g>
 
     <!-- ==== 図をまたいで使う記号（24×24。線はcurrentColor） ==== -->
@@ -813,11 +708,6 @@
       <rect x="9" y="8" width="10" height="7" rx="1" fill="currentColor"></rect>
       <rect x="2" y="9.5" width="6" height="4" fill="currentColor" opacity=".55"></rect>
       <rect x="20" y="9.5" width="6" height="4" fill="currentColor" opacity=".55"></rect>
-    </g>
-    <g id="gStationS" fill="none" stroke="currentColor" stroke-width="1.6">
-      <line x1="12" y1="21" x2="12" y2="8"></line>
-      <line x1="6" y1="8" x2="18" y2="8"></line>
-      <circle cx="12" cy="4.5" r="2.2" fill="currentColor"></circle>
     </g>
     <g id="gThermo" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M12 4 v10"></path>
@@ -916,11 +806,7 @@
           <g clip-path="url(#clipR)">
             <rect x="442" y="14" width="404" height="212" fill="url(#gSkyDay)"></rect>
             <g transform="translate(442,14) scale(0.66) translate(-100,-6)">
-              <use href="#volcano"></use>
-              <!-- 泥流の経路（火口から流れ下る谷筋。下流ほど広がる） -->
-              <path d="M413 82 C404 140 378 202 348 244 C332 266 320 281 314 292
-                       L334 293 C342 281 354 268 368 247 C398 205 419 139 417 83 Z"
-                    fill="#000000" opacity=".13"></path>
+              <use href="#volcano" style="--v-terrain:var(--rock); --v-snowzone:var(--sky-2)"></use>
             </g>
             <!-- 衛星 -->
             <use href="#gSatL" transform="translate(790,52) scale(0.8)" style="color:var(--ink-2)"></use>
@@ -1640,38 +1526,41 @@
         <p class="figtitle">図7　現状の何が問題か — 観測所は麓にしかなく、火口の値は外挿で作られている（模式図。標高軸は概略）</p>
         <svg viewBox="0 0 860 372" role="img" aria-label="火山の断面図。気象庁6観測所は標高38.9から525mの麓にあり、その回帰式を最上位の観測所より約1220m上、標高約1745mの火口へ外挿している。計画値3.81mに対しUAV実測は1.1m。">
           <clipPath id="clip5"><rect x="96" y="20" width="558" height="276"></rect></clipPath>
+
+          <!-- 目盛と補助線（標高。0 m→y=296、1,745 m→y=54 の線形） -->
+          <g stroke="currentColor" stroke-width="1" opacity=".12">
+            <line x1="96" y1="227" x2="654" y2="227"></line>
+            <line x1="96" y1="157" x2="654" y2="157"></line>
+            <line x1="96" y1="88" x2="654" y2="88"></line>
+          </g>
+          <!-- 観測所が収まっている標高帯（0〜525 m）。この帯の上に観測点は1つも無い -->
+          <rect x="96" y="223" width="558" height="73" fill="var(--unk)" opacity=".08"></rect>
+
           <g clip-path="url(#clip5)">
-            <rect x="96" y="20" width="558" height="276" fill="url(#gSkyDay)"></rect>
-            <!-- 太陽 -->
-            <circle cx="628" cy="48" r="16" fill="#FFD9A0" opacity=".55" filter="url(#fBlur2)"></circle>
-            <!-- 山体は標高軸に合わせて縦だけ伸ばす（標高0 mを固定して火口を1,745 mの高さへ） -->
-            <g transform="translate(0,296) scale(1,1.0476) translate(0,-296)">
-              <use href="#volcano"></use>
-            </g>
-            <!-- 観測所のある高さの帯（標高 0〜525 m） -->
-            <rect x="96" y="223" width="230" height="73" fill="url(#pHatch)"></rect>
-            <!-- 観測所6か所。支柱の足がその観測所の実標高に来る（gStationS は <g> なので
-                 use の width/height は効かず、足は y+21。y = 296 − 標高×0.1386819 − 21） -->
-            <g color="var(--unk-ink)">
-              <use href="#gStationS" x="138" y="270"></use><!-- 仙台 38.9 m -->
-              <use href="#gStationS" x="168" y="263"></use><!-- 白石 86 m -->
-              <use href="#gStationS" x="200" y="254"></use><!-- 山形 152.5 m -->
-              <use href="#gStationS" x="232" y="241"></use><!-- 米沢 245 m -->
-              <use href="#gStationS" x="264" y="238"></use><!-- 新川 265 m -->
-              <use href="#gStationS" x="294" y="202"></use><!-- 駒ノ湯 525 m -->
-            </g>
-            <!-- 回帰と外挿。破線はラベルの手前で切り、文字の向こう側で再開する -->
-            <line x1="150" y1="291" x2="306" y2="223" stroke="var(--unk-ink)" stroke-width="2.4"></line>
-            <line x1="306" y1="223" x2="341" y2="170" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
-            <line x1="364" y1="134" x2="414" y2="61" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
-            <path d="M404 68 L417 57 L418 73 Z" fill="var(--accent)"></path>
-            <!-- 衛星（下向きのセンサが火口を向いている） -->
-            <use href="#gSatL" transform="translate(600,112)" style="color:var(--ink-2)"></use>
-            <line x1="556" y1="108" x2="448" y2="76" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
-            <path d="M454 70 L443 76 L454 82 Z" fill="var(--accent)"></path>
+            <use href="#volcano" style="color:var(--ink-3)"></use>
           </g>
 
-          <!-- 標高軸。0 mをy=296、1,745 mをy=54に置いた等間隔目盛（500 mごと） -->
+          <!-- 火口の高さを軸まで引いて、外挿の到達点を読めるようにする -->
+          <line x1="96" y1="54" x2="398" y2="54" stroke="currentColor" stroke-width="1"
+                stroke-dasharray="3 4" opacity=".3"></line>
+
+          <!-- 気象庁6観測所。支柱ではなく点で置き、実標高で地形線上に載せる
+               （245 m と 265 m は20 mしか違わないので点が触れる。それがこの図の主張） -->
+          <g fill="var(--unk-ink)">
+            <circle cx="132" cy="291" r="3.2"></circle>
+            <circle cx="156" cy="284" r="3.2"></circle>
+            <circle cx="184" cy="275" r="3.2"></circle>
+            <circle cx="218" cy="262" r="3.2"></circle>
+            <circle cx="225" cy="259" r="3.2"></circle>
+            <circle cx="287" cy="223" r="3.2"></circle>
+          </g>
+
+          <!-- 外挿。この図で色を使うのはここだけ -->
+          <line x1="287" y1="223" x2="404" y2="66" stroke="var(--accent)" stroke-width="2.2"
+                stroke-dasharray="7 5"></line>
+          <path d="M394 66 L407 57 L404 73 Z" fill="var(--accent)"></path>
+
+          <!-- 標高軸 -->
           <line x1="96" y1="40" x2="96" y2="296" stroke="currentColor" stroke-width="1" opacity=".45"></line>
           <g class="s-xs s-num" text-anchor="end">
             <text x="88" y="300">0 m</text>
@@ -1679,12 +1568,6 @@
             <text x="88" y="161">1,000</text>
             <text x="88" y="92">1,500</text>
           </g>
-          <g stroke="currentColor" stroke-width="1" opacity=".13">
-            <line x1="96" y1="227" x2="654" y2="227"></line>
-            <line x1="96" y1="157" x2="654" y2="157"></line>
-            <line x1="96" y1="88" x2="654" y2="88"></line>
-          </g>
-          <!-- 目盛（標高軸の読み取り用） -->
           <g stroke="currentColor" stroke-width="1" opacity=".4">
             <line x1="91" y1="296" x2="96" y2="296"></line>
             <line x1="91" y1="227" x2="96" y2="227"></line>
@@ -1692,16 +1575,23 @@
             <line x1="91" y1="88" x2="96" y2="88"></line>
           </g>
 
+          <!-- 衛星 -->
+          <use href="#gSatL" transform="translate(592,86)" style="color:var(--ink-2)"></use>
+          <line x1="548" y1="90" x2="452" y2="78" stroke="var(--accent)" stroke-width="1.5"
+                stroke-dasharray="4 4"></line>
+          <path d="M458 72 L447 78 L458 84 Z" fill="var(--accent)"></path>
+
+          <!-- 注記 -->
           <text class="s-sm s-unk" x="104" y="318" font-weight="600">気象庁の地域気象観測所 6か所</text>
           <text class="s-sm s-unk s-num" x="104" y="336">標高 38.9 〜 525 m にすべて集中</text>
-          <text class="s-sm s-acc" x="318" y="150" font-weight="600">回帰式で外挿</text>
-          <text class="s-sm s-acc" x="318" y="168">この区間に観測点はゼロ</text>
+          <text class="s-sm s-acc" x="132" y="150" font-weight="600">回帰式で外挿</text>
+          <text class="s-sm s-acc" x="132" y="168">この区間に観測点はゼロ</text>
           <g class="s-sm s-num" text-anchor="end">
-            <text x="346" y="44">火口（標高 約 1,745 m）</text>
-            <text x="346" y="62">観測所 525 m から 約 1,220 m 上</text>
+            <text x="346" y="32">火口（標高 約 1,745 m）</text>
+            <text x="346" y="50">観測所 525 m から 約 1,220 m 上</text>
           </g>
-          <path d="M352 50 L404 54" stroke="currentColor" stroke-width="1" opacity=".45" fill="none"></path>
-          <text class="s-sm" x="640" y="144" text-anchor="end">衛星は火口を直接見る</text>
+          <path d="M352 40 L400 50" stroke="currentColor" stroke-width="1" opacity=".45" fill="none"></path>
+          <text class="s-sm" x="636" y="126" text-anchor="end">衛星は火口を直接見る</text>
 
           <!-- 右: 積雪深の食い違い -->
           <line x1="690" y1="296" x2="846" y2="296" stroke="currentColor" stroke-width="1" opacity=".4"></line>
