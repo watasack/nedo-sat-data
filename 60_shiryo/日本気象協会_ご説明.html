@@ -1,0 +1,2060 @@
+<title>検討中の2テーマと、残っている不確定項 — 日本気象協会さまへのご説明</title>
+
+<style>
+  /* ---- トークン: 明（既定）。色はすべてここで定義し、図もCSS変数経由で塗る ---- */
+  :root {
+    --paper:      #F7F7F5;
+    --surface:    #FFFFFF;
+    --surface-2:  #F1F1EE;
+    --ink:        #1B2028;
+    --ink-2:      #545C68;
+    --ink-3:      #7E8693;
+    --rule:       #DCDDD8;
+    --rule-2:     #EAEAE6;
+    --accent:     #B4441F;   /* 遠赤の帯を借りた深いエンバー。信号・ご依頼・判定線だけに使う */
+    --accent-ink: #8E3517;
+    --accent-bg:  #F6E9E3;
+    --unk:        #35576B;   /* 不確定項・雑音。依頼（暖色）と混ざらないよう寒色に分ける */
+    --unk-ink:    #26414F;
+    --unk-bg:     #E5EDF1;
+    --sky:        #BFD3E0;
+    --sky-2:      #8FAEC2;
+    --rock:       #6E7480;
+    --rock-2:     #4B505A;
+    --ok:         #2F6B4F;
+    --ok-bg:      #E6EFE9;
+    --warn:       #8A5D16;
+    --warn-bg:    #F5ECD9;
+    --miss:       #6E727A;
+    --miss-bg:    #EBEBE9;
+    --shadow:     0 1px 2px rgba(27,32,40,.05), 0 8px 24px -16px rgba(27,32,40,.18);
+
+    --serif: "Hiragino Mincho ProN", "HiraMinProN-W3", "Yu Mincho", "YuMincho",
+             "Noto Serif JP", "Source Han Serif JP", serif;
+    --sans:  "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "YuGothic",
+             "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+             "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#14161A; --surface:#1B1E24; --surface-2:#21252C;
+      --ink:#E7E8E4; --ink-2:#A5ABB4; --ink-3:#838A94;
+      --rule:#2C3037; --rule-2:#23272E;
+      --accent:#E07048; --accent-ink:#EE8A64; --accent-bg:#33221B;
+      --unk:#7FAFC6; --unk-ink:#9CC6DA; --unk-bg:#1A262E;
+      --sky:#2B3B47; --sky-2:#3F5A6B;
+      --rock:#3A3F49; --rock-2:#2A2E36;
+      --ok:#74B694; --ok-bg:#1B2A22;
+      --warn:#D4A65C; --warn-bg:#2C2417;
+      --miss:#8B9199; --miss-bg:#22262C;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#14161A; --surface:#1B1E24; --surface-2:#21252C;
+    --ink:#E7E8E4; --ink-2:#A5ABB4; --ink-3:#838A94;
+    --rule:#2C3037; --rule-2:#23272E;
+    --accent:#E07048; --accent-ink:#EE8A64; --accent-bg:#33221B;
+    --unk:#7FAFC6; --unk-ink:#9CC6DA; --unk-bg:#1A262E;
+    --sky:#2B3B47; --sky-2:#3F5A6B;
+    --rock:#3A3F49; --rock-2:#2A2E36;
+    --ok:#74B694; --ok-bg:#1B2A22;
+    --warn:#D4A65C; --warn-bg:#2C2417;
+    --miss:#8B9199; --miss-bg:#22262C;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.75;
+    -webkit-font-smoothing: antialiased; font-feature-settings: "palt" 1;
+  }
+  .wrap {
+    max-width: 54rem; margin: 0 auto; padding: 3rem 1.5rem 5rem;
+    display: flex; flex-direction: column; gap: 2.75rem;
+  }
+
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
+  h1 { font-size: 1.9rem; line-height: 1.4; letter-spacing: .01em; }
+  h2 { font-size: 1.3rem; line-height: 1.5; }
+  h3 { font-size: 1.02rem; line-height: 1.6; }
+
+  p { margin: 0; }
+  a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .eyebrow { font-family: var(--mono); font-size: .69rem; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); }
+  header .lede { color: var(--ink-2); font-size: 1.02rem; margin-top: .85rem; }
+  header .meta {
+    font-family: var(--mono); font-size: .74rem; color: var(--ink-3);
+    margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--rule);
+  }
+
+  section { display: flex; flex-direction: column; gap: 1rem; }
+  section > .body { display: flex; flex-direction: column; gap: .85rem; }
+  .hr { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+  /* ---- 図版: この資料の主役。文章は図の脚注として置く ---- */
+  .fig {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+    padding: 1.1rem 1.2rem 1rem; box-shadow: var(--shadow);
+  }
+  figure { margin: 0; display: flex; flex-direction: column; gap: .6rem; }
+  figure svg { width: 100%; height: auto; display: block; overflow: visible; }
+  figcaption { font-size: .87rem; color: var(--ink-2); line-height: 1.7; }
+  figcaption strong { color: var(--ink); }
+  .figtitle { font-family: var(--serif); font-weight: 600; font-size: 1.02rem; }
+  .s-lbl  { font-size: 15px; fill: currentColor; font-family: var(--sans); }
+  .s-sm   { font-size: 13.5px; fill: var(--ink-2); font-family: var(--sans); }
+  .s-xs   { font-size: 11.5px; fill: var(--ink-3); font-family: var(--sans); }
+  .s-hd   { font-size: 16px; font-weight: 600; fill: currentColor; font-family: var(--sans); }
+  .s-num  { font-variant-numeric: tabular-nums; }
+  .s-acc  { fill: var(--accent-ink); }
+  .s-unk  { fill: var(--unk-ink); }
+  .s-onDark   { fill: #E8ECF0; font-family: var(--sans); font-size: 13.5px; }
+  .s-onDark-x { fill: #9AA6B2; font-family: var(--sans); font-size: 11.5px; }
+
+  /* ---- テーマ見出しブロック ---- */
+  .theme {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+    padding: 1.1rem 1.2rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: .55rem;
+  }
+  .theme .tag { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; color: var(--ink-3); text-transform: uppercase; }
+  .theme p { font-size: .95rem; }
+
+  /* ---- 事実表 ---- */
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+  thead th {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); border-bottom: 1px solid var(--rule); white-space: nowrap;
+  }
+  tbody th { font-weight: 600; color: var(--ink); width: 13rem; }
+  td.num, .num { font-variant-numeric: tabular-nums; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  .src { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+
+  /* ---- 不確定項カード ---- */
+  .unks { display: flex; flex-direction: column; gap: .6rem; }
+  .unk {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-left: 3px solid var(--unk); border-radius: 3px;
+    padding: .9rem 1.1rem; box-shadow: var(--shadow);
+    display: grid; grid-template-columns: 3.2rem 1fr; gap: .3rem 1rem; align-items: baseline;
+  }
+  .unk .id { font-family: var(--mono); font-size: .82rem; color: var(--unk-ink); font-weight: 600; }
+  .unk .what { font-weight: 600; }
+  .unk .why, .unk .who { grid-column: 2; font-size: .92rem; color: var(--ink-2); }
+  .unk .who { border-top: 1px dashed var(--rule); padding-top: .45rem; margin-top: .15rem; }
+  .unk .who b { color: var(--unk-ink); font-weight: 600; }
+  .unk.ask-here { border-left-color: var(--accent); }
+  .unk.ask-here .id { color: var(--accent-ink); }
+  .unk.ask-here .who b { color: var(--accent-ink); }
+  @media (max-width: 32rem) {
+    .unk { grid-template-columns: 1fr; }
+    .unk .why, .unk .who { grid-column: 1; }
+  }
+
+  /* ---- ご依頼カード ---- */
+  .asks { display: flex; flex-direction: column; gap: .6rem; }
+  .ask {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent); border-radius: 3px;
+    padding: .95rem 1.1rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: .3rem;
+  }
+  .ask .what { font-weight: 600; }
+  .ask .detail { color: var(--ink-2); font-size: .93rem; }
+  .ask .hits { font-family: var(--mono); font-size: .76rem; color: var(--accent-ink); letter-spacing: .02em; }
+
+  /* ---- 確度ラベル ---- */
+  .flag {
+    display: inline-block; font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    padding: .1rem .4rem; border-radius: 2px; vertical-align: .08em; white-space: nowrap;
+  }
+  .f-ok { color: var(--ok); background: var(--ok-bg); }
+  .f-warn { color: var(--warn); background: var(--warn-bg); }
+  .f-miss { color: var(--miss); background: var(--miss-bg); }
+  .legend { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; font-size: .87rem; color: var(--ink-2); }
+  .legend > span { display: inline-flex; align-items: baseline; gap: .4rem; }
+
+  /* ---- 正直な限界 ---- */
+  .frank {
+    background: var(--surface-2); border: 1px solid var(--rule); border-radius: 3px;
+    padding: 1.15rem 1.3rem; display: flex; flex-direction: column; gap: .9rem;
+  }
+  .frank .row { display: grid; grid-template-columns: 10.5rem 1fr; gap: .2rem .9rem; align-items: baseline; }
+  .frank .row + .row { border-top: 1px solid var(--rule); padding-top: .9rem; }
+  .frank .h { font-weight: 600; color: var(--ink); font-size: .95rem; }
+  .frank .t { font-size: .93rem; color: var(--ink-2); }
+  .frank .t strong { color: var(--ink); }
+  @media (max-width: 34rem) { .frank .row { grid-template-columns: 1fr; } }
+
+  /* ---- 未確認箇所（社内レビュー用。埋め終わったらこの枠ごと削除する） ---- */
+  .tbd {
+    background: var(--accent-bg); color: var(--accent-ink); font-family: var(--mono);
+    font-size: .82rem; padding: .06rem .34rem; border-radius: 2px; border-bottom: 1px solid var(--accent);
+  }
+  .reviewbox {
+    background: var(--surface); border: 1px dashed var(--accent); border-radius: 3px;
+    padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: .75rem;
+  }
+  .reviewbox ol { margin: 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: .4rem; }
+  .reviewbox li { font-size: .92rem; }
+  .reviewbox code { font-family: var(--mono); font-size: .84rem; background: var(--surface-2); padding: .08rem .3rem; border-radius: 2px; }
+  .reviewbox .how { font-size: .9rem; color: var(--ink-2); }
+
+  details { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: .2rem 1.1rem; }
+  details[open] { padding-bottom: 1rem; }
+  summary { cursor: pointer; padding: .8rem 0; font-family: var(--serif); font-size: 1rem; font-weight: 600; }
+  summary::marker { color: var(--accent); }
+  details .inner { display: flex; flex-direction: column; gap: .9rem; font-size: .93rem; }
+
+  footer {
+    font-family: var(--mono); font-size: .73rem; color: var(--ink-3);
+    border-top: 1px solid var(--rule); padding-top: 1rem; line-height: 1.9;
+  }
+
+
+  /* ---- インタラクション ---- */
+  .wipewrap { position: relative; }
+  .wipectl {
+    display: flex; align-items: center; gap: .6rem; margin-top: .5rem;
+    font-family: var(--mono); font-size: .74rem; color: var(--ink-3);
+  }
+  .wipectl input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .unklegend {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .3rem 1.2rem;
+    font-size: .88rem; color: var(--ink-2); padding-top: .2rem;
+  }
+  .unklegend b {
+    display: inline-block; min-width: 1.9rem; color: #FFF; background: var(--accent);
+    border-radius: 999px; text-align: center; font-family: var(--mono);
+    font-size: .7rem; padding: .05rem 0; margin-right: .35rem;
+  }
+  @media (max-width: 40rem) { .unklegend { grid-template-columns: 1fr; } }
+
+  .probe {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 3px;
+    padding: 1rem 1.15rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: .7rem;
+  }
+  .probe .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1rem; }
+  .probe .head .t { font-family: var(--serif); font-weight: 600; font-size: 1rem; }
+  .probe .head .n { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+  .steps { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .steps button {
+    font: inherit; font-size: .88rem; font-variant-numeric: tabular-nums;
+    background: var(--surface-2); color: var(--ink-2);
+    border: 1px solid var(--rule); border-radius: 3px;
+    padding: .3rem .7rem; cursor: pointer;
+  }
+  .steps button:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .steps button[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent); color: #FFF; font-weight: 600;
+  }
+  .steps button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .readout { display: flex; flex-wrap: wrap; gap: .35rem 1.6rem; align-items: baseline; }
+  .readout .big {
+    font-size: 1.5rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--accent-ink);
+  }
+  .readout .sub { font-size: .88rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .probe .caveat { font-size: .84rem; color: var(--ink-3); }
+  .gauge { position: relative; height: 12px; background: var(--surface-2); border: 1px solid var(--rule); border-radius: 2px; }
+  .gauge .fill { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 1px; }
+  .gauge .mark { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--unk); }
+  .gauge .ci { position: absolute; top: 3px; height: 6px; background: rgba(0,0,0,.28); }
+  .gscale { display: flex; justify-content: space-between; font-family: var(--mono); font-size: .68rem; color: var(--ink-3); }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .toolbar button {
+    font: inherit; font-size: .85rem; background: var(--surface); color: var(--ink-2);
+    border: 1px solid var(--rule); border-radius: 3px; padding: .3rem .7rem; cursor: pointer;
+  }
+  .toolbar button:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .toolbar .hint { font-size: .8rem; color: var(--ink-3); }
+
+  .fig.zoomed {
+    position: fixed; inset: 0; z-index: 50; margin: 0; border-radius: 0;
+    overflow: auto; display: flex; flex-direction: column; justify-content: center;
+    padding: 2rem clamp(1rem, 5vw, 5rem);
+  }
+  .zoomclose {
+    position: fixed; top: 1rem; right: 1rem; z-index: 51;
+    font: inherit; font-size: .85rem; background: var(--surface); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 3px; padding: .4rem .9rem; cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  body.haszoom { overflow: hidden; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media print {
+    .wipectl, .toolbar, .steps, .zoomclose { display: none; }
+    .fig.zoomed { position: static; padding: 1.1rem 1.2rem 1rem; }
+  }
+
+  @media print {
+    :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+      --paper:#FFF; --surface:#FFF; --surface-2:#FFF;
+      --ink:#1B2028; --ink-2:#545C68; --ink-3:#7E8693;
+      --rule:#DCDDD8; --rule-2:#EAEAE6;
+      --accent:#B4441F; --accent-ink:#8E3517; --accent-bg:#F6E9E3;
+      --unk:#35576B; --unk-ink:#26414F; --unk-bg:#E5EDF1;
+      --sky:#BFD3E0; --sky-2:#8FAEC2; --rock:#6E7480; --rock-2:#4B505A;
+      --ok:#2F6B4F; --ok-bg:#E6EFE9; --warn:#8A5D16; --warn-bg:#F5ECD9;
+      --miss:#6E727A; --miss-bg:#EBEBE9; --shadow:none;
+    }
+    body { font-size: 10.5pt; }
+    .wrap { max-width: none; padding: 0; gap: 1.6rem; }
+    .reviewbox { display: none; }
+    .ask, .unk, .theme, .frank, .fig, details, figure { break-inside: avoid; }
+    details { border: 0; padding: 0; }
+    details > summary { list-style: none; }
+    details:not([open]) .inner { display: flex; }
+  }
+</style>
+
+<!-- ==== 図で共有する定義（グラデーション・フィルタ・パターン） ==== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#050A10"></stop>
+      <stop offset="55%"  stop-color="#0B131C"></stop>
+      <stop offset="100%" stop-color="#101A24"></stop>
+    </linearGradient>
+    <linearGradient id="gThermalBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0B0616"></stop>
+      <stop offset="100%" stop-color="#1A0E2A"></stop>
+    </linearGradient>
+    <linearGradient id="gThermalScale" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#0B0616"></stop>
+      <stop offset="22%"  stop-color="#3B1055"></stop>
+      <stop offset="45%"  stop-color="#8C1F5C"></stop>
+      <stop offset="66%"  stop-color="#D64B2C"></stop>
+      <stop offset="85%"  stop-color="#F59B2A"></stop>
+      <stop offset="100%" stop-color="#FFE9A8"></stop>
+    </linearGradient>
+    <linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#4B5F71"></stop>
+      <stop offset="35%"  stop-color="#7A93A6"></stop>
+      <stop offset="70%"  stop-color="#5A6E80"></stop>
+      <stop offset="100%" stop-color="#41525F"></stop>
+    </linearGradient>
+    <linearGradient id="gCool" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#241443"></stop>
+      <stop offset="45%"  stop-color="#4A1D63"></stop>
+      <stop offset="100%" stop-color="#2A1550"></stop>
+    </linearGradient>
+    <linearGradient id="gHot" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%"   stop-color="#B5342F"></stop>
+      <stop offset="60%"  stop-color="#F0801F"></stop>
+      <stop offset="100%" stop-color="#FFE6A0"></stop>
+    </linearGradient>
+    <linearGradient id="gSkyDay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="var(--sky-2)"></stop>
+      <stop offset="100%" stop-color="var(--sky)" stop-opacity=".35"></stop>
+    </linearGradient>
+    <linearGradient id="gRock" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="var(--rock)"></stop>
+      <stop offset="100%" stop-color="var(--rock-2)"></stop>
+    </linearGradient>
+    <linearGradient id="gSnow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#FFFFFF"></stop>
+      <stop offset="100%" stop-color="var(--sky)"></stop>
+    </linearGradient>
+    <linearGradient id="gBarNoise" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="var(--unk)" stop-opacity=".95"></stop>
+      <stop offset="100%" stop-color="var(--unk)" stop-opacity=".55"></stop>
+    </linearGradient>
+    <linearGradient id="gBarNoiseH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="var(--unk)" stop-opacity=".9"></stop>
+      <stop offset="100%" stop-color="var(--unk)" stop-opacity=".5"></stop>
+    </linearGradient>
+    <linearGradient id="gBarSignal" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%"   stop-color="var(--accent)"></stop>
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity=".7"></stop>
+    </linearGradient>
+    <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#FFC46B" stop-opacity=".85"></stop>
+      <stop offset="100%" stop-color="#FFC46B" stop-opacity="0"></stop>
+    </radialGradient>
+    <filter id="fBlur6" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6"></feGaussianBlur>
+    </filter>
+    <filter id="fBlur2" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.2"></feGaussianBlur>
+    </filter>
+    <filter id="fSoft" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity=".22"></feDropShadow>
+    </filter>
+    <pattern id="pHatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="var(--unk)" stroke-width="2.4" opacity=".28"></line>
+    </pattern>
+    <pattern id="pSnowGrain" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r=".7" fill="var(--sky-2)" opacity=".55"></circle>
+      <circle cx="4.5" cy="4" r=".55" fill="var(--sky-2)" opacity=".4"></circle>
+    </pattern>
+    <pattern id="pScan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="4" height="2" fill="#000000" opacity=".16"></rect>
+    </pattern>
+    <pattern id="pPix" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M10 0 L0 0 L0 10" fill="none" stroke="#FFFFFF" stroke-width=".6" opacity=".28"></path>
+    </pattern>
+
+    <!-- ==== 図2で2回描く同一のプラント（配色だけCSS変数で切り替える） ==== -->
+    <g id="scene2">
+      <!-- 空の要素 -->
+      <g opacity="var(--o-star,0)" fill="#DCE6F0">
+        <circle cx="228" cy="36" r="1"></circle><circle cx="292" cy="26" r=".9"></circle>
+        <circle cx="330" cy="48" r="1.1"></circle><circle cx="264" cy="60" r=".8"></circle>
+        <circle cx="196" cy="20" r=".8"></circle>
+      </g>
+      <g opacity="var(--o-cloud,0)" filter="url(#fBlur2)">
+        <ellipse cx="86" cy="42" rx="46" ry="16" fill="#5C6E80"></ellipse>
+        <ellipse cx="118" cy="32" rx="32" ry="13" fill="#6B7E90"></ellipse>
+        <ellipse cx="58" cy="34" rx="26" ry="11" fill="#54677A"></ellipse>
+      </g>
+
+      <!-- 地面 -->
+      <rect x="0" y="216" width="404" height="24" fill="var(--c-ground,#0C161F)"></rect>
+
+      <!-- ============ ユニットA ============ -->
+      <g transform="translate(24,0)">
+        <!-- 架構 -->
+        <g fill="var(--c-frame,#22303C)">
+          <rect x="2" y="104" width="3" height="112"></rect>
+          <rect x="64" y="104" width="3" height="112"></rect>
+          <rect x="126" y="104" width="3" height="112"></rect>
+          <rect x="2" y="104" width="127" height="3"></rect>
+          <rect x="2" y="140" width="127" height="3"></rect>
+          <rect x="2" y="176" width="127" height="3"></rect>
+        </g>
+        <g stroke="var(--c-frame,#22303C)" stroke-width="1.6" opacity=".85">
+          <line x1="5" y1="176" x2="63" y2="141"></line>
+          <line x1="67" y1="176" x2="125" y2="141"></line>
+          <line x1="5" y1="140" x2="63" y2="105"></line>
+        </g>
+        <!-- 蒸留塔（保温外装つき） -->
+        <rect x="16" y="48" width="26" height="168" fill="var(--c-steel,#2C3D4B)"></rect>
+        <rect x="16" y="48" width="7" height="168" fill="var(--c-steel-2,#1B2733)" opacity=".55"></rect>
+        <ellipse cx="29" cy="48" rx="13" ry="6" fill="var(--c-steel,#2C3D4B)"></ellipse>
+        <g fill="var(--c-steel-2,#1B2733)" opacity=".75">
+          <rect x="16" y="70" width="26" height="2"></rect><rect x="16" y="92" width="26" height="2"></rect>
+          <rect x="16" y="114" width="26" height="2"></rect><rect x="16" y="136" width="26" height="2"></rect>
+          <rect x="16" y="158" width="26" height="2"></rect><rect x="16" y="180" width="26" height="2"></rect>
+        </g>
+        <rect x="10" y="88" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
+        <rect x="10" y="132" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
+        <!-- ラダー -->
+        <g stroke="var(--c-frame,#22303C)" stroke-width="1.1">
+          <line x1="45" y1="56" x2="45" y2="210"></line><line x1="50" y1="56" x2="50" y2="210"></line>
+          <line x1="45" y1="64" x2="50" y2="64"></line><line x1="45" y1="80" x2="50" y2="80"></line>
+          <line x1="45" y1="96" x2="50" y2="96"></line><line x1="45" y1="112" x2="50" y2="112"></line>
+          <line x1="45" y1="128" x2="50" y2="128"></line><line x1="45" y1="144" x2="50" y2="144"></line>
+          <line x1="45" y1="160" x2="50" y2="160"></line><line x1="45" y1="176" x2="50" y2="176"></line>
+          <line x1="45" y1="192" x2="50" y2="192"></line>
+        </g>
+        <!-- 加熱炉と煙道 -->
+        <rect x="70" y="150" width="52" height="66" rx="2" fill="var(--c-hotpart,#26343F)"></rect>
+        <rect x="70" y="150" width="52" height="8" fill="var(--c-steel-2,#1B2733)" opacity=".4"></rect>
+        <rect x="110" y="104" width="9" height="48" fill="var(--c-stack,#2C3D4B)"></rect>
+        <!-- 横置きドラム -->
+        <rect x="70" y="112" width="46" height="22" rx="11" fill="var(--c-steel,#2C3D4B)"></rect>
+        <ellipse cx="70" cy="123" rx="4.5" ry="11" fill="var(--c-steel-2,#1B2733)" opacity=".6"></ellipse>
+        <g fill="var(--c-frame,#22303C)">
+          <path d="M78 134 L86 134 L84 142 L80 142 Z"></path>
+          <path d="M102 134 L110 134 L108 142 L104 142 Z"></path>
+        </g>
+      </g>
+
+      <!-- ============ ユニットB（同一設計） ============ -->
+      <g transform="translate(178,0)">
+        <g fill="var(--c-frame,#22303C)">
+          <rect x="2" y="104" width="3" height="112"></rect>
+          <rect x="64" y="104" width="3" height="112"></rect>
+          <rect x="126" y="104" width="3" height="112"></rect>
+          <rect x="2" y="104" width="127" height="3"></rect>
+          <rect x="2" y="140" width="127" height="3"></rect>
+          <rect x="2" y="176" width="127" height="3"></rect>
+        </g>
+        <g stroke="var(--c-frame,#22303C)" stroke-width="1.6" opacity=".85">
+          <line x1="5" y1="176" x2="63" y2="141"></line>
+          <line x1="67" y1="176" x2="125" y2="141"></line>
+          <line x1="5" y1="140" x2="63" y2="105"></line>
+        </g>
+        <rect x="16" y="48" width="26" height="168" fill="var(--c-steel,#2C3D4B)"></rect>
+        <rect x="16" y="48" width="7" height="168" fill="var(--c-steel-2,#1B2733)" opacity=".55"></rect>
+        <ellipse cx="29" cy="48" rx="13" ry="6" fill="var(--c-steel,#2C3D4B)"></ellipse>
+        <g fill="var(--c-steel-2,#1B2733)" opacity=".75">
+          <rect x="16" y="70" width="26" height="2"></rect><rect x="16" y="92" width="26" height="2"></rect>
+          <rect x="16" y="114" width="26" height="2"></rect><rect x="16" y="136" width="26" height="2"></rect>
+          <rect x="16" y="158" width="26" height="2"></rect><rect x="16" y="180" width="26" height="2"></rect>
+        </g>
+        <rect x="10" y="88" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
+        <rect x="10" y="132" width="38" height="3" fill="var(--c-frame,#22303C)"></rect>
+        <g stroke="var(--c-frame,#22303C)" stroke-width="1.1">
+          <line x1="45" y1="56" x2="45" y2="210"></line><line x1="50" y1="56" x2="50" y2="210"></line>
+          <line x1="45" y1="64" x2="50" y2="64"></line><line x1="45" y1="80" x2="50" y2="80"></line>
+          <line x1="45" y1="96" x2="50" y2="96"></line><line x1="45" y1="112" x2="50" y2="112"></line>
+          <line x1="45" y1="128" x2="50" y2="128"></line><line x1="45" y1="144" x2="50" y2="144"></line>
+          <line x1="45" y1="160" x2="50" y2="160"></line><line x1="45" y1="176" x2="50" y2="176"></line>
+          <line x1="45" y1="192" x2="50" y2="192"></line>
+        </g>
+        <rect x="70" y="150" width="52" height="66" rx="2" fill="var(--c-hotpart,#26343F)"></rect>
+        <rect x="70" y="150" width="52" height="8" fill="var(--c-steel-2,#1B2733)" opacity=".4"></rect>
+        <rect x="110" y="104" width="9" height="48" fill="var(--c-stack,#2C3D4B)"></rect>
+        <rect x="70" y="112" width="46" height="22" rx="11" fill="var(--c-steel,#2C3D4B)"></rect>
+        <ellipse cx="70" cy="123" rx="4.5" ry="11" fill="var(--c-steel-2,#1B2733)" opacity=".6"></ellipse>
+        <g fill="var(--c-frame,#22303C)">
+          <path d="M78 134 L86 134 L84 142 L80 142 Z"></path>
+          <path d="M102 134 L110 134 L108 142 L104 142 Z"></path>
+        </g>
+      </g>
+
+      <!-- 構内を貫く高温配管 -->
+      <g fill="var(--c-pipe,#2A3A47)">
+        <rect x="10" y="164" width="380" height="5"></rect>
+        <rect x="10" y="172" width="380" height="4"></rect>
+      </g>
+      <!-- 立ち上がり（ユニットAから架構上段へ） -->
+      <path d="M96 164 L96 108 L146 108" fill="none" stroke="var(--c-pipe,#2A3A47)" stroke-width="4"></path>
+
+      <!-- 浮屋根タンク -->
+      <rect x="326" y="150" width="70" height="66" fill="var(--c-tank,#22303C)"></rect>
+      <ellipse cx="361" cy="150" rx="35" ry="8" fill="var(--c-tank,#22303C)"></ellipse>
+      <ellipse cx="361" cy="150" rx="26" ry="5.5" fill="var(--c-steel-2,#1B2733)" opacity=".5"></ellipse>
+      <rect x="326" y="176" width="70" height="2" fill="var(--c-steel-2,#1B2733)" opacity=".6"></rect>
+      <path d="M326 210 L361 158" fill="none" stroke="var(--c-frame,#22303C)" stroke-width="1.4"></path>
+
+      <!-- 保安灯（可視のみ） -->
+      <g opacity="var(--o-light,0)" fill="#FFD9A0">
+        <circle cx="53" cy="60" r="1.5"></circle><circle cx="207" cy="60" r="1.5"></circle>
+        <circle cx="361" cy="156" r="1.5"></circle><circle cx="118" cy="118" r="1.3"></circle>
+        <circle cx="272" cy="118" r="1.3"></circle><circle cx="90" cy="180" r="1.2"></circle>
+      </g>
+
+      <!-- 劣化パッチ（熱赤外のみ） -->
+      <g opacity="var(--o-hot,0)">
+        <ellipse cx="207" cy="120" rx="46" ry="40" fill="#F0801F" opacity=".22" filter="url(#fBlur6)"></ellipse>
+        <ellipse cx="207" cy="120" rx="24" ry="26" fill="#F59B2A" opacity=".55" filter="url(#fBlur2)"></ellipse>
+        <path d="M196 96 q16 4 14 20 q-2 18 -12 28 q-10 -14 -8 -26 q1 -14 6 -22 Z" fill="#FFE9A8" opacity=".9"></path>
+      </g>
+    </g>
+
+    <!-- ==== 図1・図6で共有する火山（座標は図6の標高軸に合わせてある） ==== -->
+    <g id="volcano">
+      <path d="M96 232 L182 190 L246 214 L318 176 L396 210 L470 182 L560 216 L654 190 L654 296 L96 296 Z"
+            fill="var(--rock)" opacity=".3"></path>
+      <path d="M120 296 L338 74 L378 96 L420 62 L634 296 Z" fill="url(#gRock)"></path>
+      <path d="M420 62 L634 296 L512 296 Z" fill="var(--rock-2)" opacity=".5"></path>
+      <g stroke="var(--rock-2)" stroke-width="2" fill="none" opacity=".45">
+        <path d="M352 108 q-24 60 -58 96 q-26 34 -38 82"></path>
+        <path d="M404 106 q16 66 44 104 q22 30 30 76"></path>
+        <path d="M376 118 q-4 70 -6 108"></path>
+      </g>
+      <path d="M300 118 L338 74 L378 96 L420 62 L468 128 q-30 12 -58 2 q-34 -12 -62 6 q-28 14 -48 -20 Z"
+            fill="url(#gSnow)"></path>
+      <path d="M300 118 L338 74 L378 96 L420 62 L468 128 q-30 12 -58 2 q-34 -12 -62 6 q-28 14 -48 -20 Z"
+            fill="url(#pSnowGrain)"></path>
+      <g fill="#FFFFFF" opacity=".45" filter="url(#fBlur2)">
+        <ellipse cx="404" cy="52" rx="15" ry="7"></ellipse>
+        <ellipse cx="418" cy="36" rx="11" ry="6"></ellipse>
+      </g>
+    </g>
+
+    <!-- ==== 図をまたいで使う記号（24×24。線はcurrentColor） ==== -->
+    <g id="gMoonCloud" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M16 4.5 a5 5 0 1 0 4 6.4"></path>
+      <path d="M4 19 h13 a3.4 3.4 0 0 0 .3 -6.8 a5 5 0 0 0 -9.5 -1.4 A3.6 3.6 0 0 0 4 19 Z" stroke-linejoin="round"></path>
+    </g>
+    <g id="gClad" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="5" width="9" height="14" rx="1"></rect>
+      <rect x="12" y="5" width="9" height="14" rx="1"></rect>
+      <circle cx="7.5" cy="8.5" r=".9" fill="currentColor" stroke="none"></circle>
+      <circle cx="7.5" cy="15.5" r=".9" fill="currentColor" stroke="none"></circle>
+      <circle cx="16.5" cy="8.5" r=".9" fill="currentColor" stroke="none"></circle>
+      <circle cx="16.5" cy="15.5" r=".9" fill="currentColor" stroke="none"></circle>
+    </g>
+    <g id="gPixShift" fill="none" stroke="currentColor" stroke-width="1.4">
+      <rect x="3" y="3" width="14" height="14"></rect>
+      <line x1="10" y1="3" x2="10" y2="17"></line><line x1="3" y1="10" x2="17" y2="10"></line>
+      <rect x="8" y="8" width="13" height="13" stroke-dasharray="3 2.4" opacity=".85"></rect>
+    </g>
+    <g id="gChip" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="6" y="6" width="12" height="12" rx="1.5"></rect>
+      <rect x="10" y="10" width="4" height="4" fill="currentColor" stroke="none"></rect>
+      <g stroke-width="1.3">
+        <line x1="6" y1="9" x2="2.5" y2="9"></line><line x1="6" y1="15" x2="2.5" y2="15"></line>
+        <line x1="18" y1="9" x2="21.5" y2="9"></line><line x1="18" y1="15" x2="21.5" y2="15"></line>
+        <line x1="9" y1="6" x2="9" y2="2.5"></line><line x1="15" y1="6" x2="15" y2="2.5"></line>
+        <line x1="9" y1="18" x2="9" y2="21.5"></line><line x1="15" y1="18" x2="15" y2="21.5"></line>
+      </g>
+    </g>
+    <g id="gHot">
+      <ellipse cx="12" cy="12" rx="10" ry="7" fill="#F0801F" opacity=".3"></ellipse>
+      <ellipse cx="12" cy="12" rx="6" ry="4.2" fill="#F59B2A" opacity=".7"></ellipse>
+      <ellipse cx="12" cy="12" rx="2.6" ry="1.9" fill="#FFE9A8"></ellipse>
+    </g>
+    <g id="gTower1" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="9" y="4" width="7" height="17" rx="1.5"></rect>
+      <line x1="9" y1="9" x2="16" y2="9"></line><line x1="9" y1="14" x2="16" y2="14"></line>
+      <line x1="4" y1="21" x2="21" y2="21"></line>
+    </g>
+    <g id="gTower2" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="6" width="7" height="15" rx="1.5"></rect>
+      <rect x="14" y="6" width="7" height="15" rx="1.5"></rect>
+      <line x1="10" y1="12" x2="14" y2="12" stroke-dasharray="2 1.6"></line>
+    </g>
+    <g id="gTower2T" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="2" y="4" width="6" height="13" rx="1.4"></rect>
+      <rect x="11" y="4" width="6" height="13" rx="1.4"></rect>
+      <g stroke-width="1.3"><line x1="2" y1="21" x2="17" y2="21"></line></g>
+      <g fill="currentColor" stroke="none">
+        <circle cx="19" cy="21" r="1.1"></circle><circle cx="22" cy="21" r="1.1"></circle>
+      </g>
+    </g>
+    <g id="gSat">
+      <rect x="9" y="8" width="10" height="7" rx="1" fill="currentColor"></rect>
+      <rect x="2" y="9.5" width="6" height="4" fill="currentColor" opacity=".55"></rect>
+      <rect x="20" y="9.5" width="6" height="4" fill="currentColor" opacity=".55"></rect>
+    </g>
+    <g id="gStationS" fill="none" stroke="currentColor" stroke-width="1.6">
+      <line x1="12" y1="21" x2="12" y2="8"></line>
+      <line x1="6" y1="8" x2="18" y2="8"></line>
+      <circle cx="12" cy="4.5" r="2.2" fill="currentColor"></circle>
+    </g>
+    <g id="gThermo" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 4 v10"></path>
+      <circle cx="12" cy="17.5" r="3.4"></circle>
+      <line x1="15" y1="7" x2="18" y2="7"></line><line x1="15" y1="11" x2="18" y2="11"></line>
+    </g>
+    <g id="gDocS" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M6 3 h8 l5 5 v13 h-13 Z"></path>
+      <path d="M14 3 v5 h5"></path>
+      <line x1="9" y1="13" x2="16" y2="13"></line><line x1="9" y1="17" x2="14" y2="17"></line>
+    </g>
+    <g id="gGearS" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="4"></circle>
+      <g stroke-width="1.4">
+        <line x1="12" y1="3" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="21"></line>
+        <line x1="3" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="21" y2="12"></line>
+        <line x1="5.6" y1="5.6" x2="7.8" y2="7.8"></line><line x1="16.2" y1="16.2" x2="18.4" y2="18.4"></line>
+        <line x1="18.4" y1="5.6" x2="16.2" y2="7.8"></line><line x1="7.8" y1="16.2" x2="5.6" y2="18.4"></line>
+      </g>
+    </g>
+    <pattern id="pSnowScene" width="11" height="11" patternUnits="userSpaceOnUse">
+      <path d="M0 8 q3 -3 5 0 q2 3 6 1" fill="none" stroke="#8FA6B8" stroke-width="1" opacity=".7"></path>
+      <circle cx="8" cy="3" r=".9" fill="#8FA6B8" opacity=".5"></circle>
+    </pattern>
+    <pattern id="pBareScene" width="11" height="11" patternUnits="userSpaceOnUse">
+      <path d="M1 3 q3 2 6 0" fill="none" stroke="#8E96A0" stroke-width="1" opacity=".55"></path>
+      <path d="M2 8 q4 -2 8 1" fill="none" stroke="#4E545C" stroke-width="1" opacity=".5"></path>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">NEDO Challenge, Satellite Data ／ ご説明資料</p>
+    <h1>検討中の2テーマと、いま残っている不確定項</h1>
+    <p class="lede">
+      株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストへ2件の応募を準備しています。いずれも衛星から見た熱・雪の計算で、
+      物理と統計の骨格は自前の計算で確認済みです。実際の衛星データでも、<strong>テーマ①は代用データ（実Landsat 30 m・昼間）14シーンで「気象の共通モードが引き算で落ちる」ところまで（図5）、テーマ②は実Landsat／Sentinel-2で成果物そのものを9年分（図8）</strong>出していますが、
+      <strong>残っている不確定項の多くが「気象」に属しています</strong>。
+      本日は、何を見ようとしているか・どこが未確定か・そのうちどこを貴協会の知見でお願いしたいかを、
+      この順でご説明します。
+    </p>
+    <p class="meta">
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月12日 第7版<br>
+      位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
+    </p>
+    <div class="toolbar" style="margin-top:1rem">
+      <button type="button" id="btnDetails" aria-pressed="false">数値一覧をすべて開く</button>
+      <span class="hint">図をクリックすると拡大表示になります（Esc で戻ります）。スライダーとボタンは実測点だけを切り替えます。</span>
+    </div>
+  </header>
+
+  <hr class="hr">
+
+  <!-- ============ 全体像 ============ -->
+  <section>
+    <h2>全体像 — 2件とも「地上に観測点が無いものを、衛星で測る」提案です</h2>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図1　対象も顧客も別。共通するのは、残った不確定項が気象に属していること</p>
+        <svg viewBox="0 0 860 368" role="img" aria-label="2テーマの全体像。左は夜間のコンビナートを熱赤外で見る提案、右は融雪期の火山の積雪を光学衛星で見る提案。">
+          <!-- ============ 左: プラント ============ -->
+          <clipPath id="clipL"><rect x="14" y="14" width="404" height="212" rx="4"></rect></clipPath>
+          <g clip-path="url(#clipL)">
+            <rect x="14" y="14" width="404" height="212" fill="url(#gNight)"></rect>
+            <!-- 図2と同じプラントを縮小して置く（同一の図形を使い回している） -->
+            <use href="#scene2" transform="translate(56,30) scale(0.80)"
+                 style="--c-frame:#5A6E80; --c-steel:#7A93A6; --c-steel-2:#3E4E5D; --c-hotpart:#63798C;
+                        --c-stack:#7A93A6; --c-pipe:#6B8195; --c-tank:#647A8D; --c-ground:#080F16;
+                        --o-light:1; --o-hot:0; --o-cloud:0; --o-star:.5;"></use>
+            <!-- 衛星と視線 -->
+            <path d="M368 40 L306 200 L406 200 Z" fill="#8FB6D8" opacity=".07"></path>
+            <g transform="translate(368,40)">
+              <rect x="-12" y="-7" width="24" height="14" rx="2" fill="#93A6B6"></rect>
+              <rect x="-30" y="-4.5" width="15" height="9" fill="#3E6D96"></rect>
+              <rect x="15" y="-4.5" width="15" height="9" fill="#3E6D96"></rect>
+            </g>
+          </g>
+          <rect x="14" y="14" width="404" height="212" rx="4" fill="none" stroke="var(--rule)"></rect>
+          <text class="s-onDark" x="30" y="40" font-weight="600" font-size="15">テーマ①　プラントの保温劣化</text>
+          <text class="s-onDark-x" x="30" y="58">夜間・中波長赤外・3.5 m級</text>
+
+          <!-- ============ 右: 火山 ============ -->
+          <clipPath id="clipR"><rect x="442" y="14" width="404" height="212" rx="4"></rect></clipPath>
+          <g clip-path="url(#clipR)">
+            <rect x="442" y="14" width="404" height="212" fill="url(#gSkyDay)"></rect>
+            <g transform="translate(442,14) scale(0.66) translate(-100,-30)">
+              <use href="#volcano"></use>
+              <!-- 泥流の経路 -->
+              <path d="M404 132 q-22 62 -56 94 q-30 28 -42 64" stroke="var(--rock-2)" stroke-width="6" fill="none" opacity=".5"></path>
+            </g>
+            <!-- 衛星 -->
+            <g transform="translate(792,50)">
+              <rect x="-12" y="-7" width="24" height="14" rx="2" fill="var(--ink-2)"></rect>
+              <rect x="-30" y="-4.5" width="15" height="9" fill="var(--sky-2)"></rect>
+              <rect x="15" y="-4.5" width="15" height="9" fill="var(--sky-2)"></rect>
+            </g>
+            <line x1="778" y1="62" x2="700" y2="96" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <path d="M706 90 L696 98 L708 101 Z" fill="var(--accent)"></path>
+          </g>
+          <rect x="442" y="14" width="404" height="212" rx="4" fill="none" stroke="var(--rule)"></rect>
+          <text class="s-hd" x="458" y="40">テーマ②　火山周辺の積雪</text>
+          <text class="s-xs" x="458" y="58">融雪期・光学・30 m級</text>
+
+          <!-- 出す答え -->
+          <text class="s-sm" x="14" y="252">出す答え: <tspan font-weight="600" fill="currentColor">どの設備を先に点検すべきか</tspan>　／　顧客: プラントの保全部門</text>
+          <text class="s-sm" x="442" y="252">出す答え: <tspan font-weight="600" fill="currentColor">何年に一度、どれだけ積もるか</tspan>　／　顧客: 国土交通省 砂防事務所</text>
+
+          <!-- 共通の帯 -->
+          <rect x="14" y="272" width="832" height="82" rx="4" fill="var(--accent-bg)" stroke="var(--accent)" stroke-dasharray="5 4"></rect>
+          <text class="s-lbl s-acc" x="34" y="300" font-weight="600">どちらも「地上に観測点が無い場所」を扱っています。</text>
+          <text class="s-sm s-acc" x="34" y="322">テーマ①は外から見えないので点検記録が存在せず、テーマ②は火口付近に観測所が1つもありません。</text>
+          <text class="s-sm s-acc" x="34" y="342">そして残った不確定項は、画像処理ではなく気象の側にあります。</text>
+        </svg>
+        <figcaption>
+          いずれも「既にある測定値を置き換える」提案ではなく、<strong>測る手段がなかったものを測る</strong>提案です。
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="body">
+      <div class="legend">
+        <span><span class="flag f-ok">確定</span> 一次資料の原文、または再現できる自前計算で確認済み</span>
+        <span><span class="flag f-warn">仮定</span> 幅で置いている。1点に決め打ちしていない</span>
+        <span><span class="flag f-miss">未取得</span> まだ根拠がない</span>
+      </div>
+      <p style="font-size:.92rem;color:var(--ink-2)">
+        以降の数値にはすべてこのラベルを付けています。自前計算はすべて乱数シードを固定してあり、同じ入力から同じ値が再現します。
+      </p>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ テーマ① ============ -->
+  <section>
+    <p class="eyebrow">テーマ① — インフラマネジメント及び都市活動</p>
+    <h2>高分解能熱赤外による、プラント保温システムの劣化監視</h2>
+
+    <div class="theme">
+      <p class="tag">やろうとしていること</p>
+      <p>
+        製油所・発電所・清掃工場などの高温設備（加熱炉・高温配管・タンク・ユニット）は、
+        保温材が傷むとそこから熱が逃げ、<strong>表面温度が周りより少しだけ高くなります</strong>。
+        これを夜間の中波長赤外（3.5m級）で外から面的に拾い、<strong>「次にどの設備を開けて点検すべきか」</strong>を返す提案です。
+      </p>
+      <p>
+        現在の保全は、足場を組んで人が近接で調べるか、決められた周期で開けるかのどちらかです。
+        衛星が置き換えるのは<strong>「どこを見に行くかを決める工程」</strong>で、確認そのものは地上手段に残します。
+      </p>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図2　同じ夜のコンビナートを、可視と熱赤外で見る — つまみを動かすと切り替わります</p>
+        <div class="wipewrap">
+          <svg viewBox="0 0 860 470" role="img" aria-label="夜間のコンビナート。左半分は可視像で判別できず、右半分は熱赤外像で高温配管と保温劣化部が光る。境界のつまみを左右に動かすと切り替わる。">
+            <clipPath id="clipWipe"><rect x="86" y="34" width="687" height="408" rx="4"></rect></clipPath>
+            <g clip-path="url(#clipWipe)">
+              <!-- 可視（下地） -->
+              <rect x="86" y="34" width="687" height="408" fill="url(#gNight)"></rect>
+              <use href="#scene2" transform="translate(86,34) scale(1.7)"
+                   style="--c-frame:#5A6E80; --c-steel:#7A93A6; --c-steel-2:#3E4E5D; --c-hotpart:#63798C;
+                          --c-stack:#7A93A6; --c-pipe:#6B8195; --c-tank:#647A8D; --c-ground:#080F16;
+                          --o-light:1; --o-hot:0; --o-cloud:.55; --o-star:.5;"></use>
+
+              <!-- 熱赤外（上に重ね、つまみより右だけ見せる） -->
+              <clipPath id="clipThermal"><rect id="wipeRect" x="430" y="34" width="343" height="408"></rect></clipPath>
+              <g clip-path="url(#clipThermal)">
+                <rect x="86" y="34" width="687" height="408" fill="url(#gThermalBg)"></rect>
+                <use href="#scene2" transform="translate(86,34) scale(1.7)"
+                     style="--c-frame:#2A1250; --c-steel:#4E1A66; --c-steel-2:#1E0B33; --c-hotpart:#E8721F;
+                            --c-stack:#FFE9A8; --c-pipe:#C63B3A; --c-tank:#12081F; --c-ground:#241443;
+                            --o-light:0; --o-hot:1; --o-cloud:0; --o-star:0;"></use>
+                <rect x="348" y="163" width="204" height="187" fill="url(#pPix)" opacity=".45"></rect>
+                <rect x="86" y="34" width="687" height="408" fill="url(#pScan)"></rect>
+              </g>
+            </g>
+            <rect x="86" y="34" width="687" height="408" rx="4" fill="none" stroke="var(--rule)"></rect>
+
+            <!-- ラベル -->
+            <text class="s-sm" x="86" y="26">可視（夜間）</text>
+            <text class="s-sm" x="773" y="26" text-anchor="end">熱赤外（中波長 3.7–4.95 µm・3.5 m級・夜間）</text>
+            <text class="s-onDark-x" id="wipeCapV" x="102" y="430">可視では、どのユニットが傷んでいるか分からない</text>
+            <text class="s-onDark" id="wipeCapT" x="757" y="430" fill="#FFD9A0" text-anchor="end">熱で見ると、劣化部だけが浮かぶ</text>
+
+            <!-- 境界とつまみ -->
+            <g id="wipeHandle" transform="translate(430,0)" style="cursor:ew-resize">
+              <line x1="0" y1="34" x2="0" y2="442" stroke="#FFE9A8" stroke-width="2"></line>
+              <circle cx="0" cy="238" r="17" fill="#1B1E24" stroke="#FFE9A8" stroke-width="2"></circle>
+              <path d="M-8 238 L-3 233 M-8 238 L-3 243 M8 238 L3 233 M8 238 L3 243"
+                    stroke="#FFE9A8" stroke-width="2" fill="none" stroke-linecap="round"></path>
+              <rect x="-22" y="34" width="44" height="408" fill="transparent"></rect>
+            </g>
+
+            <!-- 不確定項バッジ -->
+            <g>
+              <circle cx="140" cy="70" r="15" fill="var(--accent)"></circle>
+              <text class="s-lbl" x="140" y="75" text-anchor="middle" fill="#FFF" font-size="13">U3</text>
+              <circle cx="718" cy="70" r="15" fill="var(--accent)"></circle>
+              <text class="s-lbl" x="718" y="75" text-anchor="middle" fill="#FFF" font-size="13">U2</text>
+              <circle cx="430" cy="392" r="15" fill="var(--accent)"></circle>
+              <text class="s-lbl" x="430" y="397" text-anchor="middle" fill="#FFF" font-size="13">U1</text>
+            </g>
+
+            <!-- カラーバー -->
+            <rect x="609" y="452" width="164" height="10" rx="2" fill="url(#gThermalScale)"></rect>
+            <text class="s-xs" x="609" y="470">低温</text>
+            <text class="s-xs" x="773" y="470" text-anchor="end">高温</text>
+            <text class="s-xs" x="86" y="470">1画素 3.5 m ／ 熱赤外像は模式です（実際の画像ではありません）</text>
+          </svg>
+          <label class="wipectl">
+            <span>可視</span>
+            <input id="wipeRange" type="range" min="0" max="100" value="50" step="1"
+                   aria-label="可視と熱赤外の境界">
+            <span>熱赤外</span>
+          </label>
+        </div>
+
+        <div class="unklegend">
+          <span><b>U1</b> 2基の劣化速度は本当に同じか</span>
+          <span><b>U2</b> 晴天夜と曇天夜で見かけの温度が 8.6〜10.2 K 違う</span>
+          <span><b>U3</b> 雲があると撮れない ＝ 年に何回撮れるか</span>
+          <span><b>U5</b> 検証させてくれる現場（設備台帳・保全履歴・外装の張替え記録）</span>
+        </div>
+
+        <figcaption>
+          <strong>1枚の同じ設備です。</strong>左のユニット2基は同じ設計・同じ建設年で、外から見て区別がつきません。
+          熱で見ると右のユニットにだけ高温部が出ますが、その差は <strong>+1 K 程度</strong>で、次の図のとおり気象の振れに埋もれます。
+          赤い番号が、貴協会のお力を借りたい箇所です。
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図3　なぜ1回の撮像では見えないのか — 探す信号より、気象の振れのほうが16倍大きい</p>
+        <svg viewBox="0 0 860 294" role="img" aria-label="縦棒グラフ。天空条件の振れ8.57K、放射率の違い2.67K、位置合わせ2.0K、センサ雑音1.89Kに対し、探している信号は0.53K。">
+          <line x1="70" y1="196" x2="820" y2="196" stroke="currentColor" stroke-width="1" opacity=".4"></line>
+          <g class="s-xs s-num" text-anchor="end">
+            <text x="60" y="200">0</text>
+            <text x="60" y="125">5 K</text>
+            <text x="60" y="50">10 K</text>
+          </g>
+          <g stroke="currentColor" stroke-width="1" opacity=".13">
+            <line x1="70" y1="121" x2="820" y2="121"></line>
+            <line x1="70" y1="46" x2="820" y2="46"></line>
+          </g>
+
+          <g filter="url(#fSoft)">
+            <rect x="110" y="67" width="96" height="129" fill="url(#gBarNoise)"></rect>
+            <rect x="250" y="156" width="96" height="40" fill="url(#gBarNoise)"></rect>
+            <rect x="390" y="166" width="96" height="30" fill="url(#gBarNoise)"></rect>
+            <rect x="530" y="168" width="96" height="28" fill="url(#gBarNoise)"></rect>
+            <rect x="700" y="188" width="96" height="8" fill="url(#gBarSignal)"></rect>
+          </g>
+          <!-- 雑音側のまとめ括弧 -->
+          <path d="M110 44 L110 36 L626 36 L626 44" fill="none" stroke="var(--unk)" stroke-width="1.2" opacity=".7"></path>
+          <text class="s-sm s-unk" x="368" y="30" text-anchor="middle">劣化していなくても動いてしまう量</text>
+
+          <g class="s-sm s-num" text-anchor="middle" fill="var(--ink-2)">
+            <text x="158" y="60">8.57 K</text>
+            <text x="298" y="149">2.67 K</text>
+            <text x="438" y="159">2.00 K</text>
+            <text x="578" y="161">1.89 K</text>
+          </g>
+          <text class="s-lbl s-acc s-num" x="748" y="181" text-anchor="middle" font-weight="600">0.53 K</text>
+
+          <g class="s-sm" text-anchor="middle" fill="var(--ink-2)">
+            <text x="158" y="218">晴天夜と曇天夜</text><text x="158" y="234">の振れ</text>
+            <text x="298" y="218">外装の放射率が</text><text x="298" y="234">0.05 違う</text>
+            <text x="438" y="218">画素の</text><text x="438" y="234">位置ずれ</text>
+            <text x="578" y="218">センサの</text><text x="578" y="234">雑音</text>
+          </g>
+          <g class="s-sm s-acc" text-anchor="middle" font-weight="600">
+            <text x="748" y="218">探している信号</text><text x="748" y="234">（保温劣化 +1 K）</text>
+          </g>
+          <g color="var(--unk-ink)">
+            <use href="#gMoonCloud" x="146" y="252" width="24" height="24"></use>
+            <use href="#gClad"      x="286" y="252" width="24" height="24"></use>
+            <use href="#gPixShift"  x="426" y="252" width="24" height="24"></use>
+            <use href="#gChip"      x="566" y="252" width="24" height="24"></use>
+          </g>
+          <g transform="translate(734,250) scale(1.2)"><use href="#gHot"></use></g>
+        </svg>
+        <figcaption>
+          <strong>最大の邪魔者は気象（晴天か曇天か）で、探している信号の16倍あります。</strong>
+          絶対温度をそのまま見る設計が成立しないのはこのためで、次の図の差分設計に進みます。
+          <span class="src">poc1_results.json（budget, signals）</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図4　差分を三段重ねると、雑音だけが落ちて信号が顔を出す</p>
+        <svg viewBox="0 0 860 276" role="img" aria-label="対数軸の横棒グラフ。そのまま比べると9.39K、同じ設備の中で2.99K、隣の同型設備と2.76K、その差の変化を6回追うと0.28K。信号0.53Kの破線を下回るのは最後だけ。">
+          <line x1="230" y1="212" x2="800" y2="212" stroke="currentColor" stroke-width="1" opacity=".35"></line>
+          <g class="s-xs s-num" text-anchor="middle">
+            <text x="230" y="230">0.1</text>
+            <text x="363" y="230">0.3</text>
+            <text x="508" y="230">1</text>
+            <text x="641" y="230">3</text>
+            <text x="786" y="230">10 K</text>
+          </g>
+          <g stroke="currentColor" stroke-width="1" opacity=".13">
+            <line x1="363" y1="46" x2="363" y2="212"></line>
+            <line x1="508" y1="46" x2="508" y2="212"></line>
+            <line x1="641" y1="46" x2="641" y2="212"></line>
+            <line x1="786" y1="46" x2="786" y2="212"></line>
+          </g>
+
+          <!-- 検出できる領域 -->
+          <rect x="230" y="46" width="201" height="166" fill="var(--accent)" opacity=".05"></rect>
+          <line x1="431" y1="40" x2="431" y2="212" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"></line>
+          <text class="s-sm s-num s-acc" x="436" y="36">信号 0.53 K ← これより左に来て初めて検出できる</text>
+
+          <g filter="url(#fSoft)">
+            <rect x="230" y="56" width="549" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
+            <rect x="230" y="96" width="410" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
+            <rect x="230" y="136" width="401" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
+            <rect x="230" y="176" width="124" height="22" rx="2" fill="url(#gBarSignal)" opacity=".85"></rect>
+          </g>
+          <g class="s-lbl" text-anchor="end">
+            <text x="222" y="72">そのまま比べる</text>
+            <text x="222" y="112">① 同じ設備の中で比べる</text>
+            <text x="222" y="152">② 隣の同型設備と比べる</text>
+            <text x="222" y="192">③ その差の変化を6回追う</text>
+          </g>
+          <g color="var(--unk-ink)">
+            <use href="#gMoonCloud" x="8" y="55"  width="24" height="24"></use>
+            <use href="#gTower1"    x="8" y="95"  width="24" height="24"></use>
+            <use href="#gTower2"    x="8" y="135" width="24" height="24"></use>
+            <use href="#gTower2T"   x="8" y="175" width="24" height="24"></use>
+          </g>
+          <g class="s-sm s-num">
+            <text x="787" y="72">9.39</text>
+            <text x="648" y="112">2.99</text>
+            <text x="639" y="152">2.76</text>
+            <text x="362" y="192" fill="var(--accent-ink)" font-weight="600">0.28</text>
+          </g>
+
+          <line x1="230" y1="248" x2="800" y2="248" stroke="var(--rule)"></line>
+          <text class="s-sm" x="230" y="268" fill="var(--ink-2)">①で設備固有の性質が消え、<tspan font-weight="600" fill="var(--accent-ink)">②で気象（空の状態・大気）が消え</tspan>、③でもともとあった個体差が消える</text>
+        </svg>
+        <figcaption>
+          横軸は対数です。<strong>②の一段が、この提案が気象に依存している理由そのものです</strong>——
+          隣り合う2基が同じ空の下にあるからこそ、8.57 Kの振れが両方に等しく乗って引き算で消えます。
+          <strong>この前提が崩れる距離を、我々は説明できていません（U-2）。</strong>
+          実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。
+          <span class="src">poc1_results.json（budget）／poc6_results.json（sibling_noise_vs_distance）</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図5　同じことを実データでやってみた — 実Landsat 14シーン（川崎臨海部・2023年1月〜2026年6月）</p>
+        <svg viewBox="0 0 860 288" role="img" aria-label="実Landsat 14シーンの資産輝度温度。そのままでは42.97Kばらつくが、市街地参照との差にすると12.53Kに落ちる。">
+        <rect x="58" y="30" width="318" height="196" fill="var(--surface-2)" opacity=".55"></rect>
+        <line x1="58" y1="195.8" x2="376" y2="195.8" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="52" y="199.8" text-anchor="end">280</text>
+        <line x1="58" y1="158.2" x2="376" y2="158.2" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="52" y="162.2" text-anchor="end">290</text>
+        <line x1="58" y1="120.5" x2="376" y2="120.5" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="52" y="124.5" text-anchor="end">300</text>
+        <line x1="58" y1="82.8" x2="376" y2="82.8" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="52" y="86.8" text-anchor="end">310</text>
+        <line x1="58" y1="45.1" x2="376" y2="45.1" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="52" y="49.1" text-anchor="end">320</text>
+        <text class="s-xs" x="52" y="22" text-anchor="end">K</text>
+        <line x1="149.8" y1="30" x2="149.8" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+        <text class="s-xs s-num" x="149.8" y="242" text-anchor="middle">2024</text>
+        <line x1="243.7" y1="30" x2="243.7" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+        <text class="s-xs s-num" x="243.7" y="242" text-anchor="middle">2025</text>
+        <line x1="337.3" y1="30" x2="337.3" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+        <text class="s-xs s-num" x="337.3" y="242" text-anchor="middle">2026</text>
+        <rect x="490" y="30" width="290" height="196" fill="var(--surface-2)" opacity=".55"></rect>
+        <line x1="490" y1="210.9" x2="780" y2="210.9" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="484" y="214.9" text-anchor="end">-9</text>
+        <line x1="490" y1="165.7" x2="780" y2="165.7" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="484" y="169.7" text-anchor="end">-6</text>
+        <line x1="490" y1="120.5" x2="780" y2="120.5" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="484" y="124.5" text-anchor="end">-3</text>
+        <line x1="490" y1="75.2" x2="780" y2="75.2" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="484" y="79.2" text-anchor="end">0</text>
+        <line x1="490" y1="30.0" x2="780" y2="30.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+        <text class="s-xs s-num" x="484" y="34.0" text-anchor="end">3</text>
+        <text class="s-xs" x="484" y="22" text-anchor="end">K</text>
+        <line x1="573.7" y1="30" x2="573.7" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+        <text class="s-xs s-num" x="573.7" y="242" text-anchor="middle">2024</text>
+        <line x1="659.3" y1="30" x2="659.3" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+        <text class="s-xs s-num" x="659.3" y="242" text-anchor="middle">2025</text>
+        <line x1="744.7" y1="30" x2="744.7" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+        <text class="s-xs s-num" x="744.7" y="242" text-anchor="middle">2026</text>
+        <path d="M58.0 173.9 L90.8 74.9 L109.3 44.4 L144.2 150.8 L172.9 94.0 L183.1 86.2 L213.9 67.3 L240.6 207.2 L265.2 98.2 L273.4 102.9 L306.2 44.2 L326.8 150.9 L341.1 157.7 L376.0 79.9" fill="none" stroke="var(--unk)" stroke-width="1.8" stroke-dasharray="5 3"></path>
+        <circle cx="58.0" cy="173.9" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="90.8" cy="74.9" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="109.3" cy="44.4" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="144.2" cy="150.8" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="172.9" cy="94.0" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="183.1" cy="86.2" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="213.9" cy="67.3" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="240.6" cy="207.2" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="265.2" cy="98.2" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="273.4" cy="102.9" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="306.2" cy="44.2" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="326.8" cy="150.9" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="341.1" cy="157.7" r="2.2" fill="var(--unk)"></circle>
+        <circle cx="376.0" cy="79.9" r="2.2" fill="var(--unk)"></circle>
+        <path d="M273.4 109.5 L306.2 48.9 L326.8 150.2" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>川崎火力(千鳥町)</title></path>
+        <circle cx="58.0" cy="170.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="109.3" cy="48.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="183.1" cy="93.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="273.4" cy="109.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="306.2" cy="48.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="326.8" cy="150.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M686.5 101.6 L716.4 93.9 L735.1 72.2" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>川崎火力(千鳥町)</title></path>
+        <circle cx="490.0" cy="60.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="536.8" cy="93.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="604.1" cy="103.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="686.5" cy="101.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="716.4" cy="93.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="735.1" cy="72.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M58.0 172.3 L90.8 93.9 L109.3 67.0 L144.2 155.0 M183.1 111.0 L213.9 69.8 L240.6 203.2 L265.2 125.2 L273.4 123.9 L306.2 67.5 L326.8 153.6 L341.1 162.9 L376.0 113.7" fill="none" stroke="var(--accent)" stroke-width="2.0" opacity="1" stroke-linejoin="round"><title>東扇島火力</title></path>
+        <circle cx="58.0" cy="172.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="90.8" cy="93.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="109.3" cy="67.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="144.2" cy="155.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="183.1" cy="111.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="213.9" cy="69.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="240.6" cy="203.2" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="265.2" cy="125.2" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="273.4" cy="123.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="306.2" cy="67.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="326.8" cy="153.6" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="341.1" cy="162.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="376.0" cy="113.7" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <path d="M490.0 68.6 L519.9 150.9 L536.8 165.5 L568.6 91.8 M604.1 174.3 L632.2 85.5 L656.5 58.9 L679.0 183.2 L686.5 159.1 L716.4 168.6 L735.1 85.8 L748.2 95.9 L780.0 210.3" fill="none" stroke="var(--accent)" stroke-width="2.0" opacity="1" stroke-linejoin="round"><title>東扇島火力</title></path>
+        <circle cx="490.0" cy="68.6" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="519.9" cy="150.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="536.8" cy="165.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="568.6" cy="91.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="604.1" cy="174.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="632.2" cy="85.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="656.5" cy="58.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="679.0" cy="183.2" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="686.5" cy="159.1" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="716.4" cy="168.6" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="735.1" cy="85.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="748.2" cy="95.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <circle cx="780.0" cy="210.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+        <path d="M273.4 116.8 L306.2 58.8 L326.8 154.7" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>浮島製油所地区</title></path>
+        <circle cx="58.0" cy="172.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="109.3" cy="59.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="183.1" cy="101.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="273.4" cy="116.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="306.2" cy="58.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="326.8" cy="154.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M686.5 130.7 L716.4 133.7 L735.1 90.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>浮島製油所地区</title></path>
+        <circle cx="490.0" cy="68.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="536.8" cy="133.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="604.1" cy="138.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="686.5" cy="130.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="716.4" cy="133.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="735.1" cy="90.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M273.4 103.8 L306.2 41.3 L326.8 148.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>水江町製油所地区</title></path>
+        <circle cx="58.0" cy="171.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="109.3" cy="41.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="183.1" cy="84.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="273.4" cy="103.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="306.2" cy="41.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="326.8" cy="148.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M686.5 78.8 L716.4 63.8 L735.1 65.4" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>水江町製油所地区</title></path>
+        <circle cx="490.0" cy="64.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="536.8" cy="62.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="604.1" cy="68.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="686.5" cy="78.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="716.4" cy="63.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="735.1" cy="65.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M58.0 169.5 L90.8 96.2 L109.3 59.7 L144.2 152.8 L172.9 116.1 L183.1 106.3 L213.9 69.3 L240.6 199.6 L265.2 117.5 L273.4 119.6 L306.2 63.2 L326.8 153.4 L341.1 159.7 L376.0 109.8" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>扇島製鉄所地区</title></path>
+        <circle cx="58.0" cy="169.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="90.8" cy="96.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="109.3" cy="59.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="144.2" cy="152.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="172.9" cy="116.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="183.1" cy="106.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="213.9" cy="69.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="240.6" cy="199.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="265.2" cy="117.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="273.4" cy="119.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="306.2" cy="63.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="326.8" cy="153.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="341.1" cy="159.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="376.0" cy="109.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M490.0 57.6 L519.9 160.3 L536.8 136.4 L568.6 82.9 L594.8 163.7 L604.1 155.4 L632.2 83.4 L656.5 44.6 L679.0 152.6 L686.5 141.9 L716.4 151.2 L735.1 85.0 L748.2 83.1 L780.0 194.6" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>扇島製鉄所地区</title></path>
+        <circle cx="490.0" cy="57.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="519.9" cy="160.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="536.8" cy="136.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="568.6" cy="82.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="594.8" cy="163.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="604.1" cy="155.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="632.2" cy="83.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="656.5" cy="44.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="679.0" cy="152.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="686.5" cy="141.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="716.4" cy="151.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="735.1" cy="85.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="748.2" cy="83.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="780.0" cy="194.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M58.0 173.0 L90.8 84.9 L109.3 55.7 L144.2 153.1 L172.9 108.5 L183.1 97.8 L213.9 60.9 L240.6 202.6 L265.2 114.3 L273.4 111.3 L306.2 54.7 L326.8 153.0 L341.1 162.0 L376.0 119.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>大黒町火力地区</title></path>
+        <circle cx="58.0" cy="173.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="90.8" cy="84.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="109.3" cy="55.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="144.2" cy="153.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="172.9" cy="108.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="183.1" cy="97.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="213.9" cy="60.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="240.6" cy="202.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="265.2" cy="114.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="273.4" cy="111.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="306.2" cy="54.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="326.8" cy="153.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="341.1" cy="162.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="376.0" cy="119.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M490.0 71.8 L519.9 115.0 L536.8 120.5 L568.6 84.1 L594.8 133.4 L604.1 121.5 L632.2 49.6 L656.5 56.8 L679.0 139.8 L686.5 108.7 L716.4 117.3 L735.1 83.7 L748.2 92.3 L780.0 233.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>大黒町火力地区</title></path>
+        <circle cx="490.0" cy="71.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="519.9" cy="115.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="536.8" cy="120.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="568.6" cy="84.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="594.8" cy="133.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="604.1" cy="121.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="632.2" cy="49.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="656.5" cy="56.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="679.0" cy="139.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="686.5" cy="108.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="716.4" cy="117.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="735.1" cy="83.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="748.2" cy="92.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <circle cx="780.0" cy="233.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+        <path d="M379 41.2 L384 41.2 L384 203.2 L379 203.2" fill="none" stroke="var(--accent)" stroke-width="1.4"></path>
+        <text class="s-sm s-num s-acc" x="390" y="45.2" font-weight="600">42.97 K</text>
+        <text class="s-xs" x="390" y="61.2" fill="var(--ink-3)">振れ幅</text>
+        <path d="M783 44.6 L788 44.6 L788 233.5 L783 233.5" fill="none" stroke="var(--accent)" stroke-width="1.4"></path>
+        <text class="s-sm s-num s-acc" x="794" y="48.6" font-weight="600">12.53 K</text>
+        <text class="s-xs" x="794" y="64.6" fill="var(--ink-3)">振れ幅</text>
+        <line x1="490" y1="75.2" x2="780" y2="75.2" stroke="currentColor" stroke-width="1" opacity=".45"></line>
+        <text class="s-hd" x="58" y="18">そのまま並べる（資産AOIの輝度温度）</text>
+        <text class="s-hd" x="490" y="18">市街地参照との差にする</text>
+        <text class="s-xs" x="433" y="150" text-anchor="middle" fill="var(--ink-3)">同じ空の<tspan x="433" dy="15">下にある</tspan><tspan x="433" dy="15">参照面を</tspan><tspan x="433" dy="15">引き算</tspan></text>
+        <path d="M407 214 L453 214" stroke="var(--accent)" stroke-width="1.4" opacity=".7"></path><path d="M447 209 L457 214 L447 219 Z" fill="var(--accent)" opacity=".7"></path>
+        <g transform="translate(58,258)"><line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line><text class="s-xs" x="28" y="0">東扇島火力</text><line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45"></line><text class="s-xs" x="148" y="0">他5地区</text><line x1="230" y1="-4" x2="252" y2="-4" stroke="var(--unk)" stroke-width="1.8" stroke-dasharray="5 3"></line><text class="s-xs" x="258" y="0">市街地参照（鶴見区）</text><text class="s-xs" x="410" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text></g>
+        </svg>
+        <figcaption>
+          左は6つの臨海地区の輝度温度そのものです。<strong>6地区を通して 42.97 K の幅に散らばりますが、これは季節と天気であって設備の状態ではありません</strong>（1地区あたりでも30〜39 K動きます）。
+          右は同じ日の市街地（鶴見区）を引いた差で、<strong>振れ幅は 12.53 K に落ちます</strong>——図4の②が実データでも起きることの確認です。
+          ただし<strong>まだ 12.53 K 残っています</strong>。残り方は地区ごとに形が違い、
+          <strong>赤＝東扇島火力は暖候期（3〜9月）に −5〜−9 K、冬季はほぼ0 K</strong>です。しかも同じ9月でも2025年は −6.2 K、2024年は −0.7 Kと揃いません。
+          <strong>この「地区ごとの季節感受度が何によるのか」が説明できていません（U-2）。</strong>
+          <br>
+          別の測り方でこの段階を<strong>残差のばらつき（σ）</strong>で測ると、生 8.44 K → シーン一律の除去で 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K です
+          （こちらは同じ14シーンを150 mブロック11,422個で見た値で、上の図とは母集団も統計量も違います）。
+          <br>
+          <strong>自白</strong>: これは30 m画素・昼間・複合体単位のLandsatであり、HotSat-2（3.5 m・夜間）の性能ではありません。
+          設備単位の信号（0.53 K）はこの図の目盛より小さく、ここに写ってはいません。
+          この図が示すのは「気象の共通モードは引き算で本当に落ちる」「落ちきらない分は気象に属する」の2点だけです。
+          <span class="src">poc4_results_real.json（spread_K, series_vs_urban_ref_K, ref_series_K）／poc6_results.json（noise_decomposition）。
+          参照面は全14シーンで有効な鶴見区（既定）。提出物が引用している 36.02 K → 7.65 K は旧参照面・有効6シーンの値で、
+          さらに引用側は市街地参照面自身を母集団に含めています（同じ定義なら14シーンで 44.05 K）。母数と定義の両方が違います</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="probe" id="probeEp">
+      <div class="head">
+        <span class="t">U-3 を動かしてみる — 年に何回撮れるかが、拾える段差の大きさを決める</span>
+        <span class="n">poc6_results.json（operating_point・実Landsat・ランク1季節モデル後）</span>
+      </div>
+      <div class="steps" role="group" aria-label="有効な撮像回数">
+        <button type="button" data-ep="6" aria-pressed="true">6回</button>
+        <button type="button" data-ep="12">12回</button>
+        <button type="button" data-ep="14">14回</button>
+        <button type="button" data-ep="24">24回</button>
+        <button type="button" data-ep="36">36回</button>
+      </div>
+      <div class="readout">
+        <span class="big" id="epMdd">6.36 K</span>
+        <span class="sub">この大きさの段差から検知できる（狙いたいのは 1〜2 K）</span>
+      </div>
+      <div class="gauge" aria-hidden="true">
+        <div class="fill" id="epFill" style="width:79.5%"></div>
+        <div class="mark" style="left:25%" title="狙いたい 2 K"></div>
+      </div>
+      <div class="gscale"><span>0 K</span><span>狙いたい 2 K</span><span>8 K</span></div>
+      <p class="caveat"><strong>これは30 m画素・複合体レベルの実測値で、HotSat-2（3.5 m）の性能ではありません。</strong>
+        画素数と対象の充填率が変わるので、絶対値ではなく「回数が増えると何が変わるか」を見てください。</p>
+    </div>
+
+    <div class="probe" id="probeAge">
+      <div class="head">
+        <span class="t">U-1 を動かしてみる — 2基の放射率の「差の経年」が検知性能を決めている</span>
+        <span class="n">poc7_results.json（+1 K・160対160・ブートストラップ90%区間）</span>
+      </div>
+      <div class="steps" role="group" aria-label="差動経年の値">
+        <button type="button" data-age="0">0 K</button>
+        <button type="button" data-age="0.15" aria-pressed="true">0.15 K</button>
+        <button type="button" data-age="0.3">0.3 K</button>
+        <button type="button" data-age="0.5">0.5 K</button>
+      </div>
+      <div class="readout">
+        <span class="big" id="ageAuc">0.921</span>
+        <span class="sub" id="ageCi">90%区間 0.895 – 0.944</span>
+        <span class="sub" id="ageNote">提出物に書いた 0.92 とほぼ一致する水準</span>
+      </div>
+      <div class="gauge" aria-hidden="true">
+        <div class="fill" id="ageFill" style="width:84.2%"></div>
+        <div class="ci" id="ageCiBar" style="left:79%;width:9.8%"></div>
+        <div class="mark" style="left:84%" title="提出物の公表値 0.92"></div>
+      </div>
+      <div class="gscale"><span>AUC 0.50（当てずっぽう）</span><span>0.75</span><span>1.00（完全）</span></div>
+      <p class="caveat">4点はいずれも実測（モンテカルロ）です。点の間は計算していないので補間しません。
+        <strong>この値には出典がなく、実測もされていません</strong>——だから現地観測をご相談したい、という順序です。</p>
+    </div>
+
+    <h3>テーマ①の不確定項</h3>
+    <div class="unks">
+      <div class="unk ask-here">
+        <span class="id">U-1</span>
+        <span class="what">兄弟資産どうしの放射率の「差の経年」</span>
+        <span class="why">同型で同時期に建てた2基でも、外装板の風化の進み方は少しずつ違います。この差が0.15 Kなら検知性能（AUC）は0.921、0.3 Kなら0.788まで落ちる——<strong>上限性能を単独で決めている量</strong>ですが、出典がなく実測もされていません。</span>
+        <span class="who"><b>ご相談したい先</b>: 屋外の実測（外装材の放射率・表面温度）。ただし対象がプラント構内なので、設備所有者の同意が前提になります。</span>
+      </div>
+      <div class="unk ask-here">
+        <span class="id">U-2</span>
+        <span class="what">「同じ空の下」とみなせる距離</span>
+        <span class="why">図4の②が成立する前提です。実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。<strong>この増え方が何によるのか（海陸風・水面の隣接・地形）を我々は説明できていません。</strong></span>
+        <span class="who"><b>ご相談したい先</b>: 沿岸コンビナート域の局所微気象。図5のとおり実データでも東扇島の資産で +1.1〜−9.0 Kの季節残差が残っており、説明できると閾値設計が変わります。</span>
+      </div>
+      <div class="unk ask-here">
+        <span class="id">U-3</span>
+        <span class="what">夜間かつ晴天の撮像機会が年に何回あるか</span>
+        <span class="why">図4の③はエポック数で効くので、<strong>年間の有効撮像回数がそのまま検知力になります</strong>。現状は衛星パス時刻（22時JST想定）の雲量30%未満を晴天としていますが、タスキング成功率0.6は仮定のままです。夜間ウィンドウの最小雲量で判定すると約2.4倍の過大評価になることは自分で確認しました。</span>
+        <span class="who"><b>ご相談したい先</b>: 雲の日変化と、この用途に妥当な晴天判定の置き方。</span>
+      </div>
+      <div class="unk">
+        <span class="id">U-4</span>
+        <span class="what">センサNEdTの実力値</span>
+        <span class="why">仮定1 K。ただし自前の掃引で、これは<strong>上限性能を動かさず、必要な撮像回数だけを動かす</strong>ことが分かりました（タンク屋根のパッチ検知にだけは効きます）。</span>
+        <span class="who"><b>閉じ方</b>: 衛星ベンダへの照会。10月下旬に送付予定で、貴協会にお願いする筋のものではありません。</span>
+      </div>
+      <div class="unk ask-here">
+        <span class="id">U-5</span>
+        <span class="what">検証フィールド（設備台帳・保全履歴・外装張替え履歴）</span>
+        <span class="why">U-1を実測するには、同一構内の同型ユニット対と、その外装をいつ張り替えたかの記録が要ります。<strong>これが無いと経年の起点が決まりません。</strong>現時点で協力先は確保できていません。</span>
+        <span class="who"><b>ご相談したい先</b>: 一般財団法人日本気象協会の気象コンサルティング顧客（発電所・ダム・熱供給事業者等）の保全部門へのお取り次ぎ。</span>
+      </div>
+    </div>
+
+    <details>
+      <summary>テーマ①の数値一覧（出所つき）</summary>
+      <div class="inner">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>計算している量</th><th>値</th><th>確度</th></tr></thead>
+            <tbody>
+              <tr><th>天空条件スイング（晴天夜⇔曇天夜。表面温度は不変）</th><td class="num">8.57 K（帯域3.4-4.2µm仮定）／10.17 K（実帯域3.7-4.95µm）</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>誤差バジェット（輝度温度領域・RSS）</th><td class="num">撮像間差分 9.39 K → 兄弟差分 2.76 K → 二重差分6エポック 0.28 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>信号（ユニット面的劣化 +1 K が輝度温度に写る量）</th><td class="num">0.53 K（単発の信号対雑音比 0.19、二重差分6エポックで 1.89）</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>実Landsat14シーンでの共通モード除去（川崎臨海部・6地区・図5）</th><td class="num">資産の輝度温度の振れ幅 42.97 K → 市街地参照との差 12.53 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>兄弟差分σの離隔距離依存（実Landsat・代用資産11,422個）</th><td class="num">150–300 m: 0.43 K／1.2–2.4 km: 1.79 K／5–10 km: 3.89 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>雑音床の分解（実Landsat）</th><td class="num">生 8.44 K → シーン共通モード除去 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>検知性能（モンテカルロ160対160・二重差分・+1 K）</th><td class="num">AUC 0.980（差動経年0 K）／0.921（0.15 K）／0.788（0.3 K）</td><td><span class="flag f-warn">仮定</span></td></tr>
+              <tr><th>誤報率（実データ分布から）</th><td class="num">z=3 で 0.32 件／プラント・年</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>降雨後の回復速度が使える頻度（川崎・実気象2020–2025）</th><td class="num">降雨イベント 62 回/年 → 単点 21 回/年、回復速度 4.3 回/年</td><td><span class="flag f-ok">確定</span></td></tr>
+            </tbody>
+          </table>
+          <p class="src">poc1_results.json ／ poc3_results.json ／ poc4_results_real.json（実Landsat 14シーン・鶴見区参照面）／ poc6_results.json ／ poc7_results.json</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ テーマ② ============ -->
+  <section>
+    <p class="eyebrow">テーマ② — インフラに係る防災・災害対応</p>
+    <h2>火口周辺の積雪水量の、年超過確率分布</h2>
+
+    <div class="theme">
+      <p class="tag">やろうとしていること</p>
+      <p>
+        雪の積もった火山が噴火すると、熱で雪が一気に融けて<strong>融雪型火山泥流</strong>になります。
+        その想定量は<strong>火口付近にどれだけ雪があるかにほぼ比例</strong>します
+        （蔵王の計画の公表8値を <span class="num">泥流総量 = 0.4×融雪水量/(0.4−C<sub>d</sub>)</span> で誤差0.44%以内に再現して確認しました）。
+      </p>
+      <p>
+        ところが<strong>日本には積雪水量を面的に観測する政府機関が存在しません。</strong>
+        砂防計画は低標高の観測所からの外挿による単一の平年値を使っています。
+        本提案は、光学衛星のアーカイブから画素ごとの「雪が消えた日」を求め、そこから
+        <strong>「何年に一度、どれだけ積もるか」の分布</strong>を作るものです。
+        顧客は国土交通省 地方整備局の砂防事務所および都道府県の砂防部局（火山噴火緊急減災対策砂防計画の策定・改定）を想定しています。
+      </p>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図6　現状の何が問題か — 観測所は麓にしかなく、火口の値は外挿で作られている（模式図。標高軸は概略）</p>
+        <svg viewBox="0 0 860 372" role="img" aria-label="火山の断面図。気象庁6観測所は標高38.9から525mの麓にあり、火口の約1220mへ回帰式で外挿している。計画値3.81mに対しUAV実測は1.1m。">
+          <clipPath id="clip5"><rect x="96" y="20" width="558" height="276"></rect></clipPath>
+          <g clip-path="url(#clip5)">
+            <rect x="96" y="20" width="558" height="276" fill="url(#gSkyDay)"></rect>
+            <!-- 太陽 -->
+            <circle cx="596" cy="60" r="16" fill="#FFD9A0" opacity=".55" filter="url(#fBlur2)"></circle>
+            <use href="#volcano"></use>
+            <!-- 観測所のある高さの帯 -->
+            <rect x="96" y="204" width="230" height="92" fill="url(#pHatch)"></rect>
+            <!-- 観測所（風向風速計つき） -->
+            <g color="var(--unk-ink)">
+              <use href="#gStationS" x="138" y="264" width="24" height="24"></use>
+              <use href="#gStationS" x="168" y="250" width="24" height="24"></use>
+              <use href="#gStationS" x="200" y="234" width="24" height="24"></use>
+              <use href="#gStationS" x="232" y="220" width="24" height="24"></use>
+              <use href="#gStationS" x="264" y="206" width="24" height="24"></use>
+              <use href="#gStationS" x="294" y="194" width="24" height="24"></use>
+            </g>
+            <!-- 回帰と外挿 -->
+            <line x1="150" y1="278" x2="306" y2="206" stroke="var(--unk-ink)" stroke-width="2.4"></line>
+            <line x1="306" y1="206" x2="414" y2="88" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="7 5"></line>
+            <path d="M406 96 L417 84 L419 100 Z" fill="var(--accent)"></path>
+            <!-- 衛星 -->
+            <g transform="translate(592,132)">
+              <rect x="-12" y="-7" width="24" height="14" rx="2" fill="var(--ink-2)"></rect>
+              <rect x="-29" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
+              <rect x="15" y="-4.5" width="14" height="9" fill="var(--sky-2)"></rect>
+            </g>
+            <line x1="578" y1="142" x2="470" y2="122" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"></line>
+            <path d="M478 116 L466 121 L477 127 Z" fill="var(--accent)"></path>
+          </g>
+
+          <!-- 標高軸 -->
+          <line x1="96" y1="40" x2="96" y2="296" stroke="currentColor" stroke-width="1" opacity=".45"></line>
+          <g class="s-xs s-num" text-anchor="end">
+            <text x="88" y="300">0 m</text>
+            <text x="88" y="244">250</text>
+            <text x="88" y="193">500</text>
+            <text x="88" y="91">1,000</text>
+            <text x="88" y="66">1,250</text>
+          </g>
+          <g stroke="currentColor" stroke-width="1" opacity=".13">
+            <line x1="96" y1="240" x2="654" y2="240"></line>
+            <line x1="96" y1="189" x2="654" y2="189"></line>
+            <line x1="96" y1="87" x2="654" y2="87"></line>
+          </g>
+
+          <text class="s-sm s-unk" x="104" y="318" font-weight="600">気象庁の地域気象観測所 6か所</text>
+          <text class="s-sm s-unk s-num" x="104" y="336">標高 38.9 〜 525 m にすべて集中</text>
+          <text class="s-sm s-acc" x="318" y="150" font-weight="600">回帰式で外挿</text>
+          <text class="s-sm s-acc" x="318" y="168">この区間に観測点はゼロ</text>
+          <text class="s-sm s-num" x="430" y="62">火口 約 1,220 m</text>
+          <text class="s-sm" x="516" y="118">衛星は火口を直接見る</text>
+
+          <!-- 右: 積雪深の食い違い -->
+          <line x1="690" y1="296" x2="846" y2="296" stroke="currentColor" stroke-width="1" opacity=".4"></line>
+          <g filter="url(#fSoft)">
+            <rect x="704" y="130" width="50" height="166" fill="url(#gSnow)" stroke="var(--sky-2)"></rect>
+            <rect x="704" y="130" width="50" height="166" fill="url(#pSnowGrain)"></rect>
+            <rect x="784" y="248" width="50" height="48" fill="url(#gSnow)" stroke="var(--sky-2)"></rect>
+            <rect x="784" y="248" width="50" height="48" fill="url(#pSnowGrain)"></rect>
+          </g>
+          <text class="s-lbl s-num" x="729" y="122" text-anchor="middle" font-weight="600">3.81 m</text>
+          <text class="s-lbl s-num" x="809" y="240" text-anchor="middle" font-weight="600">1.1 m</text>
+          <text class="s-xs" x="729" y="314" text-anchor="middle">計画値（外挿）</text>
+          <text class="s-xs" x="809" y="314" text-anchor="middle">UAV実測</text>
+          <path d="M760 100 L778 100" stroke="var(--accent)" stroke-width="1.4"></path>
+          <text class="s-sm s-acc s-num" x="769" y="92" text-anchor="middle" font-weight="600">食い違い 246%</text>
+        </svg>
+        <figcaption>
+          <strong>この246%には信頼区間が付いていません</strong>——点推定なので、外れているかどうかを検証する手立てがそもそも無い、というのが現状です。
+          本提案が勝っているのは精度そのものではなく、<strong>不確かさを数字で出せること</strong>です。
+          <span class="src">01_検討経緯.md 8.4〜8.7節（一次資料）／t2_return_period.json（vs_current_practice）</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図7　衛星で測るのは「雪が消えた日」— 誤差は、その年に何回晴れたかでほぼ決まる</p>
+        <svg viewBox="0 0 860 336" role="img" aria-label="観測日のタイムライン。観測が細かい年は誤差が小さく、雲で観測が飛ぶ年は間隔がそのまま誤差になる。">
+          <!-- 月軸 -->
+          <g class="s-xs" text-anchor="middle" fill="var(--ink-3)">
+            <text x="212" y="26">3月</text><text x="360" y="26">4月</text>
+            <text x="508" y="26">5月</text><text x="656" y="26">6月</text>
+          </g>
+          <g stroke="var(--rule)" stroke-width="1">
+            <line x1="138" y1="34" x2="138" y2="290"></line>
+            <line x1="286" y1="34" x2="286" y2="290"></line>
+            <line x1="434" y1="34" x2="434" y2="290"></line>
+            <line x1="582" y1="34" x2="582" y2="290"></line>
+            <line x1="730" y1="34" x2="730" y2="290"></line>
+          </g>
+
+          <!-- === 観測が細かい年 === -->
+          <text class="s-hd" x="14" y="66">観測が細かい年</text>
+          <!-- 地表の帯: 雪 → 裸地 -->
+          <rect x="138" y="80" width="330" height="26" fill="#E3EEF6" stroke="#9FBACB"></rect>
+          <rect x="138" y="80" width="330" height="26" fill="url(#pSnowGrain)"></rect>
+          <rect x="468" y="80" width="262" height="26" fill="#6C7480" stroke="#5A616B"></rect>
+          <text class="s-xs" x="288" y="98" fill="#26414F">雪がある</text>
+          <text class="s-xs" x="560" y="98" fill="#F0F3F6">融け終わっている</text>
+          <!-- 観測日のシーン -->
+          <g>
+            <rect x="152" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="152" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="226" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="226" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="300" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="300" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="374" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="374" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="448" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="448" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="522" y="112" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="522" y="112" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
+            <rect x="596" y="112" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="596" y="112" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
+            <rect x="670" y="112" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="670" y="112" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
+          </g>
+          <!-- 消雪の推定 -->
+          <line x1="470" y1="76" x2="470" y2="146" stroke="var(--unk)" stroke-width="1.6"></line>
+          <line x1="533" y1="76" x2="533" y2="146" stroke="var(--unk)" stroke-width="1.6"></line>
+          <rect x="470" y="76" width="63" height="70" fill="var(--accent)" opacity=".08"></rect>
+          <line x1="501" y1="72" x2="501" y2="150" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></line>
+          <text class="s-sm s-acc" x="501" y="166" text-anchor="middle">推定＝間隔の中点</text>
+          <text class="s-xs s-unk" x="470" y="70" text-anchor="middle">最後に雪あり</text>
+          <text class="s-xs s-unk" x="545" y="70">初めて雪なし</text>
+
+          <!-- === 観測が飛ぶ年 === -->
+          <text class="s-hd" x="14" y="212">観測が飛ぶ年（雲・低い太陽）</text>
+          <rect x="138" y="226" width="330" height="26" fill="#E3EEF6" stroke="#9FBACB"></rect>
+          <rect x="138" y="226" width="330" height="26" fill="url(#pSnowGrain)"></rect>
+          <rect x="468" y="226" width="262" height="26" fill="#6C7480" stroke="#5A616B"></rect>
+          <!-- 観測日と雲で欠測した日 -->
+          <g>
+            <rect x="164" y="258" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="164" y="258" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="392" y="258" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="392" y="258" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
+            <rect x="666" y="258" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="666" y="258" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
+          </g>
+          <g opacity=".8">
+            <g transform="translate(240,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
+            <g transform="translate(316,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
+            <g transform="translate(468,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
+            <g transform="translate(544,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
+            <g transform="translate(600,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
+          </g>
+          <line x1="414" y1="222" x2="414" y2="292" stroke="var(--unk)" stroke-width="1.6"></line>
+          <line x1="666" y1="222" x2="666" y2="292" stroke="var(--unk)" stroke-width="1.6"></line>
+          <rect x="414" y="222" width="252" height="70" fill="var(--accent)" opacity=".08"></rect>
+          <line x1="540" y1="218" x2="540" y2="296" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></line>
+          <path d="M420 306 L660 306" stroke="var(--accent)" stroke-width="1.4"></path>
+          <path d="M426 302 L416 306 L426 310 Z" fill="var(--accent)"></path>
+          <path d="M654 302 L664 306 L654 310 Z" fill="var(--accent)"></path>
+          <text class="s-sm s-acc" x="540" y="326" text-anchor="middle" font-weight="600">この幅がそのまま誤差になる（実測: 間隔 × 0.217）</text>
+
+          <!-- 凡例 -->
+          <g transform="translate(752,112)">
+            <rect x="0" y="0" width="18" height="18" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect>
+            <text class="s-xs" x="24" y="13">雪あり</text>
+            <rect x="0" y="26" width="18" height="18" rx="2" fill="#6C7480" stroke="#5A616B"></rect>
+            <text class="s-xs" x="24" y="39">雪なし</text>
+            <g transform="translate(9,62)"><path d="M-9 4 q-5 0 -5 -4 q0 -4 5 -4 q1 -5 6 -5 q5 0 6 4 q5 0 5 5 q0 4 -5 4 Z" fill="var(--unk)" opacity=".45"></path></g>
+            <text class="s-xs" x="24" y="66">雲で欠測</text>
+          </g>
+        </svg>
+        <figcaption>
+          実測すると、<strong>流域平均の消雪日の誤差は「観測間隔 × 0.217」</strong>でした（9年分の間引き実験）。
+          つまり<strong>この提案の精度は、冬から春にかけて何回晴れるかでほぼ決まります</strong>。
+          年によっては画素の98.5%が1つの間隔に入ってしまい、空間平均をとっても誤差が落ちません（2017年の実測）。
+          <span class="src">t2_meltout_accuracy.json（check_EG_over_4, single_interval_risk）</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図8　実際に衛星から作った消雪日マップ — 蔵王山・火口中心の約6 km四方、2017〜2025年の9年分</p>
+        <svg viewBox="0 0 860 512" role="img" aria-label="蔵王山 火口半径3kmの消雪日マップ3年分と、9年分の消雪日中央値。年によって中央値が102日から148日まで動く。">
+        <text class="s-hd s-num" x="22" y="16">2023 年</text>
+        <text class="s-xs s-num" x="268" y="16" text-anchor="end" fill="var(--ink-3)">観測日 13 日・間隔 20 日</text>
+        <rect x="22" y="24" width="246" height="247.2" fill="var(--surface-2)"></rect>
+        <image x="22" y="24" width="246" height="247.2" href="data:image/png;base64,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" style="image-rendering:pixelated"></image>
+        <circle cx="145.0" cy="147.6" r="7" fill="none" stroke="#FFF" stroke-width="2.4" opacity=".85"></circle>
+        <circle cx="145.0" cy="147.6" r="7" fill="none" stroke="#1B2028" stroke-width="1.1"></circle>
+        <circle cx="145.0" cy="147.6" r="123.0" fill="none" stroke="#FFF" stroke-width="1.6" opacity=".55" stroke-dasharray="5 4"></circle>
+        <text class="s-xs" x="157.0" y="151.6" fill="#FFF" style="paint-order:stroke" stroke="#1B2028" stroke-width="2.5">火口</text>
+        <rect x="22" y="24" width="246" height="247.2" fill="none" stroke="var(--rule)"></rect>
+        <text class="s-sm s-num" x="22" y="289.2" fill="var(--ink-2)">画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">102 日目</tspan>（4月12日ごろ）</text>
+        <g transform="translate(32.0,259.2)"><rect x="-6" y="-16" width="52.6" height="24" fill="#000" opacity=".35" rx="2"></rect><line x1="0" y1="0" x2="40.6" y2="0" stroke="#FFF" stroke-width="2"></line><text class="s-xs" x="20.3" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>
+        <text class="s-hd s-num" x="292" y="16">2019 年</text>
+        <text class="s-xs s-num" x="538" y="16" text-anchor="end" fill="var(--ink-3)">観測日 14 日・間隔 15 日</text>
+        <rect x="292" y="24" width="246" height="247.2" fill="var(--surface-2)"></rect>
+        <image x="292" y="24" width="246" height="247.2" href="data:image/png;base64,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" style="image-rendering:pixelated"></image>
+        <circle cx="415.0" cy="147.6" r="7" fill="none" stroke="#FFF" stroke-width="2.4" opacity=".85"></circle>
+        <circle cx="415.0" cy="147.6" r="7" fill="none" stroke="#1B2028" stroke-width="1.1"></circle>
+        <circle cx="415.0" cy="147.6" r="123.0" fill="none" stroke="#FFF" stroke-width="1.6" opacity=".55" stroke-dasharray="5 4"></circle>
+        <rect x="292" y="24" width="246" height="247.2" fill="none" stroke="var(--rule)"></rect>
+        <text class="s-sm s-num" x="292" y="289.2" fill="var(--ink-2)">画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">123 日目</tspan>（5月3日ごろ）</text>
+        <text class="s-hd s-num" x="562" y="16">2025 年</text>
+        <text class="s-xs s-num" x="808" y="16" text-anchor="end" fill="var(--ink-3)">観測日 13 日・間隔 40 日</text>
+        <rect x="562" y="24" width="246" height="247.2" fill="var(--surface-2)"></rect>
+        <image x="562" y="24" width="246" height="247.2" href="data:image/png;base64,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" style="image-rendering:pixelated"></image>
+        <circle cx="685.0" cy="147.6" r="7" fill="none" stroke="#FFF" stroke-width="2.4" opacity=".85"></circle>
+        <circle cx="685.0" cy="147.6" r="7" fill="none" stroke="#1B2028" stroke-width="1.1"></circle>
+        <circle cx="685.0" cy="147.6" r="123.0" fill="none" stroke="#FFF" stroke-width="1.6" opacity=".55" stroke-dasharray="5 4"></circle>
+        <rect x="562" y="24" width="246" height="247.2" fill="none" stroke="var(--rule)"></rect>
+        <text class="s-sm s-num" x="562" y="289.2" fill="var(--ink-2)">画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">148 日目</tspan>（5月28日ごろ）</text>
+        <defs><linearGradient id="gDoy" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="rgb(150,58,22)"></stop>
+        <stop offset="5%" stop-color="rgb(162,75,32)"></stop>
+        <stop offset="10%" stop-color="rgb(174,91,43)"></stop>
+        <stop offset="15%" stop-color="rgb(187,108,53)"></stop>
+        <stop offset="20%" stop-color="rgb(199,125,63)"></stop>
+        <stop offset="25%" stop-color="rgb(211,141,74)"></stop>
+        <stop offset="30%" stop-color="rgb(217,155,90)"></stop>
+        <stop offset="35%" stop-color="rgb(219,168,109)"></stop>
+        <stop offset="40%" stop-color="rgb(222,180,129)"></stop>
+        <stop offset="45%" stop-color="rgb(224,193,148)"></stop>
+        <stop offset="50%" stop-color="rgb(226,205,168)"></stop>
+        <stop offset="55%" stop-color="rgb(203,195,172)"></stop>
+        <stop offset="60%" stop-color="rgb(179,185,176)"></stop>
+        <stop offset="65%" stop-color="rgb(156,176,180)"></stop>
+        <stop offset="70%" stop-color="rgb(132,166,184)"></stop>
+        <stop offset="75%" stop-color="rgb(111,153,178)"></stop>
+        <stop offset="80%" stop-color="rgb(95,134,160)"></stop>
+        <stop offset="85%" stop-color="rgb(79,116,141)"></stop>
+        <stop offset="90%" stop-color="rgb(63,97,122)"></stop>
+        <stop offset="95%" stop-color="rgb(46,79,103)"></stop>
+        <stop offset="100%" stop-color="rgb(30,60,84)"></stop>
+        </linearGradient></defs>
+        <rect x="22" y="323.21782178217825" width="480" height="13" fill="url(#gDoy)" stroke="var(--rule)"></rect>
+        <line x1="30.0" y1="336.21782178217825" x2="30.0" y2="341.21782178217825" stroke="currentColor" opacity=".5"></line>
+        <text class="s-xs s-num" x="30.0" y="353.21782178217825" text-anchor="middle">4/1</text>
+        <line x1="146.0" y1="336.21782178217825" x2="146.0" y2="341.21782178217825" stroke="currentColor" opacity=".5"></line>
+        <text class="s-xs s-num" x="146.0" y="353.21782178217825" text-anchor="middle">5/1</text>
+        <line x1="270.0" y1="336.21782178217825" x2="270.0" y2="341.21782178217825" stroke="currentColor" opacity=".5"></line>
+        <text class="s-xs s-num" x="270.0" y="353.21782178217825" text-anchor="middle">6/1</text>
+        <line x1="390.0" y1="336.21782178217825" x2="390.0" y2="341.21782178217825" stroke="currentColor" opacity=".5"></line>
+        <text class="s-xs s-num" x="390.0" y="353.21782178217825" text-anchor="middle">7/1</text>
+        <text class="s-xs" x="22" y="317.21782178217825">雪が消えた日（早い ← → 遅い）</text>
+        <rect x="528" y="323.21782178217825" width="16" height="13" fill="rgb(152,155,160)" stroke="var(--rule)"></rect>
+        <text class="s-xs" x="550" y="334.21782178217825">灰＝その年は雲などで決められなかった画素</text>
+        <g transform="translate(528,349.21782178217825)"><line x1="0" y1="7" x2="16" y2="7" stroke="currentColor" stroke-width="1.6" opacity=".55" stroke-dasharray="5 4"></line><text class="s-xs" x="22" y="11">破線＝火口から半径3 km（集計は画いっぱいの矩形）</text></g>
+        <text class="s-hd" x="22" y="387.21782178217825">9年分の画素中央値（同じ場所・同じ計算）</text>
+        <line x1="100" y1="465.21782178217825" x2="800" y2="465.21782178217825" stroke="currentColor" opacity=".35"></line>
+        <circle cx="100.0" cy="438.0" r="3.2" fill="var(--rock)" opacity="0.75"></circle>
+        <text class="s-xs s-num" x="100.0" y="429.0" text-anchor="middle" fill="var(--ink-3)">119</text>
+        <text class="s-xs s-num" x="100.0" y="481.21782178217825" text-anchor="middle">2017</text>
+        <circle cx="187.5" cy="427.6" r="3.2" fill="var(--rock)" opacity="0.75"></circle>
+        <text class="s-xs s-num" x="187.5" y="418.6" text-anchor="middle" fill="var(--ink-3)">132</text>
+        <text class="s-xs s-num" x="187.5" y="481.21782178217825" text-anchor="middle">2018</text>
+        <circle cx="275.0" cy="434.8" r="4.5" fill="var(--accent)" opacity="1"></circle>
+        <text class="s-xs s-num" x="275.0" y="425.8" text-anchor="middle" fill="var(--accent-ink)">123</text>
+        <text class="s-xs s-num" x="275.0" y="481.21782178217825" text-anchor="middle">2019</text>
+        <circle cx="362.5" cy="430.8" r="3.2" fill="var(--rock)" opacity="0.75"></circle>
+        <text class="s-xs s-num" x="362.5" y="421.8" text-anchor="middle" fill="var(--ink-3)">128</text>
+        <text class="s-xs s-num" x="362.5" y="481.21782178217825" text-anchor="middle">2020</text>
+        <circle cx="450.0" cy="433.6" r="3.2" fill="var(--rock)" opacity="0.75"></circle>
+        <text class="s-xs s-num" x="450.0" y="424.6" text-anchor="middle" fill="var(--ink-3)">124.5</text>
+        <text class="s-xs s-num" x="450.0" y="481.21782178217825" text-anchor="middle">2021</text>
+        <circle cx="537.5" cy="439.6" r="3.2" fill="var(--rock)" opacity="0.75"></circle>
+        <text class="s-xs s-num" x="537.5" y="430.6" text-anchor="middle" fill="var(--ink-3)">117</text>
+        <text class="s-xs s-num" x="537.5" y="481.21782178217825" text-anchor="middle">2022</text>
+        <circle cx="625.0" cy="451.6" r="4.5" fill="var(--accent)" opacity="1"></circle>
+        <text class="s-xs s-num" x="625.0" y="442.6" text-anchor="middle" fill="var(--accent-ink)">102</text>
+        <text class="s-xs s-num" x="625.0" y="481.21782178217825" text-anchor="middle">2023</text>
+        <circle cx="712.5" cy="441.6" r="3.2" fill="var(--rock)" opacity="0.75"></circle>
+        <text class="s-xs s-num" x="712.5" y="432.6" text-anchor="middle" fill="var(--ink-3)">114.5</text>
+        <text class="s-xs s-num" x="712.5" y="481.21782178217825" text-anchor="middle">2024</text>
+        <circle cx="800.0" cy="414.8" r="4.5" fill="var(--accent)" opacity="1"></circle>
+        <text class="s-xs s-num" x="800.0" y="405.8" text-anchor="middle" fill="var(--accent-ink)">148</text>
+        <text class="s-xs s-num" x="800.0" y="481.21782178217825" text-anchor="middle">2025</text>
+        <text class="s-sm s-acc s-num" x="800" y="387.21782178217825" text-anchor="end" font-weight="600">最も早い年と遅い年で 46 日ちがう<tspan class="s-xs" fill="var(--ink-3)" font-weight="400">（画素中央値）</tspan></text>
+        </svg>
+        <figcaption>
+          Landsat 8/9 と Sentinel-2 の実画像（NDSI 0.4）から、30 m画素ごとに「最後に雪があった日」と「初めて雪が無かった日」の中点を消雪日としたものです。
+          <strong>9年すべてでマップが作れました</strong>（面が埋まった割合は年により53〜96%）。
+          この6 km四方の画素中央値は<strong>102日目（4月12日ごろ）から148日目（5月28日ごろ）まで、46日ぶれます</strong>——
+          この量を測っている地上の観測点は、火口の高さには1つもありません。
+          <br>
+          灰色は決められなかった画素です。2023年は<strong>観測日が13日あるのに</strong>35%が灰色で、<strong>枚数ではなく「いつ晴れたか」が効いています（V-4）</strong>。
+          挟み込み間隔の中央値は年により15〜48日でした。
+          <br>
+          <strong>集計範囲について</strong>: 集計しているのは破線の円ではなく<strong>画いっぱいの矩形（6.09 × 6.06 km ＝ 半径3 kmの外接矩形）</strong>で、四隅は火口から4.3 kmあります。
+          <strong>統計量について</strong>: ここに出しているのは画素中央値です。図9で信号としている 7.1 日は<strong>流域平均の年々変動（実測σ 8.9 日・幅28.7日）</strong>で、別の統計量です。
+          <br>
+          <strong>自白</strong>: これは「日」であって「mm」ではありません。計画に載る量にするには融雪期間（V-1）と融雪係数（V-3）が要り、そこは我々だけでは埋まりません。
+          <span class="src">t2_snowmap_results.json（years.*.snow_doy_median, dates, gap_median_days, resolved_frac）／
+          t2_meltout_accuracy.json（area_mean_meltout_doy）／
+          poc/data/snowmap/snow_doy_*.npy を 40_scripts/make_shiryo_realdata_figs.py で描画。観測日数は dates を日付でユニーク化した数</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図9　その誤差は、探している年ごとの違いより小さいか</p>
+        <svg viewBox="0 0 860 244" role="img" aria-label="時代別の観測誤差と信号の比較。信号7.1日に対し、1984-98年は17.4日、1999-2016年は8.7日、2017-26年は5.4日、必要水準は3.5日。">
+          <line x1="230" y1="196" x2="800" y2="196" stroke="currentColor" stroke-width="1" opacity=".35"></line>
+          <g class="s-xs s-num" text-anchor="middle">
+            <text x="230" y="214">0</text>
+            <text x="370" y="214">5</text>
+            <text x="510" y="214">10</text>
+            <text x="650" y="214">15</text>
+            <text x="790" y="214">20 日</text>
+          </g>
+          <g stroke="currentColor" stroke-width="1" opacity=".13">
+            <line x1="370" y1="42" x2="370" y2="196"></line>
+            <line x1="510" y1="42" x2="510" y2="196"></line>
+            <line x1="650" y1="42" x2="650" y2="196"></line>
+            <line x1="790" y1="42" x2="790" y2="196"></line>
+          </g>
+
+          <rect x="230" y="42" width="199" height="154" fill="var(--accent)" opacity=".05"></rect>
+          <line x1="429" y1="36" x2="429" y2="196" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"></line>
+          <text class="s-sm s-num s-acc" x="434" y="32">信号 7.1 日 ← 左に来ないと年ごとの違いが見えない</text>
+
+          <g filter="url(#fSoft)">
+            <rect x="230" y="52" width="487" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
+            <rect x="230" y="88" width="244" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
+            <rect x="230" y="124" width="151" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
+            <rect x="230" y="160" width="98" height="22" rx="2" fill="url(#gBarSignal)" opacity=".85"></rect>
+          </g>
+          <g class="s-lbl" text-anchor="end">
+            <text x="222" y="68">1984–98（Landsatのみ）</text>
+            <text x="222" y="104">1999–2016</text>
+            <text x="222" y="140">2017–26（Landsat＋Sentinel-2）</text>
+            <text x="222" y="176">目指したい水準</text>
+          </g>
+          <g class="s-sm s-num">
+            <text x="725" y="68">17.4</text>
+            <text x="482" y="104">8.7</text>
+            <text x="389" y="140">5.4</text>
+            <text x="336" y="176" fill="var(--accent-ink)" font-weight="600">3.5</text>
+          </g>
+          <g color="var(--unk-ink)">
+            <use href="#gSat" x="760" y="51"  width="26" height="26"></use>
+            <use href="#gSat" x="517" y="87"  width="26" height="26"></use>
+            <use href="#gSat" x="424" y="123" width="26" height="26"></use>
+            <use href="#gSat" x="452" y="123" width="26" height="26"></use>
+          </g>
+        </svg>
+        <figcaption>
+          棒は流域平均の消雪日の観測誤差、赤の破線は<strong>積雪の真の年々変動（7.1日）</strong>です。
+          <strong>Sentinel-2が入った現在の観測密度でようやく信号対雑音比1.30、それ以前は0.81以下</strong>で、
+          古い年ほど「年ごとの違い」ではなく「観測の粗さ」を見ていることになります。
+          棒の観測間隔は <strong>E[G]＝Σg²/Σg（長い間隔ほど重く数える期待値）</strong>で、現代は25日です。図8の「間隔の中央値20日」は中央値なので値が違います。
+          <span class="src">t2_return_period.json（snr_in_days, revised_EG_criterion）</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="probe" id="probeGap">
+      <div class="head">
+        <span class="t">V-4 を動かしてみる — 冬にどれだけ晴れるかが、この提案の精度をそのまま決める</span>
+        <span class="n">t2_meltout_accuracy.json（実測係数 0.217）／t2_return_period.json（信号 7.1日）</span>
+      </div>
+      <div class="steps" role="group" aria-label="観測間隔">
+        <button type="button" data-gap="16">16日</button>
+        <button type="button" data-gap="20" aria-pressed="true">20日</button>
+        <button type="button" data-gap="25">25日</button>
+        <button type="button" data-gap="40">40日</button>
+        <button type="button" data-gap="48">48日</button>
+        <button type="button" data-gap="80">80日</button>
+      </div>
+      <div class="readout">
+        <span class="big" id="gapErr">4.3 日</span>
+        <span class="sub" id="gapSnr">信号対雑音比 1.63</span>
+        <span class="sub" id="gapOcc">観測誤差が全体のばらつきの 27%</span>
+        <span class="sub" id="gapVerdict">判定: 限界域</span>
+      </div>
+      <div class="gauge" aria-hidden="true">
+        <div class="fill" id="gapFill" style="width:24.1%"></div>
+        <div class="mark" style="left:39.4%" title="信号 7.1日"></div>
+      </div>
+      <div class="gscale"><span>誤差 0 日</span><span>信号 7.1 日</span><span>18 日</span></div>
+      <p class="caveat">誤差は<strong>実測した係数 0.217 × 観測間隔</strong>で計算しています（9年分の間引き実験）。
+        20日は現代（Landsat＋Sentinel-2）の実測中央値、48日は最悪年、80日はLandsat単独時代です。
+        16日は「観測誤差を全体の20%以下に抑える」ために必要な水準です。</p>
+    </div>
+
+    <h3>テーマ②の不確定項</h3>
+    <div class="unks">
+      <div class="unk ask-here">
+        <span class="id">V-1</span>
+        <span class="what">平均融雪期間</span>
+        <span class="why">積雪量は「融雪速度 ×（消雪日 − 融雪開始日）」で表しています。その期間の置き方で結果が変わり、<strong>100年確率の平年比は融雪期間20日なら2.24、45日なら1.53</strong>——計画に載る量が1.5倍動きます。積雪面積率の立ち下がりから観測できる量ですが、手元は9年分しかありません。</span>
+        <span class="who"><b>ご相談したい先</b>: 山岳域の融雪の進み方の相場観と、観測で押さえるべき点。</span>
+      </div>
+      <div class="unk ask-here">
+        <span class="id">V-2</span>
+        <span class="what">融雪開始日の観測精度</span>
+        <span class="why">上の式のもう一方の端点です。現状は消雪日と同じ精度と<strong>仮定して</strong>います。両端点で評価すると信号対雑音比は1.30から0.92に落ちるので、ここの実力が図9の判定を左右します。</span>
+        <span class="who"><b>ご相談したい先</b>: 融雪開始の定義（気温・日射・降水相）と、衛星の積雪面積率で代替できるかの判断。</span>
+      </div>
+      <div class="unk ask-here">
+        <span class="id">V-3</span>
+        <span class="what">mmへの換算（融雪係数）</span>
+        <span class="why">文献値は3〜6 mm/℃/day で±33%の幅があります。<strong>平年比で表す限り約分されるので分布の形には効きません</strong>が、泥流量を絶対値で出す1箇所だけで効きます。</span>
+        <span class="who"><b>ご相談したい先</b>: 山岳積雪の現地調査（積雪水量の実測）。ここが埋まると「日」で作った分布を mm に接続できます。</span>
+      </div>
+      <div class="unk ask-here">
+        <span class="id">V-4</span>
+        <span class="what">積雪期の雲による欠測</span>
+        <span class="why">図7のとおり、観測間隔がそのまま誤差になります（V-1〜V-3のすべてに掛かる）。年によっては<strong>画素の98.5%が1つの観測間隔に入ってしまい、空間平均をとっても誤差が落ちません</strong>。</span>
+        <span class="who"><b>ご相談したい先</b>: 冬期山岳域の雲の出方。地域・標高・年による偏りが読めると、対象火山の選び方が変わります。</span>
+      </div>
+      <div class="unk">
+        <span class="id">V-5</span>
+        <span class="what">蔵王以外の火山での年々変動</span>
+        <span class="why">合否ライン（図9の破線）は年々変動の大きさに依存するので、火山ごとに引き直す必要があります。樽前山・鳥海山・磐梯山では未実測です。</span>
+        <span class="who"><b>閉じ方</b>: 同じ計算を回すだけなので自前で閉じられます。計算時間の問題です。</span>
+      </div>
+    </div>
+
+    <details>
+      <summary>テーマ②の数値一覧（出所つき）</summary>
+      <div class="inner">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>計算している量</th><th>値</th><th>確度</th></tr></thead>
+            <tbody>
+              <tr><th>消雪日マップ（蔵王・火口中心の約6km四方・9年分）</th><td class="num">挟み込み間隔の中央値 20 日（9年の年別は15〜48日。最悪は2017年48日・2025年40日。Landsat単独時代1984–98はE[G] 80日）</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>同上・実際に決められた画素と年々差（図8）</th><td class="num">決定できた画素 53〜96%／画素中央値 102〜148 日目（幅 46 日。図9の信号は流域平均の年々変動σ8.9日）</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>消雪日の誤差（間引き実験による実測）</th><td class="num">流域0.2 km²平均のRMSE ＝ 0.217 × 観測間隔</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>信号（流域平均消雪日の年々変動）</th><td class="num">実測σ 8.9 日 → 観測誤差5.4日を除いた真の変動 7.1 日</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>標本不確かさ（ブートストラップ4,000反復）</th><td class="num">20年標本での90%区間幅: 2年確率 21.6%／20年確率 38.5%／100年確率 49.0%</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>使える再現期間の判定</th><td class="num">2年確率は15年以上／10〜20年確率は25年以上／50〜100年確率は43年（天井）でも外挿として開示</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>現行手法との食い違い（蔵王・火口高度）</th><td class="num">計画値 3.81 m 対 UAV実測 1.1 m ＝ 246%</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>平年比の平均融雪期間への依存</th><td class="num">100年確率の平年比は、融雪期間20日なら2.24、45日なら1.53</td><td><span class="flag f-warn">仮定</span></td></tr>
+            </tbody>
+          </table>
+          <p class="src">t2_snowmap_results.json ／ t2_meltout_accuracy.json ／ t2_return_period.json</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ ご依頼 ============ -->
+  <section>
+    <h2>ご相談したいこと</h2>
+
+    <div class="fig">
+      <figure>
+        <p class="figtitle">図10　不確定項は10件。うち8件は我々だけでは閉じられません</p>
+        <svg viewBox="0 0 860 240" role="img" aria-label="不確定項10件の内訳。気象側の知見で閉じるもの5件、現地観測2件、お取り次ぎ1件、自前で閉じるもの2件。">
+          <g filter="url(#fSoft)">
+            <rect x="20" y="44" width="400" height="48" rx="2" fill="var(--accent)" opacity=".8"></rect>
+            <rect x="424" y="44" width="160" height="48" rx="2" fill="var(--accent)" opacity=".55"></rect>
+            <rect x="588" y="44" width="80" height="48" rx="2" fill="var(--accent)" opacity=".32"></rect>
+            <rect x="672" y="44" width="160" height="48" rx="2" fill="var(--unk)" opacity=".38"></rect>
+          </g>
+          <g class="s-hd" text-anchor="middle" fill="#FFF" font-size="17">
+            <text x="220" y="75">5件</text>
+            <text x="504" y="75">2件</text>
+          </g>
+          <g class="s-hd" text-anchor="middle" font-size="17">
+            <text x="628" y="75" fill="var(--ink)">1件</text>
+            <text x="752" y="75" fill="var(--ink)">2件</text>
+          </g>
+
+          <g color="var(--accent-ink)">
+            <use href="#gMoonCloud" x="208" y="102" width="24" height="24"></use>
+            <use href="#gThermo"    x="492" y="102" width="24" height="24"></use>
+            <use href="#gDocS"      x="616" y="102" width="24" height="24"></use>
+          </g>
+          <g color="var(--unk-ink)">
+            <use href="#gGearS" x="740" y="102" width="24" height="24"></use>
+          </g>
+          <g class="s-lbl" text-anchor="middle">
+            <text x="220" y="146" font-weight="600">気象側の知見をいただく</text>
+            <text x="504" y="146" font-weight="600">現地観測</text>
+            <text x="628" y="146" font-weight="600">お取り次ぎ</text>
+            <text x="752" y="146" font-weight="600">自前で閉じる</text>
+          </g>
+          <g class="s-sm" text-anchor="middle">
+            <text x="220" y="168">U-2 同じ空とみなせる距離　U-3 晴天夜の頻度</text>
+            <text x="220" y="186">V-1 融雪期間　V-2 融雪開始日　V-4 冬の雲</text>
+            <text x="504" y="168">U-1 放射率の経年</text>
+            <text x="504" y="186">V-3 積雪水量の実測</text>
+            <text x="628" y="168">U-5 検証</text>
+            <text x="628" y="186">フィールド</text>
+            <text x="752" y="168">U-4 ベンダ照会</text>
+            <text x="752" y="186">V-5 他火山の計算</text>
+          </g>
+
+          <g class="s-sm" text-anchor="middle" fill="var(--accent-ink)" font-weight="600">
+            <text x="220" y="34">ご依頼 1</text>
+            <text x="504" y="34">ご依頼 2</text>
+            <text x="628" y="34">ご依頼 3</text>
+          </g>
+          <line x1="20" y1="208" x2="832" y2="208" stroke="var(--rule)"></line>
+          <text class="s-sm" x="20" y="230">帯の幅は件数。<tspan font-weight="600" fill="var(--ink)">左の8件が、画像処理では埋まらず、気象と現場の側にある不確定項です。</tspan></text>
+        </svg>
+        <figcaption>
+          いずれも「まず一度お話を伺いたい」という段階のご相談で、この場でお約束いただくことは想定していません。
+          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています（テーマ①は代用データで共通モードの除去まで＝図5、テーマ②は成果物そのものを9年分＝図8）。
+          残っているのは<strong>そこに写った値が「なぜそうなるか」と、地上で答え合わせをする部分</strong>です。
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="asks">
+      <div class="ask">
+        <span class="what">ご依頼 1. 気象側の知見について、技術的なご助言をいただきたい</span>
+        <span class="detail">
+          天空放射と雲の扱い、夜間の晴天判定、沿岸部の局所微気象、山岳域の融雪と冬期の雲。
+          いずれも我々が数字は出したものの、<strong>その数字がなぜそうなるかを説明できていない</strong>箇所です。
+        </span>
+        <span class="hits">→ U-2 / U-3 / V-1 / V-2 / V-4</span>
+      </div>
+      <div class="ask">
+        <span class="what">ご依頼 2. 現地観測（グラウンドトゥルース）をお願いできる余地があるか</span>
+        <span class="detail">
+          テーマ①は屋外設備の表面温度・放射率の実測、テーマ②は山岳域の積雪水量の実測です。
+          <strong>いずれも上限性能や絶対値を決めている量で、衛星側からは埋められません。</strong>
+          可否だけでなく、そもそもどういう観測なら現実的かをお聞かせいただきたいです。
+        </span>
+        <span class="hits">→ U-1 / V-3</span>
+      </div>
+      <div class="ask">
+        <span class="what">ご依頼 3. 保全の実務が分かる先へのお取り次ぎ</span>
+        <span class="detail">
+          テーマ①は検証フィールド（設備台帳・保全履歴）が無いことが最大の制約です。
+          貴協会が気象コンサルティングで接している発電所・ダム・熱供給等の保全部門で、
+          <strong>「こういう情報なら現場は使う／使わない」を教えていただける方</strong>をご紹介いただけないでしょうか。
+          データそのものの提供は、この段階では想定していません。
+        </span>
+        <span class="hits">→ U-5</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <section>
+    <h2>先に申し上げておくこと</h2>
+    <div class="frank">
+      <div class="row">
+        <span class="h">応募は単独で進めます</span>
+        <span class="t">両テーマとも、<strong>貴協会のご協力が無くても提出でき、プロトタイプ開発まで進められる</strong>状態にあります。ご協力でよくなるのは精度と説得力であって、成否ではありません。</span>
+      </div>
+      <div class="row">
+        <span class="h">できないことは先に申告します</span>
+        <span class="t">テーマ①は<strong>単発の撮像では検出できません</strong>（図3・図4）。テーマ②は<strong>50〜100年確率は外挿としてしか出せません</strong>（90%区間幅49%）。いずれも提案書にもそのまま書いています。</span>
+      </div>
+      <div class="row">
+        <span class="h">実データでの実証はまだ途中です</span>
+        <span class="t">テーマ①の実データ検証は30 m・昼間・熱赤外のLandsatで行っており、実際に使う3.5 m・夜間・中波長赤外とは画素・時刻・波長がすべて違います。<strong>桁の確認であって検証ではありません。</strong></span>
+      </div>
+      <div class="row">
+        <span class="h">スケジュール</span>
+        <span class="t">応募締切は<strong>2026年8月31日正午</strong>、1次審査の結果公表は10月下旬（予定）、2次審査に向けたプロトタイプ開発が2026年10月〜2027年5月です。<strong>現地観測を伴うご相談は、冬期が年に1回しか来ないため時期が効きます。</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <details>
+    <summary>補足: なぜ差分を三段も重ねるのか（テーマ①の設計の背景）</summary>
+    <div class="inner">
+      <p>
+        保温材が劣化した面の表面温度上昇は+1 K程度です。これに対し、外装材の放射率が0.05違うだけで見かけの輝度温度は2.7 K動き、
+        晴天夜と曇天夜の違いだけで8.6 K動きます（図3）。<strong>単独の絶対温度で判定する設計は原理的に成立しません。</strong>
+      </p>
+      <p>
+        そこで、①同一資産の中で相対比較する、②同一構内の同型ユニット（兄弟資産）どうしで差を取る、
+        ③その差の時間変化を見る、と重ねます（図4）。①で資産固有の放射率が落ち、②で天空条件・大気透過が落ち、
+        ③で「もともとあった差」が落ちて、残るのが劣化の進行だけになります。
+      </p>
+      <p>
+        この設計の弱点がそのまま U-1・U-2 です。②は<strong>2つの資産が同じ空を共有していること</strong>に依存し、
+        ③は<strong>2つの資産の劣化速度が同じであること</strong>に依存します。どちらも気象と材料の話であって、
+        画像処理では解決できません。
+      </p>
+    </div>
+  </details>
+
+  <footer>
+    出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
+    テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
+    テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
+    2026年8月12日 第7版（実データの図を2点追加）／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- 図2: 可視⇄熱赤外のワイプ ---------- */
+  var X0 = 86, W = 687;                 // 画面の左端と幅（viewBox座標）
+  var rect = document.getElementById("wipeRect");
+  var handle = document.getElementById("wipeHandle");
+  var range = document.getElementById("wipeRange");
+  var capV = document.getElementById("wipeCapV");
+  var capT = document.getElementById("wipeCapT");
+
+  function setWipe(pct) {
+    pct = Math.max(0, Math.min(100, pct));
+    var x = X0 + W * pct / 100;
+    rect.setAttribute("x", x.toFixed(1));
+    rect.setAttribute("width", (X0 + W - x).toFixed(1));
+    handle.setAttribute("transform", "translate(" + x.toFixed(1) + ",0)");
+    capV.style.opacity = pct > 26 ? 1 : 0;
+    capT.style.opacity = pct < 74 ? 1 : 0;
+    if (range.value != pct) range.value = pct;
+  }
+
+  if (rect && handle && range) {
+    range.addEventListener("input", function () { setWipe(+range.value); });
+
+    var svg = rect.ownerSVGElement, dragging = false;
+    function pctFromEvent(ev) {
+      var pt = svg.createSVGPoint();
+      pt.x = ev.clientX; pt.y = ev.clientY;
+      var loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+      return (loc.x - X0) / W * 100;
+    }
+    function onDown(ev) { dragging = true; handle.setPointerCapture && handle.setPointerCapture(ev.pointerId); ev.preventDefault(); }
+    function onMove(ev) { if (dragging) setWipe(pctFromEvent(ev)); }
+    function onUp() { dragging = false; }
+    handle.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    svg.addEventListener("pointerdown", function (ev) {
+      if (ev.target.closest("#wipeHandle")) return;
+      setWipe(pctFromEvent(ev));
+    });
+    setWipe(50);
+  }
+
+  /* ---------- 共通: 実測点を切り替えるボタン群 ---------- */
+  function stepGroup(rootId, attr, render) {
+    var root = document.getElementById(rootId);
+    if (!root) return;
+    var btns = root.querySelectorAll("button[" + attr + "]");
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        btns.forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+        render(b.getAttribute(attr));
+      });
+      if (!b.hasAttribute("aria-pressed")) b.setAttribute("aria-pressed", "false");
+    });
+  }
+
+  /* U-1 差動経年 → 二重差分AUC（poc7_results.json / A_仮定帯域 +1.0K） */
+  var AGE = {
+    "0":    { auc: 0.980, lo: 0.970, hi: 0.989, note: "経年差がゼロなら、ほぼ取り逃がさない" },
+    "0.15": { auc: 0.921, lo: 0.895, hi: 0.944, note: "提出物に書いた 0.92 とほぼ一致する水準" },
+    "0.3":  { auc: 0.788, lo: 0.746, hi: 0.829, note: "見逃しが目に見えて増える" },
+    "0.5":  { auc: 0.697, lo: 0.651, hi: 0.747, note: "この水準だと商品として成立しない" }
+  };
+  function pos(v) { return Math.max(0, (v - 0.5) / 0.5 * 100); }
+  stepGroup("probeAge", "data-age", function (k) {
+    var d = AGE[k];
+    document.getElementById("ageAuc").textContent = d.auc.toFixed(3);
+    document.getElementById("ageCi").textContent = "90%区間 " + d.lo.toFixed(3) + " – " + d.hi.toFixed(3);
+    document.getElementById("ageNote").textContent = d.note;
+    document.getElementById("ageFill").style.width = pos(d.auc).toFixed(1) + "%";
+    var ci = document.getElementById("ageCiBar");
+    ci.style.left = pos(d.lo).toFixed(1) + "%";
+    ci.style.width = (pos(d.hi) - pos(d.lo)).toFixed(1) + "%";
+  });
+
+  /* U-3 撮像回数 → 最小検知段差（poc6_results.json / operating_point） */
+  var EP = { "6": 6.36, "12": 4.50, "14": 4.17, "24": 3.18, "36": 2.60 };
+  stepGroup("probeEp", "data-ep", function (k) {
+    var v = EP[k];
+    document.getElementById("epMdd").textContent = v.toFixed(2) + " K";
+    document.getElementById("epFill").style.width = (v / 8 * 100).toFixed(1) + "%";
+  });
+
+  /* V-4 観測間隔 → 誤差・信号対雑音比（実測係数 0.217 / 信号 7.1日） */
+  var SIGNAL = 7.1, COEF = 0.217;
+  stepGroup("probeGap", "data-gap", function (k) {
+    var gap = +k, err = COEF * gap, snr = SIGNAL / err;
+    var occ = err * err / (err * err + SIGNAL * SIGNAL) * 100;
+    document.getElementById("gapErr").textContent = err.toFixed(1) + " 日";
+    document.getElementById("gapSnr").textContent = "信号対雑音比 " + snr.toFixed(2);
+    document.getElementById("gapOcc").textContent = "観測誤差が全体のばらつきの " + occ.toFixed(0) + "%";
+    document.getElementById("gapVerdict").textContent =
+      "判定: " + (occ <= 20 ? "年超過確率分布に使える" : (snr >= 1 ? "限界域" : "年ごとの違いが見えない"));
+    document.getElementById("gapFill").style.width = Math.min(100, err / 18 * 100).toFixed(1) + "%";
+  });
+
+  /* ---------- 数値一覧の一括開閉 ---------- */
+  var btnD = document.getElementById("btnDetails");
+  if (btnD) {
+    btnD.addEventListener("click", function () {
+      var open = btnD.getAttribute("aria-pressed") !== "true";
+      document.querySelectorAll("details").forEach(function (d) { d.open = open; });
+      btnD.setAttribute("aria-pressed", open ? "true" : "false");
+      btnD.textContent = open ? "数値一覧をすべて閉じる" : "数値一覧をすべて開く";
+    });
+  }
+
+  /* ---------- 図の拡大表示 ---------- */
+  var zoomed = null, closeBtn = null;
+  function unzoom() {
+    if (!zoomed) return;
+    zoomed.classList.remove("zoomed");
+    document.body.classList.remove("haszoom");
+    if (closeBtn) { closeBtn.remove(); closeBtn = null; }
+    zoomed = null;
+  }
+  document.querySelectorAll(".fig").forEach(function (fig) {
+    fig.addEventListener("click", function (ev) {
+      if (ev.target.closest("input, button, a, .wipewrap")) return;
+      if (zoomed === fig) return;
+      unzoom();
+      zoomed = fig;
+      fig.classList.add("zoomed");
+      document.body.classList.add("haszoom");
+      closeBtn = document.createElement("button");
+      closeBtn.className = "zoomclose";
+      closeBtn.type = "button";
+      closeBtn.textContent = "✕ 閉じる（Esc）";
+      closeBtn.addEventListener("click", function (e) { e.stopPropagation(); unzoom(); });
+      document.body.appendChild(closeBtn);
+    });
+  });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") unzoom(); });
+})();
+</script>
