@@ -788,7 +788,7 @@
       </li>
       <li class="sec">
         <a href="#s-asks">ご相談したいこと</a>
-        <div class="figs"><a href="#fig7">図7 不確定項10件と、閉じられない8件</a></div>
+        <div class="figs"><a href="#fig7">図7 お力をお借りしたい8件</a></div>
       </li>
       <li class="sec">
         <a href="#s-frank">先に申し上げておくこと</a>
@@ -810,18 +810,13 @@
         <span class="what">テーマ①　プラント保温システムの劣化監視</span>
         <span class="detail">
           発電所やごみ焼却施設などの高温設備で、外からは見えない保温材の劣化を夜間の中波長赤外で捉え、<strong>どの設備を先に点検すべきかを絞り込みます</strong>。
-        </span>
-        <span class="detail">
-          <strong>お力をお借りしたいのは</strong>、雲の出方と、下向き長波放射が空間的にどこまで一様か、沿岸部の局所微気象、屋外設備の放射率と表面温度の実測、そして保全の実務に詳しい方へのお取り次ぎです。
+          使う衛星は<strong>SatVu社の HotSat-2</strong>（2026年3月打上げ、6月29日に商用運用開始。夜間 3.7–4.95 µm・3.5 m級）です。
         </span>
       </div>
       <div class="ask tcard">
         <span class="what">テーマ②　火口周辺の積雪水量（年超過確率）</span>
         <span class="detail">
           融雪型火山泥流の想定量は火口付近にどれだけ雪があるかで決まりますが、<strong>その高さに観測点がありません</strong>。そこを衛星が捉えた消雪日から補い、<strong>何年に一度どれだけ積もるかを確率で示します</strong>。
-        </span>
-        <span class="detail">
-          <strong>お力をお借りしたいのは</strong>、山岳域の融雪の進み方、冬期の雲の出方、そして積雪水量の現地観測です。
         </span>
       </div>
     </div>
@@ -834,7 +829,6 @@
       位置づけ: 初回の情報交換の段階です　／　取扱い: 貴協会内でのご検討にご利用ください（第三者への再配布はお控えください）
     </p>
     <div class="toolbar" style="margin-top:1.2rem">
-      <button type="button" id="btnDetails" aria-pressed="false">数値一覧をすべて開く</button>
       <span class="hint">図をクリックすると拡大表示になります（Esc で戻ります）。スライダーとボタンは実測点だけを切り替えます（図6は9年分を1枚ずつ切り替えられます）。</span>
     </div>
   </header>
@@ -901,13 +895,8 @@
     </div>
 
     <div class="body">
-      <div class="legend">
-        <span><span class="flag f-ok">確定</span> 一次資料の原文、または再現できる自前計算で確認済み</span>
-        <span><span class="flag f-warn">仮定</span> 幅で置いている。1点に決め打ちしていない</span>
-        <span><span class="flag f-miss">未取得</span> まだ根拠がない</span>
-      </div>
       <p style="font-size:.92rem;color:var(--ink-2)">
-        数値一覧と不確定項では、すべての数値にこのラベルを付けています（図の中には付けません）。自前計算はすべて乱数シードを固定してあり、同じ入力から同じ値が再現します。
+        以下の数値は、一次資料の原文か、乱数シードを固定した自前計算です（仮定を置いている箇所はその都度「仮定」と書きます）。
       </p>
     </div>
   </section>
@@ -974,11 +963,10 @@
           <text class="s-xs" x="20" y="350">可視面率は3Dモデルから事前に算定して開示し、垂直面と個別配管は従来どおり地上手段の担当とします。</text>
         </svg>
         <figcaption>
-          対象は<strong>発電所・ごみ焼却施設・地域熱供給などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）で、製油所・石油化学は横展開先です。
-          抜き取り点検を<strong>全数スクリーニングへ転換し、地上点検を精密確認へ再配置する</strong>提案です。
+          対象は<strong>発電所・ごみ焼却施設・地域熱供給などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）です。
+          数年周期の抜き取り点検を<strong>全数スクリーニングへ転換し、地上点検を精密確認へ再配置する</strong>提案です。
           保温材が傷むと、その面の表面温度が周りより少しだけ高くなります（<strong>以降の計算では +1 K を置いています</strong>）。
-          それを夜間の中波長赤外（3.5 m級）で<strong>上向きの面</strong>を外から面的に拾い、<strong>点検の行き先</strong>を返します。確認そのものは地上手段に残します。
-          <span class="src">応募提案書（②課題・⑤実用化）／自前計算（+1 K を置いたときの輝度温度への写り）</span>
+          それを夜間の中波長赤外で<strong>上向きの面</strong>から面的に拾い、<strong>点検の行き先</strong>を返します。確認そのものは地上手段に残します。
         </figcaption>
       </figure>
     </div>
@@ -1119,15 +1107,12 @@
           <text class="s-sm" x="230" y="268" fill="var(--ink-2)"><tspan font-weight="600" fill="var(--accent-ink)">①②はどちらも同じ撮像の中の比較なので、ここで気象が消える</tspan>。②に残る個体差を、③の時間変化が消す</text>
         </svg>
         <figcaption>
-          <strong>とくにご相談したいのがこの図です</strong>——引き算を重ねる設計の、②と③が前提にしていることが U-1・U-2 です。
-          横軸は対数です。<strong>絶対温度をそのまま見る設計は成立しません</strong>——晴天夜と曇天夜の違いだけで見かけの温度が 8.57 K 動き、探している信号 0.53 K の16倍あるからです（実帯域では 10.17 K 対 0.48 K ＝ 約21倍でさらに厳しい）。
-          <strong>①と②はどちらも同じ撮像の中での比較なので、その気象がここで消えます</strong>（落差が最も大きいのがそこです）。
-          ①は設備の中の局所的な異常しか見えず、<strong>設備全体が面的に劣化すると基準を失って見えません</strong>。だから②で隣の同型設備を基準にし、②で戻ってくる個体差（放射率差 2.67 K）を③の時間変化が消します。
-          <strong>ただし③が消せるのは差が一定である分だけで、差そのものが経年で開くと残ります（U-1）。</strong>
-          <strong>②は基準が数百m離れるので「同じ空の下」とみなせる距離が前提になり、そこを我々は説明できていません（U-2）。</strong>
-          実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。
-          <span class="src">自前計算（誤差バジェットと信号／実帯域3.7–4.95µmでの再計算／兄弟差分σの離隔距離依存）。
-          8.57 K・0.53 Kは帯域3.4–4.2µm仮定での値、2.67 Kは外装材の放射率差 ε±0.05、信号は面的劣化 +1 K・風化アルミ ε=0.25 を置いた場合。いずれも輝度温度領域</span>
+          <strong>とくにご相談したいのがこの図です。</strong>横軸は対数です。
+          <strong>絶対温度をそのまま見る設計は成立しません</strong>——晴天夜と曇天夜の違いだけで見かけの温度が 8.57 K 動き、探している信号 0.53 K の16倍あるからです。
+          <strong>①と②はどちらも同じ撮像の中での比較なので、その気象がここで消えます。</strong>
+          ①は設備の中の局所的な異常しか見えず、設備全体が面的に劣化すると基準を失います。だから②で隣の同型設備を基準にし、そこで戻ってくる個体差を③の時間変化が消します。
+          <strong>ただし③が消せるのは差が一定である分だけで、差そのものが経年で開くと残ります（U-1）。②は基準が数百m離れるので「同じ空の下」とみなせる距離が前提になり、そこを我々は説明できていません（U-2）。</strong>
+          <span class="src">自前計算（誤差バジェットと信号）。8.57 K・0.53 K は帯域3.4–4.2 µm 仮定・輝度温度領域の値で、信号は面的劣化 +1 K・風化アルミ ε=0.25 を置いた場合</span>
         </figcaption>
       </figure>
     </div>
@@ -1218,157 +1203,10 @@
           <br>
           <strong>自白</strong>: これは<strong>昼間・30 m格子のLandsat</strong>であって、提案している<strong>夜間・3.5 m</strong>の画像ではありません
           （<strong>配布格子30 mでは20 m角の設備は0.44画素、TIRSの原分解能100 mなら0.04画素</strong>。3.5 m級なら設備単位で見えるようになります）。
-          <details class="fine">
-            <summary>表示の但し書き（ご質問に応じて）</summary>
-            <div>
-              右は東扇島火力の拡大です（1マスが配布格子の1画素＝30 m。<strong>ただしTIRSの原分解能は100 mで、ST製品が30 m格子に再標本化されたもの</strong>なので、熱の広がりはこのマスより粗く出ます）。3.5 m級なら同じ範囲が約600 × 510画素になります。
-              <br>
-              明暗は各シーンの2〜98パーセンタイルで伸ばしているので、<strong>最も熱い上位2%の画素は白く飛ばしてあります</strong>（冬の実範囲は 264.9〜299.8 K）。冬の画像で強く出ている明暗は<strong>陸と海の差</strong>で、資産地区が市街地参照より高いのは冬で <strong>+0.2〜+1.2 K</strong>にすぎません。
-              同じ場所を3.5 m級で撮った実画像は、まだ手元にありません（衛星ベンダへの照会は10月下旬・1次通過後です）。
-              <span class="src">Landsat Collection 2 L2 の ST_B10（放射率補正済みの地表温度。DN×0.00341802+149.0 [K]。TIRS原分解能100 m→30 m格子）。
-              AOIは±数百mの概略。表示の物差しは各シーンの2〜98パーセンタイル、全景パネルは2×2平均に間引いて表示</span>
-            </div>
-          </details>
+          同じ場所を3.5 m級で撮った実画像は、まだ手元にありません。
+          <span class="src">Landsat Collection 2 L2 の ST_B10（地表温度。TIRS原分解能100 m→30 m格子）。明暗は2〜98パーセンタイル表示で、最も熱い上位2%は白く飛ばしてある</span>
         </figcaption>
       </figure>
-    </div>
-
-    <div class="fig" id="figT1diff">
-      <p class="tag">【補足】同じことを実データで確かめたもの</p>
-      <figure>
-        <svg viewBox="0 0 860 268" role="img" aria-label="実Landsat 14シーンで、資産6地区の地表温度から市街地参照面を引いた差の時系列。残る振れ幅は12.53K。東扇島火力は暖候期に大きく下がり、冬はほぼ0。">
-<rect x="58" y="34" width="690" height="182" fill="var(--band)"></rect>
-<line x1="58" y1="216.0" x2="748" y2="216.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-<text class="s-xs s-num" x="52" y="220.0" text-anchor="end">-12</text>
-<line x1="58" y1="179.6" x2="748" y2="179.6" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-<text class="s-xs s-num" x="52" y="183.6" text-anchor="end">-9</text>
-<line x1="58" y1="143.2" x2="748" y2="143.2" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-<text class="s-xs s-num" x="52" y="147.2" text-anchor="end">-6</text>
-<line x1="58" y1="106.8" x2="748" y2="106.8" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-<text class="s-xs s-num" x="52" y="110.8" text-anchor="end">-3</text>
-<line x1="58" y1="70.4" x2="748" y2="70.4" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-<text class="s-xs s-num" x="52" y="74.4" text-anchor="end">0</text>
-<line x1="58" y1="34.0" x2="748" y2="34.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-<text class="s-xs s-num" x="52" y="38.0" text-anchor="end">3</text>
-<text class="s-xs" x="52" y="26" text-anchor="end">K</text>
-<line x1="257.2" y1="34" x2="257.2" y2="216" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-<text class="s-xs s-num" x="257.2" y="232" text-anchor="middle">2024</text>
-<line x1="460.9" y1="34" x2="460.9" y2="216" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-<text class="s-xs s-num" x="460.9" y="232" text-anchor="middle">2025</text>
-<line x1="664.0" y1="34" x2="664.0" y2="216" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-<text class="s-xs s-num" x="664.0" y="232" text-anchor="middle">2026</text>
-<line x1="58" y1="70.4" x2="748" y2="70.4" stroke="currentColor" stroke-width="1" opacity=".45"></line>
-<path d="M525.4 91.6 L596.6 85.4 L641.2 68.0" fill="none" stroke="var(--ink-2)" stroke-width="1.0" stroke-linejoin="round"><title>川崎火力(千鳥町)</title></path>
-<circle cx="58.0" cy="58.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="169.3" cy="84.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="329.5" cy="93.0" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="525.4" cy="91.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="596.6" cy="85.4" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="641.2" cy="68.0" r="1.6" fill="var(--ink-2)"></circle>
-<path d="M58.0 65.1 L129.2 131.3 L169.3 143.1 L245.0 83.7 M329.5 150.1 L396.3 78.7 L454.2 57.3 L507.6 157.3 L525.4 137.9 L596.6 145.5 L641.2 78.9 L672.3 87.0 L748.0 179.1" fill="none" stroke="var(--accent)" stroke-width="2.0" stroke-linejoin="round"><title>東扇島火力</title></path>
-<circle cx="58.0" cy="65.1" r="2.4" fill="var(--accent)"></circle>
-<circle cx="129.2" cy="131.3" r="2.4" fill="var(--accent)"></circle>
-<circle cx="169.3" cy="143.1" r="2.4" fill="var(--accent)"></circle>
-<circle cx="245.0" cy="83.7" r="2.4" fill="var(--accent)"></circle>
-<circle cx="329.5" cy="150.1" r="2.4" fill="var(--accent)"></circle>
-<circle cx="396.3" cy="78.7" r="2.4" fill="var(--accent)"></circle>
-<circle cx="454.2" cy="57.3" r="2.4" fill="var(--accent)"></circle>
-<circle cx="507.6" cy="157.3" r="2.4" fill="var(--accent)"></circle>
-<circle cx="525.4" cy="137.9" r="2.4" fill="var(--accent)"></circle>
-<circle cx="596.6" cy="145.5" r="2.4" fill="var(--accent)"></circle>
-<circle cx="641.2" cy="78.9" r="2.4" fill="var(--accent)"></circle>
-<circle cx="672.3" cy="87.0" r="2.4" fill="var(--accent)"></circle>
-<circle cx="748.0" cy="179.1" r="2.4" fill="var(--accent)"></circle>
-<path d="M525.4 115.1 L596.6 117.5 L641.2 82.7" fill="none" stroke="var(--ink-2)" stroke-width="1.0" stroke-linejoin="round"><title>浮島製油所地区</title></path>
-<circle cx="58.0" cy="64.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="169.3" cy="117.4" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="329.5" cy="121.0" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="525.4" cy="115.1" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="596.6" cy="117.5" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="641.2" cy="82.7" r="1.6" fill="var(--ink-2)"></circle>
-<path d="M525.4 73.3 L596.6 61.2 L641.2 62.5" fill="none" stroke="var(--ink-2)" stroke-width="1.0" stroke-linejoin="round"><title>水江町製油所地区</title></path>
-<circle cx="58.0" cy="61.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="169.3" cy="60.1" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="329.5" cy="64.9" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="525.4" cy="73.3" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="596.6" cy="61.2" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="641.2" cy="62.5" r="1.6" fill="var(--ink-2)"></circle>
-<path d="M58.0 56.2 L129.2 138.8 L169.3 119.7 L245.0 76.6 L307.3 141.6 L329.5 134.9 L396.3 77.0 L454.2 45.8 L507.6 132.6 L525.4 124.0 L596.6 131.6 L641.2 78.3 L672.3 76.7 L748.0 166.5" fill="none" stroke="var(--ink-2)" stroke-width="1.0" stroke-linejoin="round"><title>扇島製鉄所地区</title></path>
-<circle cx="58.0" cy="56.2" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="129.2" cy="138.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="169.3" cy="119.7" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="245.0" cy="76.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="307.3" cy="141.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="329.5" cy="134.9" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="396.3" cy="77.0" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="454.2" cy="45.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="507.6" cy="132.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="525.4" cy="124.0" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="596.6" cy="131.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="641.2" cy="78.3" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="672.3" cy="76.7" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="748.0" cy="166.5" r="1.6" fill="var(--ink-2)"></circle>
-<path d="M58.0 67.6 L129.2 102.4 L169.3 106.8 L245.0 77.6 L307.3 117.2 L329.5 107.6 L396.3 49.8 L454.2 55.6 L507.6 122.3 L525.4 97.3 L596.6 104.3 L641.2 77.2 L672.3 84.1 L748.0 197.8" fill="none" stroke="var(--ink-2)" stroke-width="1.0" stroke-linejoin="round"><title>大黒町火力地区</title></path>
-<circle cx="58.0" cy="67.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="129.2" cy="102.4" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="169.3" cy="106.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="245.0" cy="77.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="307.3" cy="117.2" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="329.5" cy="107.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="396.3" cy="49.8" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="454.2" cy="55.6" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="507.6" cy="122.3" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="525.4" cy="97.3" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="596.6" cy="104.3" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="641.2" cy="77.2" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="672.3" cy="84.1" r="1.6" fill="var(--ink-2)"></circle>
-<circle cx="748.0" cy="197.8" r="1.6" fill="var(--ink-2)"></circle>
-<path d="M751 45.8 L756 45.8 L756 197.8 L751 197.8" fill="none" stroke="var(--accent)" stroke-width="1.4"></path>
-<text class="s-sm s-num s-acc" x="762" y="49.8" font-weight="600">12.53 K</text>
-<text class="s-xs" x="762" y="65.8" fill="var(--ink-3)">まだ</text>
-<text class="s-xs" x="762" y="79.8" fill="var(--ink-3)">残る幅</text>
-<text class="s-hd" x="58" y="20">市街地参照面を引いた残り <tspan class="s-sm" fill="var(--ink-2)" font-weight="400">（実Landsat 14シーン・資産6地区。そのまま並べると 42.97 K ばらつく）</tspan></text>
-<g transform="translate(58,246)"><line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line><text class="s-xs" x="28" y="0">東扇島火力</text><line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-2)" stroke-width="1"></line><text class="s-xs" x="148" y="0">他5地区</text><text class="s-xs" x="230" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text><text class="s-xs" x="470" y="0" fill="var(--ink-3)">0 K ＝ 市街地参照面と同じ温度</text></g>
-</svg>
-        <figcaption>
-          図4の白枠6地区について、<strong>同じ日の市街地参照面（青破線・鶴見区）を引いた差</strong>を14シーン分並べたものです。
-          そのまま並べると 42.97 K ばらつくものが、引き算で <strong>12.53 K に落ちます</strong>——図3の②が実データでも起きることの確認です。
-          <strong>ただし参照面までの距離は4〜10 kmで、図3②が要求する離隔（数百 m）とは別の段階の引き算です</strong>（ここで落ちるのは広域の共通モードだけ）。
-          残り方は地区ごとに形が違い、<strong>赤＝東扇島火力は暖候期の多くで −5〜−9 K まで下がり、冬季はほぼ0 K</strong>です。ところが<strong>同じ9月でも2025年は −6.2 K、2024年は −0.7 K</strong>で、暖候期でも揃いません。
-          <strong>この「地区ごとの季節感受度が何によるのか」が説明できていません（U-2）。</strong>
-          <br>
-          <strong>自白</strong>: これは配布格子30 m（TIRSの原分解能は100 m）・昼間・複合体単位のLandsatです。設備単位の信号 0.53 K は<strong>輝度温度領域</strong>の値で、この図の縦軸（地表温度の差）とは領域も違い、目盛より小さいのでここには写っていません。
-          この図が示すのは「気象の共通モードは引き算で本当に落ちる」「落ちきらない分は気象に属する」の2点だけです。
-          <span class="src">自前計算（実Landsat 14シーン・鶴見区参照面。全14シーンが有効）。
-          集約はAOI内の10–90パーセンタイルのトリム平均。
-          この図の前段 42.97 K は<strong>資産6地区だけの振れ幅</strong>（資産と参照面を合わせると 44.05 K）。応募提案書に書いている 36.0 → 7.7 K は<strong>旧参照面・6シーンで、資産と参照面を合わせた振れ幅</strong>なので、同じ定義の対は 44.05→12.53 と 36.02→7.65 になる</span>
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="probe" id="probeEp">
-      <div class="head">
-        <span class="t">U-3 を動かしてみる — 年に何回撮れるかが、拾える段差の大きさを決める</span>
-        <span class="n">自前計算（実Landsat・ランク1季節モデル後の運用点）</span>
-      </div>
-      <div class="steps" role="group" aria-label="有効な撮像回数">
-        <button type="button" data-ep="6" aria-pressed="true">6回</button>
-        <button type="button" data-ep="12">12回</button>
-        <button type="button" data-ep="14">14回</button>
-        <button type="button" data-ep="24">24回</button>
-        <button type="button" data-ep="36">36回</button>
-      </div>
-      <div class="readout">
-        <span class="big" id="epMdd">6.36 K</span>
-        <span class="sub">この大きさの段差から検知できる（狙いたいのは 1〜2 K）</span>
-      </div>
-      <div class="gauge" aria-hidden="true">
-        <div class="fill" id="epFill" style="width:79.5%"></div>
-        <div class="mark" style="left:25%" title="狙いたい 2 K"></div>
-      </div>
-      <div class="gscale"><span>0 K</span><span>狙いたい 2 K</span><span>8 K</span></div>
-      <p class="caveat"><strong>これは30 m画素・複合体レベルの実測値で、HotSat-2（3.5 m）の性能ではありません。</strong>
-        画素数と対象の充填率が変わるので、絶対値ではなく「回数が増えると何が変わるか」を見てください。</p>
     </div>
 
     <div class="probe" id="probeAge">
@@ -1409,51 +1247,22 @@
         <span class="id">U-2</span>
         <span class="what">「同じ空の下」とみなせる距離</span>
         <span class="why">図3の②が成立する前提です。実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。<strong>この増え方が何によるのか（海陸風・水面の隣接・地形）を我々は説明できていません。</strong></span>
-        <span class="who"><b>ご相談したい先</b>: 沿岸コンビナート域の局所微気象。実データでも東扇島の資産に +1.1〜−9.0 Kの季節残差が残っており（<strong>市街地参照面〈鶴見区・資産から4〜10 km〉との差＝②の数百mとは別の段階の残差</strong>）、説明できると閾値設計が変わります。</span>
+        <span class="who"><b>ご相談したい先</b>: 沿岸コンビナート域の局所微気象。実データ（Landsat 14シーン）でも、地区ごとに形の違う季節残差が残っています。</span>
       </div>
       <div class="unk ask-here">
         <span class="id">U-3</span>
         <span class="what">夜間かつ晴天の撮像機会が年に何回あるか</span>
-        <span class="why">図3の③はエポック数で効くので、<strong>年間の有効撮像回数がそのまま検知力になります</strong>。現状は衛星パス時刻（22時JST想定）の雲量30%未満を晴天としていますが、タスキング成功率0.6は仮定のままです。夜間ウィンドウの最小雲量で判定すると約2.4倍の過大評価になることは自分で確認しました。</span>
+        <span class="why">図3の③は撮像回数で効くので、<strong>年間の有効撮像回数がそのまま検知力になります</strong>。現状は衛星パス時刻（22時JST想定）の雲量30%未満を晴天とし、タスキング成功率0.6を仮定で置いています。</span>
         <span class="who"><b>ご相談したい先</b>: 雲の日変化と、この用途に妥当な晴天判定の置き方。</span>
-      </div>
-      <div class="unk">
-        <span class="id">U-4</span>
-        <span class="what">センサNEdTの実力値</span>
-        <span class="why">仮定1 K。ただし自前の掃引で、これは<strong>上限性能を動かさず、必要な撮像回数だけを動かす</strong>ことが分かりました（タンク屋根のパッチ検知にだけは効きます）。</span>
-        <span class="who"><b>閉じ方</b>: 衛星ベンダへの照会。10月下旬に送付予定で、貴協会にお願いする筋のものではありません。</span>
       </div>
       <div class="unk ask-here">
         <span class="id">U-5</span>
         <span class="what">検証フィールド（設備台帳・保全履歴・外装張替え履歴）</span>
-        <span class="why">U-1を実測するには、同一構内の同型ユニット対と、その外装をいつ張り替えたかの記録が要ります。<strong>これが無いと経年の起点が決まりません。</strong>現時点で協力先は確保できていません。</span>
+        <span class="why">U-1を実測するには、同一構内の同型ユニット対と、その外装をいつ張り替えたかの記録が要ります。<strong>現時点で協力先は確保できていません。</strong></span>
         <span class="who"><b>ご相談したい先</b>: 貴協会の気象コンサルティング顧客（発電所・ダム等）の保全部門へのお取り次ぎ。もし熱供給や石油・化学のプラントに接点がおありなら、そちらが本命です。</span>
       </div>
     </div>
 
-    <details>
-      <summary>テーマ①の数値一覧（出所つき）</summary>
-      <div class="inner">
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>計算している量</th><th>値</th><th>確度</th></tr></thead>
-            <tbody>
-              <tr><th>天空条件スイング（晴天夜⇔曇天夜。表面温度は不変）</th><td class="num">8.57 K（帯域3.4-4.2µm仮定）／10.17 K（実帯域3.7-4.95µm）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>誤差バジェット（輝度温度領域・RSS。NEdT 1 K・ε±0.05 は仮定）</th><td class="num">撮像間差分 9.39 K → 兄弟差分 2.76 K → 二重差分6エポック 0.28 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>信号（ユニット面的劣化 +1 K が輝度温度に写る量）</th><td class="num">0.53 K（+1 K・風化アルミ ε=0.25 を置いた場合。単発の信号対雑音比 0.19、二重差分6エポックで 1.9 倍）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>実Landsat14シーンでの共通モード除去（【補足】図＝図4の白枠6地区から、青破線＝市街地参照面〈4〜10 km〉を引いた差を14シーン分）</th><td class="num">資産の地表温度の振れ幅 42.97 K → 市街地参照との差 12.53 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>実Landsat 2シーンの実画像（図4）</th><td class="num">冬 表示283.3–288.5 K（実範囲 264.9–299.8）／夏 表示300.9–323.5 K（実範囲 299.9–329.9）。資産−市街地参照は冬 +0.2〜+1.2 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>兄弟差分σの離隔距離依存（実Landsat・代用資産11,422個）</th><td class="num">150–300 m: 0.43 K／1.2–2.4 km: 1.79 K／5–10 km: 3.89 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>雑音床の分解（実Landsat・代用資産11,422個＝150 mブロック）</th><td class="num">生 8.44 K → シーン共通モード除去 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>検知性能（モンテカルロ160対160・二重差分・+1 K）</th><td class="num">AUC 0.980（差動経年0 K）／0.921（0.15 K）／0.788（0.3 K）。差動経年は未取得の仮定値で、0.15 Kは目安</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>誤報率（実データ分布から）</th><td class="num">z=3 で 0.32 件／プラント・年（実Landsat 30 m・代用資産。本物の変化が混ざり得るので上限）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>降雨後の回復速度が使える頻度（川崎・実気象2020–2025）</th><td class="num">降雨イベント 62 回/年 → 単点 21 回/年、回復速度 4.3 回/年</td><td><span class="flag f-ok">確定</span></td></tr>
-            </tbody>
-          </table>
-          <p class="src">いずれも自前計算（誤差バジェット／実気象2020–2025／実Landsat 14シーン・鶴見区参照面／実Landsat・代用資産11,422個／モンテカルロ160対160）</p>
-        </div>
-      </div>
-    </details>
   </section>
 
   <hr class="hr">
@@ -1512,8 +1321,7 @@
           雪の積もった火山が噴火すると、熱で雪が一気に融けて<strong>融雪型火山泥流</strong>になります。
           計画に載る想定量は<strong>火口付近にどれだけ雪があるかで決まります</strong>が、その積雪を測っている観測点が火口の高さにはありません。
           （火口湖を持つ渓流では湖水量が定数で入るため、比例ではなく単調な関係です。）未了の2件は効き方が違います——<strong>V-3 融雪係数は mm への換算だけ</strong>に効き、<strong>V-1 融雪期間は無次元の平年比そのものを1.5倍動かします</strong>。
-          <span class="src">蔵王火山噴火緊急減災対策砂防計画 表2-13/2-14 からの自前導出（濁川の諸元を含む）／
-          気象庁の観測所一覧からの自前集計</span>
+          <span class="src">蔵王火山噴火緊急減災対策砂防計画 表2-13/2-14 からの自前導出／気象庁の観測所一覧からの自前集計</span>
         </figcaption>
       </figure>
     </div>
@@ -1917,15 +1725,14 @@
           <strong>9年すべてでマップが作れました。</strong>
           火口から半径3 km（31,392画素）の画素中央値は<strong>102日目（4月12日ごろ）から148日目（5月28日ごろ）まで、46日ぶれます</strong>——
           この量を測っている地上の観測点は、火口の高さには1つもありません。
-          （ここは画素中央値で、下の判定が信号としている 7.1 日は<strong>流域平均の年々変動＝別の統計量</strong>です。）
           <br>
-          灰色は決められなかった画素で、<strong>年のボタンで9年分を1枚ずつ切り替えられます</strong>（下の帯グラフの点も連動します）。
-          <strong>観測日が最も多い2021年（17日）の決定率は72%、14日の2019年は96%、6日しかない2017年は92%で、8日の2018年は57%</strong>——<strong>枚数ではなく「いつ晴れたか」が効いています</strong>。
+          灰色は決められなかった画素で、<strong>年のボタンで9年分を1枚ずつ切り替えられます</strong>。
+          <strong>観測日が最も多い2021年（17日）の決定率は72%、8日しかない2018年は57%</strong>——<strong>枚数ではなく「いつ晴れたか」が効いています</strong>。
           精度のほうは<strong>挟み込み間隔がそのまま決めます</strong>（下のスライダー）。<strong>どちらも「冬にいつ晴れるか」に帰着するので、ここが依頼1でお伺いしたい点です（V-4）</strong>。
           <br>
           <strong>自白</strong>: これは「日」であって「mm」ではありません。計画に載る量にするには融雪期間（V-1）と融雪係数（V-3）が要り、そこは我々だけでは埋まりません。
-          <span class="src">自前計算（火口から半径3 kmの円での画素中央値・決定率、および年別の観測日と挟み込み間隔。<strong>「観測日 N 日」は観測日を日付でユニーク化した数</strong>）。
-          挟み込み間隔（年別15〜48日）と下のスライダーは矩形全体（41,006画素）での値で、円で取り直しても結論は動かない（流域平均の年々変動σ 8.93 → 8.80 日）</span>
+          <span class="src">自前計算（火口から半径3 kmの円での画素中央値・決定率、および年別の観測日と挟み込み間隔）。
+          下のスライダーの挟み込み間隔は矩形全体での値で、円で取り直しても結論は動かない</span>
         </figcaption>
       </figure>
     </div>
@@ -1955,7 +1762,7 @@
       </div>
       <div class="gscale"><span>誤差 0 日</span><span>信号 7.1 日</span><span>18 日</span></div>
       <p class="caveat">誤差は<strong>実測した係数 0.217 × 観測間隔</strong>で計算しています（9年分の間引き実験）。
-        <strong>25日が現在の観測密度</strong>です（E[G]＝Σg²/Σg ＝ 長い間隔ほど重く数える期待値。単純な中央値だと20日）。48日は最悪年、80日はLandsat単独時代、16日は「観測誤差を全体の20%以下に抑える」ために必要な水準です。
+        <strong>25日が現在の観測密度</strong>で、48日は最悪年、80日はLandsat単独時代、16日は「観測誤差を全体の20%以下に抑える」ために必要な水準です。
 </p>
     </div>
 
@@ -1964,13 +1771,13 @@
       <div class="unk ask-here">
         <span class="id">V-1</span>
         <span class="what">平均融雪期間</span>
-        <span class="why">積雪量は「融雪速度 ×（消雪日 − 融雪開始日）」で表しています。その期間の置き方で結果が変わり、<strong>100年確率の平年比は融雪期間20日なら2.24、45日なら1.53</strong>——計画に載る量が1.5倍動きます。積雪面積率の立ち下がりから観測できる量ですが、手元は9年分しかありません。</span>
+        <span class="why">積雪量は「融雪速度 ×（消雪日 − 融雪開始日）」で表しています。その期間の置き方で結果が変わり、<strong>100年確率の平年比は融雪期間20日なら2.24、45日なら1.53</strong>——計画に載る量が1.5倍動きます。</span>
         <span class="who"><b>ご相談したい先</b>: 山岳域の融雪の進み方の相場観と、観測で押さえるべき点。</span>
       </div>
       <div class="unk ask-here">
         <span class="id">V-2</span>
         <span class="what">融雪開始日の観測精度</span>
-        <span class="why">上の式のもう一方の端点です。現状は消雪日と同じ精度と<strong>仮定して</strong>います。両端点で評価すると信号対雑音比は1.30から0.92に落ちるので、ここの実力が「使えるかどうか」の判定を左右します。</span>
+        <span class="why">上の式のもう一方の端点で、現状は消雪日と同じ精度と<strong>仮定して</strong>います。両端点で評価すると信号対雑音比は1.30から0.92に落ちるので、ここが「使えるかどうか」の判定を左右します。</span>
         <span class="who"><b>ご相談したい先</b>: 融雪開始の定義（気温・日射・降水相）と、衛星の積雪面積率で代替できるかの判断。</span>
       </div>
       <div class="unk ask-here">
@@ -1982,38 +1789,11 @@
       <div class="unk ask-here">
         <span class="id">V-4</span>
         <span class="what">積雪期の雲による欠測</span>
-        <span class="why">上のスライダーのとおり、観測間隔がそのまま誤差になります（実測係数 0.217 × 観測間隔。V-1〜V-3のすべてに掛かる）。年によっては<strong>画素の98.5%が1つの観測間隔に入ってしまい、空間平均をとっても誤差が落ちません</strong>。</span>
+        <span class="why">上のスライダーのとおり、観測間隔がそのまま誤差になります（実測係数 0.217 × 観測間隔）。年によっては<strong>画素の98.5%が1つの観測間隔に入ってしまい、空間平均をとっても誤差が落ちません</strong>。</span>
         <span class="who"><b>ご相談したい先</b>: 冬期山岳域の雲の出方。地域・標高・年による偏りが読めると、対象火山の選び方が変わります。</span>
-      </div>
-      <div class="unk">
-        <span class="id">V-5</span>
-        <span class="what">蔵王以外の火山での年々変動</span>
-        <span class="why">合否ライン（観測誤差が年々変動 7.1 日を下回るか）は年々変動の大きさに依存するので、火山ごとに引き直す必要があります。樽前山・鳥海山・磐梯山では未実測です。</span>
-        <span class="who"><b>閉じ方</b>: 同じ計算を回すだけなので自前で閉じられます。計算時間の問題です。</span>
       </div>
     </div>
 
-    <details>
-      <summary>テーマ②の数値一覧（出所つき）</summary>
-      <div class="inner">
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>計算している量</th><th>値</th><th>確度</th></tr></thead>
-            <tbody>
-              <tr><th>消雪日マップ（蔵王・火口から半径3km・9年分）</th><td class="num">挟み込み間隔の中央値 20 日（9年の年別は15〜48日。最悪は2017年48日・2025年40日。Landsat単独時代1984–98はE[G] 80日。観測間隔は矩形全体での値）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>同上・実際に決められた画素と年々差（図6）</th><td class="num">決定できた画素 57〜96%／画素中央値 102〜148 日目（幅 46 日。円で集計）。信号 7.1 日は矩形基準のσ8.9日から。円で取り直すとσ8.80→信号6.9日で結論は不変</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>消雪日の誤差（間引き実験による実測）</th><td class="num">流域0.2 km²平均のRMSE ＝ 0.217 × 観測間隔</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>信号（流域平均消雪日の年々変動）</th><td class="num">実測σ 8.9 日 → 観測誤差5.4日を除いた真の変動 7.1 日</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>標本不確かさ（ブートストラップ4,000反復）</th><td class="num">20年標本での90%区間幅: 2年確率 21.6%／20年確率 38.5%／100年確率 49.0%</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>使える再現期間の判定</th><td class="num">2年確率は15年以上／10〜20年確率は25年以上／50〜100年確率は43年（天井）でも外挿として開示</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>現行手法との食い違い（蔵王・火口高度）</th><td class="num">計画値 3.81 m 対 UAV実測 1.1 m ＝ 246%</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>平年比の平均融雪期間への依存</th><td class="num">100年確率の平年比は、融雪期間20日なら2.24、45日なら1.53</td><td><span class="flag f-warn">仮定</span></td></tr>
-            </tbody>
-          </table>
-          <p class="src">いずれも自前計算（消雪日マップ9年分／火口から半径3 kmの円での集計／間引き実験／ブートストラップ4,000反復）</p>
-        </div>
-      </div>
-    </details>
   </section>
 
   <hr class="hr">
@@ -2024,59 +1804,51 @@
 
     <div class="fig" id="fig7">
       <figure>
-        <p class="figtitle">図7　不確定項は10件。うち8件は我々だけでは閉じられません</p>
-        <svg viewBox="0 0 860 240" role="img" aria-label="不確定項10件の内訳。気象側の知見で閉じるもの5件、現地観測2件、お取り次ぎ1件、貴協会にお願いしない2件。">
+        <p class="figtitle">図7　お力をお借りしたい不確定項は8件。いずれも我々だけでは閉じられません</p>
+        <svg viewBox="0 0 860 240" role="img" aria-label="お力をお借りしたい不確定項8件の内訳。気象側の知見で閉じるもの5件、現地観測2件、お取り次ぎ1件。">
           <g filter="url(#fSoft)">
-            <rect x="20" y="44" width="400" height="48" rx="2" fill="var(--accent)" opacity=".8"></rect>
-            <rect x="424" y="44" width="160" height="48" rx="2" fill="var(--accent)" opacity=".55"></rect>
-            <rect x="588" y="44" width="80" height="48" rx="2" fill="var(--accent)" opacity=".32"></rect>
-            <rect x="672" y="44" width="160" height="48" rx="2" fill="var(--unk)" opacity=".38"></rect>
+            <rect x="20" y="44" width="502" height="48" rx="2" fill="var(--accent)" opacity=".8"></rect>
+            <rect x="526" y="44" width="201" height="48" rx="2" fill="var(--accent)" opacity=".55"></rect>
+            <rect x="731" y="44" width="101" height="48" rx="2" fill="var(--accent)" opacity=".32"></rect>
           </g>
           <g class="s-hd" text-anchor="middle" fill="#FFF" font-size="17">
-            <text x="220" y="75">5件</text>
-            <text x="504" y="75">2件</text>
+            <text x="271" y="75">5件</text>
+            <text x="627" y="75">2件</text>
           </g>
           <g class="s-hd" text-anchor="middle" font-size="17">
-            <text x="628" y="75" fill="var(--ink)">1件</text>
-            <text x="752" y="75" fill="var(--ink)">2件</text>
+            <text x="782" y="75" fill="var(--ink)">1件</text>
           </g>
 
           <g color="var(--accent-ink)">
-            <use href="#gMoonCloud" x="208" y="102" width="24" height="24"></use>
-            <use href="#gThermo"    x="492" y="102" width="24" height="24"></use>
-            <use href="#gDocS"      x="616" y="102" width="24" height="24"></use>
-          </g>
-          <g color="var(--unk-ink)">
-            <use href="#gGearS" x="740" y="102" width="24" height="24"></use>
+            <use href="#gMoonCloud" x="259" y="102" width="24" height="24"></use>
+            <use href="#gThermo"    x="615" y="102" width="24" height="24"></use>
+            <use href="#gDocS"      x="770" y="102" width="24" height="24"></use>
           </g>
           <g class="s-lbl" text-anchor="middle">
-            <text x="220" y="146" font-weight="600">気象側の知見をいただく</text>
-            <text x="504" y="146" font-weight="600">現地観測</text>
-            <text x="628" y="146" font-weight="600">お取り次ぎ</text>
-            <text x="752" y="146" font-weight="600">貴協会にお願いしない</text>
+            <text x="271" y="146" font-weight="600">気象側の知見をいただく</text>
+            <text x="627" y="146" font-weight="600">現地観測</text>
+            <text x="782" y="146" font-weight="600">お取り次ぎ</text>
           </g>
           <g class="s-sm" text-anchor="middle">
-            <text x="220" y="168">U-2 同じ空とみなせる距離　U-3 晴天夜の頻度</text>
-            <text x="220" y="186">V-1 融雪期間　V-2 融雪開始日　V-4 冬の雲</text>
-            <text x="504" y="168">U-1 放射率の経年</text>
-            <text x="504" y="186">V-3 積雪水量の実測</text>
-            <text x="628" y="168">U-5 検証</text>
-            <text x="628" y="186">フィールド</text>
-            <text x="752" y="168">U-4 ベンダ照会</text>
-            <text x="752" y="186">V-5 他火山の計算</text>
+            <text x="271" y="168">U-2 同じ空とみなせる距離　U-3 晴天夜の頻度</text>
+            <text x="271" y="186">V-1 融雪期間　V-2 融雪開始日　V-4 冬の雲</text>
+            <text x="627" y="168">U-1 放射率の経年</text>
+            <text x="627" y="186">V-3 積雪水量の実測</text>
+            <text x="782" y="168">U-5 検証</text>
+            <text x="782" y="186">フィールド</text>
           </g>
 
           <g class="s-sm" text-anchor="middle" fill="var(--accent-ink)" font-weight="600">
-            <text x="220" y="34">ご依頼 1</text>
-            <text x="504" y="34">ご依頼 2</text>
-            <text x="628" y="34">ご依頼 3</text>
+            <text x="271" y="34">ご依頼 1</text>
+            <text x="627" y="34">ご依頼 2</text>
+            <text x="782" y="34">ご依頼 3</text>
           </g>
           <line x1="20" y1="208" x2="832" y2="208" stroke="var(--rule)"></line>
-          <text class="s-sm" x="20" y="230">帯の幅は件数。<tspan font-weight="600" fill="var(--ink)">左の8件が、画像処理では埋まらず、気象と現場の側にある不確定項です。</tspan></text>
+          <text class="s-sm" x="20" y="230">帯の幅は件数。<tspan font-weight="600" fill="var(--ink)">この8件が、画像処理では埋まらず、気象と現場の側にある不確定項です。</tspan></text>
         </svg>
         <figcaption>
-          いずれも「まず一度お話を伺いたい」という段階のご相談で、この場でお約束いただくことは想定していません。
-          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています（テーマ①は代用データで共通モードの除去まで、テーマ②は消雪日マップを9年分。ただし出すべき量は「mm」で、そこにはV-1とV-3が要ります）。
+          いずれも「まず一度お話を伺いたい」という段階のご相談で、この時点でお約束いただくことは想定していません。
+          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています。
           残っているのは<strong>そこに写った値が「なぜそうなるか」と、地上で答え合わせをする部分</strong>です。
         </figcaption>
       </figure>
@@ -2137,8 +1909,7 @@
 
   <footer>
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
-    テーマ①: 誤差バジェット／実気象2020–2025／実Landsat 14シーン／実Landsat・代用資産11,422個／モンテカルロ160対160<br>
-    テーマ②: 消雪日マップ9年分／火口から半径3 kmの円での集計／間引き実験／ブートストラップ4,000反復<br>
+    根拠となる計算の詳細（誤差バジェット、実Landsat 14シーン、モンテカルロ、消雪日マップ9年分、ブートストラップ）は、ご要望があれば別途お出しします。<br>
     2026年8月13日／ 作成: 株式会社GRID　／　取扱い: 貴協会内でのご検討にご利用ください
   </footer>
 
@@ -2253,14 +2024,6 @@
     ci.style.width = (pos(d.hi) - pos(d.lo)).toFixed(1) + "%";
   });
 
-  /* U-3 撮像回数 → 最小検知段差（poc6_results.json / operating_point） */
-  var EP = { "6": 6.36, "12": 4.50, "14": 4.17, "24": 3.18, "36": 2.60 };
-  stepGroup("probeEp", "data-ep", function (k) {
-    var v = EP[k];
-    document.getElementById("epMdd").textContent = v.toFixed(2) + " K";
-    document.getElementById("epFill").style.width = (v / 8 * 100).toFixed(1) + "%";
-  });
-
   /* V-4 観測間隔 → 誤差・信号対雑音比（実測係数 0.217 / 信号 7.1日） */
   var SIGNAL = 7.1, COEF = 0.217;
   stepGroup("probeGap", "data-gap", function (k) {
@@ -2273,17 +2036,6 @@
       "判定: " + (occ <= 20 ? "年超過確率分布に使える" : (snr >= 1 ? "限界域" : "年ごとの違いが見えない"));
     document.getElementById("gapFill").style.width = Math.min(100, err / 18 * 100).toFixed(1) + "%";
   });
-
-  /* ---------- 数値一覧の一括開閉 ---------- */
-  var btnD = document.getElementById("btnDetails");
-  if (btnD) {
-    btnD.addEventListener("click", function () {
-      var open = btnD.getAttribute("aria-pressed") !== "true";
-      document.querySelectorAll("details").forEach(function (d) { d.open = open; });
-      btnD.setAttribute("aria-pressed", open ? "true" : "false");
-      btnD.textContent = open ? "数値一覧をすべて閉じる" : "数値一覧をすべて開く";
-    });
-  }
 
   /* ---------- 図の拡大表示 ---------- */
   var zoomed = null, closeBtn = null;
