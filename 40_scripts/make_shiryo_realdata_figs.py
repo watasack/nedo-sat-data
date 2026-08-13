@@ -297,6 +297,107 @@ def fig_t1():
     return "\n".join(o)
 
 
+def fig_t1_diff():
+    """図①の右パネル（市街地参照との差）だけを幅いっぱいに描いたもの。
+
+    第18版で図①（2パネル）を落としたが、そのとき「引き算が実データで効く」ことを
+    示す絵が資料から無くなった（第26サイクル D-167）。通しの道順を増やさずに
+    聞かれたとき用の絵だけを戻すため、番号を付けない補助図としてこちらを使う。
+    左パネル（絶対温度 42.97 K）は落とす——同じことは図4の実画像が見せている。
+    """
+    d = json.load(open(os.path.join(
+        ROOT, "20_theme1_保温劣化監視/poc/out/poc4_results_real.json")))
+    series = d["series_vs_urban_ref_K"]
+    epochs = [date(int(e[:4]), int(e[4:6]), int(e[6:])) for e in d["epochs"]]
+    x0, x1 = epochs[0].toordinal(), epochs[-1].toordinal()
+
+    P = dict(x=58, y=34, w=690, h=182)
+    # 下端は最小値 −10.5 を含める（旧図①は −10.0 で、最も低い点が枠の下に出ていた）
+    KMIN, KMAX = -11.0, 3.0
+    HL = "東扇島火力"
+
+    def px(t):
+        return (t.toordinal() - x0) / (x1 - x0)
+
+    def xy(i, v):
+        return (P["x"] + px(epochs[i]) * P["w"],
+                P["y"] + P["h"] * (1 - (v - KMIN) / (KMAX - KMIN)))
+
+    def path(vals):
+        segs, cur = [], []
+        for i, v in enumerate(vals):
+            if v is None:
+                if len(cur) > 1:
+                    segs.append(cur)
+                cur = []
+                continue
+            cur.append(xy(i, v))
+        if len(cur) > 1:
+            segs.append(cur)
+        return (" ".join("M" + " L".join(f"{X:.1f} {Y:.1f}" for X, Y in s) for s in segs),
+                [xy(i, v) for i, v in enumerate(vals) if v is not None])
+
+    o = []
+    A = o.append
+    A('<svg viewBox="0 0 860 268" role="img" aria-label="実Landsat 14シーンで、資産6地区の'
+      '地表温度から市街地参照面を引いた差の時系列。残る振れ幅は12.53K。'
+      '東扇島火力は暖候期に大きく下がり、冬はほぼ0。">')
+    A(f'<rect x="{P["x"]}" y="{P["y"]}" width="{P["w"]}" height="{P["h"]}" '
+      'fill="var(--surface-2)" opacity=".55"></rect>')
+    for t in (-9, -6, -3, 0, 3):
+        Y = P["y"] + P["h"] * (1 - (t - KMIN) / (KMAX - KMIN))
+        A(f'<line x1="{P["x"]}" y1="{Y:.1f}" x2="{P["x"]+P["w"]}" y2="{Y:.1f}" '
+          'stroke="currentColor" stroke-width="1" opacity=".13"></line>')
+        A(f'<text class="s-xs s-num" x="{P["x"]-6}" y="{Y+4:.1f}" text-anchor="end">{t}</text>')
+    A(f'<text class="s-xs" x="{P["x"]-6}" y="{P["y"]-8}" text-anchor="end">K</text>')
+    for yr in (2023, 2024, 2025, 2026):
+        X = P["x"] + px(date(yr, 1, 1)) * P["w"]
+        if P["x"] <= X <= P["x"] + P["w"]:
+            A(f'<line x1="{X:.1f}" y1="{P["y"]}" x2="{X:.1f}" y2="{P["y"]+P["h"]}" '
+              'stroke="currentColor" stroke-width="1" opacity=".10"></line>')
+            A(f'<text class="s-xs s-num" x="{X:.1f}" y="{P["y"]+P["h"]+16}" '
+              'text-anchor="middle">' + str(yr) + '</text>')
+
+    Y0 = P["y"] + P["h"] * (1 - (0 - KMIN) / (KMAX - KMIN))
+    A(f'<line x1="{P["x"]}" y1="{Y0:.1f}" x2="{P["x"]+P["w"]}" y2="{Y0:.1f}" '
+      'stroke="currentColor" stroke-width="1" opacity=".45"></line>')
+
+    for name, vals in series.items():
+        acc = name == HL
+        col = "var(--accent)" if acc else "var(--ink-3)"
+        dd, pts = path(vals)
+        A(f'<path d="{dd}" fill="none" stroke="{col}" stroke-width="{2.0 if acc else 1.3}" '
+          f'opacity="{"1" if acc else ".45"}" stroke-linejoin="round"><title>{name}</title></path>')
+        for X, Y in pts:
+            A(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{2.4 if acc else 1.8}" fill="{col}" '
+              f'opacity="{"1" if acc else ".45"}"></circle>')
+
+    alldif = [v for vals in series.values() for v in vals if v is not None]
+    lo, hi = min(alldif), max(alldif)
+    bx = P["x"] + P["w"] + 8
+    Y1 = P["y"] + P["h"] * (1 - (hi - KMIN) / (KMAX - KMIN))
+    Y2 = P["y"] + P["h"] * (1 - (lo - KMIN) / (KMAX - KMIN))
+    A(f'<path d="M{bx-5} {Y1:.1f} L{bx} {Y1:.1f} L{bx} {Y2:.1f} L{bx-5} {Y2:.1f}" '
+      'fill="none" stroke="var(--accent)" stroke-width="1.4"></path>')
+    A(f'<text class="s-sm s-num s-acc" x="{bx+6}" y="{Y1+4:.1f}" font-weight="600">12.53 K</text>')
+    A(f'<text class="s-xs" x="{bx+6}" y="{Y1+20:.1f}" fill="var(--ink-3)">まだ</text>')
+    A(f'<text class="s-xs" x="{bx+6}" y="{Y1+34:.1f}" fill="var(--ink-3)">残る幅</text>')
+
+    A(f'<text class="s-hd" x="{P["x"]}" y="20">市街地参照面を引いた残り '
+      '<tspan class="s-sm" fill="var(--ink-2)" font-weight="400">'
+      '（実Landsat 14シーン・資産6地区。そのまま並べると 42.97 K ばらつく）</tspan></text>')
+    A('<g transform="translate(58,246)">'
+      '<line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line>'
+      '<text class="s-xs" x="28" y="0">東扇島火力</text>'
+      '<line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45"></line>'
+      '<text class="s-xs" x="148" y="0">他5地区</text>'
+      '<text class="s-xs" x="230" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text>'
+      '<text class="s-xs" x="470" y="0" fill="var(--ink-3)">0 K ＝ 市街地参照面と同じ温度</text>'
+      '</g>')
+    A("</svg>")
+    return "\n".join(o)
+
+
 # ---------------------------------------------------------------- 図①b（実画像）
 
 # 資料の gThermalScale と同じ配色（熱赤外の見た目を図2と揃える）
@@ -675,8 +776,8 @@ def fig_t2():
 
 
 if __name__ == "__main__":
-    for name, fn in (("fig_t1_landsat.svg", fig_t1), ("fig_t1_image.svg", fig_t1_image),
-                     ("fig_t2_snowmap.svg", fig_t2)):
+    for name, fn in (("fig_t1_landsat.svg", fig_t1), ("fig_t1_diff.svg", fig_t1_diff),
+                     ("fig_t1_image.svg", fig_t1_image), ("fig_t2_snowmap.svg", fig_t2)):
         s = fn()
         p = os.path.join(OUT, name)
         open(p, "w").write(s)

@@ -231,6 +231,9 @@
   .ask .what { font-weight: 600; }
   .ask .detail { color: var(--ink-2); font-size: .93rem; }
   .ask .hits { font-family: var(--mono); font-size: .76rem; color: var(--accent-ink); letter-spacing: .02em; }
+  /* 冒頭のテーマ紹介。末尾のご依頼カードと同じ体裁だが、左罫を寒色にして区別する */
+  .ask.tcard { border-left-color: var(--unk); }
+  .ask.tcard .what { font-family: var(--serif); font-size: 1.05rem; }
 
   /* ---- 確度ラベル ---- */
   .flag {
@@ -785,16 +788,41 @@
     <p class="eyebrow">NEDO Challenge, Satellite Data ／ ご説明資料</p>
     <h1>検討中の2テーマと、いま残っている不確定項</h1>
     <p class="lede">
-      株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストへ2件の応募を準備しています。
-      どちらも実データまで動かしてあります（<strong>テーマ①は代用データ＝昼間30 mのLandsatです</strong>）が、<strong>残っている不確定項の多くが「気象」に属しています</strong>。
-      <strong>お願いは3件です</strong>——(1) 気象側の知見についてご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
+      株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストに、次の2つのテーマで応募を準備しています。
+      <strong>いずれも既に実際の衛星データで検証中</strong>です（<strong>テーマ①は代用データとして、昼間・30 mのLandsatを使っています</strong>）。
+      ただ、<strong>残っている不確定項の多くが気象に属しており</strong>、その部分でお力をお借りできないかと考えて本日ご相談に伺いました。
+    </p>
+
+    <div class="asks" style="margin-top:1.1rem">
+      <div class="ask tcard">
+        <span class="what">テーマ①　プラント保温システムの劣化監視</span>
+        <span class="detail">
+          発電所やごみ焼却施設などの高温設備で、外からは見えない保温材の劣化を夜間の熱赤外で捉え、<strong>どの設備を先に点検すべきかを絞り込みます</strong>。
+        </span>
+        <span class="detail">
+          <strong>お力をお借りしたいのは</strong>、雲と下向き長波放射の扱い、沿岸部の局所微気象、屋外設備の放射率と表面温度の実測、そして保全の実務に詳しい方へのお取り次ぎです。
+        </span>
+      </div>
+      <div class="ask tcard">
+        <span class="what">テーマ②　火口周辺の積雪水量（年超過確率）</span>
+        <span class="detail">
+          融雪型火山泥流の想定量は火口付近にどれだけ雪があるかで決まりますが、<strong>その高さに観測点がありません</strong>。そこを衛星が捉えた消雪日から補い、<strong>何年に一度どれだけ積もるかを確率で示します</strong>。
+        </span>
+        <span class="detail">
+          <strong>お力をお借りしたいのは</strong>、山岳域の融雪の進み方、冬期の雲の出方、そして積雪水量の現地観測です。
+        </span>
+      </div>
+    </div>
+
+    <p class="lede" style="margin-top:1.1rem">
+      まとめますと、ご相談は<strong>(1) 気象側の知見についてのご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務に詳しい方へのお取り次ぎ</strong>の3点です。
     </p>
     <p class="lede" style="margin-top:.7rem">
-      通してご覧いただくのは<strong>図7枚＋各テーマ冒頭の見取り図2枚で、10〜15分</strong>です（目次の順に進みます）。
+      通してご覧いただくのは<strong>図7枚＋各テーマ冒頭の見取り図2枚で、10〜15分</strong>です（目次の順に進みます）。<strong>【補足】と付いた図は通しでは飛ばします。</strong>
       <strong>不確定項のカード・スライダー・数値一覧・脚注の折りたたみは、ご質問に応じて開くための材料です。</strong>
     </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第19版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第20版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
     <div class="toolbar" style="margin-top:1.2rem">
@@ -938,7 +966,7 @@
           <text class="s-xs" x="20" y="350">可視面率は3Dモデルから事前に算定して開示し、垂直面と個別配管は従来どおり地上手段の担当とします。</text>
         </svg>
         <figcaption>
-          対象は<strong>発電所・清掃工場・地域熱供給などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）で、製油所・石油化学は横展開先です。
+          対象は<strong>発電所・ごみ焼却施設・地域熱供給などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）で、製油所・石油化学は横展開先です。
           抜き取り点検を<strong>全数スクリーニングへ転換し、地上点検を精密確認へ再配置する</strong>提案です。
           保温材が傷むと、その面の表面温度が周りより少しだけ高くなります（<strong>以降の計算では +1 K を置いています</strong>）。
           それを夜間の中波長赤外（3.5 m級）で<strong>上向きの面</strong>を外から面的に拾い、<strong>点検の行き先</strong>を返します。確認そのものは地上手段に残します。
@@ -1192,6 +1220,117 @@
               AOIは poc4_pipeline.py の AOIS と同一（±数百mの概略）。表示の物差しは各シーンの2〜98パーセンタイル、全景パネルは2×2平均に間引いて表示</span>
             </div>
           </details>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="theme">
+      <p class="tag">【補足】同じことを実データで — 通しでは飛ばします</p>
+      <figure>
+        <svg viewBox="0 0 860 268" role="img" aria-label="実Landsat 14シーンで、資産6地区の地表温度から市街地参照面を引いた差の時系列。残る振れ幅は12.53K。東扇島火力は暖候期に大きく下がり、冬はほぼ0。">
+<rect x="58" y="34" width="690" height="182" fill="var(--surface-2)" opacity=".55"></rect>
+<line x1="58" y1="190.0" x2="748" y2="190.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+<text class="s-xs s-num" x="52" y="194.0" text-anchor="end">-9</text>
+<line x1="58" y1="151.0" x2="748" y2="151.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+<text class="s-xs s-num" x="52" y="155.0" text-anchor="end">-6</text>
+<line x1="58" y1="112.0" x2="748" y2="112.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+<text class="s-xs s-num" x="52" y="116.0" text-anchor="end">-3</text>
+<line x1="58" y1="73.0" x2="748" y2="73.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+<text class="s-xs s-num" x="52" y="77.0" text-anchor="end">0</text>
+<line x1="58" y1="34.0" x2="748" y2="34.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
+<text class="s-xs s-num" x="52" y="38.0" text-anchor="end">3</text>
+<text class="s-xs" x="52" y="26" text-anchor="end">K</text>
+<line x1="257.2" y1="34" x2="257.2" y2="216" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+<text class="s-xs s-num" x="257.2" y="232" text-anchor="middle">2024</text>
+<line x1="460.9" y1="34" x2="460.9" y2="216" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+<text class="s-xs s-num" x="460.9" y="232" text-anchor="middle">2025</text>
+<line x1="664.0" y1="34" x2="664.0" y2="216" stroke="currentColor" stroke-width="1" opacity=".10"></line>
+<text class="s-xs s-num" x="664.0" y="232" text-anchor="middle">2026</text>
+<line x1="58" y1="73.0" x2="748" y2="73.0" stroke="currentColor" stroke-width="1" opacity=".45"></line>
+<path d="M525.4 95.8 L596.6 89.1 L641.2 70.4" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>川崎火力(千鳥町)</title></path>
+<circle cx="58.0" cy="60.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="169.3" cy="88.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="329.5" cy="97.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="525.4" cy="95.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="596.6" cy="89.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="641.2" cy="70.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<path d="M58.0 67.3 L129.2 138.3 L169.3 150.9 L245.0 87.3 M329.5 158.4 L396.3 81.8 L454.2 59.0 L507.6 166.1 L525.4 145.3 L596.6 153.5 L641.2 82.1 L672.3 90.8 L748.0 189.5" fill="none" stroke="var(--accent)" stroke-width="2.0" opacity="1" stroke-linejoin="round"><title>東扇島火力</title></path>
+<circle cx="58.0" cy="67.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="129.2" cy="138.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="169.3" cy="150.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="245.0" cy="87.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="329.5" cy="158.4" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="396.3" cy="81.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="454.2" cy="59.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="507.6" cy="166.1" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="525.4" cy="145.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="596.6" cy="153.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="641.2" cy="82.1" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="672.3" cy="90.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<circle cx="748.0" cy="189.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
+<path d="M525.4 120.8 L596.6 123.4 L641.2 86.1" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>浮島製油所地区</title></path>
+<circle cx="58.0" cy="67.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="169.3" cy="123.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="329.5" cy="127.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="525.4" cy="120.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="596.6" cy="123.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="641.2" cy="86.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<path d="M525.4 76.1 L596.6 63.1 L641.2 64.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>水江町製油所地区</title></path>
+<circle cx="58.0" cy="63.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="169.3" cy="62.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="329.5" cy="67.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="525.4" cy="76.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="596.6" cy="63.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="641.2" cy="64.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<path d="M58.0 57.8 L129.2 146.3 L169.3 125.8 L245.0 79.6 L307.3 149.3 L329.5 142.2 L396.3 80.0 L454.2 46.6 L507.6 139.7 L525.4 130.5 L596.6 138.5 L641.2 81.5 L672.3 79.8 L748.0 176.0" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>扇島製鉄所地区</title></path>
+<circle cx="58.0" cy="57.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="129.2" cy="146.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="169.3" cy="125.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="245.0" cy="79.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="307.3" cy="149.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="329.5" cy="142.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="396.3" cy="80.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="454.2" cy="46.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="507.6" cy="139.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="525.4" cy="130.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="596.6" cy="138.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="641.2" cy="81.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="672.3" cy="79.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="748.0" cy="176.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<path d="M58.0 70.0 L129.2 107.3 L169.3 112.0 L245.0 80.7 L307.3 123.2 L329.5 112.9 L396.3 50.9 L454.2 57.1 L507.6 128.6 L525.4 101.9 L596.6 109.3 L641.2 80.3 L672.3 87.7 L748.0 209.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>大黒町火力地区</title></path>
+<circle cx="58.0" cy="70.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="129.2" cy="107.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="169.3" cy="112.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="245.0" cy="80.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="307.3" cy="123.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="329.5" cy="112.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="396.3" cy="50.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="454.2" cy="57.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="507.6" cy="128.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="525.4" cy="101.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="596.6" cy="109.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="641.2" cy="80.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="672.3" cy="87.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<circle cx="748.0" cy="209.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
+<path d="M751 46.6 L756 46.6 L756 209.5 L751 209.5" fill="none" stroke="var(--accent)" stroke-width="1.4"></path>
+<text class="s-sm s-num s-acc" x="762" y="50.6" font-weight="600">12.53 K</text>
+<text class="s-xs" x="762" y="66.6" fill="var(--ink-3)">まだ</text>
+<text class="s-xs" x="762" y="80.6" fill="var(--ink-3)">残る幅</text>
+<text class="s-hd" x="58" y="20">市街地参照面を引いた残り <tspan class="s-sm" fill="var(--ink-2)" font-weight="400">（実Landsat 14シーン・資産6地区。そのまま並べると 42.97 K ばらつく）</tspan></text>
+<g transform="translate(58,246)"><line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line><text class="s-xs" x="28" y="0">東扇島火力</text><line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45"></line><text class="s-xs" x="148" y="0">他5地区</text><text class="s-xs" x="230" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text><text class="s-xs" x="470" y="0" fill="var(--ink-3)">0 K ＝ 市街地参照面と同じ温度</text></g>
+        </svg>
+        <figcaption>
+          図4の白枠6地区について、<strong>同じ日の市街地参照面（青破線・鶴見区）を引いた差</strong>を14シーン分並べたものです。
+          そのまま並べると 42.97 K ばらつくものが、引き算で <strong>12.53 K に落ちます</strong>——図3の②が実データでも起きることの確認です。
+          <strong>ただし参照面までの距離は4〜10 kmで、図3②が要求する離隔（数百 m）とは別の段階の引き算です</strong>（ここで落ちるのは広域の共通モードだけ）。
+          残り方は地区ごとに形が違い、<strong>赤＝東扇島火力は暖候期に −5〜−9 K、冬季はほぼ0 K</strong>。しかも同じ9月でも2025年は −6.2 K、2024年は −0.7 Kと揃いません。
+          <strong>この「地区ごとの季節感受度が何によるのか」が説明できていません（U-2）。</strong>
+          <br>
+          <strong>自白</strong>: これは30 m画素・昼間・複合体単位のLandsatで、設備単位の信号（0.53 K）はこの図の目盛より小さく、ここには写っていません。
+          この図が示すのは「気象の共通モードは引き算で本当に落ちる」「落ちきらない分は気象に属する」の2点だけです。
+          <span class="src">poc4_results_real.json（spread_K, series_vs_urban_ref_K ＝ 鶴見区参照面・全14シーン有効）。
+          集約はAOI内の10–90パーセンタイルのトリム平均。生成は 40_scripts/make_shiryo_realdata_figs.py の fig_t1_diff()。
+          提出物には旧参照面・6シーンでの値（36.0 → 7.7 K）を記載している</span>
         </figcaption>
       </figure>
     </div>
@@ -1937,7 +2076,7 @@
       <div class="ask">
         <span class="what">ご依頼 1. 気象側の知見について、技術的なご助言をいただきたい</span>
         <span class="detail">
-          天空放射と雲の扱い、夜間の晴天判定、沿岸部の局所微気象、山岳域の融雪と冬期の雲。
+          下向き長波放射（大気からの赤外放射）と雲の扱い、夜間の晴天判定、沿岸部の局所微気象、山岳域の融雪と冬期の雲。
           いずれも我々が数字は出したものの、<strong>その数字がなぜそうなるかを説明できていない</strong>箇所です。
         </span>
         <span class="hits">→ U-2 / U-3 / V-1 / V-2 / V-4</span>
@@ -1994,7 +2133,7 @@
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月13日 第19版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月13日 第20版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
