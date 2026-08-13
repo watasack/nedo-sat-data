@@ -308,12 +308,14 @@ def fig_t1_diff():
     d = json.load(open(os.path.join(
         ROOT, "20_theme1_保温劣化監視/poc/out/poc4_results_real.json")))
     series = d["series_vs_urban_ref_K"]
+    sp = d["spread_K"]          # ラベルは固定文字列にしない（JSONが動いたら図形だけ動く）
     epochs = [date(int(e[:4]), int(e[4:6]), int(e[6:])) for e in d["epochs"]]
     x0, x1 = epochs[0].toordinal(), epochs[-1].toordinal()
 
     P = dict(x=58, y=34, w=690, h=182)
-    # 下端は最小値 −10.5 を含める（旧図①は −10.0 で、最も低い点が枠の下に出ていた）
-    KMIN, KMAX = -11.0, 3.0
+    # 下端は最小値 −10.5 の下にラベルが1本来るように取る
+    # （旧図①は −10.0 で、最も低い点が枠の下に出ていた）
+    KMIN, KMAX = -12.0, 3.0
     HL = "東扇島火力"
 
     def px(t):
@@ -342,9 +344,10 @@ def fig_t1_diff():
     A('<svg viewBox="0 0 860 268" role="img" aria-label="実Landsat 14シーンで、資産6地区の'
       '地表温度から市街地参照面を引いた差の時系列。残る振れ幅は12.53K。'
       '東扇島火力は暖候期に大きく下がり、冬はほぼ0。">')
+    # 面は専用トークンで不透明に塗る（opacity で作ると明暗で濃さが揃わない）
     A(f'<rect x="{P["x"]}" y="{P["y"]}" width="{P["w"]}" height="{P["h"]}" '
-      'fill="var(--surface-2)" opacity=".55"></rect>')
-    for t in (-9, -6, -3, 0, 3):
+      'fill="var(--band)"></rect>')
+    for t in (-12, -9, -6, -3, 0, 3):
         Y = P["y"] + P["h"] * (1 - (t - KMIN) / (KMAX - KMIN))
         A(f'<line x1="{P["x"]}" y1="{Y:.1f}" x2="{P["x"]+P["w"]}" y2="{Y:.1f}" '
           'stroke="currentColor" stroke-width="1" opacity=".13"></line>')
@@ -362,15 +365,16 @@ def fig_t1_diff():
     A(f'<line x1="{P["x"]}" y1="{Y0:.1f}" x2="{P["x"]+P["w"]}" y2="{Y0:.1f}" '
       'stroke="currentColor" stroke-width="1" opacity=".45"></line>')
 
+    # 他5地区は opacity で薄くせず、色と太さで従属を示す（薄い灰は明暗ともコントラストが出ない）
     for name, vals in series.items():
         acc = name == HL
-        col = "var(--accent)" if acc else "var(--ink-3)"
+        col = "var(--accent)" if acc else "var(--ink-2)"
         dd, pts = path(vals)
-        A(f'<path d="{dd}" fill="none" stroke="{col}" stroke-width="{2.0 if acc else 1.3}" '
-          f'opacity="{"1" if acc else ".45"}" stroke-linejoin="round"><title>{name}</title></path>')
+        A(f'<path d="{dd}" fill="none" stroke="{col}" stroke-width="{2.0 if acc else 1.0}" '
+          f'stroke-linejoin="round"><title>{name}</title></path>')
         for X, Y in pts:
-            A(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{2.4 if acc else 1.8}" fill="{col}" '
-              f'opacity="{"1" if acc else ".45"}"></circle>')
+            A(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{2.4 if acc else 1.6}" '
+              f'fill="{col}"></circle>')
 
     alldif = [v for vals in series.values() for v in vals if v is not None]
     lo, hi = min(alldif), max(alldif)
@@ -379,17 +383,19 @@ def fig_t1_diff():
     Y2 = P["y"] + P["h"] * (1 - (lo - KMIN) / (KMAX - KMIN))
     A(f'<path d="M{bx-5} {Y1:.1f} L{bx} {Y1:.1f} L{bx} {Y2:.1f} L{bx-5} {Y2:.1f}" '
       'fill="none" stroke="var(--accent)" stroke-width="1.4"></path>')
-    A(f'<text class="s-sm s-num s-acc" x="{bx+6}" y="{Y1+4:.1f}" font-weight="600">12.53 K</text>')
+    A(f'<text class="s-sm s-num s-acc" x="{bx+6}" y="{Y1+4:.1f}" font-weight="600">'
+      f'{sp["正規化後_対参照面差_K"]} K</text>')
     A(f'<text class="s-xs" x="{bx+6}" y="{Y1+20:.1f}" fill="var(--ink-3)">まだ</text>')
     A(f'<text class="s-xs" x="{bx+6}" y="{Y1+34:.1f}" fill="var(--ink-3)">残る幅</text>')
 
     A(f'<text class="s-hd" x="{P["x"]}" y="20">市街地参照面を引いた残り '
       '<tspan class="s-sm" fill="var(--ink-2)" font-weight="400">'
-      '（実Landsat 14シーン・資産6地区。そのまま並べると 42.97 K ばらつく）</tspan></text>')
+      f'（実Landsat 14シーン・資産6地区。そのまま並べると '
+      f'{sp["正規化前_資産のみ_K"]} K ばらつく）</tspan></text>')
     A('<g transform="translate(58,246)">'
       '<line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line>'
       '<text class="s-xs" x="28" y="0">東扇島火力</text>'
-      '<line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45"></line>'
+      '<line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-2)" stroke-width="1"></line>'
       '<text class="s-xs" x="148" y="0">他5地区</text>'
       '<text class="s-xs" x="230" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text>'
       '<text class="s-xs" x="470" y="0" fill="var(--ink-3)">0 K ＝ 市街地参照面と同じ温度</text>'
