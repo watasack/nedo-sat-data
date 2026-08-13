@@ -406,6 +406,17 @@
   }
 </style>
 
+<style>
+  .wrap > header, .wrap > section, .wrap > hr, .wrap > footer { max-width: 50rem; }
+  .fig, .theme, .probe { padding-left: .75rem; padding-right: .75rem; }
+  /* 1カラムに切り替わる幅では、桁そのものを 50rem に合わせて全体を中央に置く。
+     ブロック側に margin-inline:auto を入れると、グリッド項目が伸びなくなって
+     区切り線が幅0に潰れる（実際に潰れた）。 */
+  @media (max-width: 68rem) { .wrap { max-width: 53rem; } }
+  @media print {
+    .wrap > header, .wrap > section, .wrap > hr, .wrap > footer { max-width: none; }
+  }
+</style>
 </head>
 <body>
 <!-- ==== 図で共有する定義（グラデーション・フィルタ・パターン） ==== -->

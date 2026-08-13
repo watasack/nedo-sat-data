@@ -411,10 +411,28 @@ head = """<!doctype html>
   img, svg { display: block; max-width: 100%; }
 </style>
 """
+# 資料本体のCSSのあとに置く上書き。ブロックの外枠の幅を1つに揃える。
+#   面談用は本文50rem・図の枠は本文桁いっぱい（912px）で、図だけを大きく見せていた。
+#   画面共有ではそれでよいが、渡して読む資料では枠の右端が段違いになるほうが目立つ。
+#   節ごと 50rem で止め、図・見取り図・スイッチの枠の内寄せを詰めて、図の描画幅を
+#   776px（第19版で広げる前と同じ）に戻す。1カラムに切り替わる幅と印刷では外す。
+align = """<style>
+  .wrap > header, .wrap > section, .wrap > hr, .wrap > footer { max-width: 50rem; }
+  .fig, .theme, .probe { padding-left: .75rem; padding-right: .75rem; }
+  /* 1カラムに切り替わる幅では、桁そのものを 50rem に合わせて全体を中央に置く。
+     ブロック側に margin-inline:auto を入れると、グリッド項目が伸びなくなって
+     区切り線が幅0に潰れる（実際に潰れた）。 */
+  @media (max-width: 68rem) { .wrap { max-width: 53rem; } }
+  @media print {
+    .wrap > header, .wrap > section, .wrap > hr, .wrap > footer { max-width: none; }
+  }
+</style>
+"""
+
 # <title> と <style> を head に入れ、共有SVG定義から後ろを body に置く
 i = s.index("<!-- ==== 図で共有する定義")
 headpart, bodypart = s[:i], s[i:]
-out = head + headpart + "</head>\n<body>\n" + bodypart + "\n</body>\n</html>\n"
+out = head + headpart + align + "</head>\n<body>\n" + bodypart + "\n</body>\n</html>\n"
 
 open(DST, "w", encoding="utf-8").write(out)
 print("wrote", DST, len(out))
