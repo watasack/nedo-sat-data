@@ -215,6 +215,18 @@
   summary::marker { color: var(--accent); }
   details .inner { display: flex; flex-direction: column; gap: .9rem; font-size: .93rem; }
 
+  /* 図の脚注のうち「聞かれたら開く」ぶんだけを畳む。通しでは読まない */
+  details.fine {
+    background: none; border: 0; border-top: 1px dashed var(--rule); border-radius: 0;
+    padding: 0; margin-top: .55rem;
+  }
+  details.fine[open] { padding-bottom: 0; }
+  details.fine > summary {
+    padding: .45rem 0 0; font-family: var(--sans); font-size: .83rem;
+    font-weight: 400; color: var(--ink-3);
+  }
+  details.fine > div { padding: .35rem 0 .2rem; }
+
   footer {
     font-family: var(--mono); font-size: .73rem; color: var(--ink-3);
     border-top: 1px solid var(--rule); padding-top: 1rem; line-height: 1.9;
@@ -664,13 +676,13 @@
     <p class="eyebrow">NEDO Challenge, Satellite Data ／ ご説明資料</p>
     <h1>検討中の2テーマと、いま残っている不確定項</h1>
     <p class="lede">
-      株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストへ2件の応募を準備しています。いずれも衛星から見た熱・雪の計算で、
-      物理と統計の骨格は自前の計算で確認済みです。実際の衛星データでも、<strong>テーマ①は代用データ（実Landsat 30 m・昼間）14シーンで「気象の共通モードが引き算で落ちる」ところまで（図5・図6）、テーマ②は実Landsat／Sentinel-2で成果物の骨格（画素ごとの消雪日マップ）を9年分（図9）</strong>出していますが、
+      株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストへ2件の応募を準備しています。
+      どちらも実データまで動かしてあります（<strong>テーマ①は代用データ＝昼間30 mのLandsat、テーマ②は実Landsat／Sentinel-2</strong>）が、
       <strong>残っている不確定項の多くが「気象」に属しています</strong>。
-      <strong>お願いは3件です</strong>——(1) 気象側の知見について技術的なご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
+      <strong>お願いは3件です</strong>——(1) 気象側の知見についてご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
     </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第12版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第13版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
     <div class="theme" style="margin-top:1.4rem">
@@ -682,8 +694,9 @@
         <a href="#fig11">図11 ご相談したいこと3件</a>
       </p>
       <p style="font-size:.9rem;color:var(--ink-3);margin-top:.4rem">
-        <strong>【補足】と付いた図（図3・図6・図8・図10）と、不確定項のカード・スライダー・数値一覧は、ご質問に応じて開くための材料です。</strong>
+        <strong>【補足】と付いた図（図3・図6・図8・図10）、脚注の折りたたみ、不確定項のカード・スライダー・数値一覧は、ご質問に応じて開くための材料です。</strong>
         通しでご説明すると1時間近くかかるので、上の7枚だけを追い、残りは必要になった時点で開きます。
+        各テーマの冒頭には、番号のない見取り図（工程の比較／量の連鎖）を1枚だけ置いてあります。
       </p>
     </div>
 
@@ -783,15 +796,64 @@
 
     <div class="theme">
       <p class="tag">やろうとしていること</p>
-      <p>
-        製油所・発電所・清掃工場などの高温設備（加熱炉・高温配管・タンク・ユニット）は、
-        保温材が傷むとそこから熱が逃げ、<strong>表面温度が周りより少しだけ高くなります</strong>。
-        これを夜間の中波長赤外（3.5m級）で外から面的に拾い、<strong>「次にどの設備を開けて点検すべきか」</strong>を返す提案です。
-      </p>
-      <p>
-        現在の保全は、足場を組んで人が近接で調べるか、決められた周期で開けるかのどちらかです。
-        衛星が置き換えるのは<strong>「どこを見に行くかを決める工程」</strong>で、確認そのものは地上手段に残します。
-      </p>
+      <figure>
+        <svg viewBox="0 0 860 322" role="img" aria-label="現状と本提案の比較。現状は数年周期の抜き取り点検で母数を網羅できず、見に行かなかった側で劣化が進む。本提案は衛星が毎月・全数をスクリーニングし、要点検の上位だけを従来どおり地上で確認する。">
+          <!-- ---- いま: 抜き取りなので母数が網羅できない ---- -->
+          <text class="s-xs" x="20" y="24">いま</text>
+          <rect x="20" y="34" width="200" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text class="s-sm" x="120" y="60" text-anchor="middle">保温された塔槽・配管・タンク</text>
+          <text class="s-xs" x="120" y="80" text-anchor="middle">一事業所で数万〜数十万m²</text>
+
+          <text class="s-sm" x="405" y="52" text-anchor="middle">数年周期の抜き取り（徒歩・足場・ドローン）</text>
+          <line x1="220" y1="62" x2="590" y2="62" stroke="currentColor" stroke-width="1.5"></line>
+          <polygon points="600,62 588,56.5 588,67.5" fill="currentColor"></polygon>
+
+          <rect x="600" y="34" width="190" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text class="s-lbl" x="695" y="72" text-anchor="middle">開放点検・補修</text>
+
+          <line x1="220" y1="88" x2="320" y2="116" stroke="var(--ink-3)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+          <polygon points="328,120 316,114 320,107" fill="var(--ink-3)"></polygon>
+          <rect x="332" y="100" width="270" height="54" rx="3" fill="none" stroke="var(--ink-3)" stroke-dasharray="5 4"></rect>
+          <text class="s-sm" x="467" y="124" text-anchor="middle">見に行かなかった大半はそのまま</text>
+          <text class="s-xs" x="467" y="143" text-anchor="middle">その狭間で劣化が進行＝見逃し</text>
+
+          <text class="s-xs" x="20" y="178">費用が保温面積に比例するので、全部は見に行けない。課題は「見る技術」ではなく「見る範囲と頻度」の不足です。</text>
+
+          <line x1="20" y1="196" x2="840" y2="196" stroke="var(--rule)"></line>
+
+          <!-- ---- 本提案: 母数を全数にし、地上点検を精密確認へ回す ---- -->
+          <text class="s-xs s-acc" x="20" y="218">本提案</text>
+          <rect x="20" y="228" width="200" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text class="s-sm" x="120" y="254" text-anchor="middle">同じ母数を、毎月ぜんぶ</text>
+          <text class="s-xs" x="120" y="274" text-anchor="middle">全数スクリーニング</text>
+
+          <text class="s-sm s-acc" x="275" y="250" text-anchor="middle">夜間の熱赤外で</text>
+          <text class="s-sm s-acc" x="275" y="266" text-anchor="middle">外から面的に</text>
+          <line x1="220" y1="282" x2="320" y2="282" stroke="var(--accent)" stroke-width="1.5"></line>
+          <polygon points="330,282 318,276.5 318,287.5" fill="var(--accent)"></polygon>
+
+          <rect x="330" y="228" width="180" height="64" rx="3" fill="var(--accent-bg)" stroke="var(--accent)"></rect>
+          <text class="s-lbl s-acc" x="420" y="254" text-anchor="middle" font-weight="600">要点検の上位だけ</text>
+          <text class="s-xs s-acc" x="420" y="274" text-anchor="middle">ここが衛星の出す答え</text>
+
+          <text class="s-xs" x="555" y="252" text-anchor="middle">近接で確認</text>
+          <text class="s-xs" x="555" y="267" text-anchor="middle">（従来どおり）</text>
+          <line x1="510" y1="282" x2="590" y2="282" stroke="currentColor" stroke-width="1.5"></line>
+          <polygon points="600,282 588,276.5 588,287.5" fill="currentColor"></polygon>
+
+          <rect x="600" y="228" width="190" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text class="s-lbl" x="695" y="266" text-anchor="middle">開放点検・補修</text>
+
+          <text class="s-xs s-acc" x="330" y="312">U-1 兄弟資産の差動経年・U-3 撮像回数が、この絞り込みの精度を決めています</text>
+        </svg>
+        <figcaption>
+          対象は<strong>製油所・発電所・清掃工場などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）で、
+          抜き取り点検を<strong>全数スクリーニングへ転換し、地上点検を精密確認へ再配置する</strong>提案です。
+          保温材が傷むと、その面の表面温度が周りより少しだけ高くなります（<strong>以降の計算では +1 K を置いています</strong>）。
+          それを夜間の中波長赤外（3.5 m級）で外から面的に拾い、<strong>点検の行き先</strong>を返します。確認そのものは地上手段に残します。
+          <span class="src">20_theme1_保温劣化監視/12_提出版_様式4.md（②課題・⑤実用化）／07_PoC中間結果.md／poc1_results.json（signals ＝ +1 K を置いたときの輝度温度への写り）</span>
+        </figcaption>
+      </figure>
     </div>
 
     <div class="fig" id="fig2">
@@ -1078,21 +1140,27 @@
         <g transform="translate(362,340.6857142857143)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#8A8F98" stroke-width="1.2"></rect><text class="s-xs" x="22" y="11">白枠＝資産AOI 6地区（図6の6本の線）</text><g transform="translate(0,20)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#3E93AE" stroke-width="1.2" stroke-dasharray="4 3"></rect><text class="s-xs" x="22" y="11">青破線＝市街地参照面（鶴見区）</text></g><g transform="translate(0,40)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#C79A3A" stroke-width="1.4"></rect><text class="s-xs" x="22" y="11">黄枠＝右の拡大範囲（2.1 × 1.8 km）</text></g></g>
         </svg>
         <figcaption>
-          <strong>14シーンのうちの2枚</strong>です。白枠の6地区と青破線の参照面で集約したのが<strong>次の図6</strong>で、この2枚はその両端にあたります（冬の東扇島は市街地参照に対し +0.4 K＝ほぼ0、夏は −6.2 K）。
+          <strong>14シーンのうちの2枚</strong>（集約したのが次の図6で、この2枚はその両端にあたります）。
           同じ場所の中央値が<strong>冬 285 K → 夏 316 K と31 K動きます</strong>——絶対値で判定しない理由がこれです。
+          探している保温劣化の信号 0.53 K は、<strong>この絵の明暗の全幅（冬・2〜98%表示で約5.2 K）の1割ほど</strong>。だから1枚では判定せず、図4のように引き算を重ねます。
           <br>
-          冬の画像で強く出ている明暗は<strong>陸と海の差</strong>で、資産地区が市街地参照より高いのは冬で <strong>+0.2〜+1.2 K</strong>にすぎません（局所的に高いのは製鉄所だけ・最高299.8 K）。
-          探している保温劣化の信号 0.53 K は、<strong>この絵の明暗の全幅（冬で約5.2 K）の1割ほど</strong>——だから1枚では判定せず、図4のように引き算を重ねます。
-          <br>
-          右は東扇島火力の拡大です（1マスが配布格子の1画素＝30 m。<strong>ただしTIRSの原分解能は100 mで、ST製品が30 m格子に再標本化されたもの</strong>なので、熱の広がりはこのマスより粗く出ます）。
-          <strong>20 m角の設備は0.44画素で、1画素にも届きません</strong>（100 m基準なら0.04画素）。
-          提案しているHotSat-2の3.5 m級なら、同じ2.1 × 1.8 kmが約600 × 510画素になり、設備単位で見えるようになります。
-          <br>
-          <strong>自白</strong>: これは<strong>昼間・30 m格子のLandsat</strong>であって、提案している<strong>夜間・3.5 m</strong>の画像ではありません。
-          表示は各シーンの2〜98パーセンタイルで伸ばしているので、<strong>最も熱い上位2%の画素は白く飛ばしてあります</strong>。
-          同じ場所を3.5 m級で撮った実画像は、まだ手元にありません（衛星ベンダへの照会は10月下旬・1次通過後です）。
-          <span class="src">20_theme1_保温劣化監視/poc/data/*_ST_B10_keihin.tif（Landsat Collection 2 L2 の ST_B10 ＝ 放射率補正済みの地表温度。DN×0.00341802+149.0 [K]。TIRS原分解能100 m→30 m格子）。
-          AOIは poc4_pipeline.py の AOIS と同一（±数百mの概略）。表示の物差しは各シーンの2〜98パーセンタイル、全景パネルは2×2平均に間引いて表示</span>
+          <strong>自白</strong>: これは<strong>昼間・30 m格子のLandsat</strong>であって、提案している<strong>夜間・3.5 m</strong>の画像ではありません
+          （<strong>配布格子30 mでは20 m角の設備は0.44画素、TIRSの原分解能100 mなら0.04画素</strong>。3.5 m級なら設備単位で見えるようになります）。
+          <details class="fine">
+            <summary>画像の読み方と、表示の但し書き（ご質問に応じて）</summary>
+            <div>
+              白枠が6地区、青破線が参照面です。冬の東扇島は市街地参照に対し +0.4 K＝ほぼ0、夏は −6.2 K。
+              冬の画像で強く出ている明暗は<strong>陸と海の差</strong>で、資産地区が市街地参照より高いのは冬で <strong>+0.2〜+1.2 K</strong>にすぎません（局所的に高いのは製鉄所だけ・最高299.8 K）。
+              <br>
+              右は東扇島火力の拡大です（1マスが配布格子の1画素＝30 m。<strong>ただしTIRSの原分解能は100 mで、ST製品が30 m格子に再標本化されたもの</strong>なので、熱の広がりはこのマスより粗く出ます）。
+              提案しているHotSat-2の3.5 m級なら、同じ2.1 × 1.8 kmが約600 × 510画素になります。
+              <br>
+              表示は各シーンの2〜98パーセンタイルで伸ばしているので、<strong>最も熱い上位2%の画素は白く飛ばしてあります</strong>。
+              同じ場所を3.5 m級で撮った実画像は、まだ手元にありません（衛星ベンダへの照会は10月下旬・1次通過後です）。
+              <span class="src">20_theme1_保温劣化監視/poc/data/*_ST_B10_keihin.tif（Landsat Collection 2 L2 の ST_B10 ＝ 放射率補正済みの地表温度。DN×0.00341802+149.0 [K]。TIRS原分解能100 m→30 m格子）。
+              AOIは poc4_pipeline.py の AOIS と同一（±数百mの概略）。表示の物差しは各シーンの2〜98パーセンタイル、全景パネルは2×2平均に間引いて表示</span>
+            </div>
+          </details>
         </figcaption>
       </figure>
     </div>
@@ -1434,20 +1502,56 @@
 
     <div class="theme">
       <p class="tag">やろうとしていること</p>
-      <p>
-        雪の積もった火山が噴火すると、熱で雪が一気に融けて<strong>融雪型火山泥流</strong>になります。
-        その想定量は<strong>火口付近にどれだけ雪があるかにほぼ比例</strong>します
-        （蔵王の計画の公表8値を <span class="num">泥流総量 = 0.4×融雪水量/(0.4−C<sub>d</sub>)</span> で誤差0.44%以内に再現して確認しました）。
-      </p>
-      <p>
-        ところが<strong>火口の高さには、その積雪を測っているものが何もありません。</strong>
-        面的なプロダクト（気象庁の解析積雪深 5 kmメッシュ等）はありますが、<strong>融雪範囲（渓流別0.2〜3 km²）を解像しません</strong>。
-        点の観測も、気象庁で積雪深を観測している336地点の最高標高は1,292 m（奥日光）です。
-        砂防計画は低標高の観測所からの外挿による単一の平年値を使っています。
-        本提案は、光学衛星のアーカイブから画素ごとの「雪が消えた日」を求め、そこから
-        <strong>「何年に一度、どれだけ積もるか」の分布</strong>を作るものです。
-        顧客は国土交通省 地方整備局の砂防事務所および都道府県の砂防部局（火山噴火緊急減災対策砂防計画の策定・改定）を想定しています。
-      </p>
+      <figure>
+        <svg viewBox="0 0 860 296" role="img" aria-label="砂防計画に載る泥流の想定量は火口周辺の積雪水量で決まる。その積雪水量を、現状は麓の観測所からの外挿で単一の平年値として作っている。本提案は光学衛星のアーカイブから画素ごとの消雪日を求め、年超過確率の分布として作る。ただし日からmmへの換算はV-1とV-3が埋まっていない。">
+          <!-- ---- 積雪水量の作り方: 現状 と 本提案 ---- -->
+          <text class="s-xs" x="20" y="32">いま</text>
+          <rect x="20" y="40" width="250" height="56" rx="3" fill="var(--surface-2)" stroke="var(--rule)" stroke-dasharray="5 4"></rect>
+          <text class="s-lbl" x="145" y="64" text-anchor="middle">麓の観測所からの外挿</text>
+          <text class="s-xs" x="145" y="82" text-anchor="middle">単一の平年値。区間が付かない</text>
+
+          <text class="s-xs s-acc" x="20" y="116">本提案</text>
+          <rect x="20" y="124" width="250" height="92" rx="3" fill="var(--accent-bg)" stroke="var(--accent)"></rect>
+          <text class="s-lbl s-acc" x="145" y="147" text-anchor="middle" font-weight="600">光学衛星のアーカイブ</text>
+          <text class="s-xs s-acc" x="145" y="165" text-anchor="middle">画素ごとの「雪が消えた日」から</text>
+          <text class="s-xs s-acc" x="145" y="183" text-anchor="middle">何年に一度どれだけ積もるかの分布</text>
+          <text class="s-xs s-acc" x="145" y="205" text-anchor="middle" font-weight="600">V-1 融雪期間・V-3 融雪係数が未了</text>
+
+          <!-- 2つの作り方が同じ量に入る。提案側は「日→mm」が埋まっていないので破線 -->
+          <line x1="270" y1="68" x2="316" y2="100" stroke="currentColor" stroke-width="1.5"></line>
+          <polygon points="324,105 312,99 318,93" fill="currentColor"></polygon>
+          <line x1="270" y1="170" x2="316" y2="140" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+          <polygon points="324,135 318,147 312,141" fill="var(--accent)"></polygon>
+
+          <!-- ---- 制度の側の連鎖 ---- -->
+          <rect x="330" y="82" width="200" height="74" rx="3" fill="var(--surface)" stroke="currentColor" stroke-width="1.5"></rect>
+          <text class="s-hd" x="430" y="113" text-anchor="middle">火口周辺の積雪水量</text>
+          <text class="s-xs" x="430" y="134" text-anchor="middle">泥流の量を決める量</text>
+
+          <text class="s-xs" x="575" y="112" text-anchor="middle">雪の量で決まる</text>
+          <line x1="530" y1="119" x2="610" y2="119" stroke="currentColor" stroke-width="1.5"></line>
+          <polygon points="620,119 608,113.5 608,124.5" fill="currentColor"></polygon>
+
+          <rect x="620" y="82" width="220" height="74" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
+          <text class="s-lbl" x="730" y="106" text-anchor="middle">砂防計画に載る泥流の想定量</text>
+          <text class="s-xs s-num" x="730" y="126" text-anchor="middle">泥流総量 = 0.4×融雪水量/(0.4−Cd)</text>
+          <text class="s-xs" x="730" y="143" text-anchor="middle">蔵王の公表8値を誤差0.44%以内で再現</text>
+
+          <text class="s-sm s-acc" x="330" y="180" font-weight="600">火口の高さには、この量を測っている観測点が1つもありません。</text>
+          <text class="s-xs" x="330" y="200">気象庁が積雪深を観測する336地点の最高標高は1,292 m（奥日光）。</text>
+
+          <text class="s-xs" x="20" y="240">気象庁の解析積雪深は5 kmメッシュで、融雪範囲（渓流別 0.2〜3 km²）を解像しない。</text>
+          <text class="s-xs s-num" x="20" y="260">融雪水量 = min(融雪可能水量, 積雪水量) + 火口湖水量。Cd＝渓床勾配係数。蔵王・濁川は御釜の1,300千m³が定数で入る。</text>
+          <text class="s-sm" x="20" y="284">顧客: 国土交通省の砂防事務所および都道府県の砂防部局（火山噴火緊急減災対策砂防計画の策定・改定）</text>
+        </svg>
+        <figcaption>
+          雪の積もった火山が噴火すると、熱で雪が一気に融けて<strong>融雪型火山泥流</strong>になります。
+          計画に載る想定量は<strong>火口付近にどれだけ雪があるかで決まります</strong>が、その積雪を測っている観測点が火口の高さにはありません。
+          （火口湖を持つ渓流では湖水量が定数で入るため、比例ではなく単調な関係です。）
+          <span class="src">30_theme2_ライフライン復旧/01_検討経緯.md 8.4〜8.6節（蔵王火山噴火緊急減災対策砂防計画 表2-13/2-14 からの自前導出）／
+          30_theme2_ライフライン復旧/poc/src/t2_damage_value.py（濁川の諸元）／気象庁の観測所一覧からの自前集計</span>
+        </figcaption>
+      </figure>
     </div>
 
     <div class="fig" id="fig7">
@@ -1727,20 +1831,25 @@
           この量を測っている地上の観測点は、火口の高さには1つもありません。
           <br>
           灰色は決められなかった画素です。2023年は<strong>観測日が13日あるのに</strong>30%が灰色で、<strong>枚数ではなく「いつ晴れたか」が効いています（V-4）</strong>。
-          挟み込み間隔の中央値は年により15〜48日でした。
-          <br>
-          <strong>どこまでを円で取り直したか</strong>: 円で取り直したのは<strong>この図の画素中央値と決定率だけ</strong>です。
-          <strong>観測間隔（15〜48日）と、図8の誤差係数 0.217・図10の 5.4 日と 7.1 日・V-4のスライダーは、いずれも矩形全体（41,006画素）での値</strong>のまま残っています——
-          画素ごとの挟み込み幅が保存されておらず、円で取り直すには元データからの再実行が要るためです。
-          <strong>取り直したときの効き幅は見積もってあり、結論は動きません</strong>（流域平均の年々変動σが矩形 8.93 日 → 円 8.80 日、信号 7.1 → 6.9 日、信号対雑音比 1.30 → 1.29）。
-          <br>
-          <strong>統計量について</strong>: ここに出しているのは画素中央値で、図10で信号としている 7.1 日は<strong>流域平均の年々変動</strong>——別の統計量です。
           <br>
           <strong>自白</strong>: これは「日」であって「mm」ではありません。計画に載る量にするには融雪期間（V-1）と融雪係数（V-3）が要り、そこは我々だけでは埋まりません。
-          <span class="src">t2_snowmap_circle_r3km.json（円_半径3km.年別 ＝ 画素中央値・決定率、downstream_effect ＝ 円と矩形の対比）／
-          t2_snowmap_results.json（years.*.dates, gap_median_days）／
-          poc/data/snowmap/snow_doy_*.npy を 40_scripts/make_shiryo_realdata_figs.py で描画。観測日数は dates を日付でユニーク化した数。
-          円の集計は 30_theme2_ライフライン復旧/poc/src/t2_snowmap_circle.py</span>
+          <details class="fine">
+            <summary>集計範囲と統計量の但し書き（ご質問に応じて）</summary>
+            <div>
+              挟み込み間隔の中央値は年により15〜48日でした。
+              <br>
+              <strong>どこまでを円で取り直したか</strong>: 円で取り直したのは<strong>この図の画素中央値と決定率だけ</strong>です。
+              <strong>観測間隔（15〜48日）と、図8の誤差係数 0.217・図10の 5.4 日と 7.1 日・V-4のスライダーは、いずれも矩形全体（41,006画素）での値</strong>のまま残っています——
+              画素ごとの挟み込み幅が保存されておらず、円で取り直すには元データからの再実行が要るためです。
+              <strong>取り直したときの効き幅は見積もってあり、結論は動きません</strong>（流域平均の年々変動σが矩形 8.93 日 → 円 8.80 日、信号 7.1 → 6.9 日、信号対雑音比 1.30 → 1.29）。
+              <br>
+              <strong>統計量について</strong>: ここに出しているのは画素中央値で、図10で信号としている 7.1 日は<strong>流域平均の年々変動</strong>——別の統計量です。
+              <span class="src">t2_snowmap_circle_r3km.json（円_半径3km.年別 ＝ 画素中央値・決定率、downstream_effect ＝ 円と矩形の対比）／
+              t2_snowmap_results.json（years.*.dates, gap_median_days）／
+              poc/data/snowmap/snow_doy_*.npy を 40_scripts/make_shiryo_realdata_figs.py で描画。観測日数は dates を日付でユニーク化した数。
+              円の集計は 30_theme2_ライフライン復旧/poc/src/t2_snowmap_circle.py</span>
+            </div>
+          </details>
         </figcaption>
       </figure>
     </div>
@@ -2035,7 +2144,7 @@
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月13日 第12版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月13日 第13版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
