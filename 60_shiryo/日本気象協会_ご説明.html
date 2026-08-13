@@ -78,9 +78,61 @@
     font-family: var(--sans); font-size: 16px; line-height: 1.75;
     -webkit-font-smoothing: antialiased; font-feature-settings: "palt" 1;
   }
+  /* 左に目次の柱を立て、本文はその右に置く。図は 860 の viewBox を幅いっぱいに伸ばすので、
+     本文の桁を広げるとそのぶん図が大きくなる（画面共有で効く）。
+     目次が入らない幅では、下の @media で目次を上部の帯に切り替える。 */
   .wrap {
-    max-width: 54rem; margin: 0 auto; padding: 3rem 1.5rem 5rem;
-    display: flex; flex-direction: column; gap: 2.75rem;
+    max-width: 76rem; margin: 0 auto; padding: 3rem 1.5rem 5rem;
+    display: grid; grid-template-columns: 13.5rem minmax(0, 1fr);
+    column-gap: 2.5rem; row-gap: 2.75rem; align-items: start;
+  }
+  .wrap > * { grid-column: 2; min-width: 0; }
+  /* 桁を広げるのは図だけにする。散文が 57字/行 まで伸びると、読み上げながら追えなくなる */
+  header, section > .body, .unks, .asks, .frank, .wrap > details, figcaption, .probe .caveat,
+  .theme figcaption, .theme p { max-width: 50rem; }
+
+  /* ---- 目次（本日の道順） ---- */
+  .toc {
+    grid-column: 1; grid-row: 1 / -1; align-self: start;
+    position: sticky; top: 1.5rem;
+    display: flex; flex-direction: column; gap: .5rem;
+    font-size: .86rem; line-height: 1.6;
+    max-height: calc(100vh - 3rem); overflow-y: auto;
+    padding-right: .4rem;
+  }
+  .toc .tochd {
+    font-family: var(--sans); font-size: .8rem; font-weight: 600;
+    color: var(--ink-2); padding-bottom: .5rem; border-bottom: 1px solid var(--rule);
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .1rem; }
+  .toc .sec > a {
+    display: block; padding: .28rem 0 .28rem .6rem; color: var(--ink-2);
+    text-decoration: none; border-left: 2px solid transparent; font-weight: 600;
+  }
+  .toc .figs { padding: 0 0 .35rem .6rem; }
+  .toc .figs a {
+    display: block; padding: .12rem 0 .12rem .55rem; color: var(--ink-3);
+    text-decoration: none; font-size: .82rem; border-left: 1px solid var(--rule-2);
+  }
+  .toc a:hover { color: var(--accent-ink); }
+  .toc .figs a:hover { border-left-color: var(--accent); }
+  .toc .sec > a[aria-current="true"] { color: var(--accent-ink); border-left-color: var(--accent); }
+
+  @media (max-width: 68rem) {
+    .wrap { grid-template-columns: minmax(0, 1fr); max-width: 58rem; }
+    .wrap > * { grid-column: 1; }
+    /* 目次は上部の帯にする。横に流れるので、節だけを出して図は畳む */
+    .toc {
+      grid-row: auto; position: sticky; top: 0; z-index: 20;
+      background: var(--paper); border-bottom: 1px solid var(--rule);
+      margin: -3rem -1.5rem 0; padding: .5rem 1.5rem;
+      max-height: none; overflow: visible;
+      flex-direction: row; align-items: center; gap: .1rem 1rem; flex-wrap: nowrap;
+    }
+    .toc .tochd, .toc .figs { display: none; }
+    .toc ol { flex-direction: row; gap: .1rem 1rem; overflow-x: auto; }
+    .toc .sec > a { padding: .3rem .5rem; border-left: 0; border-bottom: 2px solid transparent; white-space: nowrap; }
+    .toc .sec > a[aria-current="true"] { border-bottom-color: var(--accent); }
   }
 
   h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
@@ -100,6 +152,8 @@
   }
 
   section { display: flex; flex-direction: column; gap: 1rem; }
+  section[id], .fig[id] { scroll-margin-top: 1.2rem; }
+  @media (max-width: 68rem) { section[id], .fig[id] { scroll-margin-top: 3.6rem; } }
   section > .body { display: flex; flex-direction: column; gap: .85rem; }
   .hr { height: 1px; background: var(--rule); border: 0; margin: 0; }
 
@@ -312,7 +366,7 @@
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
   @media print {
-    .wipectl, .toolbar, .steps, .zoomclose { display: none; }
+    .wipectl, .toolbar, .steps, .zoomclose, .toc { display: none; }
     .fig.zoomed { position: static; padding: 1.1rem 1.2rem 1rem; }
   }
 
@@ -329,7 +383,8 @@
       --miss:#6E727A; --miss-bg:#EBEBE9; --shadow:none;
     }
     body { font-size: 10.5pt; }
-    .wrap { max-width: none; padding: 0; gap: 1.6rem; }
+    .wrap { display: block; max-width: none; padding: 0; }
+    .wrap > * { margin-bottom: 1.6rem; }
     .reviewbox { display: none; }
     .ask, .unk, .theme, .frank, .fig, details, figure { break-inside: avoid; }
     details { border: 0; padding: 0; }
@@ -694,6 +749,38 @@
 
 <div class="wrap">
 
+  <nav class="toc" aria-label="本日の道順">
+    <p class="tochd">本日の道順</p>
+    <ol>
+      <li class="sec">
+        <a href="#s-overview">全体像</a>
+        <div class="figs"><a href="#fig1">図1 対象も顧客も別</a></div>
+      </li>
+      <li class="sec">
+        <a href="#s-t1">テーマ①　保温劣化</a>
+        <div class="figs">
+          <a href="#fig2">図2 熱で見ると何が変わるか</a>
+          <a href="#fig3">図3 なぜ引き算を重ねるか</a>
+          <a href="#fig4">図4 実際の衛星画像</a>
+        </div>
+      </li>
+      <li class="sec">
+        <a href="#s-t2">テーマ②　火口の積雪</a>
+        <div class="figs">
+          <a href="#fig5">図5 現状の何が問題か</a>
+          <a href="#fig6">図6 実際に作った消雪日マップ</a>
+        </div>
+      </li>
+      <li class="sec">
+        <a href="#s-asks">ご相談したいこと</a>
+        <div class="figs"><a href="#fig7">図7 不確定項10件と、閉じられない8件</a></div>
+      </li>
+      <li class="sec">
+        <a href="#s-frank">先に申し上げておくこと</a>
+      </li>
+    </ol>
+  </nav>
+
   <header>
     <p class="eyebrow">NEDO Challenge, Satellite Data ／ ご説明資料</p>
     <h1>検討中の2テーマと、いま残っている不確定項</h1>
@@ -702,24 +789,15 @@
       どちらも実データまで動かしてあります（<strong>テーマ①は代用データ＝昼間30 mのLandsatです</strong>）が、<strong>残っている不確定項の多くが「気象」に属しています</strong>。
       <strong>お願いは3件です</strong>——(1) 気象側の知見についてご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
     </p>
+    <p class="lede" style="margin-top:.7rem">
+      通してご覧いただくのは<strong>図7枚＋各テーマ冒頭の見取り図2枚で、10〜15分</strong>です（目次の順に進みます）。
+      <strong>不確定項のカード・スライダー・数値一覧・脚注の折りたたみは、ご質問に応じて開くための材料です。</strong>
+    </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第18版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第19版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
-    <div class="theme" style="margin-top:1.4rem">
-      <p class="figtitle">本日の道順 — この7枚＋各テーマ冒頭の見取り図2枚です（10〜15分）</p>
-      <p style="font-size:.93rem;color:var(--ink-2);margin-top:.5rem">
-        <a href="#fig1">図1 全体像</a> → <a href="#fig2">図2 何を見るか（熱で見ると何が変わるか）</a> →
-        <a href="#fig3">図3 なぜ引き算を重ねるか（ここがご相談の中心です）</a> → <a href="#fig4">図4 実際の衛星画像</a> →
-        <a href="#fig5">図5 テーマ②の現状の問題</a> → <a href="#fig6">図6 実際に作った消雪日マップ</a> →
-        <a href="#fig7">図7 ご相談したいこと3件</a>
-      </p>
-      <p style="font-size:.9rem;color:var(--ink-3);margin-top:.4rem">
-        <strong>不確定項のカード・スライダー・数値一覧・脚注の折りたたみは、ご質問に応じて開くための材料です。</strong>
-      </p>
-    </div>
-
-    <div class="toolbar" style="margin-top:1rem">
+    <div class="toolbar" style="margin-top:1.2rem">
       <button type="button" id="btnDetails" aria-pressed="false">数値一覧をすべて開く</button>
       <span class="hint">図をクリックすると拡大表示になります（Esc で戻ります）。スライダーとボタンは実測点だけを切り替えます（図6は9年分を1枚ずつ切り替えられます）。</span>
     </div>
@@ -728,7 +806,7 @@
   <hr class="hr">
 
   <!-- ============ 全体像 ============ -->
-  <section>
+  <section id="s-overview">
     <h2>全体像 — 2件とも「地上に観測点が無いものを、衛星で測る」提案です</h2>
 
     <div class="fig" id="fig1">
@@ -801,7 +879,7 @@
   <hr class="hr">
 
   <!-- ============ テーマ① ============ -->
-  <section>
+  <section id="s-t1">
     <p class="eyebrow">テーマ① — インフラマネジメント及び都市活動</p>
     <h2>高分解能熱赤外による、プラント保温システムの劣化監視</h2>
 
@@ -1004,6 +1082,7 @@
           <text class="s-sm" x="230" y="268" fill="var(--ink-2)"><tspan font-weight="600" fill="var(--accent-ink)">①②はどちらも同じ撮像の中の比較なので、ここで気象が消える</tspan>。②に残る個体差を、③の時間変化が消す</text>
         </svg>
         <figcaption>
+          <strong>本日いちばんご相談したいのはこの図です</strong>——引き算を重ねる設計の、②と③が前提にしていることが U-1・U-2 です。
           横軸は対数です。<strong>絶対温度をそのまま見る設計は成立しません</strong>——晴天夜と曇天夜の違いだけで見かけの温度が 8.57 K 動き、探している信号 0.53 K の16倍あるからです（実帯域では 10.17 K 対 0.48 K ＝ 約21倍でさらに厳しい）。
           <strong>①と②はどちらも同じ撮像の中での比較なので、その気象がここで消えます</strong>（落差が最も大きいのがそこです）。
           ①は設備の中の局所的な異常しか見えず、<strong>設備全体が面的に劣化すると基準を失って見えません</strong>。だから②で隣の同型設備を基準にし、②で戻ってくる個体差（放射率差 2.67 K）を③の時間変化が消します。
@@ -1230,7 +1309,7 @@
   <hr class="hr">
 
   <!-- ============ テーマ② ============ -->
-  <section>
+  <section id="s-t2">
     <p class="eyebrow">テーマ② — インフラに係る防災・災害対応</p>
     <h2>火口周辺の積雪水量の、年超過確率分布</h2>
 
@@ -1791,7 +1870,7 @@
   <hr class="hr">
 
   <!-- ============ ご依頼 ============ -->
-  <section>
+  <section id="s-asks">
     <h2>ご相談したいこと</h2>
 
     <div class="fig" id="fig7">
@@ -1889,7 +1968,7 @@
 
   <hr class="hr">
 
-  <section>
+  <section id="s-frank">
     <h2>先に申し上げておくこと</h2>
     <div class="frank">
       <div class="row">
@@ -1915,7 +1994,7 @@
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月13日 第18版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月13日 第19版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
@@ -2087,6 +2166,34 @@
     });
   });
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") unzoom(); });
+
+  /* ---------- 目次: いま画面にある節を印す ----------
+     節の境界ではなく「画面の上から1/3の線がどの節の中にあるか」で決める。
+     図が大きいので、境界の交差で判定すると印が飛ぶ。scroll のたびに再計算するだけで、
+     IntersectionObserver は使わない（節が5つしかないので測り直しても安い）。 */
+  var tocLinks = [].slice.call(document.querySelectorAll(".toc .sec > a"));
+  var tocSecs = tocLinks.map(function (a) {
+    return document.getElementById(a.getAttribute("href").slice(1));
+  });
+  function markToc() {
+    if (!tocLinks.length) return;
+    var line = window.innerHeight / 3, hit = 0;
+    for (var i = 0; i < tocSecs.length; i++) {
+      var s = tocSecs[i];
+      if (s && s.getBoundingClientRect().top <= line) hit = i;
+    }
+    tocLinks.forEach(function (a, i) {
+      if (i === hit) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+  }
+  if (tocLinks.length) {
+    // 測るのは節5つの位置だけなので、間引かずにそのまま呼ぶ。
+    // requestAnimationFrame で間引くと、タブが背面のときに更新が止まる。
+    window.addEventListener("scroll", markToc, { passive: true });
+    window.addEventListener("resize", markToc, { passive: true });
+    markToc();
+  }
 })();
 </script>
 
