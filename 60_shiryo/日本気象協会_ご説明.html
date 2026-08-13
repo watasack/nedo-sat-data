@@ -21,6 +21,8 @@
     --sky-2:      #8FAEC2;
     --terrain:    #E3E6E4;   /* 断面図の地形の面。地色から一段 */
     --snowzone:   #DDEAF3;   /* 同・雪の領域 */
+    --band:       #EFF2F3;   /* 主張を運ぶ帯（観測所の標高帯）。opacityで作ると明暗で濃さが揃わない */
+    --band-acc:   #F9F0ED;   /* 同・注目の帯（暖色系） */
     --rock:       #6E7480;
     --rock-2:     #4B505A;
     --ok:         #2F6B4F;
@@ -46,7 +48,7 @@
       --accent:#E07048; --accent-ink:#EE8A64; --accent-bg:#33221B;
       --unk:#7FAFC6; --unk-ink:#9CC6DA; --unk-bg:#1A262E;
       --sky:#2B3B47; --sky-2:#3F5A6B;
-      --terrain:#2F343C; --snowzone:#31485B;
+      --terrain:#2F343C; --snowzone:#31485B; --band:#24313A; --band-acc:#35251E;
       --rock:#3A3F49; --rock-2:#2A2E36;
       --ok:#74B694; --ok-bg:#1B2A22;
       --warn:#D4A65C; --warn-bg:#2C2417;
@@ -61,7 +63,7 @@
     --accent:#E07048; --accent-ink:#EE8A64; --accent-bg:#33221B;
     --unk:#7FAFC6; --unk-ink:#9CC6DA; --unk-bg:#1A262E;
     --sky:#2B3B47; --sky-2:#3F5A6B;
-    --terrain:#2F343C; --snowzone:#31485B;
+    --terrain:#2F343C; --snowzone:#31485B; --band:#24313A; --band-acc:#35251E;
     --rock:#3A3F49; --rock-2:#2A2E36;
     --ok:#74B694; --ok-bg:#1B2A22;
     --warn:#D4A65C; --warn-bg:#2C2417;
@@ -322,7 +324,7 @@
       --accent:#B4441F; --accent-ink:#8E3517; --accent-bg:#F6E9E3;
       --unk:#35576B; --unk-ink:#26414F; --unk-bg:#E5EDF1;
       --sky:#BFD3E0; --sky-2:#8FAEC2; --rock:#6E7480; --rock-2:#4B505A;
-      --terrain:#E3E6E4; --snowzone:#DDEAF3;
+      --terrain:#E3E6E4; --snowzone:#DDEAF3; --band:#F0F3F5; --band-acc:#FAF2EF;
       --ok:#2F6B4F; --ok-bg:#E6EFE9; --warn:#8A5D16; --warn-bg:#F5ECD9;
       --miss:#6E727A; --miss-bg:#EBEBE9; --shadow:none;
     }
@@ -356,17 +358,6 @@
       <stop offset="85%"  stop-color="#F59B2A"></stop>
       <stop offset="100%" stop-color="#FFE9A8"></stop>
     </linearGradient>
-    <linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%"   stop-color="#4B5F71"></stop>
-      <stop offset="35%"  stop-color="#7A93A6"></stop>
-      <stop offset="70%"  stop-color="#5A6E80"></stop>
-      <stop offset="100%" stop-color="#41525F"></stop>
-    </linearGradient>
-    <linearGradient id="gCool" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%"   stop-color="#241443"></stop>
-      <stop offset="45%"  stop-color="#4A1D63"></stop>
-      <stop offset="100%" stop-color="#2A1550"></stop>
-    </linearGradient>
     <linearGradient id="gSkyDay" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="var(--sky-2)"></stop>
       <stop offset="100%" stop-color="var(--sky)" stop-opacity=".35"></stop>
@@ -387,10 +378,6 @@
       <stop offset="0%"   stop-color="var(--accent)"></stop>
       <stop offset="100%" stop-color="var(--accent)" stop-opacity=".7"></stop>
     </linearGradient>
-    <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#FFC46B" stop-opacity=".85"></stop>
-      <stop offset="100%" stop-color="#FFC46B" stop-opacity="0"></stop>
-    </radialGradient>
     <filter id="fBlur6" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="6"></feGaussianBlur>
     </filter>
@@ -763,11 +750,11 @@
       <strong>お願いは3件です</strong>——(1) 気象側の知見についてご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
     </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第14版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第15版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
     <div class="theme" style="margin-top:1.4rem">
-      <p class="figtitle">本日の道順 — 画面で追うのはこの7枚です（10〜15分）</p>
+      <p class="figtitle">本日の道順 — 画面で追うのはこの7枚＋各テーマ冒頭の見取り図2枚（計9枚）です（10〜15分）</p>
       <p style="font-size:.93rem;color:var(--ink-2);margin-top:.5rem">
         <a href="#fig1">図1 全体像</a> → <a href="#fig2">図2 何を見るか（熱で見ると何が変わるか）</a> →
         <a href="#fig4">図4 なぜ引き算を重ねるか（ここがご相談の中心です）</a> → <a href="#fig5">図5 実際の衛星画像</a> →
@@ -831,8 +818,10 @@
           <text class="s-xs" x="458" y="58">融雪期・光学・30 m級</text>
 
           <!-- 出す答え -->
-          <text class="s-sm" x="14" y="252">出す答え: <tspan font-weight="600" fill="currentColor">どの設備を先に点検すべきか</tspan>　／　顧客: プラントの保全部門</text>
-          <text class="s-sm" x="442" y="252">出す答え: <tspan font-weight="600" fill="currentColor">何年に一度、どれだけ積もるか</tspan>　／　顧客: 国土交通省 砂防事務所</text>
+          <text class="s-sm" x="14" y="250">出す答え: <tspan font-weight="600" fill="currentColor">どの設備を先に点検すべきか</tspan></text>
+          <text class="s-xs" x="14" y="266">顧客: プラントの保全部門（エネルギー事業者・自治体系事業者）</text>
+          <text class="s-sm" x="442" y="250">出す答え: <tspan font-weight="600" fill="currentColor">何年に一度、どれだけ積もるか</tspan></text>
+          <text class="s-xs" x="442" y="266">顧客: 砂防事務所と都道府県の砂防部局</text>
 
           <!-- 共通の帯 -->
           <rect x="14" y="272" width="832" height="82" rx="4" fill="var(--accent-bg)" stroke="var(--accent)" stroke-dasharray="5 4"></rect>
@@ -853,7 +842,7 @@
         <span><span class="flag f-miss">未取得</span> まだ根拠がない</span>
       </div>
       <p style="font-size:.92rem;color:var(--ink-2)">
-        以降の数値にはすべてこのラベルを付けています。自前計算はすべて乱数シードを固定してあり、同じ入力から同じ値が再現します。
+        数値一覧と不確定項では、すべての数値にこのラベルを付けています（図の中には付けません）。自前計算はすべて乱数シードを固定してあり、同じ入力から同じ値が再現します。
       </p>
     </div>
   </section>
@@ -868,7 +857,7 @@
     <div class="theme">
       <p class="tag">やろうとしていること</p>
       <figure>
-        <svg viewBox="0 0 860 322" role="img" aria-label="現状と本提案の比較。現状は数年周期の抜き取り点検で母数を網羅できず、見に行かなかった側で劣化が進む。本提案は衛星が毎月・全数をスクリーニングし、要点検の上位だけを従来どおり地上で確認する。">
+        <svg viewBox="0 0 860 362" role="img" aria-label="現状と本提案の比較。現状は数年周期の抜き取り点検で母数を網羅できず、見に行かなかった側で劣化が進む。本提案は衛星が毎月・全数をスクリーニングし、要点検の上位だけを従来どおり地上で確認する。ただし衛星に写るのは上向きの面だけで、垂直面と個別配管は地上手段の担当。">
           <!-- ---- いま: 抜き取りなので母数が網羅できない ---- -->
           <text class="s-xs" x="20" y="24">いま</text>
           <rect x="20" y="34" width="200" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
@@ -880,11 +869,11 @@
           <polygon points="600,62 588,56.5 588,67.5" fill="currentColor"></polygon>
 
           <rect x="600" y="34" width="190" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
-          <text class="s-lbl" x="695" y="72" text-anchor="middle">開放点検・補修</text>
+          <text class="s-lbl" x="695" y="72" text-anchor="middle">保温を開けて確認・補修</text>
 
-          <line x1="220" y1="88" x2="320" y2="116" stroke="var(--ink-3)" stroke-width="1.5" stroke-dasharray="5 4"></line>
-          <polygon points="328,120 316,114 320,107" fill="var(--ink-3)"></polygon>
-          <rect x="332" y="100" width="270" height="54" rx="3" fill="none" stroke="var(--ink-3)" stroke-dasharray="5 4"></rect>
+          <line x1="220" y1="88" x2="320" y2="116" stroke="var(--miss)" stroke-width="1.5"></line>
+          <polygon points="328,120 316,114 320,107" fill="var(--miss)"></polygon>
+          <rect x="332" y="100" width="270" height="54" rx="3" fill="var(--miss-bg)" stroke="var(--miss)"></rect>
           <text class="s-sm" x="467" y="124" text-anchor="middle">見に行かなかった大半はそのまま</text>
           <text class="s-xs" x="467" y="143" text-anchor="middle">その狭間で劣化が進行＝見逃し</text>
 
@@ -913,15 +902,17 @@
           <polygon points="600,282 588,276.5 588,287.5" fill="currentColor"></polygon>
 
           <rect x="600" y="228" width="190" height="64" rx="3" fill="var(--surface-2)" stroke="var(--rule)"></rect>
-          <text class="s-lbl" x="695" y="266" text-anchor="middle">開放点検・補修</text>
+          <text class="s-lbl" x="695" y="266" text-anchor="middle">保温を開けて確認・補修</text>
 
           <text class="s-xs s-acc" x="330" y="312">U-1 兄弟資産の差動経年・U-3 撮像回数が、この絞り込みの精度を決めています</text>
+          <text class="s-xs" x="20" y="332">衛星に写るのは上向きの面（屋根・天板・ラック最上段）だけです。</text>
+          <text class="s-xs" x="20" y="350">可視面率は3Dモデルから事前に算定して開示し、垂直面と個別配管は従来どおり地上手段の担当とします。</text>
         </svg>
         <figcaption>
-          対象は<strong>製油所・発電所・清掃工場などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）で、
+          対象は<strong>発電所・清掃工場・地域熱供給などの高温設備</strong>（加熱炉・高温配管・タンク・ユニット）で、製油所・石油化学は横展開先です。
           抜き取り点検を<strong>全数スクリーニングへ転換し、地上点検を精密確認へ再配置する</strong>提案です。
           保温材が傷むと、その面の表面温度が周りより少しだけ高くなります（<strong>以降の計算では +1 K を置いています</strong>）。
-          それを夜間の中波長赤外（3.5 m級）で外から面的に拾い、<strong>点検の行き先</strong>を返します。確認そのものは地上手段に残します。
+          それを夜間の中波長赤外（3.5 m級）で<strong>上向きの面</strong>を外から面的に拾い、<strong>点検の行き先</strong>を返します。確認そのものは地上手段に残します。
           <span class="src">20_theme1_保温劣化監視/12_提出版_様式4.md（②課題・⑤実用化）／07_PoC中間結果.md／poc1_results.json（signals ＝ +1 K を置いたときの輝度温度への写り）</span>
         </figcaption>
       </figure>
@@ -1088,7 +1079,7 @@
           </g>
 
           <!-- 検出できる領域 -->
-          <rect x="230" y="46" width="201" height="166" fill="var(--accent)" opacity=".05"></rect>
+          <rect x="230" y="46" width="201" height="166" fill="var(--band-acc)"></rect>
           <line x1="431" y1="40" x2="431" y2="212" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"></line>
           <text class="s-sm s-num s-acc" x="436" y="36">信号 0.53 K ← これより左に来て初めて検出できる</text>
 
@@ -1574,7 +1565,7 @@
     <div class="theme">
       <p class="tag">やろうとしていること</p>
       <figure>
-        <svg viewBox="0 0 860 296" role="img" aria-label="砂防計画に載る泥流の想定量は火口周辺の積雪水量で決まる。その積雪水量を、現状は麓の観測所からの外挿で単一の平年値として作っている。本提案は光学衛星のアーカイブから画素ごとの消雪日を求め、年超過確率の分布として作る。ただし日からmmへの換算はV-1とV-3が埋まっていない。">
+        <svg viewBox="0 0 860 318" role="img" aria-label="砂防計画に載る泥流の想定量は火口周辺の積雪水量で決まる。その積雪水量を、現状は麓の観測所からの外挿で単一の平年値として作っている。本提案は光学衛星のアーカイブから画素ごとの消雪日を求め、年超過確率の分布として作る。ただし mm への換算に V-3、分布の倍率に V-1 が残っている。">
           <!-- ---- 積雪水量の作り方: 現状 と 本提案 ---- -->
           <text class="s-xs" x="20" y="32">いま</text>
           <rect x="20" y="40" width="250" height="56" rx="3" fill="var(--surface-2)" stroke="var(--rule)" stroke-dasharray="5 4"></rect>
@@ -1612,13 +1603,14 @@
           <text class="s-xs" x="330" y="200">気象庁が積雪深を観測する336地点の最高標高は1,292 m（奥日光）。</text>
 
           <text class="s-xs" x="20" y="240">気象庁の解析積雪深は5 kmメッシュで、融雪範囲（渓流別 0.2〜3 km²）を解像しない。</text>
-          <text class="s-xs s-num" x="20" y="260">融雪水量 = min(融雪可能水量, 積雪水量) + 火口湖水量。Cd＝渓床勾配係数。蔵王・濁川は御釜の1,300千m³が定数で入る。</text>
-          <text class="s-sm" x="20" y="284">顧客: 国土交通省の砂防事務所および都道府県の砂防部局（火山噴火緊急減災対策砂防計画の策定・改定）</text>
+          <text class="s-xs s-num" x="20" y="258">融雪水量 = min(融雪可能水量, 積雪水量) + 火口湖水量。濁川は御釜の1,300千m³が定数で入る。</text>
+          <text class="s-xs s-num" x="20" y="276">全10ケースで熱量側が雪の8〜14倍あり、min は常に積雪水量の側。Cd＝計画が渓床勾配から与える係数（蔵王 0.076）。</text>
+          <text class="s-sm" x="20" y="302">顧客: 国土交通省の砂防事務所および都道府県の砂防部局（火山噴火緊急減災対策砂防計画の策定・改定）</text>
         </svg>
         <figcaption>
           雪の積もった火山が噴火すると、熱で雪が一気に融けて<strong>融雪型火山泥流</strong>になります。
           計画に載る想定量は<strong>火口付近にどれだけ雪があるかで決まります</strong>が、その積雪を測っている観測点が火口の高さにはありません。
-          （火口湖を持つ渓流では湖水量が定数で入るため、比例ではなく単調な関係です。）
+          （火口湖を持つ渓流では湖水量が定数で入るため、比例ではなく単調な関係です。）未了の2件は効き方が違います——<strong>V-3 融雪係数は mm への換算だけ</strong>に効き、<strong>V-1 融雪期間は無次元の平年比そのものを1.5倍動かします</strong>。
           <span class="src">30_theme2_ライフライン復旧/01_検討経緯.md 8.4〜8.6節（蔵王火山噴火緊急減災対策砂防計画 表2-13/2-14 からの自前導出）／
           30_theme2_ライフライン復旧/poc/src/t2_damage_value.py（濁川の諸元）／気象庁の観測所一覧からの自前集計</span>
         </figcaption>
@@ -1631,14 +1623,15 @@
         <svg viewBox="0 0 860 372" role="img" aria-label="火山の断面図。気象庁6観測所は標高38.9から525mの麓にあり、その回帰式を最上位の観測所より約1220m上、標高約1745mの火口へ外挿している。計画値3.81mに対しUAV実測は1.1m。">
           <clipPath id="clip5"><rect x="96" y="20" width="558" height="276"></rect></clipPath>
 
+          <!-- 観測所が収まっている標高帯（0〜525 m）。この帯の上に観測点は1つも無い。
+               不透明で塗るので、目盛線より先に置く（順序を変えると500 mの線が隠れる） -->
+          <rect x="96" y="223" width="558" height="73" fill="var(--band)"></rect>
           <!-- 目盛と補助線（標高。0 m→y=296、1,745 m→y=54 の線形） -->
           <g stroke="currentColor" stroke-width="1" opacity=".12">
             <line x1="96" y1="227" x2="654" y2="227"></line>
             <line x1="96" y1="157" x2="654" y2="157"></line>
             <line x1="96" y1="88" x2="654" y2="88"></line>
           </g>
-          <!-- 観測所が収まっている標高帯（0〜525 m）。この帯の上に観測点は1つも無い -->
-          <rect x="96" y="223" width="558" height="73" fill="var(--unk)" opacity=".08"></rect>
 
           <g clip-path="url(#clip5)">
             <use href="#volcano" style="color:var(--ink-3)"></use>
@@ -1697,7 +1690,8 @@
           <path d="M352 40 L400 50" stroke="currentColor" stroke-width="1" opacity=".45" fill="none"></path>
           <text class="s-sm" x="636" y="126" text-anchor="end">衛星は火口を直接見る</text>
 
-          <!-- 右: 積雪深の食い違い -->
+          <!-- 右: 積雪深の食い違い。左の標高軸とは別スケールなので区切りを入れる（43.6 px/m 対 0.139 px/m） -->
+          <line x1="672" y1="40" x2="672" y2="310" stroke="var(--rule)" stroke-width="1"></line>
           <line x1="690" y1="296" x2="846" y2="296" stroke="currentColor" stroke-width="1" opacity=".4"></line>
           <g filter="url(#fSoft)">
             <rect x="704" y="130" width="50" height="166" fill="url(#gSnow)" stroke="var(--sky-2)"></rect>
@@ -1709,6 +1703,7 @@
           <text class="s-lbl s-num" x="809" y="240" text-anchor="middle" font-weight="600">1.1 m</text>
           <text class="s-xs" x="729" y="314" text-anchor="middle">計画値（外挿）</text>
           <text class="s-xs" x="809" y="314" text-anchor="middle">UAV実測</text>
+          <text class="s-xs" x="768" y="336" text-anchor="middle">左の標高軸とは別スケール</text>
           <path d="M760 100 L778 100" stroke="var(--accent)" stroke-width="1.4"></path>
           <text class="s-sm s-acc s-num" x="769" y="92" text-anchor="middle" font-weight="600">食い違い 246%</text>
         </svg>
@@ -1760,7 +1755,7 @@
           <!-- 消雪の推定 -->
           <line x1="470" y1="76" x2="470" y2="146" stroke="var(--unk)" stroke-width="1.6"></line>
           <line x1="533" y1="76" x2="533" y2="146" stroke="var(--unk)" stroke-width="1.6"></line>
-          <rect x="470" y="76" width="63" height="70" fill="var(--accent)" opacity=".08"></rect>
+          <rect x="470" y="76" width="63" height="70" fill="var(--band-acc)"></rect>
           <line x1="501" y1="72" x2="501" y2="150" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></line>
           <text class="s-sm s-acc" x="501" y="166" text-anchor="middle">推定＝間隔の中点</text>
           <text class="s-xs s-unk" x="470" y="70" text-anchor="middle">最後に雪あり</text>
@@ -1786,7 +1781,7 @@
           </g>
           <line x1="414" y1="222" x2="414" y2="292" stroke="var(--unk)" stroke-width="1.6"></line>
           <line x1="666" y1="222" x2="666" y2="292" stroke="var(--unk)" stroke-width="1.6"></line>
-          <rect x="414" y="222" width="252" height="70" fill="var(--accent)" opacity=".08"></rect>
+          <rect x="414" y="222" width="252" height="70" fill="var(--band-acc)"></rect>
           <line x1="540" y1="218" x2="540" y2="296" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></line>
           <path d="M420 306 L660 306" stroke="var(--accent)" stroke-width="1.4"></path>
           <path d="M426 302 L416 306 L426 310 Z" fill="var(--accent)"></path>
@@ -1959,7 +1954,7 @@
             <line x1="790" y1="42" x2="790" y2="196"></line>
           </g>
 
-          <rect x="230" y="42" width="199" height="154" fill="var(--accent)" opacity=".05"></rect>
+          <rect x="230" y="42" width="199" height="154" fill="var(--band-acc)"></rect>
           <line x1="429" y1="36" x2="429" y2="196" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"></line>
           <text class="s-sm s-num s-acc" x="434" y="32">信号 7.1 日 ← 左に来ないと年ごとの違いが見えない</text>
 
@@ -2165,6 +2160,7 @@
           テーマ①は屋外設備の表面温度・放射率の実測、テーマ②は山岳域の積雪水量の実測です。
           <strong>いずれも上限性能や絶対値を決めている量で、衛星側からは埋められません。</strong>
           可否だけでなく、そもそもどういう観測なら現実的かをお聞かせいただきたいです。
+          <strong>費用を伴う形（受託・共同研究）になる場合は、規模と時期を別途ご相談させてください。</strong>本日は「どういう観測なら現実的か」までで結構です。
         </span>
         <span class="hits">→ U-1 / V-3</span>
       </div>
@@ -2231,7 +2227,7 @@
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月13日 第14版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月13日 第15版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
