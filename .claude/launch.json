@@ -4,8 +4,7 @@
     {
       "name": "shiryo-preview",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8901", "--directory",
-        "/private/tmp/claude-504/-Users-abe-shuhei-test-nedo-sat-data/3b2183c5-a318-409a-88b6-85c1157cb715/scratchpad"],
+      "runtimeArgs": ["40_scripts/serve_shiryo_preview.py", "8901"],
       "port": 8901
     }
   ]

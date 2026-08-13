@@ -965,9 +965,11 @@ D-183（`.tochd` を `.68rem`＋`text-transform:uppercase`＋`letter-spacing` �
 
 **ローカルでの実ブラウザ確認ができるようになった**（1280/1000/900/420 px × 明暗で、横スクロールなし・
 aria-current の追随・アンカーが固定バーに隠れないことを確認）。手順は
-**`.claude/launch.json` に `python3 -m http.server` を置き `preview_start` で開く**。
-2点だけ注意がある: **(1) 資料をそのまま配信すると文字化けする**（`<meta charset>` は Artifact 側のラッパが入れているので資料自体は持っていない）。
-`<!doctype html><head><meta charset="utf-8">` で包んだ複製を scratchpad に置いて配信する。
-**(2) Browser pane が背面のとき `innerWidth` が 0 になり、レイアウトの測定値が全部壊れる**。
-先に `screenshot` を撮って前面に出してから測る。また `scrollTo()` の直後は scroll イベントがまだ発火していないので、
-`window.dispatchEvent(new Event('scroll'))` を自分で撃ってから読む。
+**`40_scripts/serve_shiryo_preview.py` を `.claude/launch.json` の `shiryo-preview` として `preview_start` で開く**
+（`60_shiryo/` を配信する。**素の `python3 -m http.server` では全文が文字化けする**——`<meta charset>` は
+Artifact 側のラッパが入れる前提で資料自体が持っていないので、charset を明示して返すためにこのスクリプトがある）。
+測るときの罠が2つあり、両方実際に踏んだ: **(1) Browser pane が背面のとき `innerWidth` が 0 になり、
+レイアウトの測定値が全部壊れる**（先に `screenshot` を撮って前面に出してから測る）、
+**(2) `scrollTo()` の直後は scroll イベントがまだ発火していない**ので
+`window.dispatchEvent(new Event('scroll'))` を自分で撃ってから読む
+（これを知らずに「aria-current が動かない」と2回誤診した）。
