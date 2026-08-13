@@ -137,9 +137,9 @@ def wgs84_to_utm54n(lon, lat):
     return x, y
 
 
-def doy_label(doy):
-    """通日 → 「5月2日」。平年（非閏年）で換算する。"""
-    d = date.fromordinal(date(2019, 1, 1).toordinal() + doy - 1)
+def doy_label(doy, year=2019):
+    """通日 → 「5月2日」。年を渡すとその年の暦で換算する（閏年で1日ずれるため）。"""
+    d = date.fromordinal(date(int(year), 1, 1).toordinal() + doy - 1)
     return f"{d.month}月{d.day}日"
 
 
@@ -434,7 +434,7 @@ def fig_t1_image():
     x = 22 + 2 * (W + 24)
     hh = W * zh / zw
     scz = W / zw
-    A(f'<text class="s-hd" x="{x}" y="16">東扇島火力を拡大（左の冬・間引きなし）</text>')
+    A(f'<text class="s-hd" x="{x}" y="16">東扇島火力の拡大（冬・間引きなし）</text>')
     A(f'<image x="{x}" y="24" width="{W}" height="{hh:.1f}" href="{uri}" '
       'style="image-rendering:pixelated"></image>')
     px0, py0 = to_px(geo, AOIS["東扇島火力"][0], AOIS["東扇島火力"][3])
@@ -549,7 +549,9 @@ def fig_t2():
     # ---- 年を1つ選んだときの拡大表示（9年分すべてを焼き込み、表示だけ切り替える）----
     # 数値はここで実データから書き出しておき、JS では文字を組み立てない
     # （組み立てると、存在しない数字を作る余地ができる）。
-    BW = 296                                  # 拡大時の描画幅[px]
+    # 拡大時の描画幅。カラーバーのラベル（ytop は並置の W 基準で決まる）に
+    # 重ならない上限で取る——BW を上げると地図の下端が下がり、ラベルに被る。
+    BW = 272
     BH = BW * 203 / 202
     A('<g id="snowOne" style="display:none">')
     for y in sorted(years):
@@ -557,7 +559,7 @@ def fig_t2():
         total += nbytes
         d, yy = circ[y], years[y]
         ndays = len({s[:10] for s in yy["dates"]})
-        med = int(d["画素中央値"])
+        med = d["画素中央値"]
         A(f'<g id="snowY{y}" style="display:none">')
         A(f'<text class="s-hd s-num" x="22" y="16">{y} 年</text>')
         A(f'<rect x="22" y="24" width="{BW}" height="{BH:.1f}" fill="var(--surface-2)"></rect>')
@@ -579,19 +581,28 @@ def fig_t2():
         # 右側の数値（すべて実測。単位と出所は figcaption 側に書いてある）
         tx = 356
         A(f'<text class="s-sm" x="{tx}" y="44" fill="var(--ink-2)">画素中央値</text>')
-        A(f'<text class="s-hd s-num s-acc" x="{tx}" y="72" font-size="24">{med} 日目'
+        A(f'<text class="s-hd s-num s-acc" x="{tx}" y="72" font-size="24">{med:g} 日目'
           f'<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">'
-          f'（{doy_label(med)}ごろ）</tspan></text>')
+          f'（{doy_label(int(round(med)), y)}ごろ）</tspan></text>')
         A(f'<text class="s-sm" x="{tx}" y="112" fill="var(--ink-2)">'
           f'決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">'
           f'{d["決定率"]*100:.0f}%</tspan></text>')
+        # 右の列は x=356 から幅504px しかないので、1行あたり全角43字を超えないこと
+        # （超えると viewBox の外に出る。40_scripts の文字幅検査で落ちる）
         A(f'<text class="s-sm" x="{tx}" y="140" fill="var(--ink-2)">'
           f'観測日 <tspan class="s-num" font-weight="600" fill="currentColor">{ndays} 日</tspan>'
           f'　／　挟み込み間隔の中央値 <tspan class="s-num" font-weight="600" fill="currentColor">'
           f'{yy["gap_median_days"]:.0f} 日</tspan></text>')
-        A(f'<text class="s-xs" x="{tx}" y="172">灰色は、その年は雲などで決められなかった画素です。</text>')
-        A(f'<text class="s-xs" x="{tx}" y="190">観測日が多い年ほど決まるとは限りません。'
-          '効くのは「いつ晴れたか」です（V-4）。</text>')
+        A(f'<text class="s-xs" x="{tx}" y="158">（間隔は矩形全体の値。円では取り直せていません）</text>')
+        A(f'<text class="s-xs" x="{tx}" y="184">灰色は、その年は雲などで決められなかった画素です。</text>')
+        A(f'<text class="s-xs" x="{tx}" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>')
+        A(f'<text class="s-xs" x="{tx}" y="220">ただし<tspan font-weight="600" fill="currentColor">'
+          '精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>')
+        A(f'<text class="s-xs" x="{tx}" y="238">決まっていても幅が広いです（図8・V-4）。</text>')
+        if y == "2017":
+            # 決定率は9年で3位なのに、実は最悪年である。ここを書かないと最良年に見える。
+            A(f'<text class="s-xs s-acc" x="{tx}" y="264" font-weight="600">'
+              'この年は決まった画素の98.5%が同じ1つの間隔に入っています（9年で最悪）。</text>')
         A('</g>')
     A('</g>')
 
@@ -605,7 +616,7 @@ def fig_t2():
     cbx, cbw = 22, 480
     A(f'<rect x="{cbx}" y="{ytop}" width="{cbw}" height="13" fill="url(#gDoy)" '
       'stroke="var(--rule)"></rect>')
-    for doy, lab in ((92, "4/1"), (121, "5/1"), (152, "6/1"), (182, "7/1")):
+    for doy, lab in ((91, "4/1"), (121, "5/1"), (152, "6/1"), (182, "7/1")):
         X = cbx + cbw * (doy - DOY_MIN) / (DOY_MAX - DOY_MIN)
         A(f'<line x1="{X:.1f}" y1="{ytop+13}" x2="{X:.1f}" y2="{ytop+18}" stroke="currentColor" '
           'opacity=".5"></line>')
@@ -633,8 +644,10 @@ def fig_t2():
         Y = sy + 56 - 48 * (v - dmin) / (dmax - dmin)
         acc = y in show
         # 年を選んだときに、その年の点だけを囲む輪（JSが display を切り替える）
-        A(f'<circle id="snowRing{y}" cx="{X:.1f}" cy="{Y:.1f}" r="9" fill="none" '
-          'stroke="var(--accent)" stroke-width="2" style="display:none"></circle>')
+        A(f'<g id="snowRing{y}" style="display:none">'
+          f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="10" fill="none" stroke="var(--accent)" '
+          'stroke-width="2.5"></circle>'
+          f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="5" fill="var(--accent)"></circle></g>')
         A(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{4.5 if acc else 3.2}" '
           f'fill="{"var(--accent)" if acc else "var(--rock)"}" '
           f'opacity="{1 if acc else .75}"></circle>')
