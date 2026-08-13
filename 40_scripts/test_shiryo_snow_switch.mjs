@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 説明資料（60_shiryo/日本気象協会_ご説明.html）の図9「消雪日マップの年の切り替え」を検査する。
+// 説明資料（60_shiryo/日本気象協会_ご説明.html）の図6（旧図9）「消雪日マップの年の切り替え」を検査する。
 //
 //   node 40_scripts/test_shiryo_snow_switch.mjs
 //
@@ -17,8 +17,8 @@ import path from "node:path";
 const ROOT = path.dirname(path.dirname(new URL(import.meta.url).pathname));
 const html = fs.readFileSync(path.join(ROOT, "60_shiryo/日本気象協会_ご説明.html"), "utf8");
 
-const m = html.match(/\/\* -+ 図9: 消雪日マップの年の切り替え[\s\S]*?\n  \}\)\(\);/);
-if (!m) { console.error("図9の切り替えJSが見つからない（節のコメントを変えたら、この正規表現も直す）"); process.exit(2); }
+const m = html.match(/\/\* -+ 図6: 消雪日マップの年の切り替え[\s\S]*?\n  \}\)\(\);/);
+if (!m) { console.error("図6の切り替えJSが見つからない（節のコメントを変えたら、この正規表現も直す）"); process.exit(2); }
 const ids = [...new Set([...html.matchAll(/id="(snow[A-Za-z0-9]+)"/g)].map((x) => x[1]))];
 const buttons = [...html.matchAll(/data-y="([^"]+)"/g)].map((x) => x[1]);
 const YEARS = buttons.filter((b) => b !== "row3");
@@ -58,7 +58,7 @@ const check = (name, got, want) => {
 const ROW3 = { row3: "inline", one: "none", year: [], ring: [], pressed: ["row3"] };
 const click = (y) => handler({ target: btnEls.find((b) => b.getAttribute("data-y") === y) });
 
-console.log(`図9の年の切り替え（${YEARS.length}年ぶんを焼き込んでいる）`);
+console.log(`図6の年の切り替え（${YEARS.length}年ぶんを焼き込んでいる）`);
 check("既定は3年の並置", snap(), ROW3);
 for (const y of YEARS) check(`${y} を押す`, (click(y), snap()), { row3: "none", one: "inline", year: [y], ring: [y], pressed: [y] });
 check("3年を並べるに戻す", (click("row3"), snap()), ROW3);

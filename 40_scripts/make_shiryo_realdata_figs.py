@@ -143,6 +143,17 @@ def doy_label(doy, year=2019):
     return f"{d.month}月{d.day}日"
 
 
+def med_label(v, year):
+    """画素中央値は .5 を取り得るので、挟む2日を「5月5〜6日」の形で出す（切り捨て・切り上げが
+    2箇所で食い違わないように、ラベルの作り方をここ1箇所に閉じる）。"""
+    lo, hi = int(v // 1), int(-(-v // 1))
+    if lo == hi:
+        return doy_label(lo, year)
+    a, b = doy_label(lo, year), doy_label(hi, year)
+    am, ad = a.split("月"); bm, bd = b.split("月")
+    return f"{a[:-1]}〜{bd}" if am == bm else f"{a}〜{b}"
+
+
 def snow_png_datauri(year):
     """.npy は火口±3kmの矩形なので、円の外は「範囲外」で塗って集計から外す。"""
     a, rows, cols = load_npy(os.path.join(
@@ -472,7 +483,7 @@ def fig_t1_image():
       '物差しはシーンごとに取り直し、上位2%は白飛びさせている</tspan>）</text>')
     A(f'<g transform="translate({cbx+cbw+40},{ytop})">'
       '<rect x="0" y="1" width="16" height="11" fill="none" stroke="#8A8F98" stroke-width="1.2"></rect>'
-      '<text class="s-xs" x="22" y="11">白枠＝資産AOI 6地区（図5の6本の線）</text>'
+      '<text class="s-xs" x="22" y="11">白枠＝資産AOI 6地区</text>'
       '<g transform="translate(0,20)">'
       '<rect x="0" y="1" width="16" height="11" fill="none" stroke="#3E93AE" stroke-width="1.2" '
       'stroke-dasharray="4 3"></rect>'
@@ -535,7 +546,7 @@ def fig_t2():
         A(f'<text class="s-sm s-num" x="{x}" y="{24+h+18:.1f}" fill="var(--ink-2)">'
           f'画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">'
           f'{circ[y]["画素中央値"]:g} 日目</tspan>'
-          f'（{doy_label(int(circ[y]["画素中央値"]))}ごろ）</text>')
+          f'（{med_label(circ[y]["画素中央値"], y)}ごろ）</text>')
         if k == 0:   # スケールバー 1km。AOI は 202画素 × 30m = 6.06km 幅
             sb = W / 6.06
             A(f'<g transform="translate({x+10:.1f},{24+h-12:.1f})">'
@@ -583,7 +594,7 @@ def fig_t2():
         A(f'<text class="s-sm" x="{tx}" y="44" fill="var(--ink-2)">画素中央値</text>')
         A(f'<text class="s-hd s-num s-acc" x="{tx}" y="72" font-size="24">{med:g} 日目'
           f'<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">'
-          f'（{doy_label(int(round(med)), y)}ごろ）</tspan></text>')
+          f'（{med_label(med, y)}ごろ）</tspan></text>')
         A(f'<text class="s-sm" x="{tx}" y="112" fill="var(--ink-2)">'
           f'決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">'
           f'{d["決定率"]*100:.0f}%</tspan></text>')
@@ -598,7 +609,7 @@ def fig_t2():
         A(f'<text class="s-xs" x="{tx}" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>')
         A(f'<text class="s-xs" x="{tx}" y="220">ただし<tspan font-weight="600" fill="currentColor">'
           '精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>')
-        A(f'<text class="s-xs" x="{tx}" y="238">決まっていても幅が広いです（図8・V-4）。</text>')
+        A(f'<text class="s-xs" x="{tx}" y="238">決まっていても幅が広いです（V-4）。</text>')
         if y == "2017":
             # 決定率は9年で3位なのに、実は最悪年である。ここを書かないと最良年に見える。
             A(f'<text class="s-xs s-acc" x="{tx}" y="264" font-weight="600">'

@@ -366,10 +366,6 @@
       <stop offset="0%"   stop-color="#FFFFFF"></stop>
       <stop offset="100%" stop-color="var(--sky)"></stop>
     </linearGradient>
-    <linearGradient id="gBarNoise" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="var(--unk)" stop-opacity=".95"></stop>
-      <stop offset="100%" stop-color="var(--unk)" stop-opacity=".55"></stop>
-    </linearGradient>
     <linearGradient id="gBarNoiseH" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%"   stop-color="var(--unk)" stop-opacity=".9"></stop>
       <stop offset="100%" stop-color="var(--unk)" stop-opacity=".5"></stop>
@@ -606,9 +602,9 @@
       </g>
     </g>
 
-    <!-- ==== 図1・図7で共有する火山（座標は図7の標高軸に合わせてある） ==== -->
+    <!-- ==== 図1・図5で共有する火山（座標は図5の標高軸に合わせてある） ==== -->
     <clipPath id="clipCone"><path d="M108 296 C200 278 280 236 320 196 C356 150 376 100 398 54 L436 54 C462 104 492 150 520 196 C560 240 606 278 642 296 Z"></path></clipPath>
-    <!-- ==== 図1・図7で共有する火山の断面（模式図） ====
+    <!-- ==== 図1・図5で共有する火山の断面（模式図） ====
          断面図なので等高線は水平になる。雪は「ある標高より上」を矩形で置き、輪郭でクリップする。
          質感（谷筋・陰影・霞）は入れない——入れると必ず別のもの（傷・光線・水たまり）に見える -->
     <g id="volcano">
@@ -624,7 +620,7 @@
       <!-- 火口（山頂の平坦面に開いた窪み） -->
       <ellipse cx="417" cy="54" rx="16" ry="4.4" fill="var(--rock-2)" opacity=".85"></ellipse>
       <ellipse cx="417" cy="55" rx="10" ry="2.4" fill="#000000" opacity=".22"></ellipse>
-      <!-- 地面（図7では標高0 mの線で切られ、図1でだけ見える） -->
+      <!-- 地面（図5では標高0 mの線で切られ、図1でだけ見える） -->
       <rect x="96" y="296" width="660" height="60" fill="var(--v-terrain,var(--terrain))" opacity=".55"></rect>
     </g>
 
@@ -632,35 +628,6 @@
     <g id="gMoonCloud" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M16 4.5 a5 5 0 1 0 4 6.4"></path>
       <path d="M4 19 h13 a3.4 3.4 0 0 0 .3 -6.8 a5 5 0 0 0 -9.5 -1.4 A3.6 3.6 0 0 0 4 19 Z" stroke-linejoin="round"></path>
-    </g>
-    <g id="gClad" fill="none" stroke="currentColor" stroke-width="1.5">
-      <rect x="3" y="5" width="9" height="14" rx="1"></rect>
-      <rect x="12" y="5" width="9" height="14" rx="1"></rect>
-      <circle cx="7.5" cy="8.5" r=".9" fill="currentColor" stroke="none"></circle>
-      <circle cx="7.5" cy="15.5" r=".9" fill="currentColor" stroke="none"></circle>
-      <circle cx="16.5" cy="8.5" r=".9" fill="currentColor" stroke="none"></circle>
-      <circle cx="16.5" cy="15.5" r=".9" fill="currentColor" stroke="none"></circle>
-    </g>
-    <g id="gPixShift" fill="none" stroke="currentColor" stroke-width="1.4">
-      <rect x="3" y="3" width="14" height="14"></rect>
-      <line x1="10" y1="3" x2="10" y2="17"></line><line x1="3" y1="10" x2="17" y2="10"></line>
-      <rect x="8" y="8" width="13" height="13" stroke-dasharray="3 2.4" opacity=".85"></rect>
-    </g>
-    <g id="gChip" fill="none" stroke="currentColor" stroke-width="1.5">
-      <rect x="6" y="6" width="12" height="12" rx="1.5"></rect>
-      <rect x="10" y="10" width="4" height="4" fill="currentColor" stroke="none"></rect>
-      <g stroke-width="1.3">
-        <line x1="6" y1="9" x2="2.5" y2="9"></line><line x1="6" y1="15" x2="2.5" y2="15"></line>
-        <line x1="18" y1="9" x2="21.5" y2="9"></line><line x1="18" y1="15" x2="21.5" y2="15"></line>
-        <line x1="9" y1="6" x2="9" y2="2.5"></line><line x1="15" y1="6" x2="15" y2="2.5"></line>
-        <line x1="9" y1="18" x2="9" y2="21.5"></line><line x1="15" y1="18" x2="15" y2="21.5"></line>
-      </g>
-    </g>
-    <!-- id は gHot（グラデーション）と衝突させない。衝突すると use が何も描かない -->
-    <g id="gHotIcon">
-      <ellipse cx="12" cy="12" rx="10" ry="7" fill="#F0801F" opacity=".3"></ellipse>
-      <ellipse cx="12" cy="12" rx="6" ry="4.2" fill="#F59B2A" opacity=".7"></ellipse>
-      <ellipse cx="12" cy="12" rx="2.6" ry="1.9" fill="#FFE9A8"></ellipse>
     </g>
     <g id="gTower1" fill="none" stroke="currentColor" stroke-width="1.5">
       <rect x="9" y="4" width="7" height="17" rx="1.5"></rect>
@@ -680,7 +647,7 @@
         <circle cx="19" cy="21" r="1.1"></circle><circle cx="22" cy="21" r="1.1"></circle>
       </g>
     </g>
-    <!-- 大きく置く衛星（図1・図7）。本体は currentColor、パネルは --c-panel で受ける -->
+    <!-- 大きく置く衛星（図1・図5）。本体は currentColor、パネルは --c-panel で受ける -->
     <g id="gSatL">
       <g fill="var(--c-panel,#3E6D96)">
         <rect x="-40" y="-7" width="22" height="14" rx="1"></rect>
@@ -703,11 +670,6 @@
       <line x1="0" y1="-9" x2="0" y2="-14" stroke="currentColor" stroke-width="1.4"></line>
       <ellipse cx="0" cy="-16" rx="5" ry="2.2" fill="none" stroke="currentColor" stroke-width="1.4"></ellipse>
     </g>
-    <g id="gSat">
-      <rect x="9" y="8" width="10" height="7" rx="1" fill="currentColor"></rect>
-      <rect x="2" y="9.5" width="6" height="4" fill="currentColor" opacity=".55"></rect>
-      <rect x="20" y="9.5" width="6" height="4" fill="currentColor" opacity=".55"></rect>
-    </g>
     <g id="gThermo" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M12 4 v10"></path>
       <circle cx="12" cy="17.5" r="3.4"></circle>
@@ -727,14 +689,6 @@
         <line x1="18.4" y1="5.6" x2="16.2" y2="7.8"></line><line x1="7.8" y1="16.2" x2="5.6" y2="18.4"></line>
       </g>
     </g>
-    <pattern id="pSnowScene" width="11" height="11" patternUnits="userSpaceOnUse">
-      <path d="M0 8 q3 -3 5 0 q2 3 6 1" fill="none" stroke="#8FA6B8" stroke-width="1" opacity=".7"></path>
-      <circle cx="8" cy="3" r=".9" fill="#8FA6B8" opacity=".5"></circle>
-    </pattern>
-    <pattern id="pBareScene" width="11" height="11" patternUnits="userSpaceOnUse">
-      <path d="M1 3 q3 2 6 0" fill="none" stroke="#8E96A0" stroke-width="1" opacity=".55"></path>
-      <path d="M2 8 q4 -2 8 1" fill="none" stroke="#4E545C" stroke-width="1" opacity=".5"></path>
-    </pattern>
   </defs>
 </svg>
 
@@ -745,32 +699,29 @@
     <h1>検討中の2テーマと、いま残っている不確定項</h1>
     <p class="lede">
       株式会社GRIDは、国立研究開発法人新エネルギー・産業技術総合開発機構（NEDO）が主催する本コンテストへ2件の応募を準備しています。
-      どちらも実データまで動かしてあります（<strong>テーマ①は代用データ＝昼間30 mのLandsat、テーマ②は実Landsat／Sentinel-2</strong>）が、
-      <strong>残っている不確定項の多くが「気象」に属しています</strong>。
+      どちらも実データまで動かしてあります（<strong>テーマ①は代用データ＝昼間30 mのLandsatです</strong>）が、<strong>残っている不確定項の多くが「気象」に属しています</strong>。
       <strong>お願いは3件です</strong>——(1) 気象側の知見についてご助言、(2) 現地観測をお願いできる余地があるか、(3) 保全の実務が分かる先へのお取り次ぎ。
     </p>
     <p class="meta">
-      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第17版<br>
+      宛先: 一般財団法人日本気象協会 御中　／　作成: 株式会社GRID　／　2026年8月13日 第18版<br>
       位置づけ: 初回の情報交換（この場でのご判断は求めません）　／　取扱い: 面談での画面共有のみ（配布いたしません）
     </p>
     <div class="theme" style="margin-top:1.4rem">
-      <p class="figtitle">本日の道順 — 画面で追うのはこの7枚＋各テーマ冒頭の見取り図2枚（計9枚）です（10〜15分）</p>
+      <p class="figtitle">本日の道順 — この7枚＋各テーマ冒頭の見取り図2枚です（10〜15分）</p>
       <p style="font-size:.93rem;color:var(--ink-2);margin-top:.5rem">
         <a href="#fig1">図1 全体像</a> → <a href="#fig2">図2 何を見るか（熱で見ると何が変わるか）</a> →
-        <a href="#fig4">図4 なぜ引き算を重ねるか（ここがご相談の中心です）</a> → <a href="#fig5">図5 実際の衛星画像</a> →
-        <a href="#fig7">図7 テーマ②の現状の問題</a> → <a href="#fig9">図9 実際に作った消雪日マップ</a> →
-        <a href="#fig11">図11 ご相談したいこと3件</a>
+        <a href="#fig3">図3 なぜ引き算を重ねるか（ここがご相談の中心です）</a> → <a href="#fig4">図4 実際の衛星画像</a> →
+        <a href="#fig5">図5 テーマ②の現状の問題</a> → <a href="#fig6">図6 実際に作った消雪日マップ</a> →
+        <a href="#fig7">図7 ご相談したいこと3件</a>
       </p>
       <p style="font-size:.9rem;color:var(--ink-3);margin-top:.4rem">
-        <strong>【補足】と付いた図（図3・図6・図8・図10）、脚注の折りたたみ、不確定項のカード・スライダー・数値一覧は、ご質問に応じて開くための材料です。</strong>
-        通しでご説明すると1時間近くかかるので、上の7枚だけを追い、残りは必要になった時点で開きます。
-        各テーマの冒頭には、番号のない見取り図（工程の比較／量の連鎖）を1枚だけ置いてあります。
+        <strong>不確定項のカード・スライダー・数値一覧・脚注の折りたたみは、ご質問に応じて開くための材料です。</strong>
       </p>
     </div>
 
     <div class="toolbar" style="margin-top:1rem">
       <button type="button" id="btnDetails" aria-pressed="false">数値一覧をすべて開く</button>
-      <span class="hint">図をクリックすると拡大表示になります（Esc で戻ります）。スライダーとボタンは実測点だけを切り替えます（図9は9年分を1枚ずつ切り替えられます）。</span>
+      <span class="hint">図をクリックすると拡大表示になります（Esc で戻ります）。スライダーとボタンは実測点だけを切り替えます（図6は9年分を1枚ずつ切り替えられます）。</span>
     </div>
   </header>
 
@@ -1000,68 +951,9 @@
       </figure>
     </div>
 
-    <div class="fig">
+    <div class="fig" id="fig3">
       <figure>
-        <p class="figtitle">【補足】図3　なぜ1回の撮像では見えないのか — 探す信号より、気象の振れのほうが16倍大きい</p>
-        <svg viewBox="0 0 860 294" role="img" aria-label="縦棒グラフ。天空条件の振れ8.57K、放射率の違い2.67K、位置合わせ2.0K、センサ雑音1.89Kに対し、探している信号は0.53K。">
-          <line x1="70" y1="196" x2="820" y2="196" stroke="currentColor" stroke-width="1" opacity=".4"></line>
-          <g class="s-xs s-num" text-anchor="end">
-            <text x="60" y="200">0</text>
-            <text x="60" y="125">5 K</text>
-            <text x="60" y="50">10 K</text>
-          </g>
-          <g stroke="currentColor" stroke-width="1" opacity=".13">
-            <line x1="70" y1="121" x2="820" y2="121"></line>
-            <line x1="70" y1="46" x2="820" y2="46"></line>
-          </g>
-
-          <g filter="url(#fSoft)">
-            <rect x="110" y="67" width="96" height="129" fill="url(#gBarNoise)"></rect>
-            <rect x="250" y="156" width="96" height="40" fill="url(#gBarNoise)"></rect>
-            <rect x="390" y="166" width="96" height="30" fill="url(#gBarNoise)"></rect>
-            <rect x="530" y="168" width="96" height="28" fill="url(#gBarNoise)"></rect>
-            <rect x="700" y="188" width="96" height="8" fill="url(#gBarSignal)"></rect>
-          </g>
-          <!-- 雑音側のまとめ括弧 -->
-          <path d="M110 44 L110 36 L626 36 L626 44" fill="none" stroke="var(--unk)" stroke-width="1.2" opacity=".7"></path>
-          <text class="s-sm s-unk" x="368" y="30" text-anchor="middle">劣化していなくても動いてしまう量</text>
-
-          <g class="s-sm s-num" text-anchor="middle" fill="var(--ink-2)">
-            <text x="158" y="60">8.57 K</text>
-            <text x="298" y="149">2.67 K</text>
-            <text x="438" y="159">2.00 K</text>
-            <text x="578" y="161">1.89 K</text>
-          </g>
-          <text class="s-lbl s-acc s-num" x="748" y="181" text-anchor="middle" font-weight="600">0.53 K</text>
-
-          <g class="s-sm" text-anchor="middle" fill="var(--ink-2)">
-            <text x="158" y="218">晴天夜と曇天夜</text><text x="158" y="234">の振れ</text>
-            <text x="298" y="218">外装の放射率が</text><text x="298" y="234">0.05 違う</text>
-            <text x="438" y="218">画素の</text><text x="438" y="234">位置ずれ</text>
-            <text x="578" y="218">センサの</text><text x="578" y="234">雑音</text>
-          </g>
-          <g class="s-sm s-acc" text-anchor="middle" font-weight="600">
-            <text x="748" y="218">探している信号</text><text x="748" y="234">（保温劣化 +1 K）</text>
-          </g>
-          <g color="var(--unk-ink)">
-            <use href="#gMoonCloud" x="146" y="252" width="24" height="24"></use>
-            <use href="#gClad"      x="286" y="252" width="24" height="24"></use>
-            <use href="#gPixShift"  x="426" y="252" width="24" height="24"></use>
-            <use href="#gChip"      x="566" y="252" width="24" height="24"></use>
-          </g>
-          <g transform="translate(734,250) scale(1.2)"><use href="#gHotIcon"></use></g>
-        </svg>
-        <figcaption>
-          <strong>最大の邪魔者は気象（晴天か曇天か）で、探している信号の16倍あります。</strong>
-          絶対温度をそのまま見る設計が成立しないのはこのためで、次の図の差分設計に進みます。
-          <span class="src">poc1_results.json（budget, signals）。帯域3.4–4.2µm仮定での値で、実帯域3.7–4.95µmでは振れはさらに大きい（10.2 K）</span>
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="fig" id="fig4">
-      <figure>
-        <p class="figtitle">図4　同じ撮像の中で比べ、その差の変化を追うと、雑音だけが落ちて信号が顔を出す</p>
+        <p class="figtitle">図3　同じ撮像の中で比べ、その差の変化を追うと、雑音だけが落ちて信号が顔を出す</p>
         <svg viewBox="0 0 860 276" role="img" aria-label="対数軸の横棒グラフ。そのまま比べると9.39K、同じ設備の中で2.99K、隣の同型設備と2.76K、隣との差の変化を6回追うと0.28K。信号0.53Kの破線を下回るのは最後だけ。">
           <line x1="230" y1="212" x2="800" y2="212" stroke="currentColor" stroke-width="1" opacity=".35"></line>
           <g class="s-xs s-num" text-anchor="middle">
@@ -1112,19 +1004,21 @@
           <text class="s-sm" x="230" y="268" fill="var(--ink-2)"><tspan font-weight="600" fill="var(--accent-ink)">①②はどちらも同じ撮像の中の比較なので、ここで気象が消える</tspan>。②に残る個体差を、③の時間変化が消す</text>
         </svg>
         <figcaption>
-          横軸は対数です。<strong>①と②はどちらも同じ撮像の中での比較で、気象（8.57 K）はこの時点で消えます</strong>——落差が最も大きいのがそこです。
-          ①は設備の中の局所的な異常しか見えず、<strong>設備全体が面的に劣化すると基準を失って見えません</strong>。だから②で隣の同型設備を基準にします。
-          ②で戻ってくるのが資産どうしの個体差（放射率差 2.67 K）で、これを③の時間変化が消します。
+          横軸は対数です。<strong>絶対温度をそのまま見る設計は成立しません</strong>——晴天夜と曇天夜の違いだけで見かけの温度が 8.57 K 動き、探している信号 0.53 K の16倍あるからです（実帯域では 10.17 K 対 0.48 K ＝ 約21倍でさらに厳しい）。
+          <strong>①と②はどちらも同じ撮像の中での比較なので、その気象がここで消えます</strong>（落差が最も大きいのがそこです）。
+          ①は設備の中の局所的な異常しか見えず、<strong>設備全体が面的に劣化すると基準を失って見えません</strong>。だから②で隣の同型設備を基準にし、②で戻ってくる個体差（放射率差 2.67 K）を③の時間変化が消します。
+          <strong>ただし③が消せるのは差が一定である分だけで、差そのものが経年で開くと残ります（U-1）。</strong>
           <strong>②は基準が数百m離れるので「同じ空の下」とみなせる距離が前提になり、そこを我々は説明できていません（U-2）。</strong>
           実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。
-          <span class="src">poc1_results.json（budget）／poc6_results.json（sibling_noise_vs_distance）</span>
+          <span class="src">poc1_results.json（budget, signals）／poc5_results.json（band_physics ＝ 実帯域3.7–4.95µmでの再計算）／poc6_results.json（sibling_noise_vs_distance）。
+          8.57 K・0.53 Kは帯域3.4–4.2µm仮定での値、2.67 Kは外装材の放射率差 ε±0.05、信号は面的劣化 +1 K・風化アルミ ε=0.25 を置いた場合。いずれも輝度温度領域</span>
         </figcaption>
       </figure>
     </div>
 
-    <div class="fig" id="fig5">
+    <div class="fig" id="fig4">
       <figure>
-        <p class="figtitle">図5　その計算に使っている実際の衛星画像 — 京浜臨海部、Landsat 8/9 の熱赤外バンド</p>
+        <p class="figtitle">図4　その計算に使っている実際の衛星画像 — 京浜臨海部、Landsat 8/9 の熱赤外バンド</p>
 <svg viewBox="0 0 860 410" role="img" aria-label="京浜臨海部の実Landsat熱赤外画像。冬と夏の同一地域と、東扇島火力の等倍拡大。">
 <text class="s-hd s-num" x="22" y="16">2023年1月8日（冬）</text>
 <rect x="22" y="24" width="246" height="250.7" fill="var(--surface-2)"></rect>
@@ -1199,248 +1093,26 @@
 <text class="s-xs" x="22" y="368.6857142857143">その日の下端</text>
 <text class="s-xs" x="322" y="368.6857142857143" text-anchor="end">その日の上端</text>
 <text class="s-xs" x="22" y="334.6857142857143">地表温度（<tspan font-weight="600">物差しはシーンごとに取り直し、上位2%は白飛びさせている</tspan>）</text>
-<g transform="translate(362,340.6857142857143)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#8A8F98" stroke-width="1.2"></rect><text class="s-xs" x="22" y="11">白枠＝資産AOI 6地区（図5の6本の線）</text><g transform="translate(0,20)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#3E93AE" stroke-width="1.2" stroke-dasharray="4 3"></rect><text class="s-xs" x="22" y="11">青破線＝市街地参照面（鶴見区）</text></g><g transform="translate(0,40)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#C79A3A" stroke-width="1.4"></rect><text class="s-xs" x="22" y="11">黄枠＝右の拡大範囲（2.1 × 1.8 km）</text></g></g>
+<g transform="translate(362,340.6857142857143)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#8A8F98" stroke-width="1.2"></rect><text class="s-xs" x="22" y="11">白枠＝資産AOI 6地区</text><g transform="translate(0,20)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#3E93AE" stroke-width="1.2" stroke-dasharray="4 3"></rect><text class="s-xs" x="22" y="11">青破線＝市街地参照面（鶴見区）</text></g><g transform="translate(0,40)"><rect x="0" y="1" width="16" height="11" fill="none" stroke="#C79A3A" stroke-width="1.4"></rect><text class="s-xs" x="22" y="11">黄枠＝右の拡大範囲（2.1 × 1.8 km）</text></g></g>
 </svg>
         <figcaption>
-          <strong>14シーンのうちの2枚</strong>（集約したのが次の図6で、この2枚はその両端にあたります）。
-          同じ場所の中央値が<strong>冬 285 K → 夏 316 K と31 K動きます</strong>——絶対値で判定しない理由がこれです。
-          探している保温劣化の信号 0.53 K は、<strong>この絵の明暗の全幅（冬・2〜98%表示で約5.2 K）の1割ほど</strong>。だから1枚では判定せず、図4のように引き算を重ねます。
+          <strong>使っている14シーンのうちの2枚</strong>（白枠が資産の6地区、青破線が市街地の参照面です）。
+          同じ場所（青破線の市街地参照面）の代表値が<strong>冬 285.8 K → 夏 320.2 K と34 K動きます</strong>——絶対値で判定しない理由がこれです。
+          探している保温劣化の信号は 0.53 K で、<strong>この絵の明暗の全幅（冬・2〜98%表示で約5.2 K）の1割ほど</strong>。だから1枚では判定せず、前の図のように引き算を重ねます。
           <br>
           <strong>自白</strong>: これは<strong>昼間・30 m格子のLandsat</strong>であって、提案している<strong>夜間・3.5 m</strong>の画像ではありません
           （<strong>配布格子30 mでは20 m角の設備は0.44画素、TIRSの原分解能100 mなら0.04画素</strong>。3.5 m級なら設備単位で見えるようになります）。
           <details class="fine">
-            <summary>画像の読み方と、表示の但し書き（ご質問に応じて）</summary>
+            <summary>表示の但し書き（ご質問に応じて）</summary>
             <div>
-              白枠が6地区、青破線が参照面です。冬の東扇島は市街地参照に対し +0.4 K＝ほぼ0、夏は −6.2 K。
-              冬の画像で強く出ている明暗は<strong>陸と海の差</strong>で、資産地区が市街地参照より高いのは冬で <strong>+0.2〜+1.2 K</strong>にすぎません（局所的に高いのは製鉄所だけ・最高299.8 K）。
+              右は東扇島火力の拡大です（1マスが配布格子の1画素＝30 m。<strong>ただしTIRSの原分解能は100 mで、ST製品が30 m格子に再標本化されたもの</strong>なので、熱の広がりはこのマスより粗く出ます）。3.5 m級なら同じ範囲が約600 × 510画素になります。
               <br>
-              右は東扇島火力の拡大です（1マスが配布格子の1画素＝30 m。<strong>ただしTIRSの原分解能は100 mで、ST製品が30 m格子に再標本化されたもの</strong>なので、熱の広がりはこのマスより粗く出ます）。
-              提案しているHotSat-2の3.5 m級なら、同じ2.1 × 1.8 kmが約600 × 510画素になります。
-              <br>
-              表示は各シーンの2〜98パーセンタイルで伸ばしているので、<strong>最も熱い上位2%の画素は白く飛ばしてあります</strong>。
+              明暗は各シーンの2〜98パーセンタイルで伸ばしているので、<strong>最も熱い上位2%の画素は白く飛ばしてあります</strong>（冬の実範囲は 264.9〜299.8 K）。冬の画像で強く出ている明暗は<strong>陸と海の差</strong>で、資産地区が市街地参照より高いのは冬で <strong>+0.2〜+1.2 K</strong>にすぎません。
               同じ場所を3.5 m級で撮った実画像は、まだ手元にありません（衛星ベンダへの照会は10月下旬・1次通過後です）。
               <span class="src">20_theme1_保温劣化監視/poc/data/*_ST_B10_keihin.tif（Landsat Collection 2 L2 の ST_B10 ＝ 放射率補正済みの地表温度。DN×0.00341802+149.0 [K]。TIRS原分解能100 m→30 m格子）。
               AOIは poc4_pipeline.py の AOIS と同一（±数百mの概略）。表示の物差しは各シーンの2〜98パーセンタイル、全景パネルは2×2平均に間引いて表示</span>
             </div>
           </details>
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="fig">
-      <figure>
-        <p class="figtitle">【補足】図6　同じことを実データでやってみた — 実Landsat 14シーン（京浜臨海部・2023年1月〜2026年6月）</p>
-        <svg viewBox="0 0 860 288" role="img" aria-label="実Landsat 14シーンの資産地表温度。そのままでは42.97Kばらつくが、市街地参照との差にすると12.53Kに落ちる。">
-        <rect x="58" y="30" width="318" height="196" fill="var(--surface-2)" opacity=".55"></rect>
-        <line x1="58" y1="195.8" x2="376" y2="195.8" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="52" y="199.8" text-anchor="end">280</text>
-        <line x1="58" y1="158.2" x2="376" y2="158.2" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="52" y="162.2" text-anchor="end">290</text>
-        <line x1="58" y1="120.5" x2="376" y2="120.5" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="52" y="124.5" text-anchor="end">300</text>
-        <line x1="58" y1="82.8" x2="376" y2="82.8" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="52" y="86.8" text-anchor="end">310</text>
-        <line x1="58" y1="45.1" x2="376" y2="45.1" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="52" y="49.1" text-anchor="end">320</text>
-        <text class="s-xs" x="52" y="22" text-anchor="end">K</text>
-        <line x1="149.8" y1="30" x2="149.8" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-        <text class="s-xs s-num" x="149.8" y="242" text-anchor="middle">2024</text>
-        <line x1="243.7" y1="30" x2="243.7" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-        <text class="s-xs s-num" x="243.7" y="242" text-anchor="middle">2025</text>
-        <line x1="337.3" y1="30" x2="337.3" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-        <text class="s-xs s-num" x="337.3" y="242" text-anchor="middle">2026</text>
-        <rect x="490" y="30" width="290" height="196" fill="var(--surface-2)" opacity=".55"></rect>
-        <line x1="490" y1="210.9" x2="780" y2="210.9" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="484" y="214.9" text-anchor="end">-9</text>
-        <line x1="490" y1="165.7" x2="780" y2="165.7" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="484" y="169.7" text-anchor="end">-6</text>
-        <line x1="490" y1="120.5" x2="780" y2="120.5" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="484" y="124.5" text-anchor="end">-3</text>
-        <line x1="490" y1="75.2" x2="780" y2="75.2" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="484" y="79.2" text-anchor="end">0</text>
-        <line x1="490" y1="30.0" x2="780" y2="30.0" stroke="currentColor" stroke-width="1" opacity=".13"></line>
-        <text class="s-xs s-num" x="484" y="34.0" text-anchor="end">3</text>
-        <text class="s-xs" x="484" y="22" text-anchor="end">K</text>
-        <line x1="573.7" y1="30" x2="573.7" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-        <text class="s-xs s-num" x="573.7" y="242" text-anchor="middle">2024</text>
-        <line x1="659.3" y1="30" x2="659.3" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-        <text class="s-xs s-num" x="659.3" y="242" text-anchor="middle">2025</text>
-        <line x1="744.7" y1="30" x2="744.7" y2="226" stroke="currentColor" stroke-width="1" opacity=".10"></line>
-        <text class="s-xs s-num" x="744.7" y="242" text-anchor="middle">2026</text>
-        <path d="M58.0 173.9 L90.8 74.9 L109.3 44.4 L144.2 150.8 L172.9 94.0 L183.1 86.2 L213.9 67.3 L240.6 207.2 L265.2 98.2 L273.4 102.9 L306.2 44.2 L326.8 150.9 L341.1 157.7 L376.0 79.9" fill="none" stroke="var(--unk)" stroke-width="1.8" stroke-dasharray="5 3"></path>
-        <circle cx="58.0" cy="173.9" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="90.8" cy="74.9" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="109.3" cy="44.4" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="144.2" cy="150.8" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="172.9" cy="94.0" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="183.1" cy="86.2" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="213.9" cy="67.3" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="240.6" cy="207.2" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="265.2" cy="98.2" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="273.4" cy="102.9" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="306.2" cy="44.2" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="326.8" cy="150.9" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="341.1" cy="157.7" r="2.2" fill="var(--unk)"></circle>
-        <circle cx="376.0" cy="79.9" r="2.2" fill="var(--unk)"></circle>
-        <path d="M273.4 109.5 L306.2 48.9 L326.8 150.2" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>川崎火力(千鳥町)</title></path>
-        <circle cx="58.0" cy="170.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="109.3" cy="48.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="183.1" cy="93.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="273.4" cy="109.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="306.2" cy="48.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="326.8" cy="150.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M686.5 101.6 L716.4 93.9 L735.1 72.2" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>川崎火力(千鳥町)</title></path>
-        <circle cx="490.0" cy="60.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="536.8" cy="93.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="604.1" cy="103.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="686.5" cy="101.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="716.4" cy="93.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="735.1" cy="72.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M58.0 172.3 L90.8 93.9 L109.3 67.0 L144.2 155.0 M183.1 111.0 L213.9 69.8 L240.6 203.2 L265.2 125.2 L273.4 123.9 L306.2 67.5 L326.8 153.6 L341.1 162.9 L376.0 113.7" fill="none" stroke="var(--accent)" stroke-width="2.0" opacity="1" stroke-linejoin="round"><title>東扇島火力</title></path>
-        <circle cx="58.0" cy="172.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="90.8" cy="93.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="109.3" cy="67.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="144.2" cy="155.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="183.1" cy="111.0" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="213.9" cy="69.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="240.6" cy="203.2" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="265.2" cy="125.2" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="273.4" cy="123.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="306.2" cy="67.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="326.8" cy="153.6" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="341.1" cy="162.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="376.0" cy="113.7" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <path d="M490.0 68.6 L519.9 150.9 L536.8 165.5 L568.6 91.8 M604.1 174.3 L632.2 85.5 L656.5 58.9 L679.0 183.2 L686.5 159.1 L716.4 168.6 L735.1 85.8 L748.2 95.9 L780.0 210.3" fill="none" stroke="var(--accent)" stroke-width="2.0" opacity="1" stroke-linejoin="round"><title>東扇島火力</title></path>
-        <circle cx="490.0" cy="68.6" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="519.9" cy="150.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="536.8" cy="165.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="568.6" cy="91.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="604.1" cy="174.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="632.2" cy="85.5" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="656.5" cy="58.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="679.0" cy="183.2" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="686.5" cy="159.1" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="716.4" cy="168.6" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="735.1" cy="85.8" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="748.2" cy="95.9" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <circle cx="780.0" cy="210.3" r="2.4" fill="var(--accent)" opacity="1"></circle>
-        <path d="M273.4 116.8 L306.2 58.8 L326.8 154.7" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>浮島製油所地区</title></path>
-        <circle cx="58.0" cy="172.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="109.3" cy="59.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="183.1" cy="101.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="273.4" cy="116.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="306.2" cy="58.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="326.8" cy="154.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M686.5 130.7 L716.4 133.7 L735.1 90.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>浮島製油所地区</title></path>
-        <circle cx="490.0" cy="68.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="536.8" cy="133.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="604.1" cy="138.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="686.5" cy="130.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="716.4" cy="133.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="735.1" cy="90.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M273.4 103.8 L306.2 41.3 L326.8 148.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>水江町製油所地区</title></path>
-        <circle cx="58.0" cy="171.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="109.3" cy="41.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="183.1" cy="84.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="273.4" cy="103.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="306.2" cy="41.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="326.8" cy="148.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M686.5 78.8 L716.4 63.8 L735.1 65.4" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>水江町製油所地区</title></path>
-        <circle cx="490.0" cy="64.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="536.8" cy="62.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="604.1" cy="68.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="686.5" cy="78.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="716.4" cy="63.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="735.1" cy="65.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M58.0 169.5 L90.8 96.2 L109.3 59.7 L144.2 152.8 L172.9 116.1 L183.1 106.3 L213.9 69.3 L240.6 199.6 L265.2 117.5 L273.4 119.6 L306.2 63.2 L326.8 153.4 L341.1 159.7 L376.0 109.8" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>扇島製鉄所地区</title></path>
-        <circle cx="58.0" cy="169.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="90.8" cy="96.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="109.3" cy="59.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="144.2" cy="152.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="172.9" cy="116.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="183.1" cy="106.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="213.9" cy="69.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="240.6" cy="199.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="265.2" cy="117.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="273.4" cy="119.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="306.2" cy="63.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="326.8" cy="153.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="341.1" cy="159.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="376.0" cy="109.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M490.0 57.6 L519.9 160.3 L536.8 136.4 L568.6 82.9 L594.8 163.7 L604.1 155.4 L632.2 83.4 L656.5 44.6 L679.0 152.6 L686.5 141.9 L716.4 151.2 L735.1 85.0 L748.2 83.1 L780.0 194.6" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>扇島製鉄所地区</title></path>
-        <circle cx="490.0" cy="57.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="519.9" cy="160.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="536.8" cy="136.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="568.6" cy="82.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="594.8" cy="163.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="604.1" cy="155.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="632.2" cy="83.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="656.5" cy="44.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="679.0" cy="152.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="686.5" cy="141.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="716.4" cy="151.2" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="735.1" cy="85.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="748.2" cy="83.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="780.0" cy="194.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M58.0 173.0 L90.8 84.9 L109.3 55.7 L144.2 153.1 L172.9 108.5 L183.1 97.8 L213.9 60.9 L240.6 202.6 L265.2 114.3 L273.4 111.3 L306.2 54.7 L326.8 153.0 L341.1 162.0 L376.0 119.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>大黒町火力地区</title></path>
-        <circle cx="58.0" cy="173.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="90.8" cy="84.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="109.3" cy="55.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="144.2" cy="153.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="172.9" cy="108.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="183.1" cy="97.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="213.9" cy="60.9" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="240.6" cy="202.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="265.2" cy="114.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="273.4" cy="111.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="306.2" cy="54.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="326.8" cy="153.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="341.1" cy="162.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="376.0" cy="119.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M490.0 71.8 L519.9 115.0 L536.8 120.5 L568.6 84.1 L594.8 133.4 L604.1 121.5 L632.2 49.6 L656.5 56.8 L679.0 139.8 L686.5 108.7 L716.4 117.3 L735.1 83.7 L748.2 92.3 L780.0 233.5" fill="none" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45" stroke-linejoin="round"><title>大黒町火力地区</title></path>
-        <circle cx="490.0" cy="71.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="519.9" cy="115.0" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="536.8" cy="120.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="568.6" cy="84.1" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="594.8" cy="133.4" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="604.1" cy="121.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="632.2" cy="49.6" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="656.5" cy="56.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="679.0" cy="139.8" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="686.5" cy="108.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="716.4" cy="117.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="735.1" cy="83.7" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="748.2" cy="92.3" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <circle cx="780.0" cy="233.5" r="1.8" fill="var(--ink-3)" opacity=".45"></circle>
-        <path d="M379 41.2 L384 41.2 L384 203.2 L379 203.2" fill="none" stroke="var(--accent)" stroke-width="1.4"></path>
-        <text class="s-sm s-num s-acc" x="390" y="45.2" font-weight="600">42.97 K</text>
-        <text class="s-xs" x="390" y="61.2" fill="var(--ink-3)">振れ幅</text>
-        <path d="M783 44.6 L788 44.6 L788 233.5 L783 233.5" fill="none" stroke="var(--accent)" stroke-width="1.4"></path>
-        <text class="s-sm s-num s-acc" x="794" y="48.6" font-weight="600">12.53 K</text>
-        <text class="s-xs" x="794" y="64.6" fill="var(--ink-3)">振れ幅</text>
-        <line x1="490" y1="75.2" x2="780" y2="75.2" stroke="currentColor" stroke-width="1" opacity=".45"></line>
-        <text class="s-hd" x="58" y="18">そのまま並べる（資産AOIの地表温度）</text>
-        <text class="s-hd" x="490" y="18">市街地参照との差にする</text>
-        <text class="s-xs" x="433" y="150" text-anchor="middle" fill="var(--ink-3)">広域の<tspan x="433" dy="15">共通モード</tspan><tspan x="433" dy="15">（季節・天気）</tspan><tspan x="433" dy="15">を引き算</tspan></text>
-        <path d="M407 214 L453 214" stroke="var(--accent)" stroke-width="1.4" opacity=".7"></path><path d="M447 209 L457 214 L447 219 Z" fill="var(--accent)" opacity=".7"></path>
-        <g transform="translate(58,258)"><line x1="0" y1="-4" x2="22" y2="-4" stroke="var(--accent)" stroke-width="2"></line><text class="s-xs" x="28" y="0">東扇島火力</text><line x1="120" y1="-4" x2="142" y2="-4" stroke="var(--ink-3)" stroke-width="1.3" opacity=".45"></line><text class="s-xs" x="148" y="0">他5地区</text><line x1="230" y1="-4" x2="252" y2="-4" stroke="var(--unk)" stroke-width="1.8" stroke-dasharray="5 3"></line><text class="s-xs" x="258" y="0">市街地参照（鶴見区）</text><text class="s-xs" x="410" y="0" fill="var(--ink-3)">線の切れ目は雲・スワス端による欠測</text></g>
-        </svg>
-        <figcaption>
-          <strong>前の図5を、白枠の6地区と青破線の参照面で集約したもの</strong>です。左は6地区の地表温度そのもの（Landsat ST_B10 ＝ 放射率補正済み）。<strong>6地区を通して 42.97 K の幅に散らばりますが、これは季節と天気であって設備の状態ではありません</strong>（1地区あたりでも30〜39 K動きます）。
-          右は同じ日の市街地（鶴見区）を引いた差で、<strong>振れ幅は 12.53 K に落ちます</strong>——図4の②が実データでも起きることの確認です。
-          <strong>参照面までの距離は4〜10 kmで、図4②が要求する離隔（数百 m）とは別の段階の引き算です</strong>——ここで落ちるのは広域の共通モードだけです。
-          ただし<strong>まだ 12.53 K 残っています</strong>。残り方は地区ごとに形が違い、
-          <strong>赤＝東扇島火力は暖候期（3〜9月）に −5〜−9 K、冬季はほぼ0 K</strong>です。しかも同じ9月でも2025年は −6.2 K、2024年は −0.7 Kと揃いません。
-          <strong>この「地区ごとの季節感受度が何によるのか」が説明できていません（U-2）。</strong>
-          <br>
-          別の測り方でこの段階を<strong>残差のばらつき（σ）</strong>で測ると、生 8.44 K → シーン一律の除去で 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K です
-          （こちらは同じ14シーンを150 mブロック11,422個で見た値で、上の図とは母集団も統計量も違います）。
-          <br>
-          <strong>自白</strong>: これは30 m画素・昼間・複合体単位のLandsatであり、HotSat-2（3.5 m・夜間）の性能ではありません。
-          設備単位の信号（0.53 K）はこの図の目盛より小さく、ここに写ってはいません。
-          この図が示すのは「気象の共通モードは引き算で本当に落ちる」「落ちきらない分は気象に属する」の2点だけです。
-          <span class="src">poc4_results_real.json（spread_K, series_vs_urban_ref_K, ref_series_K）／poc6_results.json（noise_decomposition）。
-          参照面は全14シーンで有効な鶴見区（既定）。提出物には旧参照面・6シーンでの値（36.0 → 7.7 K）を記載しています</span>
         </figcaption>
       </figure>
     </div>
@@ -1501,19 +1173,19 @@
       <div class="unk ask-here">
         <span class="id">U-1</span>
         <span class="what">兄弟資産どうしの放射率の「差の経年」</span>
-        <span class="why">同型で同時期に建てた2基でも、外装板の風化の進み方は少しずつ違います。この差が0.15 Kなら検知性能（AUC）は0.921、0.3 Kなら0.788まで落ちる——<strong>上限性能を単独で決めている量</strong>ですが、出典がなく実測もされていません。</span>
+        <span class="why">同型で同時期に建てた2基でも、外装板の風化の進み方は少しずつ違います。上のスライダーのとおり<strong>検知性能の上限を単独で決めている量</strong>ですが、出典がなく実測もされていません。</span>
         <span class="who"><b>ご相談したい先</b>: 屋外の実測（外装材の放射率・表面温度）。ただし対象がプラント構内なので、設備所有者の同意が前提になります。</span>
       </div>
       <div class="unk ask-here">
         <span class="id">U-2</span>
         <span class="what">「同じ空の下」とみなせる距離</span>
-        <span class="why">図4の②が成立する前提です。実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。<strong>この増え方が何によるのか（海陸風・水面の隣接・地形）を我々は説明できていません。</strong></span>
-        <span class="who"><b>ご相談したい先</b>: 沿岸コンビナート域の局所微気象。図6のとおり実データでも東扇島の資産で +1.1〜−9.0 Kの季節残差が残っており、説明できると閾値設計が変わります。</span>
+        <span class="why">図3の②が成立する前提です。実測では離隔150〜300 mで0.43 K、2.4 kmを超えると2.6 K以上に増えます。<strong>この増え方が何によるのか（海陸風・水面の隣接・地形）を我々は説明できていません。</strong></span>
+        <span class="who"><b>ご相談したい先</b>: 沿岸コンビナート域の局所微気象。実データでも東扇島の資産に +1.1〜−9.0 Kの季節残差が残っており（<strong>市街地参照面〈鶴見区・資産から4〜10 km〉との差＝②の数百mとは別の段階の残差</strong>）、説明できると閾値設計が変わります。</span>
       </div>
       <div class="unk ask-here">
         <span class="id">U-3</span>
         <span class="what">夜間かつ晴天の撮像機会が年に何回あるか</span>
-        <span class="why">図4の③はエポック数で効くので、<strong>年間の有効撮像回数がそのまま検知力になります</strong>。現状は衛星パス時刻（22時JST想定）の雲量30%未満を晴天としていますが、タスキング成功率0.6は仮定のままです。夜間ウィンドウの最小雲量で判定すると約2.4倍の過大評価になることは自分で確認しました。</span>
+        <span class="why">図3の③はエポック数で効くので、<strong>年間の有効撮像回数がそのまま検知力になります</strong>。現状は衛星パス時刻（22時JST想定）の雲量30%未満を晴天としていますが、タスキング成功率0.6は仮定のままです。夜間ウィンドウの最小雲量で判定すると約2.4倍の過大評価になることは自分で確認しました。</span>
         <span class="who"><b>ご相談したい先</b>: 雲の日変化と、この用途に妥当な晴天判定の置き方。</span>
       </div>
       <div class="unk">
@@ -1540,10 +1212,10 @@
               <tr><th>天空条件スイング（晴天夜⇔曇天夜。表面温度は不変）</th><td class="num">8.57 K（帯域3.4-4.2µm仮定）／10.17 K（実帯域3.7-4.95µm）</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>誤差バジェット（輝度温度領域・RSS。NEdT 1 K・ε±0.05 は仮定）</th><td class="num">撮像間差分 9.39 K → 兄弟差分 2.76 K → 二重差分6エポック 0.28 K</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>信号（ユニット面的劣化 +1 K が輝度温度に写る量）</th><td class="num">0.53 K（+1 K・風化アルミ ε=0.25 を置いた場合。単発の信号対雑音比 0.19、二重差分6エポックで 1.9 倍）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>実Landsat14シーンでの共通モード除去（京浜臨海部・6地区・図6）</th><td class="num">資産の地表温度の振れ幅 42.97 K → 市街地参照との差 12.53 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>実Landsat 2シーンの実画像（図5）</th><td class="num">冬 表示283.3–288.5 K（実範囲 264.9–299.8）／夏 表示300.9–323.5 K（実範囲 299.9–329.9）。資産−市街地参照は冬 +0.2〜+1.2 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>実Landsat14シーンでの共通モード除去（図4の白枠＝資産6地区／青破線＝市街地参照面〈4〜10 km〉を14シーン分集約）</th><td class="num">資産の地表温度の振れ幅 42.97 K → 市街地参照との差 12.53 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>実Landsat 2シーンの実画像（図4）</th><td class="num">冬 表示283.3–288.5 K（実範囲 264.9–299.8）／夏 表示300.9–323.5 K（実範囲 299.9–329.9）。資産−市街地参照は冬 +0.2〜+1.2 K</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>兄弟差分σの離隔距離依存（実Landsat・代用資産11,422個）</th><td class="num">150–300 m: 0.43 K／1.2–2.4 km: 1.79 K／5–10 km: 3.89 K</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>雑音床の分解（実Landsat）</th><td class="num">生 8.44 K → シーン共通モード除去 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>雑音床の分解（実Landsat・代用資産11,422個＝150 mブロック）</th><td class="num">生 8.44 K → シーン共通モード除去 3.92 K → 資産ごとの季節感受度まで入れて 2.78 K</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>検知性能（モンテカルロ160対160・二重差分・+1 K）</th><td class="num">AUC 0.980（差動経年0 K）／0.921（0.15 K）／0.788（0.3 K）。差動経年は未取得の仮定値で、0.15 Kは目安</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>誤報率（実データ分布から）</th><td class="num">z=3 で 0.32 件／プラント・年（実Landsat 30 m・代用資産。本物の変化が混ざり得るので上限）</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>降雨後の回復速度が使える頻度（川崎・実気象2020–2025）</th><td class="num">降雨イベント 62 回/年 → 単点 21 回/年、回復速度 4.3 回/年</td><td><span class="flag f-ok">確定</span></td></tr>
@@ -1617,9 +1289,9 @@
       </figure>
     </div>
 
-    <div class="fig" id="fig7">
+    <div class="fig" id="fig5">
       <figure>
-        <p class="figtitle">図7　現状の何が問題か — 観測所は麓にしかなく、火口の値は外挿で作られている（模式図。標高軸は概略）</p>
+        <p class="figtitle">図5　現状の何が問題か — 観測所は麓にしかなく、火口の値は外挿で作られている（模式図。標高軸は概略）</p>
         <svg viewBox="0 0 860 372" role="img" aria-label="火山の断面図。気象庁6観測所は標高38.9から525mの麓にあり、その回帰式を最上位の観測所より約1220m上、標高約1745mの火口へ外挿している。計画値3.81mに対しUAV実測は1.1m。">
           <clipPath id="clip5"><rect x="96" y="20" width="558" height="276"></rect></clipPath>
 
@@ -1716,100 +1388,9 @@
       </figure>
     </div>
 
-    <div class="fig">
+    <div class="fig" id="fig6">
       <figure>
-        <p class="figtitle">【補足】図8　衛星で測るのは「雪が消えた日」— 誤差は、その年に何回晴れたかでほぼ決まる</p>
-        <svg viewBox="0 0 860 336" role="img" aria-label="観測日のタイムライン。観測が細かい年は誤差が小さく、雲で観測が飛ぶ年は間隔がそのまま誤差になる。">
-          <!-- 月軸 -->
-          <g class="s-xs" text-anchor="middle" fill="var(--ink-3)">
-            <text x="212" y="26">3月</text><text x="360" y="26">4月</text>
-            <text x="508" y="26">5月</text><text x="656" y="26">6月</text>
-          </g>
-          <g stroke="var(--rule)" stroke-width="1">
-            <line x1="138" y1="34" x2="138" y2="290"></line>
-            <line x1="286" y1="34" x2="286" y2="290"></line>
-            <line x1="434" y1="34" x2="434" y2="290"></line>
-            <line x1="582" y1="34" x2="582" y2="290"></line>
-            <line x1="730" y1="34" x2="730" y2="290"></line>
-          </g>
-
-          <!-- === 観測が細かい年 === -->
-          <text class="s-hd" x="14" y="66">観測が細かい年</text>
-          <!-- 地表の帯: 雪 → 裸地 -->
-          <rect x="138" y="80" width="330" height="26" fill="#E3EEF6" stroke="#9FBACB"></rect>
-          <rect x="138" y="80" width="330" height="26" fill="url(#pSnowGrain)"></rect>
-          <rect x="468" y="80" width="262" height="26" fill="#6C7480" stroke="#5A616B"></rect>
-          <text class="s-xs" x="288" y="98" fill="#26414F">雪がある</text>
-          <text class="s-xs" x="560" y="98" fill="#F0F3F6">融け終わっている</text>
-          <!-- 観測日のシーン -->
-          <g>
-            <rect x="152" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="152" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="226" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="226" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="300" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="300" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="374" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="374" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="448" y="112" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="448" y="112" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="522" y="112" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="522" y="112" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
-            <rect x="596" y="112" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="596" y="112" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
-            <rect x="670" y="112" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="670" y="112" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
-          </g>
-          <!-- 消雪の推定 -->
-          <line x1="470" y1="76" x2="470" y2="146" stroke="var(--unk)" stroke-width="1.6"></line>
-          <line x1="533" y1="76" x2="533" y2="146" stroke="var(--unk)" stroke-width="1.6"></line>
-          <rect x="470" y="76" width="63" height="70" fill="var(--band-acc)"></rect>
-          <line x1="501" y1="72" x2="501" y2="150" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></line>
-          <text class="s-sm s-acc" x="501" y="166" text-anchor="middle">推定＝間隔の中点</text>
-          <text class="s-xs s-unk" x="470" y="70" text-anchor="middle">最後に雪あり</text>
-          <text class="s-xs s-unk" x="545" y="70">初めて雪なし</text>
-
-          <!-- === 観測が飛ぶ年 === -->
-          <text class="s-hd" x="14" y="212">観測が飛ぶ年（雲・低い太陽）</text>
-          <rect x="138" y="226" width="330" height="26" fill="#E3EEF6" stroke="#9FBACB"></rect>
-          <rect x="138" y="226" width="330" height="26" fill="url(#pSnowGrain)"></rect>
-          <rect x="468" y="226" width="262" height="26" fill="#6C7480" stroke="#5A616B"></rect>
-          <!-- 観測日と雲で欠測した日 -->
-          <g>
-            <rect x="164" y="258" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="164" y="258" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="392" y="258" width="22" height="22" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect><rect x="392" y="258" width="22" height="22" rx="2" fill="url(#pSnowScene)"></rect>
-            <rect x="666" y="258" width="22" height="22" rx="2" fill="#6C7480" stroke="#5A616B"></rect><rect x="666" y="258" width="22" height="22" rx="2" fill="url(#pBareScene)"></rect>
-          </g>
-          <g opacity=".8">
-            <g transform="translate(240,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
-            <g transform="translate(316,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
-            <g transform="translate(468,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
-            <g transform="translate(544,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
-            <g transform="translate(600,268)"><path d="M-16 6 q-8 0 -8 -7 q0 -7 8 -7 q1 -9 11 -9 q9 0 11 8 q9 0 9 8 q0 7 -9 7 Z" fill="var(--unk)" opacity=".45"></path></g>
-          </g>
-          <line x1="414" y1="222" x2="414" y2="292" stroke="var(--unk)" stroke-width="1.6"></line>
-          <line x1="666" y1="222" x2="666" y2="292" stroke="var(--unk)" stroke-width="1.6"></line>
-          <rect x="414" y="222" width="252" height="70" fill="var(--band-acc)"></rect>
-          <line x1="540" y1="218" x2="540" y2="296" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></line>
-          <path d="M420 306 L660 306" stroke="var(--accent)" stroke-width="1.4"></path>
-          <path d="M426 302 L416 306 L426 310 Z" fill="var(--accent)"></path>
-          <path d="M654 302 L664 306 L654 310 Z" fill="var(--accent)"></path>
-          <text class="s-sm s-acc" x="540" y="326" text-anchor="middle" font-weight="600">この幅がそのまま誤差になる（実測: 間隔 × 0.217）</text>
-
-          <!-- 凡例 -->
-          <g transform="translate(752,112)">
-            <rect x="0" y="0" width="18" height="18" rx="2" fill="#E3EEF6" stroke="#9FBACB"></rect>
-            <text class="s-xs" x="24" y="13">雪あり</text>
-            <rect x="0" y="26" width="18" height="18" rx="2" fill="#6C7480" stroke="#5A616B"></rect>
-            <text class="s-xs" x="24" y="39">雪なし</text>
-            <g transform="translate(9,62)"><path d="M-9 4 q-5 0 -5 -4 q0 -4 5 -4 q1 -5 6 -5 q5 0 6 4 q5 0 5 5 q0 4 -5 4 Z" fill="var(--unk)" opacity=".45"></path></g>
-            <text class="s-xs" x="24" y="66">雲で欠測</text>
-          </g>
-        </svg>
-        <figcaption>
-          実測すると、<strong>流域平均の消雪日の誤差は「観測間隔 × 0.217」</strong>でした（9年分の間引き実験）。
-          つまり<strong>この提案の精度は、冬から春にかけて何回晴れるかでほぼ決まります</strong>。
-          年によっては画素の98.5%が1つの間隔に入ってしまい、空間平均をとっても誤差が落ちません（2017年の実測）。<strong>この観測間隔の出方が、依頼1でお伺いしたい点です（V-4）。</strong>
-          <span class="src">t2_meltout_accuracy.json（check_EG_over_4, single_interval_risk）</span>
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="fig" id="fig9">
-      <figure>
-        <p class="figtitle">図9　実際に衛星から作った消雪日マップ — 蔵王山・火口から半径3 km、2017〜2025年の9年分</p>
+        <p class="figtitle">図6　実際に衛星から作った消雪日マップ — 蔵王山・火口から半径3 km、2017〜2025年の9年分</p>
         <svg viewBox="0 0 860 512" role="img" aria-label="蔵王山 火口半径3kmの消雪日マップ3年分と、9年分の消雪日中央値。年によって中央値が102日から148日まで動く。年を選ぶと、その年1枚を拡大して観測日数・決定率・挟み込み間隔とともに表示する。">
 <g id="snowRow3">
 <text class="s-hd s-num" x="22" y="16">2023 年</text>
@@ -1829,7 +1410,7 @@
 <circle cx="415.0" cy="147.6" r="7" fill="none" stroke="#FFF" stroke-width="2.4" opacity=".85"></circle>
 <circle cx="415.0" cy="147.6" r="7" fill="none" stroke="#1B2028" stroke-width="1.1"></circle>
 <rect x="292" y="24" width="246" height="247.2" fill="none" stroke="var(--rule)"></rect>
-<text class="s-sm s-num" x="292" y="289.2" fill="var(--ink-2)">画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">125.5 日目</tspan>（5月5日ごろ）</text>
+<text class="s-sm s-num" x="292" y="289.2" fill="var(--ink-2)">画素中央値 <tspan font-weight="600" fill="var(--accent-ink)">125.5 日目</tspan>（5月5〜6日ごろ）</text>
 <text class="s-hd s-num" x="562" y="16">2025 年</text>
 <text class="s-xs s-num" x="808" y="16" text-anchor="end" fill="var(--ink-3)">観測日 13 日・間隔 40 日</text>
 <rect x="562" y="24" width="246" height="247.2" fill="var(--surface-2)"></rect>
@@ -1857,7 +1438,7 @@
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 <text class="s-xs s-acc" x="356" y="264" font-weight="600">この年は決まった画素の98.5%が同じ1つの間隔に入っています（9年で最悪）。</text>
 </g>
 <g id="snowY2018" style="display:none">
@@ -1877,7 +1458,7 @@
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2019" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2019 年</text>
@@ -1889,14 +1470,14 @@
 <g transform="translate(32,285.3)"><rect x="-6" y="-16" width="56.9" height="24" fill="#000" opacity=".35" rx="2"></rect><line x1="0" y1="0" x2="44.9" y2="0" stroke="#FFF" stroke-width="2"></line><text class="s-xs" x="22.4" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>
 <rect x="22" y="24" width="272" height="273.3" fill="none" stroke="var(--rule)"></rect>
 <text class="s-sm" x="356" y="44" fill="var(--ink-2)">画素中央値</text>
-<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">125.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（5月6日ごろ）</tspan></text>
+<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">125.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（5月5〜6日ごろ）</tspan></text>
 <text class="s-sm" x="356" y="112" fill="var(--ink-2)">決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">96%</tspan></text>
 <text class="s-sm" x="356" y="140" fill="var(--ink-2)">観測日 <tspan class="s-num" font-weight="600" fill="currentColor">14 日</tspan>　／　挟み込み間隔の中央値 <tspan class="s-num" font-weight="600" fill="currentColor">15 日</tspan></text>
 <text class="s-xs" x="356" y="158">（間隔は矩形全体の値。円では取り直せていません）</text>
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2020" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2020 年</text>
@@ -1915,7 +1496,7 @@
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2021" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2021 年</text>
@@ -1927,14 +1508,14 @@
 <g transform="translate(32,285.3)"><rect x="-6" y="-16" width="56.9" height="24" fill="#000" opacity=".35" rx="2"></rect><line x1="0" y1="0" x2="44.9" y2="0" stroke="#FFF" stroke-width="2"></line><text class="s-xs" x="22.4" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>
 <rect x="22" y="24" width="272" height="273.3" fill="none" stroke="var(--rule)"></rect>
 <text class="s-sm" x="356" y="44" fill="var(--ink-2)">画素中央値</text>
-<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">124.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（5月4日ごろ）</tspan></text>
+<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">124.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（5月4〜5日ごろ）</tspan></text>
 <text class="s-sm" x="356" y="112" fill="var(--ink-2)">決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">72%</tspan></text>
 <text class="s-sm" x="356" y="140" fill="var(--ink-2)">観測日 <tspan class="s-num" font-weight="600" fill="currentColor">17 日</tspan>　／　挟み込み間隔の中央値 <tspan class="s-num" font-weight="600" fill="currentColor">15 日</tspan></text>
 <text class="s-xs" x="356" y="158">（間隔は矩形全体の値。円では取り直せていません）</text>
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2022" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2022 年</text>
@@ -1946,14 +1527,14 @@
 <g transform="translate(32,285.3)"><rect x="-6" y="-16" width="56.9" height="24" fill="#000" opacity=".35" rx="2"></rect><line x1="0" y1="0" x2="44.9" y2="0" stroke="#FFF" stroke-width="2"></line><text class="s-xs" x="22.4" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>
 <rect x="22" y="24" width="272" height="273.3" fill="none" stroke="var(--rule)"></rect>
 <text class="s-sm" x="356" y="44" fill="var(--ink-2)">画素中央値</text>
-<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">144.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（5月24日ごろ）</tspan></text>
+<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">144.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（5月24〜25日ごろ）</tspan></text>
 <text class="s-sm" x="356" y="112" fill="var(--ink-2)">決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">96%</tspan></text>
 <text class="s-sm" x="356" y="140" fill="var(--ink-2)">観測日 <tspan class="s-num" font-weight="600" fill="currentColor">10 日</tspan>　／　挟み込み間隔の中央値 <tspan class="s-num" font-weight="600" fill="currentColor">20 日</tspan></text>
 <text class="s-xs" x="356" y="158">（間隔は矩形全体の値。円では取り直せていません）</text>
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2023" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2023 年</text>
@@ -1972,7 +1553,7 @@
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2024" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2024 年</text>
@@ -1984,14 +1565,14 @@
 <g transform="translate(32,285.3)"><rect x="-6" y="-16" width="56.9" height="24" fill="#000" opacity=".35" rx="2"></rect><line x1="0" y1="0" x2="44.9" y2="0" stroke="#FFF" stroke-width="2"></line><text class="s-xs" x="22.4" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>
 <rect x="22" y="24" width="272" height="273.3" fill="none" stroke="var(--rule)"></rect>
 <text class="s-sm" x="356" y="44" fill="var(--ink-2)">画素中央値</text>
-<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">114.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（4月23日ごろ）</tspan></text>
+<text class="s-hd s-num s-acc" x="356" y="72" font-size="24">114.5 日目<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">（4月23〜24日ごろ）</tspan></text>
 <text class="s-sm" x="356" y="112" fill="var(--ink-2)">決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">96%</tspan></text>
 <text class="s-sm" x="356" y="140" fill="var(--ink-2)">観測日 <tspan class="s-num" font-weight="600" fill="currentColor">16 日</tspan>　／　挟み込み間隔の中央値 <tspan class="s-num" font-weight="600" fill="currentColor">15 日</tspan></text>
 <text class="s-xs" x="356" y="158">（間隔は矩形全体の値。円では取り直せていません）</text>
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 <g id="snowY2025" style="display:none">
 <text class="s-hd s-num" x="22" y="16">2025 年</text>
@@ -2010,7 +1591,7 @@
 <text class="s-xs" x="356" y="184">灰色は、その年は雲などで決められなかった画素です。</text>
 <text class="s-xs" x="356" y="202">灰色が減るかは枚数では決まりません（効くのは「いつ晴れたか」）。</text>
 <text class="s-xs" x="356" y="220">ただし<tspan font-weight="600" fill="currentColor">精度は挟み込み間隔が決めます</tspan>——間隔が広い年は、</text>
-<text class="s-xs" x="356" y="238">決まっていても幅が広いです（図8・V-4）。</text>
+<text class="s-xs" x="356" y="238">決まっていても幅が広いです（V-4）。</text>
 </g>
 </g>
 <defs><linearGradient id="gDoy" x1="0" y1="0" x2="1" y2="0">
@@ -2104,92 +1685,19 @@
         </div>
         <figcaption>
           Landsat 8/9 と Sentinel-2 の実画像（NDSI 0.4）から、30 m画素ごとに「最後に雪があった日」と「初めて雪が無かった日」の中点を消雪日としたものです。
-          <strong>9年すべてでマップが作れました</strong>（面が埋まった割合は年により57〜96%）。
+          <strong>9年すべてでマップが作れました。</strong>
           火口から半径3 km（31,392画素）の画素中央値は<strong>102日目（4月12日ごろ）から148日目（5月28日ごろ）まで、46日ぶれます</strong>——
           この量を測っている地上の観測点は、火口の高さには1つもありません。
+          （ここは画素中央値で、下の判定が信号としている 7.1 日は<strong>流域平均の年々変動＝別の統計量</strong>です。）
           <br>
-          灰色は決められなかった画素です。2023年は<strong>観測日が13日あるのに</strong>30%が灰色で、<strong>枚数ではなく「いつ晴れたか」が効いています（V-4）</strong>。
-          <br>
-          <strong>年のボタンで9年分を1枚ずつ切り替えられます</strong>（下の帯グラフの点も連動します）。
-          <strong>観測日が最も多い2021年（17日）の決定率は72%、14日の2019年は96%</strong>。<strong>6日しかない2017年は92%で、8日の2018年は57%</strong>——<strong>枚数では決まらないことが、9年を通すと見えます</strong>。ただし<strong>精度のほうは挟み込み間隔がそのまま決めます</strong>（図8）。<strong>どちらも「冬にいつ晴れるか」に帰着するので、ここが依頼1でお伺いしたい点です</strong>。
-          9年すべて実データで、点の間は補間していません。
+          灰色は決められなかった画素で、<strong>年のボタンで9年分を1枚ずつ切り替えられます</strong>（下の帯グラフの点も連動します）。
+          <strong>観測日が最も多い2021年（17日）の決定率は72%、14日の2019年は96%、6日しかない2017年は92%で、8日の2018年は57%</strong>——<strong>枚数ではなく「いつ晴れたか」が効いています</strong>。
+          精度のほうは<strong>挟み込み間隔がそのまま決めます</strong>（下のスライダー）。<strong>どちらも「冬にいつ晴れるか」に帰着するので、ここが依頼1でお伺いしたい点です（V-4）</strong>。
           <br>
           <strong>自白</strong>: これは「日」であって「mm」ではありません。計画に載る量にするには融雪期間（V-1）と融雪係数（V-3）が要り、そこは我々だけでは埋まりません。
-          <details class="fine">
-            <summary>集計範囲と統計量の但し書き（ご質問に応じて）</summary>
-            <div>
-              挟み込み間隔の中央値は年により15〜48日でした。
-              <br>
-              <strong>どこまでを円で取り直したか</strong>: 円で取り直したのは<strong>この図の画素中央値と決定率だけ</strong>です。
-              <strong>観測間隔（15〜48日）と、図8の誤差係数 0.217・図10の 5.4 日と 7.1 日・V-4のスライダーは、いずれも矩形全体（41,006画素）での値</strong>のまま残っています——
-              画素ごとの挟み込み幅が保存されておらず、円で取り直すには元データからの再実行が要るためです。
-              <strong>取り直したときの効き幅は見積もってあり、結論は動きません</strong>（流域平均の年々変動σが矩形 8.93 日 → 円 8.80 日、信号 7.1 → 6.9 日、信号対雑音比 1.30 → 1.29）。
-              <br>
-              <strong>統計量について</strong>: ここに出しているのは画素中央値で、図10で信号としている 7.1 日は<strong>流域平均の年々変動</strong>——別の統計量です。
-              <span class="src">t2_snowmap_circle_r3km.json（円_半径3km.年別 ＝ 画素中央値・決定率、downstream_effect ＝ 円と矩形の対比）／
-              t2_snowmap_results.json（years.*.dates, gap_median_days）／
-              poc/data/snowmap/snow_doy_*.npy を 40_scripts/make_shiryo_realdata_figs.py で描画。観測日数は dates を日付でユニーク化した数。
-              円の集計は 30_theme2_ライフライン復旧/poc/src/t2_snowmap_circle.py</span>
-            </div>
-          </details>
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="fig">
-      <figure>
-        <p class="figtitle">【補足】図10　その誤差は、探している年ごとの違いより小さいか</p>
-        <svg viewBox="0 0 860 244" role="img" aria-label="時代別の観測誤差と信号の比較。信号7.1日に対し、1984-98年は17.4日、1999-2016年は8.7日、2017-26年は5.4日、必要水準は3.5日。">
-          <line x1="230" y1="196" x2="800" y2="196" stroke="currentColor" stroke-width="1" opacity=".35"></line>
-          <g class="s-xs s-num" text-anchor="middle">
-            <text x="230" y="214">0</text>
-            <text x="370" y="214">5</text>
-            <text x="510" y="214">10</text>
-            <text x="650" y="214">15</text>
-            <text x="790" y="214">20 日</text>
-          </g>
-          <g stroke="currentColor" stroke-width="1" opacity=".13">
-            <line x1="370" y1="42" x2="370" y2="196"></line>
-            <line x1="510" y1="42" x2="510" y2="196"></line>
-            <line x1="650" y1="42" x2="650" y2="196"></line>
-            <line x1="790" y1="42" x2="790" y2="196"></line>
-          </g>
-
-          <rect x="230" y="42" width="199" height="154" fill="var(--band-acc)"></rect>
-          <line x1="429" y1="36" x2="429" y2="196" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"></line>
-          <text class="s-sm s-num s-acc" x="434" y="32">信号 7.1 日 ← 左に来ないと年ごとの違いが見えない</text>
-
-          <g filter="url(#fSoft)">
-            <rect x="230" y="52" width="487" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
-            <rect x="230" y="88" width="244" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
-            <rect x="230" y="124" width="151" height="22" rx="2" fill="url(#gBarNoiseH)"></rect>
-            <rect x="230" y="160" width="98" height="22" rx="2" fill="url(#gBarSignal)" opacity=".85"></rect>
-          </g>
-          <g class="s-lbl" text-anchor="end">
-            <text x="222" y="68">1984–98（Landsatのみ）</text>
-            <text x="222" y="104">1999–2016</text>
-            <text x="222" y="140">2017–26（Landsat＋Sentinel-2）</text>
-            <text x="222" y="176">目指したい水準</text>
-          </g>
-          <g class="s-sm s-num">
-            <text x="725" y="68">17.4</text>
-            <text x="482" y="104">8.7</text>
-            <text x="389" y="140">5.4</text>
-            <text x="336" y="176" fill="var(--accent-ink)" font-weight="600">3.5</text>
-          </g>
-          <g color="var(--unk-ink)">
-            <use href="#gSat" x="760" y="51"  width="26" height="26"></use>
-            <use href="#gSat" x="517" y="87"  width="26" height="26"></use>
-            <use href="#gSat" x="424" y="123" width="26" height="26"></use>
-            <use href="#gSat" x="452" y="123" width="26" height="26"></use>
-          </g>
-        </svg>
-        <figcaption>
-          棒は流域平均の消雪日の観測誤差、赤の破線は<strong>積雪の真の年々変動（7.1日）</strong>です。
-          <strong>Sentinel-2が入った現在の観測密度でようやく信号対雑音比1.30、それ以前は0.81以下</strong>で、
-          古い年ほど「年ごとの違い」ではなく「観測の粗さ」を見ていることになります。<strong>この判定は融雪開始日の精度でも動きます（V-2）。</strong>
-          棒の観測間隔は <strong>E[G]＝Σg²/Σg（長い間隔ほど重く数える期待値）</strong>で、現代は25日です。図9の「間隔の中央値20日」は中央値なので値が違います。
-          <span class="src">t2_return_period.json（snr_in_days, revised_EG_criterion）</span>
+          <span class="src">t2_snowmap_circle_r3km.json（円_半径3km.年別 ＝ 画素中央値・決定率）／t2_snowmap_results.json（years.*.dates, gap_median_days。<strong>「観測日 N 日」は dates を日付でユニーク化した数</strong>）／
+          poc/data/snowmap/snow_doy_*.npy を 40_scripts/make_shiryo_realdata_figs.py で描画。円の集計は 30_theme2_ライフライン復旧/poc/src/t2_snowmap_circle.py。
+          挟み込み間隔（年別15〜48日）と下のスライダーは矩形全体（41,006画素）での値で、円で取り直しても結論は動かない（流域平均の年々変動σ 8.93 → 8.80 日）</span>
         </figcaption>
       </figure>
     </div>
@@ -2219,8 +1727,8 @@
       </div>
       <div class="gscale"><span>誤差 0 日</span><span>信号 7.1 日</span><span>18 日</span></div>
       <p class="caveat">誤差は<strong>実測した係数 0.217 × 観測間隔</strong>で計算しています（9年分の間引き実験）。
-        <strong>25日は図10と同じ基準</strong>（E[G]＝長い間隔ほど重く数える期待値）での現代の値です。20日は観測間隔の実測中央値、48日は最悪年、80日はLandsat単独時代。
-        16日は「観測誤差を全体の20%以下に抑える」ために必要な水準です。</p>
+        <strong>25日が現在の観測密度</strong>です（E[G]＝Σg²/Σg ＝ 長い間隔ほど重く数える期待値。単純な中央値だと20日）。48日は最悪年、80日はLandsat単独時代、16日は「観測誤差を全体の20%以下に抑える」ために必要な水準です。
+</p>
     </div>
 
     <h3>テーマ②の不確定項</h3>
@@ -2234,7 +1742,7 @@
       <div class="unk ask-here">
         <span class="id">V-2</span>
         <span class="what">融雪開始日の観測精度</span>
-        <span class="why">上の式のもう一方の端点です。現状は消雪日と同じ精度と<strong>仮定して</strong>います。両端点で評価すると信号対雑音比は1.30から0.92に落ちるので、ここの実力が図10の判定を左右します。</span>
+        <span class="why">上の式のもう一方の端点です。現状は消雪日と同じ精度と<strong>仮定して</strong>います。両端点で評価すると信号対雑音比は1.30から0.92に落ちるので、ここの実力が「使えるかどうか」の判定を左右します。</span>
         <span class="who"><b>ご相談したい先</b>: 融雪開始の定義（気温・日射・降水相）と、衛星の積雪面積率で代替できるかの判断。</span>
       </div>
       <div class="unk ask-here">
@@ -2246,13 +1754,13 @@
       <div class="unk ask-here">
         <span class="id">V-4</span>
         <span class="what">積雪期の雲による欠測</span>
-        <span class="why">図8のとおり、観測間隔がそのまま誤差になります（V-1〜V-3のすべてに掛かる）。年によっては<strong>画素の98.5%が1つの観測間隔に入ってしまい、空間平均をとっても誤差が落ちません</strong>。</span>
+        <span class="why">上のスライダーのとおり、観測間隔がそのまま誤差になります（実測係数 0.217 × 観測間隔。V-1〜V-3のすべてに掛かる）。年によっては<strong>画素の98.5%が1つの観測間隔に入ってしまい、空間平均をとっても誤差が落ちません</strong>。</span>
         <span class="who"><b>ご相談したい先</b>: 冬期山岳域の雲の出方。地域・標高・年による偏りが読めると、対象火山の選び方が変わります。</span>
       </div>
       <div class="unk">
         <span class="id">V-5</span>
         <span class="what">蔵王以外の火山での年々変動</span>
-        <span class="why">合否ライン（図10の破線）は年々変動の大きさに依存するので、火山ごとに引き直す必要があります。樽前山・鳥海山・磐梯山では未実測です。</span>
+        <span class="why">合否ライン（観測誤差が年々変動 7.1 日を下回るか）は年々変動の大きさに依存するので、火山ごとに引き直す必要があります。樽前山・鳥海山・磐梯山では未実測です。</span>
         <span class="who"><b>閉じ方</b>: 同じ計算を回すだけなので自前で閉じられます。計算時間の問題です。</span>
       </div>
     </div>
@@ -2265,7 +1773,7 @@
             <thead><tr><th>計算している量</th><th>値</th><th>確度</th></tr></thead>
             <tbody>
               <tr><th>消雪日マップ（蔵王・火口から半径3km・9年分）</th><td class="num">挟み込み間隔の中央値 20 日（9年の年別は15〜48日。最悪は2017年48日・2025年40日。Landsat単独時代1984–98はE[G] 80日。観測間隔は矩形全体での値）</td><td><span class="flag f-ok">確定</span></td></tr>
-              <tr><th>同上・実際に決められた画素と年々差（図9）</th><td class="num">決定できた画素 57〜96%／画素中央値 102〜148 日目（幅 46 日。円で集計）。図10の信号 7.1 日は矩形基準のσ8.9日から。円で取り直すとσ8.80→信号6.9日で結論は不変</td><td><span class="flag f-ok">確定</span></td></tr>
+              <tr><th>同上・実際に決められた画素と年々差（図6）</th><td class="num">決定できた画素 57〜96%／画素中央値 102〜148 日目（幅 46 日。円で集計）。信号 7.1 日は矩形基準のσ8.9日から。円で取り直すとσ8.80→信号6.9日で結論は不変</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>消雪日の誤差（間引き実験による実測）</th><td class="num">流域0.2 km²平均のRMSE ＝ 0.217 × 観測間隔</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>信号（流域平均消雪日の年々変動）</th><td class="num">実測σ 8.9 日 → 観測誤差5.4日を除いた真の変動 7.1 日</td><td><span class="flag f-ok">確定</span></td></tr>
               <tr><th>標本不確かさ（ブートストラップ4,000反復）</th><td class="num">20年標本での90%区間幅: 2年確率 21.6%／20年確率 38.5%／100年確率 49.0%</td><td><span class="flag f-ok">確定</span></td></tr>
@@ -2286,9 +1794,9 @@
   <section>
     <h2>ご相談したいこと</h2>
 
-    <div class="fig" id="fig11">
+    <div class="fig" id="fig7">
       <figure>
-        <p class="figtitle">図11　不確定項は10件。うち8件は我々だけでは閉じられません</p>
+        <p class="figtitle">図7　不確定項は10件。うち8件は我々だけでは閉じられません</p>
         <svg viewBox="0 0 860 240" role="img" aria-label="不確定項10件の内訳。気象側の知見で閉じるもの5件、現地観測2件、お取り次ぎ1件、貴協会にお願いしない2件。">
           <g filter="url(#fSoft)">
             <rect x="20" y="44" width="400" height="48" rx="2" fill="var(--accent)" opacity=".8"></rect>
@@ -2340,7 +1848,7 @@
         </svg>
         <figcaption>
           いずれも「まず一度お話を伺いたい」という段階のご相談で、この場でお約束いただくことは想定していません。
-          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています（テーマ①は代用データで共通モードの除去まで＝図5・図6、テーマ②は消雪日マップを9年分＝図9。ただし出すべき量は「mm」で、そこにはV-1とV-3が要ります）。
+          <strong>ゼロからのご相談ではありません</strong>——衛星側の処理は実データで動いています（テーマ①は代用データで共通モードの除去まで、テーマ②は消雪日マップを9年分。ただし出すべき量は「mm」で、そこにはV-1とV-3が要ります）。
           残っているのは<strong>そこに写った値が「なぜそうなるか」と、地上で答え合わせをする部分</strong>です。
         </figcaption>
       </figure>
@@ -2390,7 +1898,7 @@
       </div>
       <div class="row">
         <span class="h">できないことは先に申告します</span>
-        <span class="t">テーマ①は<strong>単発の撮像では検出できません</strong>（図3・図4）。テーマ②は<strong>50〜100年確率は外挿としてしか出せません</strong>（90%区間幅49%）。いずれも提案書にもそのまま書いています。</span>
+        <span class="t">テーマ①は<strong>単発の撮像では検出できません</strong>（図3）。テーマ②は<strong>50〜100年確率は外挿としてしか出せません</strong>（90%区間幅49%）。いずれも提案書にもそのまま書いています。</span>
       </div>
       <div class="row">
         <span class="h">実データでの実証はまだ途中です</span>
@@ -2403,32 +1911,11 @@
     </div>
   </section>
 
-  <details>
-    <summary>補足: なぜ差分を重ねるのか（テーマ①の設計の背景）</summary>
-    <div class="inner">
-      <p>
-        保温材が劣化した面の表面温度上昇は+1 K程度です。これに対し、外装材の放射率が0.05違うだけで見かけの輝度温度は2.67 K動き、
-        晴天夜と曇天夜の違いだけで8.57 K動きます（図3）。<strong>単独の絶対温度で判定する設計は原理的に成立しません。</strong>
-      </p>
-      <p>
-        そこで、①同一資産の中で相対比較する、②同一構内の同型ユニット（兄弟資産）どうしで差を取る、
-        ③その差の時間変化を見る、と重ねます（図4）。<strong>①と②はどちらも同じ撮像の中の比較なので、天空条件・大気透過はどちらでも同時に落ちます。</strong>
-        ①は資産の中の局所的な異常しか見えず、設備全体が面的に劣化すると基準を失うので、面的劣化には②を使います。
-        ②で戻ってくるのが資産どうしの個体差（放射率差 2.67 K）で、これを③の時間変化が落とします。
-      </p>
-      <p>
-        この設計の弱点がそのまま U-1・U-2 です。②は<strong>2つの資産が同じ空を共有していること</strong>に依存し、
-        ③は<strong>2つの資産の外装が同じ速さで風化していること（放射率の差が経年で開かないこと）</strong>に依存します。どちらも気象と材料の話であって、
-        画像処理では解決できません。
-      </p>
-    </div>
-  </details>
-
   <footer>
     出所はすべて自前計算または一次資料。自前計算は乱数シードを固定してあり再現可能。<br>
     テーマ①: poc1_results.json（誤差バジェット）／poc3_results.json（実気象2020-2025）／poc4_results_real.json（実Landsat 14シーン）／poc6_results.json（実Landsat・代用資産11,422個）／poc7_results.json（モンテカルロ160対160）<br>
     テーマ②: t2_snowmap_results.json（消雪日マップ9年）／t2_snowmap_circle_r3km.json（火口半径3kmの円での集計）／t2_meltout_accuracy.json（間引き実験）／t2_return_period.json（ブートストラップ4,000反復）<br>
-    2026年8月13日 第17版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
+    2026年8月13日 第18版／ 作成: 株式会社GRID　／　取扱い: 面談での画面共有のみ
   </footer>
 
 </div>
@@ -2437,7 +1924,7 @@
 (function () {
   "use strict";
 
-  /* ---------- 図9: 消雪日マップの年の切り替え ----------
+  /* ---------- 図6: 消雪日マップの年の切り替え ----------
      9年分すべてを SVG に焼き込んであり、ここは display の切り替えと点の輪だけを動かす。
      数値の文字列は一切組み立てない（存在しない数字を作らないため）。 */
   (function () {
