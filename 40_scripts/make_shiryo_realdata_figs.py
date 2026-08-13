@@ -7,7 +7,9 @@
   fig_t1_image.svg    テーマ①: 実Landsat熱赤外画像そのもの（冬・夏の同一地域＋東扇島の等倍拡大）
                       出所 20_theme1_保温劣化監視/poc/data/*_ST_B10_keihin.tif
                            AOIは 20_theme1_保温劣化監視/poc/src/poc4_pipeline.py の AOIS と同一
-  fig_t2_snowmap.svg  テーマ②: 蔵王・火口周辺の実消雪日マップ（2023/2019/2025）と9年分の中央値
+  fig_t2_snowmap.svg  テーマ②: 蔵王・火口周辺の実消雪日マップ（既定＝2023/2019/2025の並置）と
+                      9年分の中央値。年を選ぶと1枚を拡大する切替を持つ（9年すべてを焼き込み、
+                      表示だけ切り替える。JSでは数値を組み立てない）
                       出所 30_theme2_ライフライン復旧/poc/data/snowmap/snow_doy_*.npy
                            30_theme2_ライフライン復旧/poc/out/t2_snowmap_results.json
 
@@ -498,7 +500,9 @@ def fig_t2():
     o = []
     A = o.append
     A('<svg viewBox="0 0 860 512" role="img" aria-label="蔵王山 火口半径3kmの消雪日マップ3年分と、'
-      '9年分の消雪日中央値。年によって中央値が102日から148日まで動く。">')
+      '9年分の消雪日中央値。年によって中央値が102日から148日まで動く。'
+      '年を選ぶと、その年1枚を拡大して観測日数・決定率・挟み込み間隔とともに表示する。">')
+    A('<g id="snowRow3">')
 
     total = 0
     for k, y in enumerate(show):
@@ -540,6 +544,57 @@ def fig_t2():
               f'<line x1="0" y1="0" x2="{sb:.1f}" y2="0" stroke="#FFF" stroke-width="2"></line>'
               f'<text class="s-xs" x="{sb/2:.1f}" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>')
 
+    A('</g>')
+
+    # ---- 年を1つ選んだときの拡大表示（9年分すべてを焼き込み、表示だけ切り替える）----
+    # 数値はここで実データから書き出しておき、JS では文字を組み立てない
+    # （組み立てると、存在しない数字を作る余地ができる）。
+    BW = 296                                  # 拡大時の描画幅[px]
+    BH = BW * 203 / 202
+    A('<g id="snowOne" style="display:none">')
+    for y in sorted(years):
+        uri, rows, cols, nbytes = snow_png_datauri(y)
+        total += nbytes
+        d, yy = circ[y], years[y]
+        ndays = len({s[:10] for s in yy["dates"]})
+        med = int(d["画素中央値"])
+        A(f'<g id="snowY{y}" style="display:none">')
+        A(f'<text class="s-hd s-num" x="22" y="16">{y} 年</text>')
+        A(f'<rect x="22" y="24" width="{BW}" height="{BH:.1f}" fill="var(--surface-2)"></rect>')
+        A(f'<image x="22" y="24" width="{BW}" height="{BH:.1f}" href="{uri}" '
+          'style="image-rendering:pixelated"></image>')
+        cx, cy = 22 + BW / 2, 24 + BH / 2
+        A(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="8" fill="none" stroke="#FFF" '
+          'stroke-width="2.6" opacity=".85"></circle>')
+        A(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="8" fill="none" stroke="#1B2028" '
+          'stroke-width="1.2"></circle>')
+        A(f'<text class="s-xs" x="{cx+13:.1f}" y="{cy+4:.1f}" fill="#FFF" '
+          'style="paint-order:stroke" stroke="#1B2028" stroke-width="2.5">火口</text>')
+        sb = BW / 6.06
+        A(f'<g transform="translate(32,{24+BH-12:.1f})">'
+          f'<rect x="-6" y="-16" width="{sb+12:.1f}" height="24" fill="#000" opacity=".35" rx="2"></rect>'
+          f'<line x1="0" y1="0" x2="{sb:.1f}" y2="0" stroke="#FFF" stroke-width="2"></line>'
+          f'<text class="s-xs" x="{sb/2:.1f}" y="-4" text-anchor="middle" fill="#FFF">1 km</text></g>')
+        A(f'<rect x="22" y="24" width="{BW}" height="{BH:.1f}" fill="none" stroke="var(--rule)"></rect>')
+        # 右側の数値（すべて実測。単位と出所は figcaption 側に書いてある）
+        tx = 356
+        A(f'<text class="s-sm" x="{tx}" y="44" fill="var(--ink-2)">画素中央値</text>')
+        A(f'<text class="s-hd s-num s-acc" x="{tx}" y="72" font-size="24">{med} 日目'
+          f'<tspan class="s-sm" fill="var(--ink-2)" font-size="13.5">'
+          f'（{doy_label(med)}ごろ）</tspan></text>')
+        A(f'<text class="s-sm" x="{tx}" y="112" fill="var(--ink-2)">'
+          f'決められた画素 <tspan class="s-num" font-weight="600" fill="currentColor">'
+          f'{d["決定率"]*100:.0f}%</tspan></text>')
+        A(f'<text class="s-sm" x="{tx}" y="140" fill="var(--ink-2)">'
+          f'観測日 <tspan class="s-num" font-weight="600" fill="currentColor">{ndays} 日</tspan>'
+          f'　／　挟み込み間隔の中央値 <tspan class="s-num" font-weight="600" fill="currentColor">'
+          f'{yy["gap_median_days"]:.0f} 日</tspan></text>')
+        A(f'<text class="s-xs" x="{tx}" y="172">灰色は、その年は雲などで決められなかった画素です。</text>')
+        A(f'<text class="s-xs" x="{tx}" y="190">観測日が多い年ほど決まるとは限りません。'
+          '効くのは「いつ晴れたか」です（V-4）。</text>')
+        A('</g>')
+    A('</g>')
+
     # カラーバー
     ytop = 24 + W * 203 / 202 + 52
     A(f'<defs><linearGradient id="gDoy" x1="0" y1="0" x2="1" y2="0">')
@@ -577,6 +632,9 @@ def fig_t2():
         v = circ[y]["画素中央値"]
         Y = sy + 56 - 48 * (v - dmin) / (dmax - dmin)
         acc = y in show
+        # 年を選んだときに、その年の点だけを囲む輪（JSが display を切り替える）
+        A(f'<circle id="snowRing{y}" cx="{X:.1f}" cy="{Y:.1f}" r="9" fill="none" '
+          'stroke="var(--accent)" stroke-width="2" style="display:none"></circle>')
         A(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{4.5 if acc else 3.2}" '
           f'fill="{"var(--accent)" if acc else "var(--rock)"}" '
           f'opacity="{1 if acc else .75}"></circle>')
@@ -588,7 +646,7 @@ def fig_t2():
       f'最も早い年と遅い年で {max(vals)-min(vals):g} 日ちがう'
       '<tspan class="s-xs" fill="var(--ink-3)" font-weight="400">（画素中央値）</tspan></text>')
     A("</svg>")
-    print(f"  PNG 3枚の合計: {total/1024:.0f} KB（base64 で約 {total*4/3/1024:.0f} KB）")
+    print(f"  PNG 3枚（並置）＋9枚（拡大）の合計: {total/1024:.0f} KB（base64 で約 {total*4/3/1024:.0f} KB）")
     return "\n".join(o)
 
 
