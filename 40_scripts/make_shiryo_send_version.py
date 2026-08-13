@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """面談用の説明資料（60_shiryo/日本気象協会_ご説明.html）から、先方へ送付できる
-単独HTML（60_shiryo/日本気象協会_送付版.html）を作る。
+単独HTML（60_shiryo/日本気象協会さま_ご説明資料_20260813.html）を作る。
 
     python3 40_scripts/make_shiryo_send_version.py
 
@@ -24,7 +24,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "60_shiryo/日本気象協会_ご説明.html")
-DST = os.path.join(ROOT, "60_shiryo/日本気象協会_送付版.html")
+DST = os.path.join(ROOT, "60_shiryo/日本気象協会さま_ご説明資料_20260813.html")
 
 s = open(SRC, encoding="utf-8").read()
 
@@ -438,7 +438,7 @@ REPL4 = [
 
     # タブのタイトルと本文の敬称の混在をなくす
     ("<title>検討中の2テーマと、残っている不確定項 — 日本気象協会さまへのご説明</title>",
-     "<title>検討中の2テーマと、残っている不確定項 — 一般財団法人日本気象協会 御中（株式会社GRID）</title>"),
+     "<title>検討中の2テーマと、残っている不確定項 — 一般財団法人日本気象協会 御中（株式会社GRID・2026年8月13日）</title>"),
 ]
 
 for old, new in REPL4:
